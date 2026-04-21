@@ -181,18 +181,25 @@ export default function App() {
   };
 
   return (
-    <div style={{ fontFamily: "'Georgia', serif", background: "#1a1614", minHeight: "100vh", padding: "0" }}>
+    <div style={{ 
+      fontFamily: '"Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", name, sans-serif', 
+      background: "#1a1614", 
+      minHeight: "100vh", 
+      padding: "0",
+      letterSpacing: "-0.02em"
+    }}>
       <style>{`
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
         textarea { font-family: inherit; resize: none; }
-        .day-btn { transition: all 0.15s; }
-        .day-btn:hover { transform: translateY(-1px); }
-        .mission-item { transition: all 0.2s; }
-        .phrase-card { transition: all 0.15s; cursor: pointer; }
-        .phrase-card:hover { transform: scale(1.01); }
-        ::-webkit-scrollbar { width: 4px; }
+        .day-btn { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+        .day-btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
+        .mission-item { transition: all 0.2s ease; }
+        .mission-item:hover { border-color: #5a5048 !important; background: #2a2522 !important; }
+        .phrase-card { transition: all 0.2s ease; cursor: pointer; }
+        .phrase-card:hover { transform: translateY(-1px); border-color: #4a4540 !important; }
+        ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #3a3530; border-radius: 2px; }
+        ::-webkit-scrollbar-thumb { background: #3a3530; border-radius: 10px; }
       `}</style>
 
       {/* Header */}
@@ -200,8 +207,8 @@ export default function App() {
         <div style={{ maxWidth: 680, margin: "0 auto" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
             <div>
-              <div style={{ fontSize: 11, letterSpacing: 3, color: "#8a7f75", textTransform: "uppercase", marginBottom: 4 }}>7-Day Challenge</div>
-              <h1 style={{ margin: 0, fontSize: 22, fontWeight: "bold", color: "#f5ede3", letterSpacing: -0.5 }}>
+              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.2em", color: "#8a7f75", textTransform: "uppercase", marginBottom: 6 }}>7-Day Challenge</div>
+              <h1 style={{ margin: 0, fontSize: 24, fontWeight: 800, color: "#f5ede3", letterSpacing: "-0.03em" }}>
                 호구 탈출 챌린지
               </h1>
             </div>
@@ -261,13 +268,13 @@ export default function App() {
             <div style={{ flex: 1 }}>
               <span style={{
                 display: "inline-block", background: { amber: "#f59e0b", orange: "#f97316", red: "#ef4444", green: "#10b981", teal: "#14b8a6", purple: "#a855f7", blue: "#3b82f6" }[day.color], color: "#1a1614",
-                fontSize: 11, fontWeight: "bold", padding: "3px 10px", borderRadius: 20,
-                letterSpacing: 1, marginBottom: 10
+                fontSize: 12, fontWeight: 800, padding: "4px 12px", borderRadius: 6,
+                letterSpacing: "0.05em", marginBottom: 12
               }}>DAY {day.day}</span>
-              <h2 style={{ margin: "0 0 6px", fontSize: 26, color: "#f5ede3", fontWeight: "bold", lineHeight: 1.2 }}>
+              <h2 style={{ margin: "0 0 8px", fontSize: 28, color: "#f5ede3", fontWeight: 800, lineHeight: 1.2, letterSpacing: "-0.04em" }}>
                 {day.title}
               </h2>
-              <p style={{ margin: 0, fontSize: 14, color: "#8a7f75", lineHeight: 1.5 }}>
+              <p style={{ margin: 0, fontSize: 15, color: "#a89f95", lineHeight: 1.6, fontWeight: 500 }}>
                 목표: {day.goal}
               </p>
             </div>
