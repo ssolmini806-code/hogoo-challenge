@@ -83,24 +83,102 @@
         .content-banner p { font-size: 1rem; opacity: 0.8; max-width: 600px; margin-bottom: 30px; }
 
         /* Footer */
-        <footer>
-            <div class="footer-content">
-                <div class="f-info">
-                    <h3>GIVE Ecosystem (기버 생태계 연구소)</h3>
-                    <p>
-                        대표: ssolmini806 | 사업자번호: 준비중<br>
-                        주소: 대한민국 어딘가 | 이메일: ssolmini806@gmail.com<br>
-                        고객센터: 010-0000-0000 (평일 10:00 - 18:00)
-                    </p>
-                </div>
-                <div class="f-sns">
-                    <div style="width: 36px; height: 36px; background: #eee; border-radius: 50%;"></div>
-                    <div style="width: 36px; height: 36px; background: #eee; border-radius: 50%;"></div>
-                    <div style="width: 36px; height: 36px; background: #eee; border-radius: 50%;"></div>
-                </div>
-                <p style="font-size: 0.8rem; color: #ccc;">&copy; 2026 GIVE Ecosystem. All rights reserved.</p>
+        footer { background: #fafafa; padding: 60px 20px; border-top: 1px solid #f0f0f0; }
+        .footer-content { max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px; }
+        .f-info h3 { font-size: 1rem; margin-bottom: 15px; }
+        .f-info p { font-size: 0.85rem; color: var(--text-gray); line-height: 1.8; }
+        .f-sns { display: flex; gap: 15px; }
+        .f-sns div { width: 36px; height: 36px; background: #eee; border-radius: 50%; }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">GIVE ECOSYSTEM</a>
+    </header>
+
+    <main>
+        <!-- 1. Main Banner -->
+        <div class="hero-banner">
+            <h1>GIVE ID TEST</h1>
+            <p>당신의 기버 아이덴티티는 어떤 모습인가요?</p>
+            <a href="give-test.html" class="btn-main">지금 무료 진단하기</a>
+        </div>
+
+        <!-- 2. Quick Links Icons -->
+        <div class="icon-nav">
+            <a href="give-test.html" class="nav-item">
+                <div class="icon-circle">🔬</div>
+                <span>기버진단</span>
+            </a>
+            <a href="hogoo-test.html" class="nav-item">
+                <div class="icon-circle">🔥</div>
+                <span>7일챌린지</span>
+            </a>
+            <a href="#" class="nav-item">
+                <div class="icon-circle">📚</div>
+                <span>연구소소개</span>
+            </a>
+            <a href="#" class="nav-item">
+                <div class="icon-circle">💬</div>
+                <span>상담문의</span>
+            </a>
+        </div>
+
+        <!-- 3. All Services Section -->
+        <div class="section-wrap">
+            <div class="section-title">
+                모든 서비스
+                <a href="#">더보기 ></a>
             </div>
-        </footer>
+            <div class="item-grid">
+                <a href="give-test.html" class="item-card">
+                    <div class="item-img" style="background: #e6f6f3;">🤝</div>
+                    <div class="item-info">
+                        <span class="item-tag">BEST</span>
+                        <h3 class="item-name">GIVE ID 진단 - 나의 관계 성향을 찾아서</h3>
+                        <div class="item-price"><span>29,000원</span> 무 료</div>
+                    </div>
+                </a>
+                <a href="hogoo-test.html" class="item-card">
+                    <div class="item-img" style="background: #fff4ed;">🧗</div>
+                    <div class="item-info">
+                        <span class="item-tag">HOT</span>
+                        <h3 class="item-name">호구 탈출 챌린지 - 7일 실전 행동 교정</h3>
+                        <div class="item-price">무 료</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- 4. Middle Content Banner -->
+        <div class="content-banner" style="background: var(--primary);">
+            <h2>Why GIVE Ecosystem?</h2>
+            <p>우리는 기버(Giver)가 세상을 바꾼다고 믿습니다. 하지만 그 기버가 지쳐 쓰러진다면 세상은 더 이상 따뜻해질 수 없습니다. 당신을 지키는 힘, 우리가 함께 만듭니다.</p>
+            <a href="#" class="btn-main" style="background: white; color: var(--primary);">더 알아보기</a>
+        </div>
+    </main>
+
+    <!-- 5. Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="f-info">
+                <h3>GIVE Ecosystem (기버 생태계 연구소)</h3>
+                <p>
+                    대표: ssolmini806 | 사업자번호: 준비중<br>
+                    주소: 대한민국 어딘가 | 이메일: ssolmini806@gmail.com<br>
+                    고객센터: 010-0000-0000 (평일 10:00 - 18:00)
+                </p>
+            </div>
+            <div class="f-sns">
+                <div style="background: #eee; width: 36px; height: 36px; border-radius: 50%;"></div>
+                <div style="background: #eee; width: 36px; height: 36px; border-radius: 50%;"></div>
+                <div style="background: #eee; width: 36px; height: 36px; border-radius: 50%;"></div>
+            </div>
+            <p style="font-size: 0.8rem; color: #ccc;">&copy; 2026 GIVE Ecosystem. All rights reserved.</p>
+        </div>
+    </footer>
 
 </body>
 </html>
