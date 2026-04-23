@@ -1,330 +1,211 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GIVE Ecosystem | 나를 알고 관계를 디자인하다</title>
-<meta name="description" content="자신의 것을 나눌 수 있는 사람들이 세상을 더 좋게 만듭니다. 기버가 지치지 않도록, 건강한 경계를 설계하는 GIVE Ecosystem.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
-<style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GIVE Ecosystem | 나를 지키는 관계의 기술</title>
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    <style>
+        :root {
+            --primary: #00a885;
+            --primary-bg: #e6f6f3;
+            --text-main: #1d1d1f;
+            --text-sub: #6e6e73;
+            --bg-gray: #f5f5f7;
+            --white: #ffffff;
+            --max-width: 1024px;
+            --transition: all 0.3s ease;
+        }
 
-  :root {
-    --bg: #ffffff;
-    --bg2: #f8faf9;
-    --bg3: #f0f7f5;
-    --border: #e2e8e5;
-    --border2: #d1dbd6;
-    --text: #1a1a1a;
-    --text2: #4a5550;
-    --text3: #7d8c85;
-    --primary: #00a885;
-    --primary-light: #00c99e;
-    --primary-bg: #e6f6f3;
-    --secondary: #f97316;
-    --serif: 'Noto Serif KR', Georgia, serif;
-    --sans: 'Noto Sans KR', sans-serif;
-  }
+        * { box-sizing: border-box; margin: 0; padding: 0; word-break: keep-all; }
+        body { font-family: 'Pretendard', sans-serif; color: var(--text-main); line-height: 1.6; background: var(--white); }
 
-  html { scroll-behavior: smooth; }
+        /* Navigation */
+        nav { position: fixed; top: 0; width: 100%; height: 60px; background: rgba(255,255,255,0.8); backdrop-filter: blur(20px); z-index: 1000; display: flex; justify-content: center; border-bottom: 1px solid #eee; }
+        .nav-inner { width: 100%; max-width: var(--max-width); padding: 0 20px; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.2rem; font-weight: 800; color: var(--primary); text-decoration: none; }
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--sans);
-    line-height: 1.7;
-    -webkit-font-smoothing: antialiased;
-  }
+        /* Hero Banner */
+        .hero { position: relative; padding-top: 60px; height: 100vh; min-height: 600px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=2000') center/cover; color: white; padding: 0 24px; }
+        .hero-slogan { font-size: 1.2rem; font-weight: 500; margin-bottom: 1rem; opacity: 0.9; }
+        .hero-title { font-size: clamp(1.8rem, 7vw, 3.5rem); font-weight: 800; line-height: 1.3; margin-bottom: 1.5rem; }
+        .hero-cta { background: var(--primary); color: white; padding: 18px 40px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 1.1rem; box-shadow: 0 10px 20px rgba(0,0,0,0.2); transition: var(--transition); }
+        .hero-cta:hover { transform: translateY(-3px); background: #008f72; }
 
-  /* NAV */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(15px);
-    border-bottom: 1px solid var(--border);
-    padding: 0 24px;
-    display: flex; align-items: center; justify-content: space-between;
-    height: 72px;
-  }
+        /* Section Global */
+        section { padding: 100px 20px; max-width: var(--max-width); margin: 0 auto; }
+        .section-title { font-size: 2rem; font-weight: 800; margin-bottom: 50px; text-align: center; }
+        .section-title span { color: var(--primary); }
 
-  .nav-logo {
-    font-family: var(--serif);
-    font-size: 18px;
-    font-weight: 800;
-    letter-spacing: -0.5px;
-    color: var(--text);
-    text-decoration: none;
-  }
+        /* System Flow (How to Start) */
+        .flow-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .flow-card { background: var(--bg-gray); padding: 40px; border-radius: 30px; text-align: center; }
+        .flow-num { width: 40px; height: 40px; background: var(--primary); color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 20px; font-weight: 800; }
+        .flow-card h3 { font-size: 1.3rem; margin-bottom: 15px; }
 
-  .nav-logo span { color: var(--primary); }
+        /* Service Cards */
+        .service-grid { display: grid; grid-template-columns: 1fr; gap: 30px; margin-top: 40px; }
+        @media (min-width: 768px) { .service-grid { grid-template-columns: 1fr 1fr; } }
+        .service-card { border-radius: 40px; overflow: hidden; border: 1px solid #eee; text-decoration: none; color: inherit; transition: var(--transition); background: white; }
+        .service-card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.1); }
+        .service-img { height: 240px; background: var(--primary-bg); display: flex; justify-content: center; align-items: center; font-size: 4rem; }
+        .service-info { padding: 40px; }
+        .service-tag { color: var(--primary); font-weight: 800; font-size: 0.9rem; margin-bottom: 10px; display: block; }
+        .service-info h3 { font-size: 1.6rem; margin-bottom: 15px; font-weight: 800; }
 
-  .nav-links { display: flex; gap: 32px; list-style: none; }
-  .nav-links a {
-    font-size: 14px; color: var(--text2); text-decoration: none;
-    transition: color 0.2s; font-weight: 500;
-  }
-  .nav-links a:hover { color: var(--primary); }
+        /* Reviews */
+        .review-section { background: var(--bg-gray); border-radius: 60px; margin: 0 20px; padding: 100px 24px; max-width: 100%; width: calc(100% - 40px); margin: 0 auto 100px; }
+        .review-grid { display: grid; grid-template-columns: 1fr; gap: 20px; max-width: var(--max-width); margin: 0 auto; }
+        @media (min-width: 768px) { .review-grid { grid-template-columns: 1fr 1fr; } }
+        .review-card { background: white; padding: 30px; border-radius: 24px; font-size: 0.95rem; }
+        .review-author { font-weight: 800; color: var(--primary); margin-top: 20px; display: block; }
 
-  .nav-cta {
-    background: var(--primary); color: #fff; font-size: 13px;
-    font-weight: 700; padding: 10px 22px; border-radius: 50px;
-    text-decoration: none; transition: 0.3s;
-  }
-  .nav-cta:hover { background: var(--primary-light); transform: translateY(-2px); }
+        /* FAQ (Accordion) */
+        .faq-item { border-bottom: 1px solid #eee; padding: 24px 0; cursor: pointer; }
+        .faq-q { font-size: 1.1rem; font-weight: 700; display: flex; justify-content: space-between; align-items: center; }
+        .faq-a { padding-top: 15px; color: var(--text-sub); display: none; font-size: 1rem; line-height: 1.8; }
+        .faq-item.active .faq-a { display: block; }
+        .faq-q::after { content: '+'; font-size: 1.5rem; color: var(--primary); transition: transform 0.3s; }
+        .faq-item.active .faq-q::after { content: '−'; transform: rotate(180deg); }
 
-  /* HERO */
-  .hero {
-    min-height: 100vh; display: flex; flex-direction: column;
-    align-items: center; justify-content: center; text-align: center;
-    padding: 120px 24px 80px; position: relative; overflow: hidden;
-    background: radial-gradient(circle at 80% 20%, rgba(0, 168, 133, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 20% 80%, rgba(0, 168, 133, 0.05) 0%, transparent 50%);
-  }
+        /* Footer */
+        footer { background: #111; color: white; padding: 80px 24px; text-align: center; margin-top: 100px; }
+        .footer-logo { font-size: 1.5rem; font-weight: 800; color: var(--primary); margin-bottom: 20px; display: block; }
+        .footer-info { font-size: 0.9rem; opacity: 0.6; line-height: 2; margin-bottom: 40px; }
 
-  .hero-slogan {
-    font-family: var(--serif); font-size: 16px; color: var(--primary);
-    font-weight: 600; margin-bottom: 24px; letter-spacing: 0.05em;
-    animation: fadeInDown 0.8s both;
-  }
-
-  .hero h1 {
-    font-family: var(--serif); font-size: clamp(32px, 7vw, 64px);
-    font-weight: 700; line-height: 1.25; letter-spacing: -1.5px;
-    color: var(--text); margin-bottom: 24px; animation: fadeInUp 0.8s 0.2s both;
-  }
-
-  .hero h1 em { font-style: normal; color: var(--primary); position: relative; }
-  .hero h1 em::after {
-    content: ''; position: absolute; bottom: 8px; left: 0; width: 100%; height: 12px;
-    background: rgba(0, 168, 133, 0.1); z-index: -1;
-  }
-
-  .hero-sub {
-    font-size: clamp(16px, 2.8vw, 21px); color: var(--text2);
-    margin-bottom: 48px; max-width: 600px; line-height: 1.7;
-    font-weight: 400; animation: fadeInUp 0.8s 0.4s both;
-  }
-
-  .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; animation: fadeInUp 0.8s 0.6s both; }
-
-  .btn-primary {
-    background: var(--primary); color: #fff; font-size: 16px;
-    font-weight: 700; padding: 18px 42px; border-radius: 12px;
-    text-decoration: none; transition: 0.3s;
-  }
-  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(0, 168, 133, 0.2); }
-
-  .btn-secondary {
-    background: var(--white); color: var(--text2); font-size: 16px;
-    font-weight: 600; padding: 18px 42px; border-radius: 12px;
-    text-decoration: none; border: 1px solid var(--border2); transition: 0.3s;
-  }
-  .btn-secondary:hover { background: var(--bg2); color: var(--text); }
-
-  /* SECTION SHARED */
-  section { padding: 120px 24px; }
-  .container { max-width: 1100px; margin: 0 auto; }
-  .section-label { font-size: 12px; letter-spacing: 3px; color: var(--primary); font-weight: 700; text-transform: uppercase; margin-bottom: 16px; display: block; }
-  .section-title { font-family: var(--serif); font-size: clamp(28px, 4.5vw, 42px); font-weight: 700; line-height: 1.3; margin-bottom: 20px; }
-  .divider { width: 50px; height: 3px; background: var(--primary); margin-bottom: 32px; }
-
-  /* SERVICES (Qshop Style Cards) */
-  .services { background: var(--bg2); }
-  .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 32px; }
-
-  .service-card {
-    background: var(--white); border-radius: 24px; padding: 50px;
-    border: 1px solid var(--border); transition: 0.4s; text-decoration: none;
-    display: flex; flex-direction: column; position: relative;
-  }
-  .service-card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.05); border-color: var(--primary); }
-
-  .service-icon { font-size: 42px; margin-bottom: 24px; }
-  .service-title { font-family: var(--serif); font-size: 24px; font-weight: 700; color: var(--text); margin-bottom: 16px; }
-  .service-desc { font-size: 15px; color: var(--text2); margin-bottom: 32px; }
-  
-  .price-tag { 
-    position: absolute; top: 50px; right: 50px; text-align: right;
-  }
-  .price-old { font-size: 13px; color: var(--text3); text-decoration: line-through; display: block; }
-  .price-now { font-size: 20px; font-weight: 800; color: var(--primary); }
-
-  /* WHY SECTION */
-  .why-inner { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 80px; align-items: center; }
-  .why-points { margin-top: 40px; }
-  .why-point { display: flex; gap: 24px; margin-bottom: 40px; }
-  .why-point i { font-style: normal; font-weight: 800; color: var(--primary); font-size: 18px; }
-  .why-point h4 { font-size: 18px; margin-bottom: 8px; }
-  .why-point p { font-size: 15px; color: var(--text2); }
-
-  .visual-card { 
-    background: var(--primary); color: #fff; padding: 60px 40px; border-radius: 30px;
-    display: flex; flex-direction: column; gap: 40px;
-  }
-  .stat-item { border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 30px; }
-  .stat-item:last-child { border-bottom: none; }
-  .stat-num { font-size: 48px; font-weight: 800; font-family: var(--serif); }
-  .stat-text { font-size: 15px; opacity: 0.9; }
-
-  /* FOOTER */
-  footer { background: var(--text); color: #fff; padding: 80px 24px; }
-  .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 50px; }
-  .f-logo { font-family: var(--serif); font-size: 20px; font-weight: 800; margin-bottom: 20px; display: block; }
-  .f-logo span { color: var(--primary); }
-  .f-info { font-size: 13px; color: #aaa; line-height: 2; }
-  .f-links { list-style: none; display: flex; gap: 30px; }
-  .f-links a { color: #fff; text-decoration: none; font-size: 14px; opacity: 0.7; transition: 0.3s; }
-  .f-links a:hover { opacity: 1; color: var(--primary); }
-
-  @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-  @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-
-  @media (max-width: 850px) {
-    .why-inner { grid-template-columns: 1fr; }
-    .nav-links { display: none; }
-    .services-grid { grid-template-columns: 1fr; }
-    .service-card { padding: 40px 30px; }
-  }
-
-  .fade-up { opacity: 0; transform: translateY(30px); transition: 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
-  .fade-up.visible { opacity: 1; transform: translateY(0); }
-</style>
+    </style>
 </head>
 <body>
 
-<nav>
-  <a href="/" class="nav-logo">GIVE <span>Ecosystem</span></a>
-  <ul class="nav-links">
-    <li><a href="give-test.html">기버 진단</a></li>
-    <li><a href="hogoo-test.html">7일 챌린지</a></li>
-    <li><a href="#why">브랜드 스토리</a></li>
-    <li><a href="#contact">문의하기</a></li>
-  </ul>
-  <a href="give-test.html" class="nav-cta">무료 진단하기</a>
-</nav>
-
-<section class="hero">
-  <div class="hero-slogan">"자신의 것을 나눌 수 있는 사람들이 세상을 더 좋게 만든다"</div>
-  <h1>세상이 널 이용해왔지만,<br><em>더 이상은 이용하지 못하도록</em></h1>
-  <p class="hero-sub">당신의 선함은 약점이 아니라 가장 강력한 자산입니다.<br>기버가 지치지 않고 오래 줄 수 있는 단단한 토양을 만듭니다.</p>
-  <div class="hero-actions">
-    <a href="give-test.html" class="btn-primary">GIVE ID 무료 진단하기</a>
-    <a href="hogoo-test.html" class="btn-secondary">7일 챌린지 신청하기</a>
-  </div>
-</section>
-
-<section class="services">
-  <div class="container">
-    <div style="text-align: center; margin-bottom: 70px;" class="fade-up">
-      <span class="section-label">Our Core Solutions</span>
-      <h2 class="section-title">진단하고, 훈련하세요</h2>
-      <div class="divider" style="margin: 0 auto;"></div>
-    </div>
-
-    <div class="services-grid">
-      <a href="give-test.html" class="service-card fade-up">
-        <div class="price-tag">
-          <span class="price-old">29,000원</span>
-          <span class="price-now">무 료</span>
+    <nav>
+        <div class="nav-inner">
+            <a href="/" class="logo">GIVE Ecosystem</a>
+            <div style="font-weight: 700; font-size: 0.8rem; color: var(--text-sub);">Relationship Identity Lab</div>
         </div>
-        <div class="service-icon">🤝</div>
-        <h3 class="service-title">GIVE ID 진단</h3>
-        <p class="service-desc">왜 항상 주기만 했을까요? 16개 문항을 통해 당신의 기버 아이덴티티를 4가지 유형으로 분석하고 맞춤 방어 전략을 제공합니다.</p>
-        <div style="color: var(--primary); font-weight: 800; font-size: 14px;">3분 만에 확인하기 →</div>
-      </a>
+    </nav>
 
-      <a href="hogoo-test.html" class="service-card fade-up">
-        <div class="price-tag">
-          <span class="price-now">OPEN</span>
-        </div>
-        <div class="service-icon">🔥</div>
-        <h3 class="service-title">호구 탈출 7일 챌린지</h3>
-        <p class="service-desc">읽는 것만으론 바뀌지 않습니다. 매일 3개씩, 7일 동안 행동을 직접 교정하며 건강한 경계를 세우는 법을 체득합니다.</p>
-        <div style="color: var(--primary); font-weight: 800; font-size: 14px;">훈련 시작하기 →</div>
-      </a>
-    </div>
-  </div>
-</section>
+    <main>
+        <!-- 1. 메인 배너 -->
+        <header class="hero">
+            <p class="hero-slogan">"자신의 것을 나눌 수 있는 사람들이 세상을 더 좋게 만든다"</p>
+            <h1 class="hero-title">세상이 널 이용해왔지만,<br>더 이상은 이용하지 못하도록</h1>
+            <a href="give-test.html" class="hero-cta">무료 진단 시작하기</a>
+        </header>
 
-<section id="why">
-  <div class="container">
-    <div class="why-inner">
-      <div class="why-text fade-up">
-        <span class="section-label">Brand Mission</span>
-        <h2 class="section-title">기버를 위한<br>안전한 생태계</h2>
-        <div class="divider"></div>
-        <p style="color: var(--text2); font-size: 17px; margin-bottom: 40px;">우리는 착함을 없애라고 말하지 않습니다.<br>다만 그 착함이 올바른 곳에 쓰이도록 돕습니다.</p>
-        
-        <div class="why-points">
-          <div class="why-point">
-            <i>01</i>
-            <div>
-              <h4>패턴의 발견</h4>
-              <p>무의식적으로 반복되는 '자동 수락'의 루프를 찾아내어 멈추는 법을 익힙니다.</p>
+        <!-- 2. 시스템 구성 설명 -->
+        <section id="system">
+            <h2 class="section-title">지금 바로 시작하려면<br><span>뭐부터 하면 되나요?</span></h2>
+            <div class="flow-grid">
+                <div class="flow-card">
+                    <div class="flow-num">1</div>
+                    <h3>GIVE ID 검사</h3>
+                    <p>나의 기부 성향과<br>소모되는 패턴 확인하기</p>
+                </div>
+                <div class="flow-card">
+                    <div class="flow-num">2</div>
+                    <h3>7일 챌린지</h3>
+                    <p>내 방식에 맞춰<br>직접 행동해보기</p>
+                </div>
+                <div class="flow-card">
+                    <div class="flow-num">3</div>
+                    <h3>커뮤니티</h3>
+                    <p>함께 연결되어<br>단단한 피드백 받기</p>
+                </div>
             </div>
-          </div>
-          <div class="why-point">
-            <i>02</i>
-            <div>
-              <h4>경계의 설계</h4>
-              <p>나를 보호하면서도 상대의 기분을 상하지 않게 하는 '세련된 거절'의 기술을 배웁니다.</p>
+        </section>
+
+        <!-- 3. 서비스 설명란 -->
+        <div style="background: var(--bg-gray); padding: 100px 0; border-radius: 60px;">
+            <section style="padding: 0 20px;">
+                <h2 class="section-title">GIVE Ecosystem <span>Solutions</span></h2>
+                <div class="service-grid">
+                    <a href="give-test.html" class="service-card">
+                        <div class="service-img">🤝</div>
+                        <div class="service-info">
+                            <span class="service-tag">DIAGNOSIS</span>
+                            <h3>GIVE ID 진단</h3>
+                            <p>내 몸, 시간, 재능, 돈이 어디로 새고 있는지 패턴을 분석하여 오늘 바로 쓸 수 있는 한 줄 가이드를 드립니다.</p>
+                        </div>
+                    </a>
+                    <a href="hogoo-test.html" class="service-card">
+                        <div class="service-img">🔥</div>
+                        <div class="service-info">
+                            <span class="service-tag">TRAINING</span>
+                            <h3>호구 탈출 7일 챌린지</h3>
+                            <p>매일 10분, 나만의 경계를 설정하는 작은 실험들. 일주일 뒤면 내가 어디서 소모되는지 선명해집니다.</p>
+                        </div>
+                    </a>
+                </div>
+            </section>
+        </div>
+
+        <!-- 4. 후기란 -->
+        <div class="review-section" style="margin-top: 100px;">
+            <h2 class="section-title">먼저 변화를 <span>경험한 분들</span></h2>
+            <div class="review-grid">
+                <div class="review-card">
+                    <p>"팀플에서 다 도와주고 성과가 남지 않아 고민이었는데, 이 테스트로 제가 기여하는 방식이 정리됐어요. 7일 챌린지로 무리하게 떠안지 않는 법을 배우니 마음이 한결 가벼워졌습니다."</p>
+                    <span class="review-author">취준생 L님</span>
+                </div>
+                <div class="review-card">
+                    <p>"GIVECO를 통해 남의 비전에만 에너지를 쓰던 제 패턴을 알게 됐어요. 이제는 베풀되 제 시간과 목표에도 함께 투자하는 기준이 생겼습니다. 똑똑하게 돕는 법을 배웠어요!"</p>
+                    <span class="review-author">직장인 K님</span>
+                </div>
+                <div class="review-card">
+                    <p>"결과가 나랑 거의 똑같이 나와서 신기했어요. 나 자신을 위해 스파크를 켜야 한다는 조언이 너무 필요했습니다. 부족한 점을 쉽게 고칠 수 있게 도와줘서 감사합니다."</p>
+                    <span class="review-author">기버 S님</span>
+                </div>
+                <div class="review-card">
+                    <p>"인생 멘토가 될 필요가 없다는 조언은 제가 평소 실행하던 점이라 더 확신을 가졌어요. 자신만의 기준을 확고히 할 수 있어서 앞으로의 관계에서도 큰 도움이 될 것 같아요."</p>
+                    <span class="review-author">상담러 J님</span>
+                </div>
             </div>
-          </div>
-          <div class="why-point">
-            <i>03</i>
-            <div>
-              <h4>시스템 정착</h4>
-              <p>7일이 지난 후에도 나를 지켜낼 수 있는 나만의 '관계 가이드라인'을 문서화합니다.</p>
+        </div>
+
+        <!-- 5. FAQ 섹션 -->
+        <section id="faq">
+            <h2 class="section-title">자주 묻는 질문</h2>
+            <div style="max-width: 800px; margin: 0 auto;">
+                <div class="faq-item" onclick="this.classList.toggle('active')">
+                    <div class="faq-q">GIVECO는 어떤 곳인가요?</div>
+                    <div class="faq-a">GIVECO는 주는 사람이 지치지 않게 나만의 선의 방향성을 제시해줍니다. 7일 챌린지로 행동을 만들고, GIVE ID로 자가진단 하며, 커뮤니티로 소통합니다. 처음이라면 GIVE ID 무료 검사부터 시작하면 가장 빠릅니다.</div>
+                </div>
+                <div class="faq-item" onclick="this.classList.toggle('active')">
+                    <div class="faq-q">7일 챌린지는 무엇을 하나요?</div>
+                    <div class="faq-a">매일 10분 이내로 끝나는 작은 실험들로 구성된 프로그램입니다. 에너지 관리, 경계 설정, 자기 이해를 중심으로 설계되어 부담 없이 시작할 수 있어요. 일주일이 끝나면 ‘내가 어디서 소모되는지’가 훨씬 선명해집니다.</div>
+                </div>
+                <div class="faq-item" onclick="this.classList.toggle('active')">
+                    <div class="faq-q">GIVE ID는 어떤 검사인가요?</div>
+                    <div class="faq-a">내 기부 성향과 소모되는 지점을 선명하게 보여주는 검사예요. 몸, 시간, 재능, 돈이 어디로 새는지 패턴을 정리해서 내 기준과 경계선을 만들어줍니다. 결과는 성격 라벨이 아니라 오늘 바로 쓸 수 있는 한 줄 가이드로 나와요.</div>
+                </div>
+                <div class="faq-item" onclick="this.classList.toggle('active')">
+                    <div class="faq-q">이건 누가 하면 가장 효과가 있나요?</div>
+                    <div class="faq-a">착한 마음 때문에 자꾸 손해 보는데 그게 싫어진 사람, 부탁을 거절하면 죄책감이 커서 결국 내가 다 떠안는 사람, “나도 중요하다”는 걸 머리로는 아는데 행동이 안 되는 사람들에게 가장 효과적입니다.</div>
+                </div>
+                <div class="faq-item" onclick="this.classList.toggle('active')">
+                    <div class="faq-q">무료 결과로 어디까지 알 수 있나요?</div>
+                    <div class="faq-a">무료로도 내 기본 GIVE 타입과 가장 자주 소모되는 상황을 확인할 수 있어요. 그리고 지금 당장 바꿔야 할 우선순위 1~2개 행동이 같이 제시됩니다. 부담 없이 시작하고 필요하면 그다음 단계로 넘어가면 돼요.</div>
+                </div>
+                <div class="faq-item" onclick="this.classList.toggle('active')">
+                    <div class="faq-q">커뮤니티(카카오 오픈채팅)는 왜 들어가야 하나요?</div>
+                    <div class="faq-a">혼자 하면 결국 다시 예전 습관으로 돌아가기 쉬워요. 오픈채팅은 서로의 기준을 지켜주는 안전장치가 됩니다. 같은 고민의 사람들과 조용하지만 단단하게 연결되는 곳이에요.</div>
+                </div>
+                <div class="faq-item" onclick="this.classList.toggle('active')">
+                    <div class="faq-q">GIVECO는 누구에게 특히 잘 맞나요?</div>
+                    <div class="faq-a">늘 도와주다 지치지만, 그렇다고 완전히 멈추고 싶지는 않은 사람에게 잘 맞습니다. 책임감이 크고, 관계를 소중히 여기지만 자신의 리듬은 자주 뒤로 미루는 분들을 위해 만들었습니다.</div>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
+        </section>
+    </main>
 
-      <div class="visual-card fade-up">
-        <div class="stat-item">
-          <div class="stat-num">12.4k</div>
-          <div class="stat-text">누적 진단 수</div>
+    <footer>
+        <span class="footer-logo">GIVE Ecosystem</span>
+        <div class="footer-info">
+            대표: ssolmini806 | 이메일: ssolmini806@gmail.com<br>
+            모든 변화는 스스로에 대한 이해로부터 시작됩니다.<br>
+            &copy; 2026 GIVE Ecosystem. All rights reserved.
         </div>
-        <div class="stat-item">
-          <div class="stat-num">98%</div>
-          <div class="stat-text">프로그램 만족도</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-num">7일</div>
-          <div class="stat-text">행동이 바뀌는 최소 시간</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <div class="footer-inner">
-    <div>
-      <a href="/" class="f-logo">GIVE <span>Ecosystem</span></a>
-      <div class="f-info">
-        대표: ssolmini806 | 이메일: ssolmini806@gmail.com<br>
-        모든 변화는 스스로에 대한 이해로부터 시작됩니다.
-      </div>
-    </div>
-    <ul class="f-links">
-      <li><a href="give-test.html">기버 진단</a></li>
-      <li><a href="hogoo-test.html">7일 챌린지</a></li>
-      <li><a href="#why">브랜드 스토리</a></li>
-    </ul>
-  </div>
-  <div style="max-width: 1100px; margin: 40px auto 0; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 12px; color: #666; text-align: center;">
-    &copy; 2026 GIVE Ecosystem. All rights reserved.
-  </div>
-</footer>
-
-<script>
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-</script>
+    </footer>
 
 </body>
 </html>
