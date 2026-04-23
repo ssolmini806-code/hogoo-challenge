@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GIVE ID Test | 나의 기버 유형 찾기</title>
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    <style>
+        :root {
+            --primary-color: #00a885;
+            --primary-light: #e6f6f3;
+            --text-dark: #2c3e50;
+            --text-gray: #7f8c8d;
+            --bg-color: #f9fbfb;
+            --white: #ffffff;
+            --shadow: 0 10px 30px rgba(0,0,0,0.08);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        #app {
+            width: 100%;
+            max-width: 480px;
+            min-height: 100vh;
+            background: var(--white);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            box-shadow: var(--shadow);
+        }
+
+        .container {
+            padding: 2rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: var(--transition);
+        }
+
+        .container.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hidden { display: none !important; }
+
+        button {
+            cursor: pointer;
+            border: none;
+            outline: none;
+            font-family: inherit;
+        }
+
+        /* Intro Page */
+        .intro-content {
+            text-align: center;
+        }
+
+        .intro-tag {
+            background: var(--primary-light);
+            color: var(--primary-color);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .intro-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            line-height: 1.3;
+            margin-bottom: 1rem;
+            word-break: keep-all;
+        }
+
+        .intro-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-gray);
+            margin-bottom: 3rem;
+            word-break: keep-all;
+        }
+
+        .start-btn {
+            background: var(--primary-color);
+            color: white;
+            width: 100%;
+            padding: 1.2rem;
+            border-radius: 16px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0, 168, 133, 0.3);
+            transition: var(--transition);
+        }
+
+        .start-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Question Page */
+        .progress-container {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            max-width: 480px;
+            height: 6px;
+            background: #eee;
+            z-index: 100;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--primary-color);
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        .question-header {
+            margin-bottom: 2rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+
+        .question-text {
+            font-size: 1.4rem;
+            font-weight: 700;
+            line-height: 1.5;
+            margin-bottom: 2.5rem;
+            word-break: keep-all;
+            white-space: pre-line;
+        }
+
+        .answer-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .answer-btn {
+            background: var(--white);
+            border: 2px solid #edf2f2;
+            padding: 1.1rem 1.5rem;
+            border-radius: 16px;
+            text-align: left;
+            font-size: 1.05rem;
+            font-weight: 500;
+            line-height: 1.4;
+            transition: var(--transition);
+            word-break: keep-all;
+        }
+
+        .answer-btn:hover, .answer-btn:active {
+            border-color: var(--primary-color);
+            background: var(--primary-light);
+            color: var(--primary-color);
+        }
+
+        /* Story Page */
+        .story-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            word-break: keep-all;
+        }
+
+        .story-desc {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            word-break: keep-all;
+        }
+
+        textarea {
+            width: 100%;
+            height: 180px;
+            padding: 1rem;
+            border: 2px solid #edf2f2;
+            border-radius: 12px;
+            resize: none;
+            font-family: inherit;
+            font-size: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        /* Result Page */
+        .result-loading {
+            text-align: center;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--primary-light);
+            border-top: 5px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1.5rem;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .result-type-label {
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            display: block;
+            text-align: center;
+        }
+
+        .result-name {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            text-align: center;
+            word-break: keep-all;
+        }
+
+        .result-card {
+            background: var(--primary-light);
+            padding: 1.5rem;
+            border-radius: 20px;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-content {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--text-dark);
+            word-break: keep-all;
+        }
+
+        .cta-container {
+            margin-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            padding-bottom: 2rem;
+        }
+
+        .btn-secondary {
+            background: #f1f3f5;
+            color: #495057;
+            padding: 1rem;
+            border-radius: 14px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        /* Animations */
+        .fade-in { animation: fadeIn 0.5s forwards; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        @media (max-width: 480px) {
+            .container { padding: 1.5rem; }
+            .intro-title { font-size: 2rem; }
+            .question-text { font-size: 1.25rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="app">
+    <div class="progress-container hidden" id="progressWrap">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- 1. Intro Page -->
+    <section class="container active" id="page-intro">
+        <div class="intro-content">
+            <span class="intro-tag">GIVE ID Test</span>
+            <h1 class="intro-title">나는 왜 항상<br>주기만 할까?</h1>
+            <p class="intro-subtitle">3분 만에 알아보는 나의 기버 유형</p>
+            <button class="start-btn" onclick="startQuiz()">테스트 시작하기</button>
+        </div>
+    </section>
+
+    <!-- 2. Question Page -->
+    <section class="container hidden" id="page-quiz">
+        <div class="question-header" id="questionNum">1 / 16</div>
+        <div class="question-text" id="questionText"></div>
+        <div class="answer-list" id="answerList"></div>
+    </section>
+
+    <!-- 3. Story Page -->
+    <section class="container hidden" id="page-story">
+        <h2 class="story-title">당신의 이야기를 들려주세요 (선택)</h2>
+        <p class="story-desc">
+            내가 어떤 상황에서 많이 줘왔는지, 그 과정에서 기억에 남는 상처나 앞으로 어떻게 달라지고 싶은지 적어주셔도 좋아요.
+        </p>
+        <textarea id="storyInput" placeholder="3~5줄 정도로 적어주시면 심층 분석에 도움이 됩니다."></textarea>
+        <button class="start-btn" onclick="showLoading()">결과 확인하기</button>
+    </section>
+
+    <!-- 4. Loading Page -->
+    <section class="container hidden" id="page-loading">
+        <div class="result-loading">
+            <div class="spinner"></div>
+            <h2 class="story-title">유형 분석 중...</h2>
+            <p class="story-desc">당신의 GIVE 아이덴티티를 분석하고 있습니다.</p>
+        </div>
+    </section>
+
+    <!-- 5. Result Page -->
+    <section class="container hidden" id="page-result">
+        <span class="result-type-label">나의 GIVE 유형은</span>
+        <h1 class="result-name" id="typeName"></h1>
+        
+        <div class="result-card">
+            <div class="card-title">💡 어떤 유형인가요?</div>
+            <div class="card-content" id="typeDesc"></div>
+        </div>
+
+        <div class="result-card" style="background: #fff; border: 1px solid var(--primary-light);">
+            <div class="card-title">✨ 나의 강점</div>
+            <div class="card-content" id="typeStrength"></div>
+        </div>
+
+        <div class="result-card" style="background: #fff5f5; border: 1px solid #ffe3e3;">
+            <div class="card-title">⚠️ 주의해야 할 점</div>
+            <div class="card-content" id="typeRisk"></div>
+        </div>
+
+        <div class="result-card" style="background: #f0f7ff; border: 1px solid #e0eeff;">
+            <div class="card-title">🚀 GIVE 전략</div>
+            <div class="card-content" id="typeAdvice"></div>
+        </div>
+
+        <div class="cta-container">
+            <button class="start-btn" onclick="copyLink()">결과 공유하기</button>
+            <button class="btn-secondary" onclick="location.href='index.html'">메인으로 돌아가기</button>
+        </div>
+    </section>
+</div>
+
+<script>
+    const questions = [
+        { q: "친구가 밤 11시에 갑자기 연락한다\n“나 지금 너무 힘든데 나와줄 수 있어?”\n하지만 내일 중요한 일정이 있는 상황\n너는....", a: ["고민도 안 하고 바로 나간다", "일단 통화부터 한다", "내일 보자고 한다", "못 나간다고 말한다"] },
+        { q: "친구한테 카톡이 왔다.\n'야 나 이거 좀 도와줄 수 있어?'\n아 나 오늘 좀 쉬고 싶었는데....\n그때 나의 머릿속은?", a: ["“그래도 도와줘야지”", "“음… 상황 봐야지”", "“왜 나한테만 이러지?”", "“이번엔 안 한다”"] },
+        { q: "내가 도와준 일이 잘 됐다\n하지만 상대방은 '잘 됐어!' 하고 끝.\n감사 인사? 없음.\n내 기분은?", a: ["그냥 뿌듯하다", "살짝 아쉽다", "좀 서운하다", "다음부터 안 도와준다"] },
+        { q: "이번 달만 벌써 세 번째, 또 울리는 카톡\n'나 부탁 하나만 더 해도 돼?'\n그때 난....", a: ["또 해준다", "이번만 마지막으로 한다", "고민하다가 해준다", "거절한다"] },
+        { q: "오늘 처음 제대로 얘기한 사람인데\n벌써 두 번째 부탁을 한다.\n그치만 말투는 엄청 살갑다.\n그때 난....", a: ["좋은 사람 같아서 받아준다", "일단 더 지켜본다", "살짝 쎄한 느낌이 든다", "바로 거리 둔다"] },
+        { q: "상대방이 “너밖에 없어”라고 말한다.\n그 말을 들은 순간 넌....", a: ["감동받는다", "고마우면서도 부담된다", "약간 의심된다", "부담스럽고 거리 둔다"] },
+        { q: "도와주고 나면 항상 '고마워~ 😊'\n딱 하나 그리고\n다음 날 또 부탁 카톡. 이 패턴이 반복된다.\n그때 나의 생각은....", a: ["그래도 나쁜 사람은 아니겠지", "뭔가 이상한데 말하기가 애매하다", "이용당하는 느낌이 슬슬 든다", "이미 마음속으로 선 그었다"] },
+        { q: "'나 부탁 하나만 해도 돼?'라고 카톡이 왔다.\n나의 첫 반응은?", a: ["“도와줘야지”", "“왜 나지?”", "“이거 괜찮은 건가?”", "“선 넘는 거 아냐?”"] },
+        { q: "솔직히 이번엔 상대방의 부탁을 못 들어줄 것 같은 상황이다.\n근데 상대가 바로 앞에 있다.\n결국 내 입에서 나온 말은?", a: ["“그래… 해줄게”", "“이번만 해주는 거야”", "“미안한데 이번엔 어려울 것 같아....”", "“지금은 좀 힘들어. 다음에 다시 말해줘”"] },
+        { q: "싫다고 했는데 또 같은 부탁을 한다.\n그때 나의 답변은....", a: ["그냥 참는다", "하면서도 찜찜하다", "돌려서 어렵다고 말해본다", "그래도 솔직하게 거절한다"] },
+        { q: "'싫다'고 하면 저 사람이 나 이상하게 볼 것 같다.\n그래도 나는....", a: ["생각 안 하고 그냥 해준다", "하면서도 계속 찜찜하다", "돌려서 어렵다고 말해본다", "그래도 솔직하게 거절한다"] },
+        { q: "한 번, 두 번, 세 번…\n같은 사람한테서 또 부탁이 왔다.\n나는...", a: ["계속 들어준다", "점점 피한다", "한번 말해본다", "선을 명확히 긋는다"] },
+        { q: "두 시간 넘게 도와줬는데\n상대는 '오케이~' 하고 대화를 끝냈다.\n나는....", a: ["괜찮다", "살짝 서운하다", "다음부터 거리 둔다", "다음엔 기준을 정한다"] },
+        { q: "나한테만 유독 자주 부탁하는 사람이 있다.\n근데 나도 그걸 알고 있다.\n그때 나는...", a: ["그냥 계속 해준다", "부담되지만 말은 못 하고 도와준다", "\"왜 나한테만 해?\" 하고 물어본다", "“이건 여기까지만 가능해” 라고 기준을 정한다"] },
+        { q: "비슷한 부탁이 또 왔다.\n이미 여러 번 해줬던 일인데...\n그때 내가 먼저 꺼낸 말은?", a: ["\"어… 이번엔 좀 어려울 것 같아\"", "\"해줄게, 근데 이번이 마지막이야\"", "“이건 네가 먼저 해보고, 그 다음은 내가 봐줄게”", "“앞으로 이건 네가 맡는 걸로 하자”"] },
+        { q: "항상 도와주던 내가 처음으로 부탁을 했다.\n근데 상대가 '나 요즘 좀 바빠서…' 했다.\n그때 나는....", a: ["\"아 괜찮아~ 됐어\" 하고 넘어간다", "서운하지만 그냥 이해하려고 한다", "\"나는 항상 도와줬는데\" 하고 한마디 한다", "“그때부터 나도 기준을 두기 시작한다”"] }
+    ];
+
+    const results = {
+        angel: {
+            name: "아낌없이 주는 천사형",
+            desc: "주변 사람들의 부탁을 거절하는 것보다 도와주는 것에서 더 큰 편안함을 느끼는 타입이에요. 따뜻한 마음씨를 가졌지만, 정작 본인의 에너지가 소진되는 것은 모르고 있을 때가 많아요.",
+            strength: "타인의 감정을 깊이 공감하고, 공동체의 화합을 이끌어내는 압도적인 선한 영향력.",
+            risk: "타인의 부탁을 거절하지 못해 정작 내 삶의 우선순위가 뒤로 밀리고 이용당하기 쉬움.",
+            advice: "거절은 상대방을 싫어하는 것이 아니라, 나를 지키는 최소한의 장치임을 기억하세요."
+        },
+        diplomat: {
+            name: "눈치 빠른 프로 외교관",
+            desc: "상대방의 의도를 빠르게 파악하고 적절한 거리를 유지하려 노력하는 타입이에요. 하지만 좋은 관계를 깨고 싶지 않아 은근히 많은 짐을 짊어지고 있네요.",
+            strength: "갈등을 최소화하면서도 타인의 필요를 채워주는 유연한 대인관계 능력.",
+            risk: "속으로는 '이건 아닌데' 싶으면서도 겉으로는 웃으며 응해주다 뒤늦게 혼자 스트레스 받음.",
+            advice: "애매한 대답보다는 정중하고 명확한 의사표현이 장기적으로 더 좋은 관계를 만듭니다."
+        },
+        architect: {
+            name: "효율적인 관계 설계자",
+            desc: "무작정 돕기보다는 상황의 효율과 공정함을 먼저 생각하는 타입이에요. 기브앤테이크가 확실하며, 감정 소모를 줄이는 합리적인 선택을 선호합니다.",
+            strength: "불필요한 감정 소모가 적고, 본인의 리소스를 관리하며 타인을 돕는 건강한 독립성.",
+            risk: "때로는 너무 계산적으로 보이거나, 차가운 인상을 주어 깊은 정서적 유대를 놓칠 수 있음.",
+            advice: "가끔은 효율을 따지지 않는 작은 친절이 예상치 못한 큰 행복으로 돌아오기도 합니다."
+        },
+        guardian: {
+            name: "단단한 경계의 수호자",
+            desc: "나의 영역과 타인의 영역을 명확히 구분할 줄 아는 건강한 자아를 가졌어요. 신뢰할 수 있는 사람에게만 에너지를 집중하며, 선을 넘는 행위엔 단호합니다.",
+            strength: "자기 주도적인 삶을 살며, 타인에게 휘둘리지 않고 본인의 가치를 지켜내는 힘.",
+            risk: "새로운 관계에 대해 다소 폐쇄적일 수 있으며, 의도치 않게 주변에 벽을 칠 수 있음.",
+            advice: "당신의 선은 충분히 단단하니, 조금은 마음의 문을 열고 타인의 호의를 받아들여 보세요."
+        },
+        burnout: {
+            name: "지친 아낌없이 주는 나무",
+            desc: "오랫동안 너무 많은 것을 내어주어 현재 심리적 에너지가 바닥난 상태일 확률이 높아요. 보답 없는 배려에 상처를 입고 회의감을 느끼고 계시군요.",
+            strength: "누구보다 헌신적이었고, 타인을 위해 자신을 희생할 줄 아았던 숭고한 배려심.",
+            risk: "작은 부탁에도 예민해지거나 사람 자체를 피하게 되는 고립의 위험성.",
+            advice: "지금 당장 모든 도움을 멈추고 '나'를 위한 시간만 가지세요. 당신은 쉴 자격이 충분합니다."
+        },
+        blocker: {
+            name: "철벽 방어 현실주의자",
+            desc: "상처받는 것이 두려워 애초에 깊은 관계나 부탁을 차단하려는 경향이 있어요. 과거의 경험으로 인해 타인의 호의도 의심부터 하게 된 상태일 수 있습니다.",
+            strength: "불필요한 관계에 얽매이지 않고 실속을 챙기며, 자신을 보호하는 방어 기제.",
+            risk: "정말 도움이 필요한 순간에 주변에 사람이 없을 수 있다는 소외의 불안감.",
+            advice: "모든 사람이 당신을 이용하려는 건 아니에요. 아주 작은 것부터 신뢰를 쌓아보세요."
+        },
+        mixed: {
+            name: "유연한 현실주의 밸런서",
+            desc: "상황과 사람에 따라 유동적으로 반응하는 타입이에요. 큰 문제는 없지만, 때때로 일관성 없는 기준 때문에 스스로 혼란을 겪기도 합니다.",
+            strength: "어떤 상황에서도 적응을 잘하며, 극단에 치우치지 않는 중용의 태도.",
+            risk: "확실한 자기 기준(철학)이 부족해 결정적인 순간에 선택 장애를 겪을 수 있음.",
+            advice: "나만의 'GIVE 가이드라인'을 세워둔다면 훨씬 더 명확하고 편안한 인간관계가 가능해집니다."
+        }
+    };
+
+    let currentIdx = 0;
+    let scores = { G: 0, I: 0, V: 0, E: 0 };
+
+    function startQuiz() {
+        document.getElementById('page-intro').classList.add('hidden');
+        document.getElementById('page-quiz').classList.remove('hidden');
+        document.getElementById('page-quiz').classList.add('active');
+        document.getElementById('progressWrap').classList.remove('hidden');
+        showQuestion();
+    }
+
+    function showQuestion() {
+        const q = questions[currentIdx];
+        document.getElementById('questionNum').innerText = `${currentIdx + 1} / 16`;
+        document.getElementById('questionText').innerText = q.q;
+        
+        const answerList = document.getElementById('answerList');
+        answerList.innerHTML = '';
+        
+        q.a.forEach((ans, i) => {
+            const btn = document.createElement('button');
+            btn.className = 'answer-btn fade-in';
+            btn.innerText = ans;
+            btn.onclick = () => selectAnswer(i + 1);
+            answerList.appendChild(btn);
+        });
+
+        const progress = ((currentIdx + 1) / 16) * 100;
+        document.getElementById('progressBar').style.width = `${progress}%`;
+        window.scrollTo(0, 0);
+    }
+
+    function selectAnswer(score) {
+        if (currentIdx < 4) scores.G += score;
+        else if (currentIdx < 8) scores.I += score;
+        else if (currentIdx < 12) scores.V += score;
+        else scores.E += score;
+
+        currentIdx++;
+        if (currentIdx < 16) {
+            showQuestion();
+        } else {
+            showStoryPage();
+        }
+    }
+
+    function showStoryPage() {
+        document.getElementById('page-quiz').classList.add('hidden');
+        document.getElementById('progressWrap').classList.add('hidden');
+        document.getElementById('page-story').classList.remove('hidden');
+        document.getElementById('page-story').classList.add('active');
+        window.scrollTo(0, 0);
+    }
+
+    function showLoading() {
+        document.getElementById('page-story').classList.add('hidden');
+        document.getElementById('page-loading').classList.remove('hidden');
+        document.getElementById('page-loading').classList.add('active');
+        
+        setTimeout(calculateResult, 2000);
+    }
+
+    function calculateResult() {
+        const { G, I, V, E } = scores;
+        let finalType = 'mixed';
+
+        if (G >= 13 && V <= 8) finalType = 'burnout';
+        else if (G >= 12 && V <= 8 && E <= 8) finalType = 'angel';
+        else if (G >= 12 && I >= 12 && V <= 8) finalType = 'diplomat';
+        else if (G <= 8 && V >= 12 && I >= 12) finalType = 'blocker';
+        else if (G >= 11 && I >= 11 && V >= 11 && E >= 11) finalType = 'guardian';
+        else if (E >= 12 && Math.abs(G - V) <= 3) finalType = 'architect';
+        else finalType = 'mixed';
+
+        const resultData = results[finalType];
+        
+        document.getElementById('typeName').innerText = resultData.name;
+        document.getElementById('typeDesc').innerText = resultData.desc;
+        document.getElementById('typeStrength').innerText = resultData.strength;
+        document.getElementById('typeRisk').innerText = resultData.risk;
+        document.getElementById('typeAdvice').innerText = resultData.advice;
+
+        document.getElementById('page-loading').classList.add('hidden');
+        document.getElementById('page-result').classList.remove('hidden');
+        document.getElementById('page-result').classList.add('active');
+        window.scrollTo(0, 0);
+    }
+
+    function copyLink() {
+        const url = window.location.href;
+        navigator.clipboard.writeText(url).then(() => {
+            alert('링크가 복사되었습니다!');
+        }).catch(err => {
+            const input = document.createElement('input');
+            input.value = url;
+            document.body.appendChild(input);
+            input.select();
+            document.execCommand('copy');
+            document.body.removeChild(input);
+            alert('링크가 복사되었습니다!');
+        });
+    }
+</script>
+
+</body>
+</html>

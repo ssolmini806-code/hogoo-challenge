@@ -1,13 +1,181 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GIVE Ecosystem | 심리 테스트 포털</title>
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
-    <title>호구 탈출 챌린지</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/main.jsx"></script>
-  </body>
+    <style>
+        :root {
+            --primary-color: #00a885;
+            --secondary-color: #f97316;
+            --bg-color: #f8f9fa;
+            --white: #ffffff;
+            --text-dark: #212529;
+            --text-gray: #6c757d;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--white);
+            padding: 2.5rem 1rem;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-weight: 800;
+        }
+
+        header p {
+            color: var(--text-gray);
+            font-size: 1.1rem;
+        }
+
+        .main-container {
+            max-width: 800px;
+            margin: 2.5rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.8rem;
+            font-weight: 800;
+        }
+
+        .test-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        @media (min-width: 600px) {
+            .test-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .test-card {
+            background: var(--white);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 12px 24px rgba(0,0,0,0.06);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: inherit;
+            border: 1px solid transparent;
+        }
+
+        .test-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 30px rgba(0,0,0,0.1);
+            border-color: var(--primary-color);
+        }
+
+        .test-card.hogoo:hover {
+            border-color: var(--secondary-color);
+        }
+
+        .test-img {
+            width: 100%;
+            height: 180px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 4rem;
+        }
+
+        .test-info {
+            padding: 1.8rem;
+        }
+
+        .test-tag {
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .test-title {
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin-bottom: 0.8rem;
+            word-break: keep-all;
+            line-height: 1.4;
+        }
+
+        .test-desc {
+            font-size: 1rem;
+            color: var(--text-gray);
+            word-break: keep-all;
+        }
+
+        footer {
+            text-align: center;
+            padding: 4rem 1rem;
+            color: var(--text-gray);
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>GIVE Ecosystem</h1>
+    <p>나를 발견하고 타인과 연결되는 새로운 방식</p>
+</header>
+
+<div class="main-container">
+    <h2 class="section-title">진행 중인 테스트 & 챌린지</h2>
+    
+    <div class="test-grid">
+        <!-- GIVE ID Test Card -->
+        <a href="give-test.html" class="test-card">
+            <div class="test-img" style="background: linear-gradient(135deg, #00a885, #00d1a0);">🤝</div>
+            <div class="test-info">
+                <span class="test-tag" style="background: #e6f6f3; color: #00a885;">PERSONALITY TEST</span>
+                <h3 class="test-title">나는 왜 항상 주기만 할까?<br>(GIVE ID 진단)</h3>
+                <p class="test-desc">3분 만에 알아보는 나의 기버 성향과 관계 전략을 확인해보세요.</p>
+            </div>
+        </a>
+
+        <!-- Hogoo Challenge Card -->
+        <a href="hogoo-test.html" class="test-card hogoo">
+            <div class="test-img" style="background: linear-gradient(135deg, #f97316, #fb923c);">🔥</div>
+            <div class="test-info">
+                <span class="test-tag" style="background: #fff4ed; color: #f97316;">7-DAY CHALLENGE</span>
+                <h3 class="test-title">호구 탈출 7일 챌린지</h3>
+                <p class="test-desc">반복되는 관계의 굴레를 끊고 단단한 나를 만드는 실전 연습 프로그램</p>
+            </div>
+        </a>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2026 GIVE Ecosystem. 모든 여정은 당신으로부터 시작됩니다.</p>
+</footer>
+
+</body>
 </html>

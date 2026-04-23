@@ -65,7 +65,8 @@ export default function App() {
       background: "#1a1614", 
       minHeight: "100vh", 
       padding: "0",
-      letterSpacing: "-0.02em"
+      letterSpacing: "-0.02em",
+      color: "#f5ede3"
     }}>
       <style>{`
         * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
@@ -111,7 +112,6 @@ export default function App() {
               const score = getDayScore(i);
               const isActive = i === currentDay;
               const isDone = (missions[`${i}`] || []).length === 3;
-              const dayColor = COLOR_MAP[d.color];
               const hexColor = {
                 amber: "#f59e0b", orange: "#f97316", red: "#ef4444", green: "#10b981", teal: "#14b8a6", purple: "#a855f7", blue: "#3b82f6"
               }[d.color];
@@ -327,7 +327,7 @@ export default function App() {
         </div>
 
         {/* Day Navigation */}
-        <div style={{ display: "flex", gap: 12 }}>
+        <div style={{ display: "flex", gap: 12, marginBottom: 20 }}>
           {currentDay > 0 && (
             <button
               onClick={() => setCurrentDay(d => d - 1)}
@@ -357,18 +357,20 @@ export default function App() {
               {!allMissionsDone && <ChevronRight size={16} />}
             </button>
           )}
-          {currentDay === 6 && allMissionsDone && (
-            <div style={{
-              flex: 1, background: "#1e2e22", border: "1px solid #2d4a35",
-              borderRadius: 10, padding: "14px", color: "#7cc88a",
-              display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
-              fontSize: 14, fontWeight: "bold"
-            }}>
-              🎉 7일 챌린지 완주! 총 {totalScore}점
-            </div>
-          )}
         </div>
+        
+        {/* Back to Portal */}
+        <button 
+          onClick={() => window.location.href = 'index.html'}
+          style={{
+            width: "100%", background: "transparent", border: "1px solid #3a3530",
+            borderRadius: 10, padding: "14px", color: "#8a7f75",
+            cursor: "pointer", fontSize: 14, fontWeight: 500
+          }}
+        >
+          ← 다른 테스트 보러가기 (메인으로)
+        </button>
       </div>
     </div>
   );
-}// Redeploy trigger
+}
