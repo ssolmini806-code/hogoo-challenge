@@ -1,184 +1,330 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GIVE Ecosystem | 나를 알고 관계를 디자인하다</title>
-    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
-    <style>
-        :root {
-            --primary: #00a885;
-            --bg-gray: #f2f2f7;
-            --text-black: #1a1a1a;
-            --text-gray: #666666;
-            --white: #ffffff;
-            --radius: 20px;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GIVE Ecosystem | 나를 알고 관계를 디자인하다</title>
+<meta name="description" content="자신의 것을 나눌 수 있는 사람들이 세상을 더 좋게 만듭니다. 기버가 지치지 않도록, 건강한 경계를 설계하는 GIVE Ecosystem.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; word-break: keep-all; }
-        body { font-family: 'Pretendard', sans-serif; background: var(--white); color: var(--text-black); -webkit-font-smoothing: antialiased; }
+  :root {
+    --bg: #ffffff;
+    --bg2: #f8faf9;
+    --bg3: #f0f7f5;
+    --border: #e2e8e5;
+    --border2: #d1dbd6;
+    --text: #1a1a1a;
+    --text2: #4a5550;
+    --text3: #7d8c85;
+    --primary: #00a885;
+    --primary-light: #00c99e;
+    --primary-bg: #e6f6f3;
+    --secondary: #f97316;
+    --serif: 'Noto Serif KR', Georgia, serif;
+    --sans: 'Noto Sans KR', sans-serif;
+  }
 
-        /* Header (Qshop Style) */
-        header {
-            position: sticky; top: 0; height: 60px; background: var(--white);
-            display: flex; justify-content: center; align-items: center;
-            border-bottom: 1px solid #f0f0f0; z-index: 1000;
-        }
-        .logo { font-size: 1.1rem; font-weight: 800; letter-spacing: -0.02em; color: var(--text-black); text-decoration: none; }
+  html { scroll-behavior: smooth; }
 
-        /* Hero Banner (Qshop Main Banner) */
-        .hero-banner {
-            position: relative; width: 100%; height: 500px;
-            background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=2000') center/cover;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            color: var(--white); text-align: center; padding: 0 20px;
-        }
-        .hero-banner h1 { font-size: 2.5rem; font-weight: 800; line-height: 1.2; margin-bottom: 15px; text-shadow: 0 2px 10px rgba(0,0,0,0.2); }
-        .hero-banner p { font-size: 1.1rem; opacity: 0.9; margin-bottom: 30px; }
-        .btn-main { background: var(--primary); color: var(--white); padding: 12px 30px; border-radius: 30px; text-decoration: none; font-weight: 700; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
 
-        /* Icon Menu (Quick Links) */
-        .icon-nav {
-            display: flex; justify-content: center; gap: 30px; padding: 40px 20px;
-            overflow-x: auto; -ms-overflow-style: none; scrollbar-width: none;
-        }
-        .icon-nav::-webkit-scrollbar { display: none; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; text-decoration: none; min-width: 70px; }
-        .icon-circle {
-            width: 60px; height: 60px; border-radius: 50%; background: var(--bg-gray);
-            display: flex; justify-content: center; align-items: center; font-size: 1.5rem;
-            margin-bottom: 10px; transition: 0.3s;
-        }
-        .nav-item:hover .icon-circle { background: var(--primary); color: white; transform: translateY(-5px); }
-        .nav-item span { font-size: 0.85rem; font-weight: 600; color: var(--text-black); }
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 72px;
+  }
 
-        /* Product Section (The Core Skeleton) */
-        .section-wrap { padding: 40px 20px; max-width: 1000px; margin: 0 auto; }
-        .section-title { font-size: 1.4rem; font-weight: 800; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; }
-        .section-title a { font-size: 0.85rem; color: var(--text-gray); text-decoration: none; }
+  .nav-logo {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: var(--text);
+    text-decoration: none;
+  }
 
-        .item-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
-        @media (min-width: 768px) { .item-grid { grid-template-columns: 1fr 1fr; } }
+  .nav-logo span { color: var(--primary); }
 
-        .item-card {
-            background: var(--white); border-radius: var(--radius); overflow: hidden;
-            text-decoration: none; color: inherit; border: 1px solid #f0f0f0;
-            transition: 0.3s;
-        }
-        .item-card:hover { border-color: var(--primary); transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
-        .item-img { width: 100%; height: 200px; background: var(--bg-gray); display: flex; justify-content: center; align-items: center; font-size: 3rem; }
-        .item-info { padding: 20px; }
-        .item-tag { font-size: 0.75rem; color: var(--primary); font-weight: 700; margin-bottom: 5px; display: block; }
-        .item-name { font-size: 1.15rem; font-weight: 800; margin-bottom: 10px; line-height: 1.3; }
-        .item-price { font-size: 1.1rem; font-weight: 700; color: var(--text-black); }
-        .item-price span { font-size: 0.85rem; color: var(--text-gray); text-decoration: line-through; margin-right: 5px; font-weight: 400; }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a {
+    font-size: 14px; color: var(--text2); text-decoration: none;
+    transition: color 0.2s; font-weight: 500;
+  }
+  .nav-links a:hover { color: var(--primary); }
 
-        /* Content Banner (Long Image/Text Section) */
-        .content-banner {
-            width: 100%; background: #000; color: white; padding: 60px 20px;
-            display: flex; flex-direction: column; align-items: center; text-align: center;
-            margin: 40px 0;
-        }
-        .content-banner h2 { font-size: 1.8rem; margin-bottom: 15px; }
-        .content-banner p { font-size: 1rem; opacity: 0.8; max-width: 600px; margin-bottom: 30px; }
+  .nav-cta {
+    background: var(--primary); color: #fff; font-size: 13px;
+    font-weight: 700; padding: 10px 22px; border-radius: 50px;
+    text-decoration: none; transition: 0.3s;
+  }
+  .nav-cta:hover { background: var(--primary-light); transform: translateY(-2px); }
 
-        /* Footer */
-        footer { background: #fafafa; padding: 60px 20px; border-top: 1px solid #f0f0f0; }
-        .footer-content { max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px; }
-        .f-info h3 { font-size: 1rem; margin-bottom: 15px; }
-        .f-info p { font-size: 0.85rem; color: var(--text-gray); line-height: 1.8; }
-        .f-sns { display: flex; gap: 15px; }
-        .f-sns div { width: 36px; height: 36px; background: #eee; border-radius: 50%; }
+  /* HERO */
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center;
+    padding: 120px 24px 80px; position: relative; overflow: hidden;
+    background: radial-gradient(circle at 80% 20%, rgba(0, 168, 133, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 20% 80%, rgba(0, 168, 133, 0.05) 0%, transparent 50%);
+  }
 
-    </style>
+  .hero-slogan {
+    font-family: var(--serif); font-size: 16px; color: var(--primary);
+    font-weight: 600; margin-bottom: 24px; letter-spacing: 0.05em;
+    animation: fadeInDown 0.8s both;
+  }
+
+  .hero h1 {
+    font-family: var(--serif); font-size: clamp(32px, 7vw, 64px);
+    font-weight: 700; line-height: 1.25; letter-spacing: -1.5px;
+    color: var(--text); margin-bottom: 24px; animation: fadeInUp 0.8s 0.2s both;
+  }
+
+  .hero h1 em { font-style: normal; color: var(--primary); position: relative; }
+  .hero h1 em::after {
+    content: ''; position: absolute; bottom: 8px; left: 0; width: 100%; height: 12px;
+    background: rgba(0, 168, 133, 0.1); z-index: -1;
+  }
+
+  .hero-sub {
+    font-size: clamp(16px, 2.8vw, 21px); color: var(--text2);
+    margin-bottom: 48px; max-width: 600px; line-height: 1.7;
+    font-weight: 400; animation: fadeInUp 0.8s 0.4s both;
+  }
+
+  .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; animation: fadeInUp 0.8s 0.6s both; }
+
+  .btn-primary {
+    background: var(--primary); color: #fff; font-size: 16px;
+    font-weight: 700; padding: 18px 42px; border-radius: 12px;
+    text-decoration: none; transition: 0.3s;
+  }
+  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(0, 168, 133, 0.2); }
+
+  .btn-secondary {
+    background: var(--white); color: var(--text2); font-size: 16px;
+    font-weight: 600; padding: 18px 42px; border-radius: 12px;
+    text-decoration: none; border: 1px solid var(--border2); transition: 0.3s;
+  }
+  .btn-secondary:hover { background: var(--bg2); color: var(--text); }
+
+  /* SECTION SHARED */
+  section { padding: 120px 24px; }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .section-label { font-size: 12px; letter-spacing: 3px; color: var(--primary); font-weight: 700; text-transform: uppercase; margin-bottom: 16px; display: block; }
+  .section-title { font-family: var(--serif); font-size: clamp(28px, 4.5vw, 42px); font-weight: 700; line-height: 1.3; margin-bottom: 20px; }
+  .divider { width: 50px; height: 3px; background: var(--primary); margin-bottom: 32px; }
+
+  /* SERVICES (Qshop Style Cards) */
+  .services { background: var(--bg2); }
+  .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 32px; }
+
+  .service-card {
+    background: var(--white); border-radius: 24px; padding: 50px;
+    border: 1px solid var(--border); transition: 0.4s; text-decoration: none;
+    display: flex; flex-direction: column; position: relative;
+  }
+  .service-card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.05); border-color: var(--primary); }
+
+  .service-icon { font-size: 42px; margin-bottom: 24px; }
+  .service-title { font-family: var(--serif); font-size: 24px; font-weight: 700; color: var(--text); margin-bottom: 16px; }
+  .service-desc { font-size: 15px; color: var(--text2); margin-bottom: 32px; }
+  
+  .price-tag { 
+    position: absolute; top: 50px; right: 50px; text-align: right;
+  }
+  .price-old { font-size: 13px; color: var(--text3); text-decoration: line-through; display: block; }
+  .price-now { font-size: 20px; font-weight: 800; color: var(--primary); }
+
+  /* WHY SECTION */
+  .why-inner { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 80px; align-items: center; }
+  .why-points { margin-top: 40px; }
+  .why-point { display: flex; gap: 24px; margin-bottom: 40px; }
+  .why-point i { font-style: normal; font-weight: 800; color: var(--primary); font-size: 18px; }
+  .why-point h4 { font-size: 18px; margin-bottom: 8px; }
+  .why-point p { font-size: 15px; color: var(--text2); }
+
+  .visual-card { 
+    background: var(--primary); color: #fff; padding: 60px 40px; border-radius: 30px;
+    display: flex; flex-direction: column; gap: 40px;
+  }
+  .stat-item { border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 30px; }
+  .stat-item:last-child { border-bottom: none; }
+  .stat-num { font-size: 48px; font-weight: 800; font-family: var(--serif); }
+  .stat-text { font-size: 15px; opacity: 0.9; }
+
+  /* FOOTER */
+  footer { background: var(--text); color: #fff; padding: 80px 24px; }
+  .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 50px; }
+  .f-logo { font-family: var(--serif); font-size: 20px; font-weight: 800; margin-bottom: 20px; display: block; }
+  .f-logo span { color: var(--primary); }
+  .f-info { font-size: 13px; color: #aaa; line-height: 2; }
+  .f-links { list-style: none; display: flex; gap: 30px; }
+  .f-links a { color: #fff; text-decoration: none; font-size: 14px; opacity: 0.7; transition: 0.3s; }
+  .f-links a:hover { opacity: 1; color: var(--primary); }
+
+  @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+
+  @media (max-width: 850px) {
+    .why-inner { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .services-grid { grid-template-columns: 1fr; }
+    .service-card { padding: 40px 30px; }
+  }
+
+  .fade-up { opacity: 0; transform: translateY(30px); transition: 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+</style>
 </head>
 <body>
 
-    <header>
-        <a href="index.html" class="logo">GIVE ECOSYSTEM</a>
-    </header>
+<nav>
+  <a href="/" class="nav-logo">GIVE <span>Ecosystem</span></a>
+  <ul class="nav-links">
+    <li><a href="give-test.html">기버 진단</a></li>
+    <li><a href="hogoo-test.html">7일 챌린지</a></li>
+    <li><a href="#why">브랜드 스토리</a></li>
+    <li><a href="#contact">문의하기</a></li>
+  </ul>
+  <a href="give-test.html" class="nav-cta">무료 진단하기</a>
+</nav>
 
-    <main>
-        <!-- 1. Main Banner -->
-        <div class="hero-banner">
-            <h1>GIVE ID TEST</h1>
-            <p>당신의 기버 아이덴티티는 어떤 모습인가요?</p>
-            <a href="give-test.html" class="btn-main">지금 무료 진단하기</a>
+<section class="hero">
+  <div class="hero-slogan">"자신의 것을 나눌 수 있는 사람들이 세상을 더 좋게 만든다"</div>
+  <h1>세상이 널 이용해왔지만,<br><em>더 이상은 이용하지 못하도록</em></h1>
+  <p class="hero-sub">당신의 선함은 약점이 아니라 가장 강력한 자산입니다.<br>기버가 지치지 않고 오래 줄 수 있는 단단한 토양을 만듭니다.</p>
+  <div class="hero-actions">
+    <a href="give-test.html" class="btn-primary">GIVE ID 무료 진단하기</a>
+    <a href="hogoo-test.html" class="btn-secondary">7일 챌린지 신청하기</a>
+  </div>
+</section>
+
+<section class="services">
+  <div class="container">
+    <div style="text-align: center; margin-bottom: 70px;" class="fade-up">
+      <span class="section-label">Our Core Solutions</span>
+      <h2 class="section-title">진단하고, 훈련하세요</h2>
+      <div class="divider" style="margin: 0 auto;"></div>
+    </div>
+
+    <div class="services-grid">
+      <a href="give-test.html" class="service-card fade-up">
+        <div class="price-tag">
+          <span class="price-old">29,000원</span>
+          <span class="price-now">무 료</span>
         </div>
+        <div class="service-icon">🤝</div>
+        <h3 class="service-title">GIVE ID 진단</h3>
+        <p class="service-desc">왜 항상 주기만 했을까요? 16개 문항을 통해 당신의 기버 아이덴티티를 4가지 유형으로 분석하고 맞춤 방어 전략을 제공합니다.</p>
+        <div style="color: var(--primary); font-weight: 800; font-size: 14px;">3분 만에 확인하기 →</div>
+      </a>
 
-        <!-- 2. Quick Links Icons -->
-        <div class="icon-nav">
-            <a href="give-test.html" class="nav-item">
-                <div class="icon-circle">🔬</div>
-                <span>기버진단</span>
-            </a>
-            <a href="hogoo-test.html" class="nav-item">
-                <div class="icon-circle">🔥</div>
-                <span>7일챌린지</span>
-            </a>
-            <a href="#" class="nav-item">
-                <div class="icon-circle">📚</div>
-                <span>연구소소개</span>
-            </a>
-            <a href="#" class="nav-item">
-                <div class="icon-circle">💬</div>
-                <span>상담문의</span>
-            </a>
+      <a href="hogoo-test.html" class="service-card fade-up">
+        <div class="price-tag">
+          <span class="price-now">OPEN</span>
         </div>
+        <div class="service-icon">🔥</div>
+        <h3 class="service-title">호구 탈출 7일 챌린지</h3>
+        <p class="service-desc">읽는 것만으론 바뀌지 않습니다. 매일 3개씩, 7일 동안 행동을 직접 교정하며 건강한 경계를 세우는 법을 체득합니다.</p>
+        <div style="color: var(--primary); font-weight: 800; font-size: 14px;">훈련 시작하기 →</div>
+      </a>
+    </div>
+  </div>
+</section>
 
-        <!-- 3. All Services Section -->
-        <div class="section-wrap">
-            <div class="section-title">
-                모든 서비스
-                <a href="#">더보기 ></a>
+<section id="why">
+  <div class="container">
+    <div class="why-inner">
+      <div class="why-text fade-up">
+        <span class="section-label">Brand Mission</span>
+        <h2 class="section-title">기버를 위한<br>안전한 생태계</h2>
+        <div class="divider"></div>
+        <p style="color: var(--text2); font-size: 17px; margin-bottom: 40px;">우리는 착함을 없애라고 말하지 않습니다.<br>다만 그 착함이 올바른 곳에 쓰이도록 돕습니다.</p>
+        
+        <div class="why-points">
+          <div class="why-point">
+            <i>01</i>
+            <div>
+              <h4>패턴의 발견</h4>
+              <p>무의식적으로 반복되는 '자동 수락'의 루프를 찾아내어 멈추는 법을 익힙니다.</p>
             </div>
-            <div class="item-grid">
-                <a href="give-test.html" class="item-card">
-                    <div class="item-img" style="background: #e6f6f3;">🤝</div>
-                    <div class="item-info">
-                        <span class="item-tag">BEST</span>
-                        <h3 class="item-name">GIVE ID 진단 - 나의 관계 성향을 찾아서</h3>
-                        <div class="item-price"><span>29,000원</span> 무 료</div>
-                    </div>
-                </a>
-                <a href="hogoo-test.html" class="item-card">
-                    <div class="item-img" style="background: #fff4ed;">🧗</div>
-                    <div class="item-info">
-                        <span class="item-tag">HOT</span>
-                        <h3 class="item-name">호구 탈출 챌린지 - 7일 실전 행동 교정</h3>
-                        <div class="item-price">무 료</div>
-                    </div>
-                </a>
+          </div>
+          <div class="why-point">
+            <i>02</i>
+            <div>
+              <h4>경계의 설계</h4>
+              <p>나를 보호하면서도 상대의 기분을 상하지 않게 하는 '세련된 거절'의 기술을 배웁니다.</p>
             </div>
+          </div>
+          <div class="why-point">
+            <i>03</i>
+            <div>
+              <h4>시스템 정착</h4>
+              <p>7일이 지난 후에도 나를 지켜낼 수 있는 나만의 '관계 가이드라인'을 문서화합니다.</p>
+            </div>
+          </div>
         </div>
+      </div>
 
-        <!-- 4. Middle Content Banner -->
-        <div class="content-banner" style="background: var(--primary);">
-            <h2>Why GIVE Ecosystem?</h2>
-            <p>우리는 기버(Giver)가 세상을 바꾼다고 믿습니다. 하지만 그 기버가 지쳐 쓰러진다면 세상은 더 이상 따뜻해질 수 없습니다. 당신을 지키는 힘, 우리가 함께 만듭니다.</p>
-            <a href="#" class="btn-main" style="background: white; color: var(--primary);">더 알아보기</a>
+      <div class="visual-card fade-up">
+        <div class="stat-item">
+          <div class="stat-num">12.4k</div>
+          <div class="stat-text">누적 진단 수</div>
         </div>
-    </main>
+        <div class="stat-item">
+          <div class="stat-num">98%</div>
+          <div class="stat-text">프로그램 만족도</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">7일</div>
+          <div class="stat-text">행동이 바뀌는 최소 시간</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- 5. Footer -->
-    <footer>
-        <div class="footer-content">
-            <div class="f-info">
-                <h3>GIVE Ecosystem (기버 생태계 연구소)</h3>
-                <p>
-                    대표: ssolmini806 | 사업자번호: 준비중<br>
-                    주소: 대한민국 어딘가 | 이메일: ssolmini806@gmail.com<br>
-                    고객센터: 010-0000-0000 (평일 10:00 - 18:00)
-                </p>
-            </div>
-            <div class="f-sns">
-                <div style="background: #eee; width: 36px; height: 36px; border-radius: 50%;"></div>
-                <div style="background: #eee; width: 36px; height: 36px; border-radius: 50%;"></div>
-                <div style="background: #eee; width: 36px; height: 36px; border-radius: 50%;"></div>
-            </div>
-            <p style="font-size: 0.8rem; color: #ccc;">&copy; 2026 GIVE Ecosystem. All rights reserved.</p>
-        </div>
-    </footer>
+<footer>
+  <div class="footer-inner">
+    <div>
+      <a href="/" class="f-logo">GIVE <span>Ecosystem</span></a>
+      <div class="f-info">
+        대표: ssolmini806 | 이메일: ssolmini806@gmail.com<br>
+        모든 변화는 스스로에 대한 이해로부터 시작됩니다.
+      </div>
+    </div>
+    <ul class="f-links">
+      <li><a href="give-test.html">기버 진단</a></li>
+      <li><a href="hogoo-test.html">7일 챌린지</a></li>
+      <li><a href="#why">브랜드 스토리</a></li>
+    </ul>
+  </div>
+  <div style="max-width: 1100px; margin: 40px auto 0; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 12px; color: #666; text-align: center;">
+    &copy; 2026 GIVE Ecosystem. All rights reserved.
+  </div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
 
 </body>
 </html>
