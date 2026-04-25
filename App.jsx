@@ -1,6 +1,8 @@
-import { useState } from "react";
-import { CheckCircle, Circle, ChevronRight, ChevronLeft, Award, Flame, Copy, Check } from "lucide-react";
+import { useState, useEffect } from "react";
+import { CheckCircle, Circle, ChevronRight, ChevronLeft, Award, Flame, Copy, Check, LogOut } from "lucide-react";
 import DAYS from "./days";
+import { supabase } from "./supabase";
+import Auth from "./components/Auth";
 
 const COLOR_MAP = {
   amber: { bg: "bg-amber-50", accent: "bg-amber-500", text: "text-amber-700", border: "border-amber-200", light: "bg-amber-100", badge: "bg-amber-500" },
@@ -13,6 +15,7 @@ const COLOR_MAP = {
 };
 
 export default function App() {
+  const [session, setSession] = useState(null);
   const [currentDay, setCurrentDay] = useState(0);
   const [missions, setMissions] = useState({});
   const [selectedPhrase, setSelectedPhrase] = useState({});
@@ -20,31 +23,131 @@ export default function App() {
   const [anxiety, setAnxiety] = useState({});
   const [guilt, setGuilt] = useState({});
   const [copied, setCopied] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  // Auth session listener
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+  }, []);
+
+  // Fetch data when session or currentDay changes
+  useEffect(() => {
+    if (session) {
+      fetchProgress();
+    } else {
+      setLoading(false);
+    }
+  }, [session]);
+
+  const fetchProgress = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('user_progress')
+        .select('*')
+        .eq('user_id', session.user.id);
+
+      if (error) throw error;
+
+      if (data) {
+        const missionsObj = {};
+        const phrasesObj = {};
+        const notesObj = {};
+        const anxietyObj = {};
+        const guiltObj = {};
+
+        data.forEach(item => {
+          missionsObj[item.day_index] = item.missions;
+          phrasesObj[item.day_index] = item.selected_phrase;
+          notesObj[item.day_index] = item.note;
+          anxietyObj[item.day_index] = item.anxiety;
+          guiltObj[item.day_index] = item.guilt;
+        });
+
+        setMissions(missionsObj);
+        setSelectedPhrase(phrasesObj);
+        setNotes(notesObj);
+        setAnxiety(anxietyObj);
+        setGuilt(guiltObj);
+      }
+    } catch (error) {
+      console.error('Error fetching progress:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const saveProgress = async (dayIdx, updates) => {
+    if (!session) return;
+
+    try {
+      const { error } = await supabase
+        .from('user_progress')
+        .upsert({
+          user_id: session.user.id,
+          day_index: dayIdx,
+          ...updates,
+          updated_at: new Date().toISOString(),
+        }, { onConflict: 'user_id, day_index' });
+
+      if (error) throw error;
+    } catch (error) {
+      console.error('Error saving progress:', error);
+    }
+  };
 
   const day = DAYS[currentDay];
-  const c = COLOR_MAP[day.color];
-
+  
   const toggleMission = (dayIdx, mIdx) => {
     setMissions(prev => {
       const key = `${dayIdx}`;
       const arr = prev[key] || [];
-      return { ...prev, [key]: arr.includes(mIdx) ? arr.filter(i => i !== mIdx) : [...arr, mIdx] };
+      const newArr = arr.includes(mIdx) ? arr.filter(i => i !== mIdx) : [...arr, mIdx];
+      saveProgress(dayIdx, { missions: newArr });
+      return { ...prev, [key]: newArr };
+    });
+  };
+
+  const updateField = (dayIdx, field, value) => {
+    const setters = {
+      note: setNotes,
+      phrase: setSelectedPhrase,
+      anxiety: setAnxiety,
+      guilt: setGuilt
+    };
+    
+    setters[field](prev => {
+      const newObj = { ...prev, [`${dayIdx}`]: value };
+      const dbField = field === 'phrase' ? 'selected_phrase' : field;
+      saveProgress(dayIdx, { [dbField]: value });
+      return newObj;
     });
   };
 
   const getDayScore = (dayIdx) => {
     const m = (missions[`${dayIdx}`] || []).length;
-    const p = selectedPhrase[`${dayIdx}`] !== undefined ? 1 : 0;
+    const p = selectedPhrase[`${dayIdx}`] !== undefined && selectedPhrase[`${dayIdx}`] !== null ? 1 : 0;
     return m * 2 + p;
   };
 
   const totalScore = DAYS.reduce((sum, _, i) => sum + getDayScore(i), 0);
-  const completedMissions = Object.values(missions).reduce((sum, arr) => sum + arr.length, 0);
+  const completedMissions = Object.values(missions).reduce((sum, arr) => sum + (arr ? arr.length : 0), 0);
   const dayMissions = missions[`${currentDay}`] || [];
   const allMissionsDone = dayMissions.length === 3;
 
+  const isDayUnlocked = (dayIdx) => {
+    if (dayIdx === 0) return true;
+    const prevDayMissions = missions[`${dayIdx - 1}`] || [];
+    return prevDayMissions.length === 3;
+  };
+
   const getCertText = () => {
-    const phrase = selectedPhrase[`${currentDay}`] !== undefined
+    const phrase = (selectedPhrase[`${currentDay}`] !== undefined && selectedPhrase[`${currentDay}`] !== null)
       ? day.phrases[selectedPhrase[`${currentDay}`]]
       : "(오늘의 대사 선택 필요)";
     const noteText = notes[`${currentDay}`] || "(아직 작성 안 됨)";
@@ -58,6 +161,22 @@ export default function App() {
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
+
+  if (!session) {
+    return (
+      <div style={{ background: "#1a1614", minHeight: "100vh", color: "#f5ede3", display: 'flex', alignItems: 'center' }}>
+        <Auth />
+      </div>
+    );
+  }
+
+  if (loading) {
+    return (
+      <div style={{ background: "#1a1614", minHeight: "100vh", display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#8a7f75' }}>
+        불러오는 중...
+      </div>
+    );
+  }
 
   return (
     <div style={{ 
@@ -80,6 +199,7 @@ export default function App() {
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #3a3530; border-radius: 10px; }
+        .locked { opacity: 0.4; cursor: not-allowed !important; filter: grayscale(1); }
       `}</style>
 
       {/* Header */}
@@ -87,7 +207,15 @@ export default function App() {
         <div style={{ maxWidth: 680, margin: "0 auto" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
             <div>
-              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.2em", color: "#8a7f75", textTransform: "uppercase", marginBottom: 6 }}>7-Day Challenge</div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
+                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.2em", color: "#8a7f75", textTransform: "uppercase" }}>7-Day Challenge</div>
+                <button 
+                  onClick={() => supabase.auth.signOut()}
+                  style={{ background: 'none', border: 'none', color: '#5a5048', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4, fontSize: 11 }}
+                >
+                  <LogOut size={12} /> 로그아웃
+                </button>
+              </div>
               <h1 style={{ margin: 0, fontSize: 24, fontWeight: 800, color: "#f5ede3", letterSpacing: "-0.03em" }}>
                 호구 탈출 챌린지
               </h1>
@@ -112,6 +240,7 @@ export default function App() {
               const score = getDayScore(i);
               const isActive = i === currentDay;
               const isDone = (missions[`${i}`] || []).length === 3;
+              const unlocked = isDayUnlocked(i);
               const hexColor = {
                 amber: "#f59e0b", orange: "#f97316", red: "#ef4444", green: "#10b981", teal: "#14b8a6", purple: "#a855f7", blue: "#3b82f6"
               }[d.color];
@@ -119,10 +248,13 @@ export default function App() {
               return (
                 <button
                   key={i}
-                  className="day-btn"
-                  onClick={() => setCurrentDay(i)}
+                  className={`day-btn ${!unlocked && !isActive ? 'locked' : ''}`}
+                  onClick={() => {
+                    if (unlocked) setCurrentDay(i);
+                    else alert('이전 날짜의 미션을 모두 완료해야 합니다!');
+                  }}
                   style={{
-                    flex: 1, height: isActive ? 36 : 28, border: "none", cursor: "pointer",
+                    flex: 1, height: isActive ? 36 : 28, border: "none", cursor: unlocked ? "pointer" : "not-allowed",
                     borderRadius: 6, display: "flex", alignItems: "center", justifyContent: "center",
                     fontSize: isActive ? 13 : 11, fontWeight: isActive ? "bold" : "normal",
                     background: isActive ? hexColor : isDone ? "#2d4a35" : score > 0 ? "#3a3530" : "#2a2520",
@@ -215,22 +347,22 @@ export default function App() {
         {/* Scores */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 24 }}>
           {[
-            { label: "불안 점수", key: "anxiety", state: anxiety, setter: setAnxiety },
-            { label: "죄책감 점수", key: "guilt", state: guilt, setter: setGuilt }
-          ].map(({ label, state, setter }) => (
+            { label: "불안 점수", key: "anxiety" },
+            { label: "죄책감 점수", key: "guilt" }
+          ].map(({ label, key }) => (
             <div key={label} style={{ background: "#231f1c", border: "1px solid #3a3530", borderRadius: 10, padding: "14px 16px" }}>
               <div style={{ fontSize: 11, color: "#8a7f75", marginBottom: 10 }}>{label} (0–10)</div>
               <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
                 {Array.from({ length: 11 }, (_, n) => (
                   <button
                     key={n}
-                    onClick={() => setter(prev => ({ ...prev, [`${currentDay}`]: n }))}
+                    onClick={() => updateField(currentDay, key, n)}
                     style={{
                       width: 26, height: 26, borderRadius: 6, border: "1px solid",
-                      borderColor: state[`${currentDay}`] === n ? "#f0a040" : "#3a3530",
-                      background: state[`${currentDay}`] === n ? "#f0a040" : "transparent",
-                      color: state[`${currentDay}`] === n ? "#1a1614" : "#6a6058",
-                      fontSize: 11, cursor: "pointer", fontWeight: state[`${currentDay}`] === n ? "bold" : "normal"
+                      borderColor: (key === 'anxiety' ? anxiety : guilt)[`${currentDay}`] === n ? "#f0a040" : "#3a3530",
+                      background: (key === 'anxiety' ? anxiety : guilt)[`${currentDay}`] === n ? "#f0a040" : "transparent",
+                      color: (key === 'anxiety' ? anxiety : guilt)[`${currentDay}`] === n ? "#1a1614" : "#6a6058",
+                      fontSize: 11, cursor: "pointer", fontWeight: (key === 'anxiety' ? anxiety : guilt)[`${currentDay}`] === n ? "bold" : "normal"
                     }}
                   >{n}</button>
                 ))}
@@ -251,7 +383,7 @@ export default function App() {
                 <div
                   key={i}
                   className="phrase-card"
-                  onClick={() => setSelectedPhrase(prev => ({ ...prev, [`${currentDay}`]: i }))}
+                  onClick={() => updateField(currentDay, 'phrase', i)}
                   style={{
                     background: selected ? "#1e2535" : "#231f1c",
                     border: `1px solid ${selected ? "#5a8fd4" : "#3a3530"}`,
@@ -285,6 +417,7 @@ export default function App() {
             rows={3}
             value={notes[`${currentDay}`] || ""}
             onChange={e => setNotes(prev => ({ ...prev, [`${currentDay}`]: e.target.value }))}
+            onBlur={e => updateField(currentDay, 'note', e.target.value)}
             placeholder="짧게 써도 괜찮아. 한 문장이면 충분해..."
             style={{
               width: "100%", background: "#231f1c", border: "1px solid #3a3530",
@@ -343,18 +476,22 @@ export default function App() {
           )}
           {currentDay < 6 && (
             <button
-              onClick={() => setCurrentDay(d => d + 1)}
+              onClick={() => {
+                if (allMissionsDone) setCurrentDay(d => d + 1);
+                else alert('오늘의 미션 3개를 모두 완료해야 다음 날로 넘어갈 수 있습니다!');
+              }}
               style={{
                 flex: 1, background: allMissionsDone ? { amber: "#f59e0b", orange: "#f97316", red: "#ef4444", green: "#10b981", teal: "#14b8a6", purple: "#a855f7", blue: "#3b82f6" }[day.color] : "#2a2520",
                 border: `1px solid ${allMissionsDone ? { amber: "#f59e0b", orange: "#f97316", red: "#ef4444", green: "#10b981", teal: "#14b8a6", purple: "#a855f7", blue: "#3b82f6" }[day.color] : "#3a3530"}`,
                 borderRadius: 10, padding: "14px",
                 color: allMissionsDone ? "#1a1614" : "#8a7f75",
                 cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
-                fontSize: 14, fontWeight: allMissionsDone ? "bold" : "normal"
+                fontSize: 14, fontWeight: allMissionsDone ? "bold" : "normal",
+                opacity: allMissionsDone ? 1 : 0.5
               }}
             >
-              {allMissionsDone ? "Day " + (currentDay + 2) + " 시작하기 →" : `Day ${currentDay + 2}`}
-              {!allMissionsDone && <ChevronRight size={16} />}
+              {allMissionsDone ? "Day " + (currentDay + 2) + " 시작하기 →" : `Day ${currentDay + 2} (미완료)`}
+              {allMissionsDone && <ChevronRight size={16} />}
             </button>
           )}
         </div>
