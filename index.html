@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GIVE Ecosystem | 나를 지키는 관계의 기술</title>
+    <title>GIVE Ecosystem | 건강한 관계를 위한 기버(Giver) 가이드</title>
+    <meta name="description" content="나의 배려가 권리가 되지 않도록. GIVE Ecosystem은 기버들을 위한 심리 진단과 건강한 관계 맺기 솔루션을 제공합니다.">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8564310871125079"
      crossorigin="anonymous"></script>
     <meta name="google-adsense-account" content="ca-pub-8564310871125079">
@@ -24,8 +25,11 @@
 
         .container { max-width: 600px; margin: 0 auto; padding: 0 20px; }
         
-        nav { padding: 24px 0; text-align: center; border-bottom: 1px solid #f2f2f2; }
+        nav { padding: 24px 0; text-align: center; border-bottom: 1px solid #f2f2f2; display: flex; justify-content: space-between; align-items: center; }
         .logo { font-size: 1.2rem; font-weight: 900; color: var(--primary); text-decoration: none; letter-spacing: -0.05em; }
+        .nav-links { display: flex; gap: 15px; }
+        .nav-links a { text-decoration: none; color: var(--text-sub); font-size: 0.9rem; font-weight: 500; }
+        .nav-links a:hover { color: var(--primary); }
 
         .ad-top { margin: 20px 0; min-height: 100px; background: #fafafa; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #ccc; border: 1px dashed #eee; }
 
@@ -47,23 +51,31 @@
 
         .ad-mid { margin: 32px 0; background: #fafafa; border-radius: 20px; padding: 40px 20px; text-align: center; border: 1px dashed #eee; font-size: 12px; color: #bbb; }
 
-        .value-sec { padding: 60px 0; border-top: 1px solid #f2f2f2; margin-top: 40px; }
-        .value-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; }
-        .value-text { font-size: 0.9rem; color: var(--text-sub); margin-bottom: 20px; }
+        .content-section { padding: 40px 0; border-top: 1px solid #f2f2f2; }
+        .section-title { font-size: 1.4rem; font-weight: 800; margin-bottom: 20px; color: var(--text-main); }
+        .section-text { font-size: 1rem; color: var(--text-sub); margin-bottom: 20px; line-height: 1.7; }
+        .highlight { color: var(--primary); font-weight: 700; }
 
-        footer { padding: 40px 0; text-align: center; border-top: 1px solid #f2f2f2; font-size: 0.8rem; color: #bbb; }
+        footer { padding: 60px 0 40px; text-align: center; border-top: 1px solid #f2f2f2; font-size: 0.85rem; color: #999; }
+        .footer-links { margin-bottom: 20px; display: flex; justify-content: center; gap: 20px; }
+        .footer-links a { text-decoration: none; color: #666; }
+        .footer-links a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <nav><a href="index.html" class="logo">GIVE ECOSYSTEM</a></nav>
-
-        <div class="ad-top">AD - Leaderboard Space</div>
+        <nav>
+            <a href="index.html" class="logo">GIVE ECOSYSTEM</a>
+            <div class="nav-links">
+                <a href="about.html">소개</a>
+                <a href="give-test.html">진단</a>
+            </div>
+        </nav>
 
         <section class="hero">
-            <h1>나를 알고 관계를 디자인하다</h1>
-            <p>기버(Giver)가 지치지 않는 건강한 생태계,<br>GIVE Eco system에서 당신의 ID를 찾으세요.</p>
+            <h1>당신의 선의가 이용당하지 않도록</h1>
+            <p>기버(Giver)가 지치지 않는 건강한 관계 생태계,<br>GIVE Ecosystem에서 당신의 관계 유형을 진단하세요.</p>
         </section>
 
         <div class="choice-grid">
@@ -74,7 +86,10 @@
                 <div class="card-btn">지금 무료 진단하기</div>
             </a>
 
-            <div class="ad-mid">AD - In-feed Native Space</div>
+            <div class="ad-mid">
+                <!-- 자동 광고가 위치할 수 있는 영역 -->
+                <p>배려하는 사람들을 위한 지식 서비스</p>
+            </div>
 
             <a href="hogoo-test.html" class="choice-card">
                 <span class="card-icon">🔥</span>
@@ -84,15 +99,26 @@
             </a>
         </div>
 
-        <section class="value-sec">
-            <h3 class="value-title">왜 GIVE ID인가요?</h3>
-            <p class="value-text">자신의 것을 나눌 수 있는 사람들은 세상을 더 좋게 만듭니다. 하지만 그 선함이 이용당해서는 안 됩니다. 우리는 당신의 선의가 더 가치 있게 쓰일 수 있도록 돕습니다.</p>
+        <section class="content-section">
+            <h2 class="section-title">기버(Giver)의 딜레마</h2>
+            <p class="section-text">세상에는 남에게 베푸는 것을 좋아하는 <span class="highlight">'기버'</span>들이 있습니다. 이들은 공동체를 따뜻하게 만들지만, 때로는 자신의 에너지가 소진되거나 타인에게 이용당하기도 합니다.</p>
+            <p class="section-text">우리는 이런 기버들이 <span class="highlight">'똑똑한 기버(Smart Giver)'</span>가 될 수 있도록 돕습니다. 무작정 베푸는 것이 아니라, 자신을 보호하면서도 선한 영향력을 유지할 수 있는 방법론을 제시합니다.</p>
         </section>
 
-        <div class="ad-mid" style="padding: 20px;">AD - Bottom Responsive Space</div>
+        <section class="content-section">
+            <h2 class="section-title">우리가 제공하는 가치</h2>
+            <p class="section-text">1. <strong>객관적 자아 성찰</strong>: 전문적인 문항을 통해 현재 나의 관계 맺기 패턴을 분석합니다.</p>
+            <p class="section-text">2. <strong>맞춤형 가이드라인</strong>: 각 유형에 맞는 실질적인 관계 대처법을 제안합니다.</p>
+            <p class="section-text">3. <strong>실천 중심의 훈련</strong>: 7일간의 소소한 미션을 통해 심리적 경계선을 세우는 연습을 합니다.</p>
+        </section>
 
         <footer>
-            &copy; 2026 GIVE Ecosystem. All rights reserved.
+            <div class="footer-links">
+                <a href="about.html">서비스 소개</a>
+                <a href="privacy.html">개인정보처리방침</a>
+                <a href="mailto:contact@give-eco.com">문의하기</a>
+            </div>
+            <p>&copy; 2026 GIVE Ecosystem. All rights reserved.</p>
         </footer>
     </div>
 
