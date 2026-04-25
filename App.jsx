@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { CheckCircle, Circle, ChevronRight, ChevronLeft, Award, Flame, Copy, Check, LogOut } from "lucide-react";
 import DAYS from "./days";
-import { supabase } from "./supabase";
-import Auth from "./components/Auth";
+import { supabase } from "./src/supabase";
+import Auth from "./src/components/Auth";
 
 const COLOR_MAP = {
   amber: { bg: "bg-amber-50", accent: "bg-amber-500", text: "text-amber-700", border: "border-amber-200", light: "bg-amber-100", badge: "bg-amber-500" },
