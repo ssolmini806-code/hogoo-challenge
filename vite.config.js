@@ -13,6 +13,7 @@ export default defineConfig({
         hogoo: resolve(__dirname, 'hogoo-test.html'),
         about: resolve(__dirname, 'about.html'),
         privacy: resolve(__dirname, 'privacy.html'),
+        affiliate: resolve(__dirname, 'affiliate.html'),
       },
     },
   },
