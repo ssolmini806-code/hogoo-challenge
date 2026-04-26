@@ -427,6 +427,48 @@ export default function App() {
           />
         </div>
 
+        {/* Personal Analysis & Character (New) */}
+        <div style={{ 
+          background: "linear-gradient(135deg, #2a2522 0%, #231f1c 100%)", 
+          borderRadius: "20px", padding: "32px 24px", marginBottom: "24px", 
+          textAlign: "center", border: "1px solid #3a3530", position: "relative", overflow: "hidden"
+        }}>
+          <div style={{ position: "absolute", top: "-10px", right: "-10px", fontSize: "80px", opacity: 0.1, pointerEvents: "none" }}>✨</div>
+          
+          {/* 캐릭터 이모지 및 타이틀 */}
+          <div style={{ fontSize: "64px", marginBottom: "16px", filter: "drop-shadow(0 10px 20px rgba(0,0,0,0.3))" }}>
+            {day.color === 'green' ? '🌿' : day.color === 'blue' ? '💎' : day.color === 'red' ? '🛡️' : day.color === 'purple' ? '🔮' : '⭐'}
+          </div>
+          <h3 style={{ fontSize: "20px", fontWeight: 800, color: "#f5ede3", marginBottom: "12px" }}>
+            오늘의 당신은 <span style={{ color: { amber: "#f59e0b", orange: "#f97316", red: "#ef4444", green: "#10b981", teal: "#14b8a6", purple: "#a855f7", blue: "#3b82f6" }[day.color] }}>
+              "{day.title.split(':')[0]}"
+            </span> 군요!
+          </h3>
+          <p style={{ fontSize: "14px", color: "#a89f95", lineHeight: 1.6, marginBottom: "24px", wordBreak: "keep-all" }}>
+            "착한 게 아니라 사려 깊은 거예요. 다만, 그 다정함이 당신을 깎아먹지 않도록 오늘은 조금 더 이기적이어도 괜찮아요."
+          </p>
+
+          {/* 심화 분석 리포트 CTA (Google Form) */}
+          <a 
+            href="https://forms.gle/NS2vgo3Kca6unf5T9" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            style={{ 
+              display: "block", background: "linear-gradient(90deg, #f0a040 0%, #f97316 100%)", 
+              color: "#1a1614", textDecoration: "none", padding: "16px", borderRadius: "12px",
+              fontWeight: 800, fontSize: "15px", boxShadow: "0 10px 25px rgba(249, 115, 22, 0.2)",
+              transition: "transform 0.2s ease"
+            }}
+            onMouseOver={e => e.currentTarget.style.transform = "scale(1.02)"}
+            onMouseOut={e => e.currentTarget.style.transform = "scale(1)"}
+          >
+            📊 나만을 위한 20P 심화 분석 리포트 신청하기
+            <div style={{ fontSize: "11px", marginTop: "4px", opacity: 0.8, fontWeight: 500 }}>
+              (GIVE ID 정밀 진단 - 유료 서비스 론칭 특가)
+            </div>
+          </a>
+        </div>
+
         {/* Certification Box */}
         <div style={{
           background: "#1e2219", border: "1px solid #2d4a35",
