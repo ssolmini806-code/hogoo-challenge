@@ -457,6 +457,19 @@ export default function App() {
           }}>
             {getCertText()}
           </pre>
+          
+          {/* AddToAny SNS Share within Certification Box */}
+          <div style={{ marginTop: 20, borderTop: "1px solid #2d4a35", paddingTop: 16 }}>
+            <div style={{ fontSize: 11, color: "#7cc88a", marginBottom: 10, textAlign: "center" }}>SNS로 챌린지 공유하기</div>
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <div className="a2a_kit a2a_kit_size_32 a2a_default_style" data-a2a-url="https://hogoo-challenge.pages.dev">
+                <a className="a2a_button_kakao"></a>
+                <a className="a2a_button_facebook"></a>
+                <a className="a2a_button_x"></a>
+                <a className="a2a_button_copy_link"></a>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Day Navigation */}
@@ -496,6 +509,19 @@ export default function App() {
           )}
         </div>
         
+        {/* Share Section Before Back to Portal */}
+        <div style={{ textAlign: 'center', marginBottom: 24, padding: '20px', background: '#231f1c', borderRadius: '10px', border: '1px solid #3a3530' }}>
+            <div style={{ fontSize: '13px', color: '#8a7f75', marginBottom: '12px' }}>이 챌린지를 친구에게 추천하기</div>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <div className="a2a_kit a2a_kit_size_32 a2a_default_style" data-a2a-url="https://hogoo-challenge.pages.dev">
+                    <a className="a2a_button_kakao"></a>
+                    <a className="a2a_button_facebook"></a>
+                    <a className="a2a_button_x"></a>
+                    <a className="a2a_button_copy_link"></a>
+                </div>
+            </div>
+        </div>
+
         {/* Back to Portal */}
         <button 
           onClick={() => window.location.href = 'index.html'}
