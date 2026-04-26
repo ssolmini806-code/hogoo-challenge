@@ -506,7 +506,7 @@ export default function App() {
             <div style={{ display: "flex", justifyContent: "center" }}>
               <div className="a2a_kit a2a_kit_size_32 a2a_default_style" data-a2a-url="https://hogoo-challenge.pages.dev" data-a2a-title="호구 탈출 챌린지 - 7일 만에 달라지는 관계 습관">
                 <a className="a2a_button_kakao"></a>
-                <a className="a2a_button_facebook"></a>
+                <a className="a2a_button_instagram"></a>
                 <a className="a2a_button_x"></a>
                 <a className="a2a_button_copy_link"></a>
               </div>
@@ -558,7 +558,7 @@ export default function App() {
             <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <div className="a2a_kit a2a_kit_size_36 a2a_default_style" data-a2a-url="https://hogoo-challenge.pages.dev" data-a2a-title="GIVE Ecosystem | 똑똑한 기버를 위한 관계 진단">
                     <a className="a2a_button_kakao"></a>
-                    <a className="a2a_button_facebook"></a>
+                    <a className="a2a_button_instagram"></a>
                     <a className="a2a_button_x"></a>
                     <a className="a2a_button_copy_link"></a>
                 </div>
@@ -572,6 +572,15 @@ export default function App() {
             width: "100%", background: "transparent", border: "1px solid #3a3530",
             borderRadius: 10, padding: "14px", color: "#8a7f75",
             cursor: "pointer", fontSize: 14, fontWeight: 500
+          }}
+        >
+          ← 다른 테스트 보러가기 (메인으로)
+        </button>
+      </div>
+    </div>
+  );
+}
+ize: 14, fontWeight: 500
           }}
         >
           ← 다른 테스트 보러가기 (메인으로)
