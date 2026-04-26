@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://hogoo-challenge.pages.dev/sitemap.xml

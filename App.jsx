@@ -460,9 +460,9 @@ export default function App() {
           
           {/* AddToAny SNS Share within Certification Box */}
           <div style={{ marginTop: 20, borderTop: "1px solid #2d4a35", paddingTop: 16 }}>
-            <div style={{ fontSize: 11, color: "#7cc88a", marginBottom: 10, textAlign: "center" }}>SNS로 챌린지 공유하기</div>
+            <div style={{ fontSize: 11, color: "#7cc88a", marginBottom: 12, textAlign: "center", fontWeight: 600, letterSpacing: "0.05em" }}>SNS로 오늘의 변화 공유하기</div>
             <div style={{ display: "flex", justifyContent: "center" }}>
-              <div className="a2a_kit a2a_kit_size_32 a2a_default_style" data-a2a-url="https://hogoo-challenge.pages.dev">
+              <div className="a2a_kit a2a_kit_size_32 a2a_default_style" data-a2a-url="https://hogoo-challenge.pages.dev" data-a2a-title="호구 탈출 챌린지 - 7일 만에 달라지는 관계 습관">
                 <a className="a2a_button_kakao"></a>
                 <a className="a2a_button_facebook"></a>
                 <a className="a2a_button_x"></a>
@@ -510,10 +510,11 @@ export default function App() {
         </div>
         
         {/* Share Section Before Back to Portal */}
-        <div style={{ textAlign: 'center', marginBottom: 24, padding: '20px', background: '#231f1c', borderRadius: '10px', border: '1px solid #3a3530' }}>
-            <div style={{ fontSize: '13px', color: '#8a7f75', marginBottom: '12px' }}>이 챌린지를 친구에게 추천하기</div>
+        <div style={{ textAlign: 'center', marginBottom: 32, padding: '24px', background: '#231f1c', borderRadius: '16px', border: '1px solid #3a3530', boxShadow: '0 4px 20px rgba(0,0,0,0.2)' }}>
+            <div style={{ fontSize: '14px', color: '#f5ede3', marginBottom: '16px', fontWeight: 700 }}>당신의 건강한 선의를 응원합니다</div>
+            <div style={{ fontSize: '12px', color: '#8a7f75', marginBottom: '20px', lineHeight: 1.5 }}>이 챌린지가 필요한 친구에게 공유해보세요.<br/>함께하면 변화가 더 빨라집니다.</div>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <div className="a2a_kit a2a_kit_size_32 a2a_default_style" data-a2a-url="https://hogoo-challenge.pages.dev">
+                <div className="a2a_kit a2a_kit_size_36 a2a_default_style" data-a2a-url="https://hogoo-challenge.pages.dev" data-a2a-title="GIVE Ecosystem | 똑똑한 기버를 위한 관계 진단">
                     <a className="a2a_button_kakao"></a>
                     <a className="a2a_button_facebook"></a>
                     <a className="a2a_button_x"></a>
