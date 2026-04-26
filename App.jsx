@@ -448,25 +448,24 @@ export default function App() {
             "착한 게 아니라 사려 깊은 거예요. 다만, 그 다정함이 당신을 깎아먹지 않도록 오늘은 조금 더 이기적이어도 괜찮아요."
           </p>
 
-          {/* 심화 분석 리포트 CTA (Google Form) */}
-          <a 
-            href="https://forms.gle/NS2vgo3Kca6unf5T9" 
-            target="_blank" 
-            rel="noopener noreferrer"
+          {/* 심화 분석 리포트 CTA (Coming Soon) */}
+          <div 
+            onClick={() => alert('심화 분석 리포트는 현재 론칭 준비 중입니다. 정식 서비스가 시작되면 결제 후 리포트를 받아보실 수 있습니다! 조금만 기다려 주세요.')}
             style={{ 
-              display: "block", background: "linear-gradient(90deg, #f0a040 0%, #f97316 100%)", 
-              color: "#1a1614", textDecoration: "none", padding: "16px", borderRadius: "12px",
-              fontWeight: 800, fontSize: "15px", boxShadow: "0 10px 25px rgba(249, 115, 22, 0.2)",
+              display: "block", background: "linear-gradient(90deg, #4a4540 0%, #1d1d1f 100%)", 
+              color: "#f5ede3", padding: "16px", borderRadius: "12px",
+              fontWeight: 800, fontSize: "15px", cursor: "pointer",
+              boxShadow: "0 10px 25px rgba(0, 0, 0, 0.2)",
               transition: "transform 0.2s ease"
             }}
             onMouseOver={e => e.currentTarget.style.transform = "scale(1.02)"}
             onMouseOut={e => e.currentTarget.style.transform = "scale(1)"}
           >
-            📊 나만을 위한 20P 심화 분석 리포트 신청하기
+            📊 나만을 위한 20P 심화 분석 리포트 받기
             <div style={{ fontSize: "11px", marginTop: "4px", opacity: 0.8, fontWeight: 500 }}>
-              (GIVE ID 정밀 진단 - 유료 서비스 론칭 특가)
+              (유료 서비스 론칭 준비 중 - 정밀 진단)
             </div>
-          </a>
+          </div>
         </div>
 
         {/* Certification Box */}
