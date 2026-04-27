@@ -4,15 +4,6 @@ import DAYS from "./days";
 import { supabase } from "./src/supabase";
 import Auth from "./src/components/Auth";
 
-const COLOR_MAP = {
-  amber: { bg: "bg-amber-50", accent: "bg-amber-500", text: "text-amber-700", border: "border-amber-200", light: "bg-amber-100", badge: "bg-amber-500" },
-  orange: { bg: "bg-orange-50", accent: "bg-orange-500", text: "text-orange-700", border: "border-orange-200", light: "bg-orange-100", badge: "bg-orange-500" },
-  red: { bg: "bg-red-50", accent: "bg-red-500", text: "text-red-700", border: "border-red-200", light: "bg-red-100", badge: "bg-red-500" },
-  green: { bg: "bg-emerald-50", accent: "bg-emerald-500", text: "text-emerald-700", border: "border-emerald-200", light: "bg-emerald-100", badge: "bg-emerald-500" },
-  teal: { bg: "bg-teal-50", accent: "bg-teal-500", text: "text-teal-700", border: "border-teal-200", light: "bg-teal-100", badge: "bg-teal-500" },
-  purple: { bg: "bg-purple-50", accent: "bg-purple-500", text: "text-purple-700", border: "border-purple-200", light: "bg-purple-100", badge: "bg-purple-500" },
-  blue: { bg: "bg-blue-50", accent: "bg-blue-500", text: "text-blue-700", border: "border-blue-200", light: "bg-blue-100", badge: "bg-blue-500" }
-};
 
 export default function App() {
   const [session, setSession] = useState(null);
@@ -31,9 +22,11 @@ export default function App() {
       setSession(session);
     });
 
-    supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
     });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   // Fetch data when session or currentDay changes
@@ -503,10 +496,12 @@ export default function App() {
           <div style={{ marginTop: 20, borderTop: "1px solid #2d4a35", paddingTop: 16 }}>
             <div style={{ fontSize: 11, color: "#7cc88a", marginBottom: 12, textAlign: "center", fontWeight: 600, letterSpacing: "0.05em" }}>SNS로 오늘의 변화 공유하기</div>
             <div style={{ display: "flex", justifyContent: "center" }}>
-              <div className="a2a_kit a2a_kit_size_32 a2a_default_style" data-a2a-url="https://hogoo-challenge.pages.dev" data-a2a-title="호구 탈출 챌린지 - 7일 만에 달라지는 관계 습관">
+              <div className="a2a_kit a2a_kit_size_36 a2a_default_style" data-a2a-url="https://hogoo-challenge.pages.dev" data-a2a-title="호구 탈출 챌린지 - 7일 만에 달라지는 관계 습관">
                 <a className="a2a_button_kakao"></a>
                 <a className="a2a_button_instagram"></a>
-                <a className="a2a_button_x"></a>
+                <a className="a2a_button_threads"></a>
+                <a className="a2a_button_facebook"></a>
+                <a className="a2a_button_line"></a>
                 <a className="a2a_button_copy_link"></a>
               </div>
             </div>
@@ -558,7 +553,9 @@ export default function App() {
                 <div className="a2a_kit a2a_kit_size_36 a2a_default_style" data-a2a-url="https://hogoo-challenge.pages.dev" data-a2a-title="GIVE Ecosystem | 똑똑한 기버를 위한 관계 진단">
                     <a className="a2a_button_kakao"></a>
                     <a className="a2a_button_instagram"></a>
-                    <a className="a2a_button_x"></a>
+                    <a className="a2a_button_threads"></a>
+                    <a className="a2a_button_facebook"></a>
+                    <a className="a2a_button_line"></a>
                     <a className="a2a_button_copy_link"></a>
                 </div>
             </div>
@@ -571,15 +568,6 @@ export default function App() {
             width: "100%", background: "transparent", border: "1px solid #3a3530",
             borderRadius: 10, padding: "14px", color: "#8a7f75",
             cursor: "pointer", fontSize: 14, fontWeight: 500
-          }}
-        >
-          ← 다른 테스트 보러가기 (메인으로)
-        </button>
-      </div>
-    </div>
-  );
-}
-ize: 14, fontWeight: 500
           }}
         >
           ← 다른 테스트 보러가기 (메인으로)

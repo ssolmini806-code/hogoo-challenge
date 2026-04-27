@@ -27,7 +27,14 @@
     <meta property="og:url" content="https://hogoo-challenge.pages.dev/give-test.html">
     <meta property="og:title" content="나의 GIVE ID는 무엇일까?">
     <meta property="og:description" content="착한 사람의 번아웃 탈출, 지금 진단해보세요.">
-    <meta property="og:image" content="/og-image.jpg">
+    <meta property="og:image" content="https://hogoo-challenge.pages.dev/og-image.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://hogoo-challenge.pages.dev/give-test.html">
+    <meta property="twitter:title" content="나의 GIVE ID는 무엇일까?">
+    <meta property="twitter:description" content="착한 사람의 번아웃 탈출, 지금 진단해보세요.">
+    <meta property="twitter:image" content="https://hogoo-challenge.pages.dev/og-image.jpg">
 
     <!-- Userback -->
     <script>
@@ -234,13 +241,15 @@
                 </div>
 
                 <!-- AddToAny SNS Share -->
-                <div style="margin-top: 40px; text-align: center; border-top: 1px solid #eee; paddingTop: 30px;">
+                <div style="margin-top: 40px; text-align: center; border-top: 1px solid #eee; padding-top: 30px;">
                     <p style="font-size: 0.9rem; color: var(--text-gray); margin-bottom: 15px;">진단 결과 공유하기</p>
                     <div style="display: flex; justify-content: center;">
-                        <div class="a2a_kit a2a_kit_size_32 a2a_default_style" data-a2a-url="https://hogoo-challenge.pages.dev/give-test.html">
+                        <div class="a2a_kit a2a_kit_size_36 a2a_default_style" data-a2a-url="https://hogoo-challenge.pages.dev/give-test.html" data-a2a-title="나의 GIVE ID는 무엇일까? | GIVE Ecosystem">
                             <a class="a2a_button_kakao"></a>
                             <a class="a2a_button_instagram"></a>
-                            <a class="a2a_button_x"></a>
+                            <a class="a2a_button_threads"></a>
+                            <a class="a2a_button_facebook"></a>
+                            <a class="a2a_button_line"></a>
                             <a class="a2a_button_copy_link"></a>
                         </div>
                     </div>
@@ -431,10 +440,11 @@
             </div>
         `;
 
-        // 너에게 필요한 1가지 행동 섹션 추가
-        const strengthSection = document.querySelector('.result-card');
+        // 너에게 필요한 1가지 행동 섹션 추가 (중복 방지)
+        const existingAction = document.querySelector('.action-card');
+        if (existingAction) existingAction.remove();
         const actionHtml = `
-            <div class="result-card" style="background: #fff8eb; border: 2px solid #fbd38d; margin-top: 24px;">
+            <div class="result-card action-card" style="background: #fff8eb; border: 2px solid #fbd38d; margin-top: 24px;">
                 <div class="card-title" style="color: #c05621;">💡 <span>너에게 필요한 1가지 행동</span></div>
                 <p style="font-size: 1.2rem; font-weight: 800; color: #744210; margin-top: 10px;">"${data.action}"</p>
             </div>
