@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00c49a"/>
+      <stop offset="100%" stop-color="#00a885"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 배경 라운드 사각형 -->
+  <rect width="64" height="64" rx="16" fill="url(#bg)"/>
+
+  <!-- 하트 모양 (선의/기버 상징) -->
+  <path d="M32 46 C32 46 14 35 14 24 C14 18.5 18.5 14 24 14 C27.2 14 30 15.8 32 18.4 C34 15.8 36.8 14 40 14 C45.5 14 50 18.5 50 24 C50 35 32 46 32 46Z"
+        fill="white" opacity="0.95"/>
+
+  <!-- G 레터 (브랜드) -->
+  <text x="32" y="38" font-family="Arial Black, Arial, sans-serif"
+        font-size="18" font-weight="900" text-anchor="middle"
+        fill="#00a885" letter-spacing="-1">G</text>
+</svg>
