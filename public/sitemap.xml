@@ -1,43 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
   <url>
     <loc>https://hogoo-challenge.pages.dev/</loc>
-    <lastmod>2024-04-26</lastmod>
+    <lastmod>2026-04-29</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://hogoo-challenge.pages.dev/"/>
   </url>
-  <url>
-    <loc>https://hogoo-challenge.pages.dev/about.html</loc>
-    <lastmod>2024-04-26</lastmod>
-    <priority>0.8</priority>
-  </url>
+
   <url>
     <loc>https://hogoo-challenge.pages.dev/give-test.html</loc>
-    <lastmod>2024-04-26</lastmod>
+    <lastmod>2026-04-29</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://hogoo-challenge.pages.dev/give-test.html"/>
   </url>
+
   <url>
     <loc>https://hogoo-challenge.pages.dev/hogoo-test.html</loc>
-    <lastmod>2024-04-26</lastmod>
+    <lastmod>2026-04-29</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://hogoo-challenge.pages.dev/hogoo-test.html"/>
   </url>
+
+  <url>
+    <loc>https://hogoo-challenge.pages.dev/about.html</loc>
+    <lastmod>2026-04-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://hogoo-challenge.pages.dev/about.html"/>
+  </url>
+
   <url>
     <loc>https://hogoo-challenge.pages.dev/articles/giver-burnout.html</loc>
-    <lastmod>2024-04-26</lastmod>
-    <priority>0.7</priority>
+    <lastmod>2026-04-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://hogoo-challenge.pages.dev/articles/giver-burnout.html"/>
   </url>
+
   <url>
     <loc>https://hogoo-challenge.pages.dev/articles/setting-boundaries.html</loc>
-    <lastmod>2024-04-26</lastmod>
-    <priority>0.7</priority>
+    <lastmod>2026-04-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://hogoo-challenge.pages.dev/articles/setting-boundaries.html"/>
   </url>
+
   <url>
     <loc>https://hogoo-challenge.pages.dev/articles/taker-signals.html</loc>
-    <lastmod>2024-04-26</lastmod>
-    <priority>0.7</priority>
+    <lastmod>2026-04-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://hogoo-challenge.pages.dev/articles/taker-signals.html"/>
   </url>
+
   <url>
     <loc>https://hogoo-challenge.pages.dev/articles/smart-giver-guide.html</loc>
-    <lastmod>2024-04-26</lastmod>
-    <priority>0.7</priority>
+    <lastmod>2026-04-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://hogoo-challenge.pages.dev/articles/smart-giver-guide.html"/>
   </url>
+
 </urlset>
