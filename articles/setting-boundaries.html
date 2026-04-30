@@ -38,6 +38,8 @@
     <meta name="author" content="GIVE Ecosystem">
     <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" crossorigin>
     <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" crossorigin></noscript>
+    <link rel="stylesheet" href="/share.css">
+    <script src="/share.js" defer></script>
     <style>
         :root { --primary: #00a885; --primary-soft: #f0f9f7; --text-main: #1d1d1f; --text-sub: #424245; --bg: #ffffff; --border: #f2f2f2; }
         * { box-sizing: border-box; margin: 0; padding: 0; word-break: keep-all; }
@@ -252,20 +254,17 @@
         </div>
 
         <!-- SNS Share -->
-        <div style="margin: 48px 0; padding: 32px; background: #f0f9f7; border-radius: 24px; text-align: center;">
-            <p style="font-size: 0.95rem; color: #6e6e73; margin-bottom: 16px; font-weight: 600;">이 글이 도움이 됐다면 공유해보세요</p>
-            <div style="display: flex; justify-content: center;">
-                <div class="a2a_kit a2a_kit_size_36 a2a_default_style" data-a2a-url="https://hogoo-challenge.pages.dev/articles/setting-boundaries.html" data-a2a-title="관계를 살리는 경계선의 과학: 죄책감 없는 거절 | GIVE Ecosystem">
-                    <a class="a2a_button_kakao"></a>
-                    <a class="a2a_button_instagram"></a>
-                    <a class="a2a_button_threads"></a>
-                    <a class="a2a_button_facebook"></a>
-                    <a class="a2a_button_line"></a>
-                    <a class="a2a_button_copy_link"></a>
-                </div>
+        <div class="share-wrap">
+            <p class="sh-title">이 글이 도움이 됐다면 공유해 주세요</p>
+            <div class="share-row">
+                <button class="s-btn sb-x" onclick="snsX()" aria-label="X에 공유"><svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.259 5.63L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg><span>X</span></button>
+                <button class="s-btn sb-threads" onclick="snsThreads()" aria-label="스레드에 공유"><svg viewBox="0 0 192 192" width="24" height="24" fill="currentColor" aria-hidden="true"><path d="M141.537 88.988a66.667 66.667 0 0 0-2.518-1.143c-1.482-27.307-16.403-42.94-41.457-43.1h-.34c-14.986 0-27.449 6.396-35.12 18.05l13.378 9.152c5.403-8.188 13.897-9.952 21.742-9.952h.229c8.414.054 14.775 2.499 18.907 7.27 3.012 3.431 5.023 8.195 6.005 14.2a100.463 100.463 0 0 0-13.513-1.114c-12.765 0-23.524 3.404-30.512 9.586-7.67 6.784-11.398 16.247-10.796 27.452.617 11.489 5.41 20.87 13.48 26.363 6.974 4.737 15.937 7.065 25.6 6.907 12.785-.227 22.876-4.643 30.018-13.137 5.452-6.52 8.959-14.851 10.463-24.898 1.8.846 3.437 1.763 4.877 2.737 6.416 4.268 9.953 10.443 10.523 18.36.558 7.845-1.753 15.137-6.705 21.124-6.388 7.712-15.895 13.224-27.948 16.382-10.736 2.832-22.474 3.506-34.885 2.006-17.07-2.066-30.903-7.905-41.106-17.355C24.044 152.92 18.99 139.023 18.51 121.98c-.497-17.73 5.398-33.154 17.043-44.628C47.16 65.7 63.027 59.354 82.118 58.948c18.627-.398 33.854 5.62 44.516 17.424 4.73 5.284 8.352 11.659 10.9 19.066zm-29.777 27.9c-.267-5.985-2.47-10.69-6.55-13.99-4.435-3.58-10.578-5.377-18.247-5.344-8.2.035-14.567 2.175-18.923 6.36-4.005 3.861-5.967 8.95-5.779 15.116.172 5.746 2.455 10.4 6.793 13.836 4.162 3.3 9.803 5.004 16.762 5.063 7.432.064 13.53-1.97 18.135-6.053 4.07-3.607 6.35-8.407 6.81-14.988z"/></svg><span>스레드</span></button>
+                <button class="s-btn sb-kakao" onclick="snsKakao()" aria-label="카카오톡에 공유"><svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true"><path d="M12 3C6.48 3 2 6.72 2 11.25c0 2.9 1.67 5.47 4.22 7.06l-1.1 4.03 4.52-2.14c.76.14 1.55.21 2.36.21 5.52 0 10-3.72 10-8.25S17.52 3 12 3z"/></svg><span>카카오톡</span></button>
+                <button class="s-btn sb-insta" onclick="snsInsta()" aria-label="인스타그램에 공유"><svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg><span>인스타그램</span></button>
+                <button class="s-btn sb-tiktok" onclick="snsTiktok()" aria-label="틱톡에 공유"><svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V9.01a8.16 8.16 0 0 0 4.77 1.52V7.08a4.85 4.85 0 0 1-1-.39z"/></svg><span>틱톡</span></button>
             </div>
+            <div class="share-toast" id="snst" role="status" aria-live="polite"></div>
         </div>
-        <script async src="https://static.addtoany.com/menu/page.js"></script>
 
         <footer>
             <div class="footer-links">
