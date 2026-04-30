@@ -59,6 +59,25 @@
         footer { padding: 80px 0; border-top: 1px solid var(--border); text-align: center; color: #86868b; font-size: 0.95rem; }
         .footer-links { margin-bottom: 24px; display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; }
         .footer-links a { text-decoration: none; color: #424245; font-weight: 500; }
+        .summary-box { background: var(--primary-soft); border-radius: 24px; padding: 32px; margin-bottom: 56px; border-left: 6px solid var(--primary); }
+        .summary-box h3 { font-size: 0.85rem; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 16px; }
+        .summary-box ul { padding-left: 0; list-style: none; }
+        .summary-box li { font-size: 1.05rem; color: var(--text-main); padding: 10px 0; border-bottom: 1px solid rgba(0,168,133,0.15); font-weight: 500; }
+        .summary-box li:last-child { border-bottom: none; }
+        .summary-box li::before { content: "✓  "; color: var(--primary); font-weight: 900; }
+        .faq-section { margin: 80px 0 48px; }
+        .faq-section > h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 32px; letter-spacing: -0.03em; border-left: 6px solid var(--primary); padding-left: 20px; }
+        .faq-item { border-bottom: 1px solid var(--border); padding: 28px 0; }
+        .faq-item:last-child { border-bottom: none; }
+        .faq-q { font-size: 1.1rem; font-weight: 700; color: var(--text-main); margin-bottom: 14px; display: flex; gap: 10px; }
+        .faq-q::before { content: "Q."; color: var(--primary); font-weight: 900; flex-shrink: 0; }
+        .faq-a { font-size: 1.05rem; color: var(--text-sub); line-height: 1.8; padding-left: 28px; margin: 0; }
+        .related-section { margin: 48px 0; padding: 36px; background: #fafafa; border-radius: 28px; }
+        .related-section h3 { font-size: 1rem; font-weight: 800; margin-bottom: 20px; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.06em; }
+        .related-links { display: grid; gap: 10px; }
+        .related-link { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text-main); padding: 14px 18px; background: white; border-radius: 14px; border: 1px solid var(--border); transition: all 0.2s; font-weight: 600; font-size: 0.95rem; }
+        .related-link:hover { border-color: var(--primary); color: var(--primary); }
+        .related-link-icon { font-size: 1.3rem; flex-shrink: 0; }
     </style>
     <script type="application/ld+json">
     {
@@ -66,6 +85,7 @@
       "@type": "Article",
       "headline": "테이커(Taker)의 심리학: 선의를 먹고 자라는 사람들",
       "description": "나의 배려를 당연하게 여기는 사람들의 심리는 무엇일까요? 테이커의 5가지 전형적인 패턴과 보호 전략.",
+      "keywords": "테이커 특징, 테이커 심리학, 이용당하는 사람, 가스라이팅, 관계 착취, 매처 전략",
       "image": "https://hogoo-challenge.pages.dev/og-image.jpg",
       "author": {
         "@type": "Organization",
@@ -78,9 +98,45 @@
         "logo": { "@type": "ImageObject", "url": "https://hogoo-challenge.pages.dev/favicon.svg" }
       },
       "datePublished": "2026-04-26T00:00:00+09:00",
-      "dateModified": "2026-04-29T00:00:00+09:00",
+      "dateModified": "2026-04-30T00:00:00+09:00",
       "mainEntityOfPage": { "@type": "WebPage", "@id": "https://hogoo-challenge.pages.dev/articles/taker-signals.html" },
-      "inLanguage": "ko"
+      "inLanguage": "ko",
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "cssSelector": [".summary-box", "h1", ".article-content > p:first-child"]
+      }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "테이커(Taker)란 어떤 사람인가요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "테이커는 관계를 '제로섬 게임'으로 인식하며, 자신이 얻는 이득이 상대의 손실보다 커야만 만족하는 사람입니다. 반드시 악당은 아니지만, 타인의 에너지와 호의를 당연하게 소모시키는 패턴을 가지고 있습니다. 애덤 그랜트의 연구에서 기버(Giver), 매처(Matcher)와 함께 3가지 관계 유형 중 하나입니다."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "테이커의 5가지 특징은 무엇인가요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "테이커의 5가지 핵심 특징: ① 권리와 의무의 불균형 — 99번의 호의는 당연하게 여기고 1번의 거절은 배신으로 받아들임, ② 약자에게 강하고 강자에게 약함, ③ 가스라이팅 성향 — 죄책감을 자극해 행동을 조종함, ④ 감사의 유통기한이 짧음 — 도움을 받자마자 잊고 또 요구함, ⑤ 책임 전가의 달인 — 문제는 항상 남의 탓."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "테이커로부터 나를 보호하는 매처(Matcher) 전략은 무엇인가요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "테이커 대응 3가지 전략: ① 조건부 도움 — '이번에 도와줄게. 대신 다음번엔 네가 맡아줘'처럼 보상을 명확히 요구, ② 정보의 제한 — 당신의 약점이나 감정적 부분을 테이커에게 공유하지 않기, ③ 물리적 거리두기 — 테이커와의 대화 시간을 제한하기. 테이커를 변화시키려 하지 말고 에너지를 기버들에게 투자하세요."
+          }
+        }
+      ]
     }
     </script>
     <script type="application/ld+json">
@@ -107,6 +163,16 @@
                 <h1 class="article-title">테이커(Taker)의 심리학:<br>당신의 선의를 먹고 자라는 사람들</h1>
             </header>
             <div class="featured-image">🦂</div>
+
+            <div class="summary-box">
+                <h3>이 글의 핵심 3가지</h3>
+                <ul>
+                    <li>테이커는 관계를 제로섬 게임으로 인식하며 기버의 공감 능력을 착취한다</li>
+                    <li>가스라이팅·책임 전가 등 5가지 신호로 테이커를 식별할 수 있다</li>
+                    <li>매처(Matcher) 전략 — 조건부 도움·정보 제한·거리두기로 자신을 보호한다</li>
+                </ul>
+            </div>
+
             <div class="article-content">
                 <p>세상에는 타인에게 에너지를 주는 사람(Giver)이 있고, 그 에너지를 소모시키는 사람(Taker)이 있습니다. 테이커가 반드시 악당인 것은 아닙니다. 하지만 그들은 관계를 <strong>'제로섬 게임'</strong>으로 인식하며, 자신이 얻는 이득이 상대의 손실보다 커야만 만족합니다.</p>
 
@@ -152,6 +218,42 @@
                 <p>테이커를 변화시키려 노력하지 마십시오. 그들은 자신의 전략이 통하지 않는 곳으로 떠날 뿐입니다. 당신의 소중한 에너지는 당신과 함께 성장할 수 있는 다른 기버들을 위해 남겨두어야 합니다.</p>
             </div>
         </article>
+
+        <!-- FAQ Section -->
+        <section class="faq-section">
+            <h2>자주 묻는 질문 (FAQ)</h2>
+            <div class="faq-item">
+                <div class="faq-q">테이커(Taker)란 어떤 사람인가요?</div>
+                <p class="faq-a">테이커는 관계를 '제로섬 게임'으로 인식하며, 자신이 얻는 이득이 상대의 손실보다 커야만 만족하는 사람입니다. 반드시 악인은 아니지만, 타인의 에너지와 호의를 당연하게 소모시키는 패턴을 가집니다. 애덤 그랜트의 연구에서 기버(Giver), 매처(Matcher)와 함께 3가지 관계 유형 중 하나입니다.</p>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">테이커의 5가지 특징은 무엇인가요?</div>
+                <p class="faq-a">① 권리와 의무의 불균형 — 99번 호의는 당연히 여기고 1번 거절은 배신으로 받아들임, ② 약자에게 강하고 강자에게 약함, ③ 가스라이팅 성향 — 죄책감을 자극해 행동을 조종함, ④ 감사의 유통기한이 짧음 — 도움 직후 잊고 또 요구함, ⑤ 책임 전가의 달인 — 문제는 항상 남의 탓.</p>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">테이커로부터 나를 보호하는 방법은 무엇인가요?</div>
+                <p class="faq-a">매처(Matcher) 전략 3가지: ① 조건부 도움 — 명확한 보상을 요구, ② 정보의 제한 — 당신의 약점을 공유하지 않기, ③ 물리적 거리두기 — 대화 시간을 제한하기. 테이커를 변화시키려 하지 말고, 소중한 에너지는 함께 성장할 기버들을 위해 남겨두세요.</p>
+            </div>
+        </section>
+
+        <!-- 관련 아티클 -->
+        <div class="related-section">
+            <h3>관련 아티클</h3>
+            <div class="related-links">
+                <a href="./giver-burnout.html" class="related-link">
+                    <span class="related-link-icon">🌊</span>
+                    <span>착한 사람의 번아웃 — 병적 이타주의의 함정과 회복 전략</span>
+                </a>
+                <a href="./setting-boundaries.html" class="related-link">
+                    <span class="related-link-icon">🚧</span>
+                    <span>죄책감 없이 NO라고 말하는 법 — 경계선의 과학 3단계</span>
+                </a>
+                <a href="./smart-giver-guide.html" class="related-link">
+                    <span class="related-link-icon">🏆</span>
+                    <span>성공하는 이타주의자 — 스마트 기버의 3가지 비밀</span>
+                </a>
+            </div>
+        </div>
 
         <!-- SNS Share -->
         <div style="margin: 48px 0; padding: 32px; background: #f0f9f7; border-radius: 24px; text-align: center;">

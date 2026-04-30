@@ -73,6 +73,25 @@
         footer { padding: 80px 0; border-top: 1px solid var(--border); text-align: center; color: #86868b; font-size: 0.95rem; }
         .footer-links { margin-bottom: 24px; display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; }
         .footer-links a { text-decoration: none; color: #424245; font-weight: 500; }
+        .summary-box { background: var(--primary-soft); border-radius: 24px; padding: 32px; margin-bottom: 56px; border-left: 6px solid var(--primary); }
+        .summary-box h3 { font-size: 0.85rem; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 16px; }
+        .summary-box ul { padding-left: 0; list-style: none; }
+        .summary-box li { font-size: 1.05rem; color: var(--text-main); padding: 10px 0; border-bottom: 1px solid rgba(0,168,133,0.15); font-weight: 500; }
+        .summary-box li:last-child { border-bottom: none; }
+        .summary-box li::before { content: "✓  "; color: var(--primary); font-weight: 900; }
+        .faq-section { margin: 80px 0 48px; }
+        .faq-section > h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 32px; letter-spacing: -0.03em; border-left: 6px solid var(--primary); padding-left: 20px; }
+        .faq-item { border-bottom: 1px solid var(--border); padding: 28px 0; }
+        .faq-item:last-child { border-bottom: none; }
+        .faq-q { font-size: 1.1rem; font-weight: 700; color: var(--text-main); margin-bottom: 14px; display: flex; gap: 10px; }
+        .faq-q::before { content: "Q."; color: var(--primary); font-weight: 900; flex-shrink: 0; }
+        .faq-a { font-size: 1.05rem; color: var(--text-sub); line-height: 1.8; padding-left: 28px; margin: 0; }
+        .related-section { margin: 48px 0; padding: 36px; background: #fafafa; border-radius: 28px; }
+        .related-section h3 { font-size: 1rem; font-weight: 800; margin-bottom: 20px; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.06em; }
+        .related-links { display: grid; gap: 10px; }
+        .related-link { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text-main); padding: 14px 18px; background: white; border-radius: 14px; border: 1px solid var(--border); transition: all 0.2s; font-weight: 600; font-size: 0.95rem; }
+        .related-link:hover { border-color: var(--primary); color: var(--primary); }
+        .related-link-icon { font-size: 1.3rem; flex-shrink: 0; }
     </style>
     <script type="application/ld+json">
     {
@@ -80,6 +99,7 @@
       "@type": "Article",
       "headline": "착한 사람의 번아웃: 병적 이타주의의 함정",
       "description": "남을 돕는 행위가 오히려 나를 파괴하고 있다면? 심리학이 말하는 병적 이타주의의 원인과 기버들을 위한 정서적 회복 전략.",
+      "keywords": "번아웃, 병적 이타주의, 기버 번아웃, 착한 사람 증후군, 정서적 회복, 거절 연습",
       "image": "https://hogoo-challenge.pages.dev/og-image.jpg",
       "author": {
         "@type": "Organization",
@@ -92,9 +112,45 @@
         "logo": { "@type": "ImageObject", "url": "https://hogoo-challenge.pages.dev/favicon.svg" }
       },
       "datePublished": "2026-04-26T00:00:00+09:00",
-      "dateModified": "2026-04-29T00:00:00+09:00",
+      "dateModified": "2026-04-30T00:00:00+09:00",
       "mainEntityOfPage": { "@type": "WebPage", "@id": "https://hogoo-challenge.pages.dev/articles/giver-burnout.html" },
-      "inLanguage": "ko"
+      "inLanguage": "ko",
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "cssSelector": [".summary-box", "h1", ".article-content > p:first-child"]
+      }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "병적 이타주의(Pathological Altruism)란 무엇인가요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "병적 이타주의는 타인을 돕고자 하는 선한 의도가 오히려 자신을 파괴하거나, 장기적으로는 상대방에게도 해가 되는 결과를 초래하는 심리 상태입니다. 자신의 존재 가치를 오직 '타인에게 쓸모 있음'에서만 찾으려 할 때 발생하는 정서적 파산 상태이기도 합니다."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "기버 번아웃의 대표적인 증상은 무엇인가요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "기버 번아웃의 3가지 핵심 증상은 ① 과도한 책임감(상대의 감정을 내가 해결해야 한다는 강박), ② 보상 없는 헌신으로 인한 배신감(겉으로는 웃으며 돕지만 내면은 공허함), ③ 자기 소멸(내가 원하는 것보다 상대가 원하는 것을 먼저 파악하는 습관)입니다."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "기버 번아웃을 예방하거나 극복하는 방법은 무엇인가요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "기버 번아웃 극복을 위한 핵심 전략은 두 가지입니다. 첫째, '선택적 관대함'으로 에너지를 기버와 매처(Matcher)에게 집중시킵니다. 둘째, 거절 스크립트를 미리 준비해 '자동 반사'로 거절할 수 있도록 훈련합니다. 당신이 건강하게 서 있을 때 비로소 더 많은 사람을 도울 수 있습니다."
+          }
+        }
+      ]
     }
     </script>
     <script type="application/ld+json">
@@ -134,6 +190,15 @@
             </header>
 
             <div class="featured-image">🌊</div>
+
+            <div class="summary-box" itemscope itemtype="https://schema.org/ItemList">
+                <h3>이 글의 핵심 3가지</h3>
+                <ul>
+                    <li>병적 이타주의는 '선의'가 자기 파괴로 이어지는 심리 상태다</li>
+                    <li>기버가 거절을 못 하는 이유는 진화적 '생존 본능'에서 비롯된다</li>
+                    <li>선택적 관대함 + 거절 스크립트로 지치지 않는 기버가 될 수 있다</li>
+                </ul>
+            </div>
 
             <div class="article-content">
                 <p>우리는 보통 '이타주의'를 숭고하고 아름다운 것으로만 배웁니다. 하지만 심리학계에서는 최근 흥미로운 개념을 주목하고 있습니다. 바로 <strong>병적 이타주의(Pathological Altruism)</strong>입니다. 이는 타인을 돕고자 하는 선한 의도가 오히려 자신을 파괴하거나, 장기적으로는 상대방에게도 해가 되는 결과를 초래하는 상태를 말합니다.</p>
@@ -180,6 +245,42 @@
                 </div>
             </div>
         </article>
+
+        <!-- FAQ Section -->
+        <section class="faq-section">
+            <h2>자주 묻는 질문 (FAQ)</h2>
+            <div class="faq-item">
+                <div class="faq-q">병적 이타주의(Pathological Altruism)란 무엇인가요?</div>
+                <p class="faq-a">타인을 돕고자 하는 선한 의도가 오히려 자신을 파괴하거나, 장기적으로는 상대방에게도 해가 되는 결과를 초래하는 심리 상태입니다. 자신의 존재 가치를 오직 '타인에게 쓸모 있음'에서만 찾으려 할 때 발생하는 정서적 파산 상태이기도 합니다.</p>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">기버 번아웃의 대표적인 증상은 무엇인가요?</div>
+                <p class="faq-a">① 과도한 책임감 — 상대의 감정이 나 때문에 나빠졌다는 강박, ② 보상 없는 헌신 — 겉으로는 웃으며 돕지만 내면의 공허함과 배신감, ③ 자기 소멸 — 내가 원하는 것보다 상대가 원하는 것을 먼저 파악하는 습관입니다.</p>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">기버 번아웃을 예방하거나 극복하는 방법은 무엇인가요?</div>
+                <p class="faq-a">첫째, '선택적 관대함'을 연습하여 에너지를 기버·매처에게 집중시킵니다. 둘째, 거절 스크립트를 미리 준비해 자동 반사적으로 거절할 수 있도록 훈련합니다. 당신이 건강하게 서 있을 때 비로소 더 많은 사람을 도울 수 있습니다.</p>
+            </div>
+        </section>
+
+        <!-- 관련 아티클 -->
+        <div class="related-section">
+            <h3>관련 아티클</h3>
+            <div class="related-links">
+                <a href="./setting-boundaries.html" class="related-link">
+                    <span class="related-link-icon">🚧</span>
+                    <span>죄책감 없이 NO라고 말하는 법 — 경계선의 과학 3단계</span>
+                </a>
+                <a href="./taker-signals.html" class="related-link">
+                    <span class="related-link-icon">🦂</span>
+                    <span>테이커(Taker)를 식별하는 5가지 신호</span>
+                </a>
+                <a href="./smart-giver-guide.html" class="related-link">
+                    <span class="related-link-icon">🏆</span>
+                    <span>성공하는 이타주의자 — 스마트 기버의 3가지 비밀</span>
+                </a>
+            </div>
+        </div>
 
         <!-- SNS Share -->
         <div style="margin: 48px 0; padding: 32px; background: #f0f9f7; border-radius: 24px; text-align: center;">

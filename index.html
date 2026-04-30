@@ -57,6 +57,7 @@
       "url": "https://hogoo-challenge.pages.dev",
       "description": "애덤 그랜트의 기버/테이커 이론 기반 관계 유형 진단 및 7일 챌린지 플랫폼",
       "inLanguage": "ko",
+      "keywords": "기버, 테이커, 매처, 애덤 그랜트, 기브앤테이크, 호구탈출, 심리테스트, 관계심리학, 스마트 기버",
       "potentialAction": {
         "@type": "SearchAction",
         "target": "https://hogoo-challenge.pages.dev/?q={search_term_string}",
@@ -70,6 +71,10 @@
           "@type": "ImageObject",
           "url": "https://hogoo-challenge.pages.dev/favicon.svg"
         }
+      },
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "cssSelector": [".hero h1", ".hero p", ".define-section"]
       }
     }
     </script>
@@ -257,9 +262,23 @@
             </div>
         </section>
 
-        <section class="content-section">
-            <h2 class="section-title">우리가 추구하는 가치</h2>
-            <p class="section-text">세상에는 남에게 베푸는 것을 좋아하는 <span class="highlight">'기버'</span>들이 있습니다. 이들은 공동체를 따뜻하게 만들지만, 때로는 자신의 에너지가 소진되거나 타인에게 이용당하기도 합니다.</p>
+        <section class="content-section define-section">
+            <h2 class="section-title">기버·테이커·매처란 무엇인가?</h2>
+            <p class="section-text">와튼스쿨 조직심리학자 <strong>애덤 그랜트(Adam Grant)</strong>는 저서 <em>Give and Take</em>에서 사람의 관계 유형을 3가지로 분류했습니다.</p>
+            <div style="display: grid; gap: 16px; margin-bottom: 24px;">
+                <div style="padding: 24px; background: var(--primary-soft); border-radius: 20px; border-left: 5px solid var(--primary);">
+                    <strong style="color: var(--primary); display: block; margin-bottom: 8px; font-size: 1.05rem;">기버(Giver)</strong>
+                    <p style="margin: 0; font-size: 0.95rem; color: var(--text-sub); line-height: 1.7;">타인에게 먼저 베푸는 사람. 대가를 기대하지 않고 돕는 성향으로, 조직 내 최하위 성과자이면서 동시에 최상위 성과자이기도 하다.</p>
+                </div>
+                <div style="padding: 24px; background: #fff9db; border-radius: 20px; border-left: 5px solid #fcc419;">
+                    <strong style="color: #e67700; display: block; margin-bottom: 8px; font-size: 1.05rem;">테이커(Taker)</strong>
+                    <p style="margin: 0; font-size: 0.95rem; color: var(--text-sub); line-height: 1.7;">받는 것을 우선시하는 사람. 관계를 제로섬 게임으로 인식하며, 자신의 이익이 상대의 손실보다 커야 만족한다.</p>
+                </div>
+                <div style="padding: 24px; background: #f8f9fa; border-radius: 20px; border-left: 5px solid #868e96;">
+                    <strong style="color: #495057; display: block; margin-bottom: 8px; font-size: 1.05rem;">매처(Matcher)</strong>
+                    <p style="margin: 0; font-size: 0.95rem; color: var(--text-sub); line-height: 1.7;">주고받음의 균형을 추구하는 사람. 상대가 베풀면 베풀고, 상대가 착취하면 방어한다. 전체 인구의 다수를 차지한다.</p>
+                </div>
+            </div>
             <p class="section-text">GIVE Ecosystem은 기버들이 <span class="highlight">'똑똑한 기버(Smart Giver)'</span>가 될 수 있도록 돕습니다. 과학적인 심리 진단과 구체적인 행동 가이드를 통해, 당신의 선의가 더 가치 있게 쓰일 수 있도록 지원합니다.</p>
         </section>
 
