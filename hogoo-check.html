@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-P6PM6JBJH1"></script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-P6PM6JBJH1');</script>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>나는 호구일까? 테스트 | GIVE Ecosystem</title>
+    <meta name="description" content="12가지 질문으로 알아보는 나의 호구 지수. 착한 것과 호구는 다릅니다. 지금 바로 무료 진단해보세요.">
+    <link rel="canonical" href="https://hogoo-challenge.pages.dev/hogoo-check.html">
+    <meta property="og:title" content="나는 호구일까? 테스트 | GIVE Ecosystem">
+    <meta property="og:description" content="12가지 질문으로 알아보는 나의 호구 지수. 착한 것과 호구는 다릅니다.">
+    <meta property="og:image" content="https://hogoo-challenge.pages.dev/og-image.jpg">
+    <meta property="og:url" content="https://hogoo-challenge.pages.dev/hogoo-check.html">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+    <link rel="stylesheet" href="/share.css">
+    <style>
+        :root { --primary: #00a885; --primary-soft: #f0f9f7; --text-main: #1d1d1f; --text-sub: #6e6e73; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Pretendard', -apple-system, sans-serif; background: #f9f9fb; color: var(--text-main); }
+        .inner { max-width: 480px; margin: 0 auto; padding: 0 20px; }
+        .hidden { display: none !important; }
+
+        #intro-page { padding: 60px 0 80px; text-align: center; }
+        .test-badge { display: inline-block; background: var(--primary-soft); color: var(--primary); font-size: 0.75rem; font-weight: 700; padding: 6px 14px; border-radius: 100px; margin-bottom: 20px; letter-spacing: 0.05em; }
+        .test-title { font-size: 2.2rem; font-weight: 900; color: var(--text-main); margin-bottom: 12px; letter-spacing: -0.04em; line-height: 1.2; }
+        .test-subtitle { font-size: 1rem; color: var(--text-sub); line-height: 1.7; margin-bottom: 12px; }
+        .test-meta { font-size: 0.82rem; color: #aeaeb2; margin-bottom: 32px; }
+        .start-btn { display: block; width: 100%; background: linear-gradient(135deg, #00a885, #00866a); color: white; font-size: 1.05rem; font-weight: 800; padding: 18px; border-radius: 16px; border: none; cursor: pointer; box-shadow: 0 6px 24px rgba(0,168,133,0.3); font-family: inherit; transition: all 0.2s; }
+        .start-btn:hover { transform: translateY(-2px); }
+
+        #test-page { padding: 32px 0 80px; }
+        .progress-wrap { margin-bottom: 28px; }
+        .progress-info { display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--text-sub); margin-bottom: 8px; font-weight: 600; }
+        .progress-bar { background: #ebebf0; border-radius: 100px; height: 6px; overflow: hidden; }
+        .progress-fill { background: linear-gradient(90deg, var(--primary), #00c4a0); height: 100%; border-radius: 100px; transition: width 0.4s ease; }
+        .q-num-label { font-size: 0.78rem; font-weight: 700; color: var(--primary); letter-spacing: 0.05em; margin-bottom: 12px; }
+        .q-text { font-size: 1.15rem; font-weight: 800; color: var(--text-main); line-height: 1.6; margin-bottom: 28px; }
+        .answer-list { display: flex; flex-direction: column; gap: 10px; }
+        .ans-btn { background: white; border: 2px solid #e5e5ea; border-radius: 14px; padding: 16px 18px; font-size: 0.95rem; font-weight: 600; color: var(--text-main); text-align: left; cursor: pointer; transition: all 0.2s; font-family: inherit; }
+        .ans-btn:hover, .ans-btn:active { border-color: var(--primary); background: var(--primary-soft); }
+
+        #result-page { padding: 40px 0 80px; }
+        .result-header { text-align: center; margin-bottom: 24px; }
+        .result-header .label { font-size: 0.85rem; font-weight: 700; color: var(--text-sub); }
+        .type-name { font-size: 1.9rem; font-weight: 900; color: var(--text-main); margin-top: 8px; letter-spacing: -0.04em; line-height: 1.2; }
+        .type-desc-box { background: white; border-radius: 20px; padding: 24px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+        .type-tagline { font-size: 1.15rem; font-weight: 800; color: var(--primary); text-align: center; margin-bottom: 14px; letter-spacing: -0.02em; line-height: 1.4; }
+        .type-body { font-size: 0.95rem; line-height: 1.8; color: var(--text-main); }
+        .result-card { background: white; border: 2px solid #eee; border-radius: 20px; padding: 20px; margin-bottom: 12px; }
+        .card-title { font-size: 0.82rem; font-weight: 800; color: var(--text-sub); letter-spacing: 0.04em; margin-bottom: 10px; }
+        .card-body { font-size: 0.95rem; line-height: 1.7; color: var(--text-main); }
+        .result-cta { margin-top: 24px; background: #fff8f8; border: 1.5px solid #ffe5e5; border-radius: 20px; padding: 24px 20px; text-align: center; }
+        .result-cta h3 { font-size: 1rem; font-weight: 800; color: #c0392b; margin-bottom: 8px; line-height: 1.5; }
+        .result-cta p { font-size: 0.82rem; color: var(--text-sub); line-height: 1.6; margin-bottom: 20px; }
+        .cta-btn { display: block; width: 100%; background: linear-gradient(135deg, #00a885, #00866a); color: white; font-size: 1rem; font-weight: 800; padding: 16px; border-radius: 14px; border: none; cursor: pointer; box-shadow: 0 4px 20px rgba(0,168,133,0.3); margin-bottom: 8px; font-family: inherit; transition: all 0.2s; }
+        .cta-btn:hover { transform: translateY(-2px); }
+        .cta-sub-text { font-size: 0.72rem; color: #aeaeb2; }
+        .related-tests { display: flex; gap: 8px; margin-top: 20px; }
+        .rel-card { flex: 1; background: white; border-radius: 14px; padding: 16px 10px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.06); border: 2px solid transparent; transition: all 0.2s; text-decoration: none; display: block; }
+        .rel-card:hover { border-color: var(--primary); transform: translateY(-2px); }
+        .rel-emoji { font-size: 1.5rem; margin-bottom: 6px; }
+        .rel-name { font-size: 0.75rem; font-weight: 800; color: var(--text-main); line-height: 1.3; }
+        .retry-wrap { text-align: center; margin-top: 20px; }
+        .retry-link { font-size: 0.82rem; color: var(--text-sub); cursor: pointer; text-decoration: underline; background: none; border: none; font-family: inherit; }
+        footer { margin-top: 60px; padding: 40px 0; border-top: 1px solid #f2f2f2; text-align: center; font-size: 0.82rem; color: #999; }
+        footer a { color: #666; text-decoration: none; margin: 0 10px; }
+    </style>
+</head>
+<body>
+
+<div id="intro-page">
+    <div class="inner">
+        <span class="test-badge">무료 심리 테스트</span>
+        <h1 class="test-title">나는<br>호구일까?</h1>
+        <p class="test-subtitle">착한 것과 호구는 다릅니다.<br>12가지 질문으로 지금 확인해보세요.</p>
+        <p class="test-meta">12문항 · 약 3분 · 완전 무료</p>
+        <button class="start-btn" onclick="startTest()">지금 바로 진단하기</button>
+    </div>
+</div>
+
+<div id="test-page" class="hidden">
+    <div class="inner">
+        <div class="progress-wrap">
+            <div class="progress-info">
+                <span id="qNum">1 / 12</span>
+                <span id="qPct">0%</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" id="progFill" style="width:0%"></div></div>
+        </div>
+        <p class="q-num-label" id="qNumLabel">Q1</p>
+        <h2 class="q-text" id="qText"></h2>
+        <div class="answer-list" id="answerList"></div>
+    </div>
+</div>
+
+<div id="result-page" class="hidden">
+    <div class="inner">
+        <div class="result-header">
+            <p class="label">나의 호구 유형은</p>
+            <h1 class="type-name" id="typeName"></h1>
+        </div>
+        <div class="type-desc-box">
+            <p class="type-tagline" id="typeTagline"></p>
+            <p class="type-body" id="typeBody"></p>
+        </div>
+        <div class="result-card" id="cardStrength"></div>
+        <div class="result-card" style="background:#fffafa;border-color:#ffe5e5" id="cardRisk"></div>
+        <div class="result-card" style="background:#f0faff;border-color:#e0f2ff" id="cardAdvice"></div>
+
+        <div class="result-cta">
+            <h3>"이 패턴이 왜 생겼는지,<br>어떻게 바꾸는지 더 알고 싶다면"</h3>
+            <p>GIVE ID 심화 분석에서 당신의 관계 패턴을<br>완전히 해석해드립니다.</p>
+            <button class="cta-btn" onclick="window.open('https://givecosystem.com','_blank')">GIVE ID 심화 분석 받아보기 →</button>
+            <span class="cta-sub-text">givecosystem.com · ₩4,900부터 시작</span>
+        </div>
+
+        <div class="related-tests">
+            <a class="rel-card" href="give-test.html">
+                <div class="rel-emoji">🎯</div>
+                <div class="rel-name">GIVE ID<br>유형 진단</div>
+            </a>
+            <a class="rel-card" href="relationship-risk.html">
+                <div class="rel-emoji">⚠️</div>
+                <div class="rel-name">인간관계<br>위험도 테스트</div>
+            </a>
+        </div>
+
+        <div class="retry-wrap">
+            <button class="retry-link" onclick="retryTest()">다시 테스트하기</button>
+        </div>
+
+        <footer>
+            <div style="margin-bottom:16px">
+                <a href="index.html">홈으로</a>
+                <a href="give-test.html">GIVE ID 진단</a>
+                <a href="articles/giver-burnout.html">심리 칼럼</a>
+                <a href="terms.html">이용약관</a>
+                <a href="privacy.html">개인정보처리방침</a>
+            </div>
+            <p>&copy; 2026 GIVE Ecosystem. All rights reserved.</p>
+        </footer>
+    </div>
+</div>
+
+<script src="/share.js" defer></script>
+<script>
+const questions = [
+    { q: "부탁을 받으면 어떻게 반응하나요?", a: ["고민도 없이 \"응, 할게!\"", "고민하다가 결국 한다", "한번 생각해보겠다고 한다", "상황에 따라 다르게 답한다"] },
+    { q: "부탁을 거절했을 때 어떤 기분이 드나요?", a: ["내가 나쁜 사람 같아서 매우 죄책감이 든다", "약간 미안한 마음이 든다", "거절은 했지만 찜찜하다", "별로 죄책감이 없다"] },
+    { q: "상대방이 불편해할까봐 원하는 걸 참은 적이 있나요?", a: ["자주 있다", "가끔 있다", "드물게 있다", "거의 없다"] },
+    { q: "\"착하다\", \"배려심이 깊다\"는 말을 얼마나 자주 듣나요?", a: ["매우 자주 듣는다", "자주 듣는다", "가끔 듣는다", "거의 못 듣는다"] },
+    { q: "내가 도움을 요청하기는 어려운 편인가요?", a: ["매우 어렵다. 부담 줄까봐 못 한다", "조금 어렵다", "그저 그렇다", "전혀 어렵지 않다"] },
+    { q: "같은 사람이 반복해서 부탁할 때 어떻게 하나요?", a: ["계속 들어준다", "부담되지만 들어준다", "한번쯤 말해본다", "기준을 정하고 말한다"] },
+    { q: "관계가 끊길까봐 싫은 것도 참은 적이 있나요?", a: ["자주 있다", "가끔 있다", "드물게 있다", "거의 없다"] },
+    { q: "나보다 상대방 감정/기분을 먼저 생각하는 편인가요?", a: ["항상 그렇다", "자주 그렇다", "가끔 그렇다", "그렇지 않다"] },
+    { q: "도움을 주고 나서 감사 인사가 없으면 어떤가요?", a: ["많이 서운하고 상처가 된다", "살짝 서운하다", "별로 신경 쓰지 않는다", "전혀 신경 안 쓴다"] },
+    { q: "거절 후 상대방이 실망할 것 같아서 번복한 적이 있나요?", a: ["자주 있다", "가끔 있다", "드물게 있다", "없다"] },
+    { q: "지금 내 에너지 상태가 어떤가요?", a: ["항상 지쳐있다. 충전이 안 된다", "가끔 번아웃이 온다", "보통이다", "에너지가 넘친다"] },
+    { q: "내 인간관계에서 나는...", a: ["항상 더 많이 주는 쪽이다", "대체로 더 많이 주는 것 같다", "주고받는 것이 비슷하다", "받는 편이다"] }
+];
+
+const results = {
+    hogoo: {
+        name: "🥺 완전 호구형",
+        tagline: "착하다는 말이 칭찬인지 상처인지 모르겠어요",
+        body: "당신은 상대방을 위해 자신을 희생하는 경우가 매우 잦습니다. 거절이 어렵고, 거절 후에는 죄책감이 뒤따릅니다. 착한 것은 훌륭한 자질이지만, 경계 없는 친절은 당신을 지치게 만듭니다.",
+        strength: "강한 공감 능력과 따뜻한 마음으로 주변 사람들에게 신뢰를 받습니다. 이 에너지를 자신을 위해서도 쓸 수 있다면 훨씬 더 건강해집니다.",
+        risk: "반복적인 희생과 억눌린 감정이 쌓여 번아웃으로 이어질 수 있습니다. 상대방이 당신의 친절을 당연하게 여길 가능성이 높습니다.",
+        advice: "오늘 딱 하나, 작은 '아니오'를 연습해보세요. 죄책감 없이 거절하는 근육은 훈련으로 키울 수 있습니다."
+    },
+    nice: {
+        name: "😊 착한 사람형",
+        tagline: "선 하나만 더 그으면 관계가 달라집니다",
+        body: "당신은 기본적으로 다정하고 배려심이 깊지만, 때로는 경계를 지키지 못해 손해를 보는 경우가 있습니다. 호구와 착한 사람의 경계선에서 흔들리는 중입니다.",
+        strength: "배려와 현실감각을 동시에 갖추고 있습니다. 조금만 경계를 더 명확히 하면 관계가 훨씬 건강해집니다.",
+        risk: "무의식적으로 상대방의 기분을 먼저 배려하다 자신의 감정을 나중에 처리하는 패턴이 있습니다.",
+        advice: "부탁을 받았을 때 즉각 답하지 말고, '잠깐 생각해볼게'라는 시간을 만들어 보세요."
+    },
+    middle: {
+        name: "🤔 중간 경계형",
+        tagline: "상황에 따라 달라지는 당신의 패턴",
+        body: "당신은 상황에 따라 경계를 잘 지키기도 하고 무너지기도 합니다. 특정 관계나 상황에서 약점이 드러나는 패턴이 있습니다.",
+        strength: "유연하게 상황을 판단할 줄 압니다. 어떤 상황에서 경계가 무너지는지 파악하면 훨씬 안정적인 관계를 만들 수 있습니다.",
+        risk: "일관성 없는 반응이 상대방에게 혼란을 줄 수 있고, 특정 조건에서는 여전히 손해를 볼 수 있습니다.",
+        advice: "어떤 상황에서 경계가 무너지는지 패턴을 기록해보세요. 인식이 변화의 첫걸음입니다."
+    },
+    realist: {
+        name: "💪 현실주의형",
+        tagline: "이미 잘 하고 있어요, 더 정교하게 만들면 완벽",
+        body: "당신은 자신의 감정과 경계를 꽤 잘 인식하고 있습니다. 관계에서 일방적으로 손해 보는 일이 적은 편입니다.",
+        strength: "자기 인식이 높고 불필요한 희생을 잘 피합니다. 건강한 관계를 만들어 나가는 기초가 탄탄합니다.",
+        risk: "너무 현실적으로 계산하다 관계에서 감정적 연결이 약해질 수 있습니다.",
+        advice: "경계는 잘 지키고 있으니, 이제는 관계의 '따뜻함'을 조금 더 표현해보는 것도 좋습니다."
+    },
+    wall: {
+        name: "🧱 철벽형",
+        tagline: "경계는 탁월해요, 관계의 온기도 함께",
+        body: "당신은 경계를 매우 잘 지킵니다. 하지만 경계가 너무 강해 때로는 진정한 연결이 어려울 수 있습니다.",
+        strength: "자기 보호 능력이 탁월합니다. 불필요한 에너지 낭비가 거의 없습니다.",
+        risk: "경계가 너무 높아 친밀한 관계를 형성하기 어려울 수 있습니다. 좋은 사람을 밀어낼 위험도 있습니다.",
+        advice: "신뢰할 수 있는 사람에게 작은 것 하나씩 솔직하게 나눠보세요. 경계와 온기는 공존할 수 있습니다."
+    }
+};
+
+let score = 0, current = 0;
+
+function startTest() {
+    document.getElementById('intro-page').classList.add('hidden');
+    document.getElementById('test-page').classList.remove('hidden');
+    window.scrollTo(0, 0);
+    renderQ();
+}
+
+function renderQ() {
+    const q = questions[current];
+    document.getElementById('qNumLabel').textContent = 'Q' + (current + 1);
+    document.getElementById('qNum').textContent = (current + 1) + ' / ' + questions.length;
+    const pct = Math.round((current / questions.length) * 100);
+    document.getElementById('qPct').textContent = pct + '%';
+    document.getElementById('progFill').style.width = pct + '%';
+    document.getElementById('qText').textContent = q.q;
+    const list = document.getElementById('answerList');
+    list.innerHTML = '';
+    q.a.forEach((ans, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'ans-btn';
+        btn.textContent = ans;
+        btn.onclick = () => {
+            score += (3 - i);
+            current++;
+            if (current >= questions.length) showResult();
+            else { window.scrollTo(0, 0); renderQ(); }
+        };
+        list.appendChild(btn);
+    });
+}
+
+function showResult() {
+    document.getElementById('test-page').classList.add('hidden');
+    document.getElementById('result-page').classList.remove('hidden');
+    window.scrollTo(0, 0);
+    let key;
+    if (score >= 30) key = 'hogoo';
+    else if (score >= 22) key = 'nice';
+    else if (score >= 14) key = 'middle';
+    else if (score >= 7) key = 'realist';
+    else key = 'wall';
+    const d = results[key];
+    document.getElementById('typeName').textContent = d.name;
+    document.getElementById('typeTagline').textContent = '“' + d.tagline + '”';
+    document.getElementById('typeBody').textContent = d.body;
+    document.getElementById('cardStrength').innerHTML = '<div class="card-title">✨ 당신의 강점</div><p class="card-body">' + d.strength + '</p>';
+    document.getElementById('cardRisk').innerHTML = '<div class="card-title" style="color:#e53e3e">⚠️ 주의할 점</div><p class="card-body">' + d.risk + '</p>';
+    document.getElementById('cardAdvice').innerHTML = '<div class="card-title" style="color:#007aff">🚀 지금 할 수 있는 것</div><p class="card-body">' + d.advice + '</p>';
+}
+
+function retryTest() {
+    score = 0; current = 0;
+    document.getElementById('result-page').classList.add('hidden');
+    document.getElementById('intro-page').classList.remove('hidden');
+    window.scrollTo(0, 0);
+}
+</script>
+</body>
+</html>
