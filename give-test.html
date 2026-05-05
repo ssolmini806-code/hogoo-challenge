@@ -133,6 +133,57 @@
         .cta-box { margin-top: 40px; text-align: center; }
         .sub-cta { color: var(--text-gray); font-size: 0.9rem; margin-top: 16px; text-decoration: underline; cursor: pointer; display: block; }
 
+        /* ── Conversion Zones ── */
+        #conversion-zones { margin-top: 0; }
+        .conv-progress-wrap { background: white; border-radius: 20px; padding: 24px 20px; margin-bottom: 12px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); }
+        .conv-prog-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 0.85rem; font-weight: 700; }
+        .conv-prog-row span:last-child { color: var(--primary); }
+        .conv-prog-bar { background: #f2f2f7; border-radius: 100px; height: 8px; margin-bottom: 20px; overflow: hidden; }
+        .conv-prog-fill { background: linear-gradient(90deg, #00a885, #00c4a0); height: 100%; width: 35%; border-radius: 100px; }
+        .conv-locked-list { display: flex; flex-direction: column; gap: 10px; }
+        .conv-locked-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: #fafafa; border-radius: 12px; border: 1px solid #f0f0f0; font-size: 0.85rem; color: #3e3e3e; }
+        .conv-blur { filter: blur(4px); user-select: none; }
+        .conv-ikea { text-align: center; font-size: 0.75rem; color: #aeaeb2; margin-top: 14px; }
+        .conv-ikea strong { color: var(--primary); }
+        .conv-pricing-wrap { background: white; border-radius: 20px; padding: 24px 20px; margin-bottom: 12px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); }
+        .conv-framing { text-align: center; font-size: 0.9rem; color: #6e6e73; margin-bottom: 20px; line-height: 1.6; }
+        .conv-framing strong { color: #1d1d1f; }
+        .conv-price-cards { display: flex; gap: 8px; }
+        .conv-price-card { flex: 1; border-radius: 16px; padding: 16px 10px; text-align: center; border: 2px solid #e5e5ea; position: relative; cursor: pointer; transition: all 0.2s; }
+        .conv-price-card:hover { transform: translateY(-2px); }
+        .conv-price-card.best { border-color: var(--primary); background: #f0f9f7; }
+        .conv-best-badge { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: var(--primary); color: white; font-size: 0.62rem; font-weight: 800; padding: 3px 8px; border-radius: 100px; white-space: nowrap; }
+        .conv-price-name { font-size: 0.7rem; font-weight: 700; color: #6e6e73; margin-bottom: 6px; }
+        .conv-price-val { font-size: 1.15rem; font-weight: 800; color: #1d1d1f; }
+        .conv-price-card.best .conv-price-val { color: var(--primary); }
+        .conv-price-orig { font-size: 0.65rem; color: #aeaeb2; text-decoration: line-through; margin-top: 2px; }
+        .conv-price-save { font-size: 0.62rem; color: #e53e3e; font-weight: 700; margin-top: 2px; }
+        .conv-price-items { font-size: 0.68rem; color: #6e6e73; margin-top: 8px; line-height: 1.4; }
+        .conv-math { text-align: center; font-size: 0.75rem; color: #aeaeb2; margin-top: 14px; }
+        .conv-math strong { color: var(--primary); }
+        .conv-loss-wrap { background: #fff8f8; border: 1.5px solid #ffe5e5; border-radius: 20px; padding: 24px 20px; margin-bottom: 12px; }
+        .conv-loss-head { font-size: 0.95rem; font-weight: 800; color: #c0392b; text-align: center; margin-bottom: 8px; line-height: 1.5; }
+        .conv-loss-body { font-size: 0.82rem; color: #6e6e73; text-align: center; line-height: 1.7; margin-bottom: 20px; }
+        .conv-cta-primary { display: block; width: 100%; background: linear-gradient(135deg, #00a885, #00866a); color: white; font-size: 1rem; font-weight: 800; padding: 17px; border-radius: 14px; border: none; cursor: pointer; box-shadow: 0 4px 20px rgba(0,168,133,0.3); transition: all 0.2s; }
+        .conv-cta-primary:hover { transform: translateY(-2px); }
+        .conv-cta-sub { display: block; text-align: center; font-size: 0.72rem; color: #aeaeb2; margin-top: 8px; }
+        .conv-tests-wrap { margin-bottom: 12px; }
+        .conv-tests-title { font-size: 0.78rem; font-weight: 700; color: #6e6e73; text-align: center; margin-bottom: 12px; }
+        .conv-test-cards { display: flex; gap: 8px; }
+        .conv-test-card { flex: 1; background: white; border-radius: 16px; padding: 18px 12px; text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,0.06); cursor: pointer; border: 2px solid transparent; transition: all 0.2s; text-decoration: none; display: block; }
+        .conv-test-card:hover { border-color: var(--primary); transform: translateY(-2px); }
+        .conv-test-emoji { font-size: 1.6rem; margin-bottom: 8px; }
+        .conv-test-name { font-size: 0.82rem; font-weight: 800; color: #1d1d1f; margin-bottom: 4px; line-height: 1.3; }
+        .conv-test-meta { font-size: 0.68rem; color: #aeaeb2; }
+        .conv-hub-wrap { background: #f0f9f7; border-radius: 20px; padding: 20px; margin-bottom: 12px; }
+        .conv-hub-title { font-size: 0.78rem; font-weight: 700; color: var(--primary); margin-bottom: 14px; }
+        .conv-hub-links { display: flex; flex-direction: column; gap: 8px; }
+        .conv-hub-link { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: white; border-radius: 10px; font-size: 0.82rem; color: #1d1d1f; font-weight: 600; text-decoration: none; transition: color 0.2s; }
+        .conv-hub-link:hover { color: var(--primary); }
+        .conv-hub-badge { font-size: 0.6rem; font-weight: 700; color: white; padding: 2px 7px; border-radius: 100px; flex-shrink: 0; }
+        .badge-new { background: #e53e3e; }
+        .badge-free { background: #aeaeb2; }
+
     </style>
     <script type="application/ld+json">
     {
@@ -274,6 +325,8 @@
                     <span class="sub-cta" onclick="alert('곧 업데이트 될 예정입니다!')">심화 분석 결과 리포트 받아보기 (준비중)</span>
                 </div>
 
+                <div id="conversion-zones"></div>
+
                 <div class="share-wrap">
                     <div class="sh-title">진단 결과 공유하기</div>
                     <div class="share-row">
@@ -350,7 +403,8 @@
             action: "오늘 딱 한 번, 무리한 부탁 거절해보기",
             strength: "압도적인 공감 능력과 선한 영향력", 
             risk: "거절하지 못해 내 삶의 우선순위가 사라짐", 
-            advice: "거절은 상대가 아닌, 나를 지키는 최소한의 장치입니다." 
+            advice: "거절은 상대가 아닌, 나를 지키는 최소한의 장치입니다.",
+            locked: ["천사형이 가장 자주 <b>당하는 관계 함정</b>","도움을 줬는데도 <b>죄책감이 드는 이유</b>","천사형에게 딱 맞는 <b>경계 설정 스크립트 3가지</b>"]
         },
         diplomat: {
             name: "눈치 빠른 프로 외교관",
@@ -360,7 +414,8 @@
             action: "오늘 나의 감정을 솔직하게 한 문장 말해보기",
             strength: "유연한 대인관계와 갈등 중재 능력", 
             risk: "겉으론 웃지만 속으로는 극심한 스트레스", 
-            advice: "명확한 의사표현이 더 건강한 관계를 만듭니다." 
+            advice: "명확한 의사표현이 더 건강한 관계를 만듭니다.",
+            locked: ["외교관형이 놓치는 <b>자기 감정 신호</b>","눈치 보다가 무너지는 <b>임계점 패턴</b>","외교관형을 위한 <b>솔직한 소통 훈련법</b>"]
         },
         architect: {
             name: "효율적인 관계 설계자",
@@ -370,7 +425,8 @@
             action: "효율과 상관없이 누군가에게 작은 칭찬 건네기",
             strength: "합리적인 리소스 관리와 냉철한 판단력", 
             risk: "차가운 인상으로 중요한 유대감을 놓칠 위험", 
-            advice: "가끔은 비효율적인 친절이 더 큰 기회를 가져옵니다." 
+            advice: "가끔은 비효율적인 친절이 더 큰 기회를 가져옵니다.",
+            locked: ["설계자형이 빠지는 <b>감정 함정</b>","효율을 추구하다 잃는 <b>관계의 온기</b>","설계자형을 위한 <b>공감 능력 훈련법</b>"]
         },
         guardian: {
             name: "단단한 경계의 수호자",
@@ -380,7 +436,8 @@
             action: "나의 선을 넘지 않는 범위에서 먼저 커피 한 잔 제안하기",
             strength: "주도적인 자아 보호와 명확한 가치관", 
             risk: "새로운 관계에 대한 폐쇄성과 고립 가능성", 
-            advice: "벽을 낮춘다고 당신의 가치가 훼손되지는 않습니다." 
+            advice: "벽을 낮춘다고 당신의 가치가 훼손되지는 않습니다.",
+            locked: ["수호자형이 관계에서 <b>놓치는 것</b>","강한 경계 뒤에 숨겨진 <b>감정 패턴</b>","경계를 지키면서도 <b>친밀해지는 전략</b>"]
         },
         burnout: {
             name: "지친 아낌없이 주는 나무",
@@ -390,7 +447,8 @@
             action: "오늘 하루, 모든 '도와주기'를 멈추고 나를 위해 쓰기",
             strength: "누구보다 헌신적인 태도와 숭고한 배려심", 
             risk: "작은 부탁에도 예민해지거나 사람을 기피함", 
-            advice: "지금 당신에게 가장 필요한 도움은 '아무것도 안 하는 것'입니다." 
+            advice: "지금 당신에게 가장 필요한 도움은 '아무것도 안 하는 것'입니다.",
+            locked: ["번아웃이 오기 전 나타나는 <b>3가지 경고 신호</b>","주는 것을 멈추지 못하는 <b>심리 구조</b>","번아웃형 전용 <b>회복 로드맵</b>"]
         },
         blocker: {
             name: "철벽 방어 현실주의자",
@@ -400,7 +458,8 @@
             action: "상대의 작은 호의(인사 등) 하나만 있는 그대로 받아보기",
             strength: "불필요한 관계에 휘둘리지 않는 냉철함", 
             risk: "결정적인 순간에 도움을 청할 사람이 없는 고립", 
-            advice: "모두가 당신을 이용하려 하지는 않습니다." 
+            advice: "모두가 당신을 이용하려 하지는 않습니다.",
+            locked: ["철벽이 오히려 <b>상처가 되는 순간</b>","철벽형이 내심 <b>그리워하는 관계</b>","철벽을 유지하면서도 <b>연결되는 방법</b>"]
         },
         mixed: {
             name: "유연한 현실주의 밸런서",
@@ -410,7 +469,8 @@
             action: "내가 가장 중요하게 생각하는 관계 원칙 1가지 적어보기",
             strength: "상황 적응력이 뛰어나고 극단에 치우치지 않음", 
             risk: "자기 기준 부족으로 결정적 순간에 손해를 봄", 
-            advice: "나만의 'GIVE 가이드라인'이 당신을 자유롭게 합니다." 
+            advice: "나만의 'GIVE 가이드라인'이 당신을 자유롭게 합니다.",
+            locked: ["밸런서형이 혼란스러운 <b>진짜 이유</b>","상황에 따라 달라지는 패턴의 <b>장단점</b>","밸런서형을 위한 <b>일관성 훈련</b>"]
         }
     };
 
@@ -507,12 +567,81 @@
         // CTA Section Update
         const ctaBox = document.querySelector('.cta-box');
         ctaBox.innerHTML = `
-            <button class="start-btn" style="background: linear-gradient(90deg, #00a885 0%, #00cba1 100%); margin-bottom: 12px; box-shadow: 0 10px 20px rgba(0, 168, 133, 0.2);" onclick="location.href='hogoo-test.html'">🔥 7일 호구 탈출 챌린지로 지금 바꾸기</button>
-            <div style="display: block; background: #1d1d1f; color: white; padding: 20px; border-radius: 16px; font-size: 1.1rem; font-weight: 700; cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.1); transition: all 0.2s ease;" onclick="alert('심화 분석 리포트는 현재 론칭 준비 중입니다. 정식 서비스가 시작되면 결제 후 리포트를 받아보실 수 있습니다! 조금만 기다려 주세요.')">
-                📊 나만을 위한 20P 심화 분석 리포트 받기
-                <div style="font-size: 0.8rem; font-weight: 400; opacity: 0.8; margin-top: 4px;">(유료 서비스 론칭 준비 중 - 정밀 진단)</div>
+            <button class="start-btn" onclick="location.href='hogoo-test.html'">🔥 7일 호구 탈출 챌린지 시작하기</button>
+            <span class="sub-cta" onclick="location.reload()" style="margin-top:16px;display:inline-block;">다시 테스트하기</span>
+        `;
+        populateConversionZones(data);
+    }
+
+    function populateConversionZones(data) {
+        const el = document.getElementById('conversion-zones');
+        if (!el) return;
+        const locked = data.locked || [];
+        const lockedHtml = locked.map((item, i) => {
+            const text = i === 0 ? item : item.replace(/<b>(.*?)<\/b>/g, '<b><span class="conv-blur">$1</span></b>');
+            return `<div class="conv-locked-item"><span style="font-size:1rem;flex-shrink:0;">🔒</span><span>${text}</span></div>`;
+        }).join('');
+        el.innerHTML = `
+        <div class="conv-progress-wrap">
+            <div class="conv-prog-row"><span>분석 진행률</span><span>35% 완료</span></div>
+            <div class="conv-prog-bar"><div class="conv-prog-fill"></div></div>
+            <div class="conv-locked-list">${lockedHtml}</div>
+            <p class="conv-ikea">16개 질문에 성실히 답하셨어요 — <strong>심화 분석까지 한 걸음만 더</strong></p>
+        </div>
+        <div class="conv-pricing-wrap">
+            <p class="conv-framing"><strong>커피 한 잔 값</strong>으로<br>평생 반복되는 관계 패턴을 끊을 수 있다면?</p>
+            <div class="conv-price-cards">
+                <div class="conv-price-card" onclick="window.open('https://givecosystem.com','_blank')">
+                    <div class="conv-price-name">30일 챌린지</div>
+                    <div class="conv-price-val">₩14,900</div>
+                    <div class="conv-price-items">호구 탈출 훈련<br>30일 미션 + 코칭</div>
+                </div>
+                <div class="conv-price-card best" onclick="window.open('https://givecosystem.com','_blank')">
+                    <div class="conv-best-badge">🏆 가장 인기</div>
+                    <div class="conv-price-name">심화 + 30일 세트</div>
+                    <div class="conv-price-val">₩17,000</div>
+                    <div class="conv-price-orig">별도 구매 ₩19,800</div>
+                    <div class="conv-price-save">▲ ₩2,800 절약</div>
+                    <div class="conv-price-items">심화 리포트 포함<br>완전 분석 + 훈련</div>
+                </div>
+                <div class="conv-price-card" onclick="window.open('https://givecosystem.com','_blank')">
+                    <div class="conv-price-name">심화 분석만</div>
+                    <div class="conv-price-val">₩4,900</div>
+                    <div class="conv-price-items">관계 패턴 분석<br>PDF 리포트</div>
+                </div>
             </div>
-            <span class="sub-cta" onclick="location.reload()" style="margin-top: 20px; display: inline-block;">다시 테스트하기</span>
+            <p class="conv-math">₩4,900 + ₩14,900 = ₩19,800 → <strong>세트로 하면 ₩17,000</strong></p>
+        </div>
+        <div class="conv-loss-wrap">
+            <p class="conv-loss-head">"지금 이 패턴을 모르면<br>같은 관계에서 같은 상처를 반복합니다"</p>
+            <p class="conv-loss-body">기본 진단은 당신의 유형을 알려드렸어요.<br>하지만 <strong>왜 반복되는지</strong>, <strong>어떻게 바꿀 수 있는지</strong>는<br>심화 분석에서만 알 수 있습니다.</p>
+            <button class="conv-cta-primary" onclick="window.open('https://givecosystem.com','_blank')">내 관계 약점 지금 분석하기 →</button>
+            <span class="conv-cta-sub">givecosystem.com · 100% 사실 기반 분석</span>
+        </div>
+        <div class="conv-tests-wrap">
+            <p class="conv-tests-title">📝 나에 대해 더 알고 싶다면</p>
+            <div class="conv-test-cards">
+                <a class="conv-test-card" href="hogoo-check.html">
+                    <div class="conv-test-emoji">🤔</div>
+                    <div class="conv-test-name">나는<br>호구일까?</div>
+                    <div class="conv-test-meta">12문항 · 3분</div>
+                </a>
+                <a class="conv-test-card" href="relationship-risk.html">
+                    <div class="conv-test-emoji">⚠️</div>
+                    <div class="conv-test-name">내 인간관계<br>위험도 테스트</div>
+                    <div class="conv-test-meta">12문항 · 3분</div>
+                </a>
+            </div>
+        </div>
+        <div class="conv-hub-wrap">
+            <p class="conv-hub-title">📚 무료로 더 읽어보기</p>
+            <div class="conv-hub-links">
+                <a class="conv-hub-link" href="articles/giver-burnout.html"><span class="conv-hub-badge badge-free">무료</span>기버 번아웃 — 나는 왜 항상 지치는가</a>
+                <a class="conv-hub-link" href="articles/setting-boundaries.html"><span class="conv-hub-badge badge-free">무료</span>경계 설정이 어려운 진짜 이유</a>
+                <a class="conv-hub-link" href="articles/loss-aversion-relationships.html"><span class="conv-hub-badge badge-new">NEW</span>거절이 이렇게 힘든 이유: 손실 회피 심리학</a>
+                <a class="conv-hub-link" href="articles/curiosity-gap-patterns.html"><span class="conv-hub-badge badge-new">NEW</span>나도 모르는 나의 관계 패턴: 호기심의 틈</a>
+            </div>
+        </div>
         `;
     }
 </script>
