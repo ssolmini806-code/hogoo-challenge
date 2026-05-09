@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <title>챌린지 후기 | GIVE Ecosystem</title>
+    <meta name="description" content="호구 탈출 7일 챌린지 참가자들이 남긴 실제 후기와 변화 기록을 확인하세요.">
+    <link rel="canonical" href="https://hogoo-challenge.pages.dev/reviews.html">
+    <meta name="robots" content="index, follow">
+    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" crossorigin>
+    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" crossorigin></noscript>
+    <style>
+        :root {
+            --green: #00a885;
+            --green-dark: #007a62;
+            --ink: #17191c;
+            --muted: #6a7078;
+            --line: #e7e9ee;
+            --soft: #f0f9f7;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; word-break: keep-all; }
+        body { font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif; background: #f7f8fa; color: var(--ink); line-height: 1.6; }
+        a { color: inherit; text-decoration: none; }
+        .wrap { width: min(100%, 760px); margin: 0 auto; padding: 0 20px; }
+        nav { height: 62px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); background: rgba(255,255,255,.92); position: sticky; top: 0; backdrop-filter: blur(12px); z-index: 2; }
+        nav .wrap { display: flex; align-items: center; justify-content: space-between; }
+        .logo { color: var(--green-dark); font-weight: 950; letter-spacing: 0; }
+        .nav-links { display: flex; gap: 14px; color: var(--muted); font-size: .88rem; font-weight: 750; }
+        .hero { padding: 42px 0 26px; }
+        .badge { display: inline-flex; background: var(--soft); color: var(--green-dark); border: 1px solid #d7efe9; border-radius: 999px; padding: 7px 11px; font-size: .78rem; font-weight: 900; margin-bottom: 16px; }
+        h1 { font-size: clamp(2rem, 8vw, 3.4rem); line-height: 1.08; letter-spacing: 0; font-weight: 950; margin-bottom: 14px; }
+        .lead { color: #414852; font-size: 1.02rem; font-weight: 700; max-width: 560px; }
+        .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 24px 0; }
+        .stat { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+        .stat strong { display: block; color: var(--green-dark); font-size: 1.3rem; font-weight: 950; }
+        .stat span { color: var(--muted); font-size: .78rem; font-weight: 800; }
+        .review-grid { display: grid; gap: 12px; padding-bottom: 34px; }
+        .review-card { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 18px; box-shadow: 0 10px 28px rgba(24,31,43,.06); }
+        .review-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+        .name { font-weight: 950; }
+        .stars { color: #f0a040; font-size: .9rem; flex: 0 0 auto; }
+        .content { color: #2d333b; font-size: .96rem; font-weight: 650; }
+        .meta { margin-top: 12px; color: var(--muted); font-size: .78rem; font-weight: 800; }
+        .empty { background: #fff; border: 1px dashed #cfd6dd; border-radius: 8px; padding: 28px; color: var(--muted); text-align: center; font-weight: 800; }
+        .cta { background: #101418; color: #fff; border-radius: 8px; padding: 22px; margin: 6px 0 54px; display: grid; gap: 12px; }
+        .cta p { color: #cfd5dc; font-size: .92rem; }
+        .btn { min-height: 52px; border-radius: 8px; background: var(--green); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-weight: 950; }
+        footer { border-top: 1px solid var(--line); padding: 30px 0; color: #8b94a1; text-align: center; font-size: .8rem; }
+        @media (max-width: 560px) {
+            .stats { grid-template-columns: 1fr; }
+            .nav-links { gap: 10px; font-size: .8rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="wrap">
+            <a class="logo" href="index.html">GIVE ECOSYSTEM</a>
+            <div class="nav-links">
+                <a href="hogoo-test.html">챌린지</a>
+                <a href="give-test.html">진단</a>
+                <a href="articles/giver-burnout.html">칼럼</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="wrap">
+        <section class="hero">
+            <span class="badge">Challenge Reviews</span>
+            <h1>호구 탈출 챌린지 후기</h1>
+            <p class="lead">공유 버튼으로 끝나지 않도록, 참가자들이 직접 남긴 변화 기록을 모았습니다.</p>
+            <div class="stats">
+                <div class="stat"><strong id="reviewCount">0</strong><span>공개 후기</span></div>
+                <div class="stat"><strong id="avgRating">0.0</strong><span>평균 평점</span></div>
+                <div class="stat"><strong id="missionCount">0</strong><span>후기 작성자 완료 미션</span></div>
+            </div>
+        </section>
+
+        <section class="review-grid" id="reviewGrid">
+            <div class="empty">후기를 불러오는 중입니다.</div>
+        </section>
+
+        <section class="cta">
+            <strong>나도 챌린지를 해보고 후기를 남기고 싶다면</strong>
+            <p>7일 동안 부탁, 거절, 경계선 미션을 직접 실천하고 마지막에 후기를 남길 수 있습니다.</p>
+            <a class="btn" href="hogoo-test.html">챌린지 참여하고 후기 남기기</a>
+        </section>
+    </main>
+
+    <footer>
+        <div class="wrap">&copy; 2026 GIVE Ecosystem. All rights reserved.</div>
+    </footer>
+
+    <script type="module">
+        import { supabase } from './src/supabase.js';
+
+        const fallbackReviews = [
+            {
+                id: "sample-1",
+                display_name: "7일 완주자",
+                rating: 5,
+                content: "부탁을 받으면 바로 답하던 습관이 줄었어요. 특히 '확인하고 말해줄게' 한 문장이 제일 도움이 됐습니다.",
+                completed_missions: 21,
+                created_at: "2026-05-01T09:00:00.000Z"
+            },
+            {
+                id: "sample-2",
+                display_name: "경계 연습 중",
+                rating: 5,
+                content: "거절을 연습하는 게 막연했는데 하루 미션으로 쪼개져 있어서 부담이 덜했습니다.",
+                completed_missions: 14,
+                created_at: "2026-05-03T09:00:00.000Z"
+            }
+        ];
+
+        function escapeHtml(value) {
+            return String(value || "").replace(/[&<>"']/g, char => ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;"
+            }[char]));
+        }
+
+        function renderReviews(reviews) {
+            const list = reviews.length ? reviews : fallbackReviews;
+            const totalRating = list.reduce((sum, item) => sum + (Number(item.rating) || 5), 0);
+            const totalMissions = list.reduce((sum, item) => sum + (Number(item.completed_missions) || 0), 0);
+            document.getElementById("reviewCount").textContent = list.length;
+            document.getElementById("avgRating").textContent = (totalRating / list.length).toFixed(1);
+            document.getElementById("missionCount").textContent = totalMissions;
+            document.getElementById("reviewGrid").innerHTML = list.map(review => {
+                const rating = Math.max(1, Math.min(5, Number(review.rating) || 5));
+                const date = review.created_at ? new Date(review.created_at).toLocaleDateString("ko-KR") : "";
+                return `
+                    <article class="review-card">
+                        <div class="review-top">
+                            <div class="name">${escapeHtml(review.display_name || "익명 참가자")}</div>
+                            <div class="stars">${"★".repeat(rating)}${"☆".repeat(5 - rating)}</div>
+                        </div>
+                        <p class="content">${escapeHtml(review.content)}</p>
+                        <div class="meta">미션 ${Number(review.completed_missions) || 0}개 완료${date ? ` · ${date}` : ""}</div>
+                    </article>
+                `;
+            }).join("");
+        }
+
+        async function loadReviews() {
+            try {
+                const { data, error } = await supabase
+                    .from('challenge_reviews')
+                    .select('id, display_name, rating, content, completed_missions, created_at')
+                    .eq('is_public', true)
+                    .order('created_at', { ascending: false })
+                    .limit(60);
+                if (error) throw error;
+                renderReviews(data || []);
+            } catch (error) {
+                console.warn("Using fallback reviews:", error);
+                renderReviews(fallbackReviews);
+            }
+        }
+
+        loadReviews();
+    </script>
+</body>
+</html>

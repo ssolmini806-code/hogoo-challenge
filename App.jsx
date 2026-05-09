@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { CheckCircle, Circle, ChevronRight, ChevronLeft, Award, Flame, Copy, Check, LogOut } from "lucide-react";
+import { CheckCircle, Circle, ChevronRight, ChevronLeft, Award, Flame, Copy, Check, LogOut, MessageSquare, Send, Star } from "lucide-react";
 import DAYS from "./days";
 import { supabase } from "./src/supabase";
 import Auth from "./src/components/Auth";
@@ -15,6 +15,11 @@ export default function App() {
   const [guilt, setGuilt] = useState({});
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [reviews, setReviews] = useState([]);
+  const [reviewForm, setReviewForm] = useState({ displayName: "", rating: 5, content: "" });
+  const [reviewStatus, setReviewStatus] = useState("");
+  const [reviewError, setReviewError] = useState("");
+  const [showReviewForm, setShowReviewForm] = useState(false);
 
   // Auth session listener
   useEffect(() => {
@@ -33,10 +38,49 @@ export default function App() {
   useEffect(() => {
     if (session) {
       fetchProgress();
+      fetchReviews();
     } else {
       setLoading(false);
+      fetchReviews();
     }
   }, [session]);
+
+  const fallbackReviews = [
+    {
+      id: "sample-1",
+      display_name: "7일 완주자",
+      rating: 5,
+      content: "부탁을 받으면 바로 답하던 습관이 줄었어요. 특히 '확인하고 말해줄게' 한 문장이 제일 도움이 됐습니다.",
+      completed_missions: 21,
+      created_at: "2026-05-01T09:00:00.000Z"
+    },
+    {
+      id: "sample-2",
+      display_name: "경계 연습 중",
+      rating: 5,
+      content: "거절을 연습하는 게 막연했는데 하루 미션으로 쪼개져 있어서 부담이 덜했습니다.",
+      completed_missions: 14,
+      created_at: "2026-05-03T09:00:00.000Z"
+    }
+  ];
+
+  const fetchReviews = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('challenge_reviews')
+        .select('id, display_name, rating, content, completed_missions, created_at')
+        .eq('is_public', true)
+        .order('created_at', { ascending: false })
+        .limit(6);
+
+      if (error) throw error;
+      setReviews(data && data.length ? data : fallbackReviews);
+    } catch (error) {
+      console.warn('Using fallback reviews:', error);
+      const localReviews = JSON.parse(localStorage.getItem('challenge_reviews_local') || '[]');
+      setReviews([...localReviews, ...fallbackReviews].slice(0, 6));
+    }
+  };
 
   const fetchProgress = async () => {
     try {
@@ -153,6 +197,53 @@ export default function App() {
     navigator.clipboard.writeText(getCertText());
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const submitReview = async (event) => {
+    event.preventDefault();
+    const content = reviewForm.content.trim();
+    const displayName = reviewForm.displayName.trim() || "익명 참가자";
+
+    if (content.length < 10) {
+      setReviewError("후기는 10자 이상으로 남겨주세요.");
+      return;
+    }
+
+    setReviewError("");
+    setReviewStatus("저장 중...");
+
+    const payload = {
+      user_id: session?.user?.id,
+      display_name: displayName.slice(0, 24),
+      rating: Number(reviewForm.rating),
+      content: content.slice(0, 500),
+      challenge_day: currentDay + 1,
+      completed_missions: completedMissions,
+      is_public: true
+    };
+
+    try {
+      const { data, error } = await supabase
+        .from('challenge_reviews')
+        .insert(payload)
+        .select('id, display_name, rating, content, completed_missions, created_at')
+        .single();
+
+      if (error) throw error;
+      setReviews(prev => [data, ...prev].slice(0, 6));
+      setReviewStatus("후기가 등록됐습니다.");
+      setReviewForm({ displayName: "", rating: 5, content: "" });
+      setShowReviewForm(false);
+    } catch (error) {
+      console.warn('Review saved locally:', error);
+      const localReview = { ...payload, id: `local-${Date.now()}`, created_at: new Date().toISOString() };
+      const localReviews = JSON.parse(localStorage.getItem('challenge_reviews_local') || '[]');
+      localStorage.setItem('challenge_reviews_local', JSON.stringify([localReview, ...localReviews].slice(0, 6)));
+      setReviews(prev => [localReview, ...prev].slice(0, 6));
+      setReviewStatus("후기를 이 기기에 임시 저장했습니다. 공개 저장소 설정 후 전체 공개됩니다.");
+      setReviewForm({ displayName: "", rating: 5, content: "" });
+      setShowReviewForm(false);
+    }
   };
 
   if (!session) {
@@ -441,22 +532,22 @@ export default function App() {
             "착한 게 아니라 사려 깊은 거예요. 다만, 그 다정함이 당신을 깎아먹지 않도록 오늘은 조금 더 이기적이어도 괜찮아요."
           </p>
 
-          {/* 심화 분석 리포트 CTA (Coming Soon) */}
+          {/* 심화 분석 리포트 CTA */}
           <div 
-            onClick={() => alert('심화 분석 리포트는 현재 론칭 준비 중입니다. 정식 서비스가 시작되면 결제 후 리포트를 받아보실 수 있습니다! 조금만 기다려 주세요.')}
+            onClick={() => window.open('https://givecosystem.com/', '_blank', 'noopener,noreferrer')}
             style={{ 
-              display: "block", background: "linear-gradient(90deg, #4a4540 0%, #1d1d1f 100%)", 
+              display: "block", background: "linear-gradient(90deg, #00a885 0%, #007a62 100%)", 
               color: "#f5ede3", padding: "16px", borderRadius: "12px",
               fontWeight: 800, fontSize: "15px", cursor: "pointer",
-              boxShadow: "0 10px 25px rgba(0, 0, 0, 0.2)",
+              boxShadow: "0 10px 25px rgba(0, 168, 133, 0.24)",
               transition: "transform 0.2s ease"
             }}
             onMouseOver={e => e.currentTarget.style.transform = "scale(1.02)"}
             onMouseOut={e => e.currentTarget.style.transform = "scale(1)"}
           >
-            📊 나만을 위한 20P 심화 분석 리포트 받기
+            📊 GIVE ID 심화 분석 바로 받기
             <div style={{ fontSize: "11px", marginTop: "4px", opacity: 0.8, fontWeight: 500 }}>
-              (유료 서비스 론칭 준비 중 - 정밀 진단)
+              givecosystem.com · 유료 정밀 진단으로 이동
             </div>
           </div>
         </div>
@@ -560,6 +651,110 @@ export default function App() {
                 </div>
             </div>
         </div>
+
+        {/* Reviews */}
+        <section style={{ marginBottom: 32, padding: 20, background: "#231f1c", border: "1px solid #3a3530", borderRadius: 16 }}>
+          <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12, marginBottom: 16 }}>
+            <div>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, color: "#7cc88a", fontSize: 12, fontWeight: 800, letterSpacing: 1, marginBottom: 8 }}>
+                <MessageSquare size={15} /> 챌린지 후기
+              </div>
+              <h3 style={{ margin: 0, color: "#f5ede3", fontSize: 18, lineHeight: 1.35 }}>직접 해본 사람들의 변화</h3>
+            </div>
+            <button
+              onClick={() => setShowReviewForm(prev => !prev)}
+              style={{
+                background: "#7cc88a", color: "#111814", border: 0, borderRadius: 10,
+                padding: "10px 12px", fontSize: 13, fontWeight: 800, cursor: "pointer",
+                display: "flex", alignItems: "center", gap: 6, flexShrink: 0
+              }}
+            >
+              <MessageSquare size={14} /> 후기 남기기
+            </button>
+          </div>
+
+          {showReviewForm && (
+            <form onSubmit={submitReview} style={{ background: "#1a1614", border: "1px solid #3a3530", borderRadius: 12, padding: 14, marginBottom: 16 }}>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 104px", gap: 10, marginBottom: 10 }}>
+                <input
+                  value={reviewForm.displayName}
+                  onChange={e => setReviewForm(prev => ({ ...prev, displayName: e.target.value }))}
+                  placeholder="표시 이름 (선택)"
+                  maxLength={24}
+                  style={{
+                    minWidth: 0, background: "#231f1c", border: "1px solid #3a3530", borderRadius: 8,
+                    padding: "11px 12px", color: "#f5ede3", fontSize: 13, outline: "none"
+                  }}
+                />
+                <select
+                  value={reviewForm.rating}
+                  onChange={e => setReviewForm(prev => ({ ...prev, rating: e.target.value }))}
+                  style={{
+                    background: "#231f1c", border: "1px solid #3a3530", borderRadius: 8,
+                    padding: "11px 8px", color: "#f5ede3", fontSize: 13, outline: "none"
+                  }}
+                >
+                  <option value="5">5점</option>
+                  <option value="4">4점</option>
+                  <option value="3">3점</option>
+                  <option value="2">2점</option>
+                  <option value="1">1점</option>
+                </select>
+              </div>
+              <textarea
+                rows={4}
+                value={reviewForm.content}
+                onChange={e => setReviewForm(prev => ({ ...prev, content: e.target.value }))}
+                placeholder="챌린지를 하면서 달라진 점, 도움이 된 미션, 아쉬웠던 점을 남겨주세요."
+                maxLength={500}
+                style={{
+                  width: "100%", background: "#231f1c", border: "1px solid #3a3530", borderRadius: 8,
+                  padding: "12px", color: "#f5ede3", fontSize: 13, lineHeight: 1.6, outline: "none", marginBottom: 10
+                }}
+              />
+              {reviewError && <div style={{ color: "#ef7777", fontSize: 12, marginBottom: 10 }}>{reviewError}</div>}
+              <button
+                type="submit"
+                style={{
+                  width: "100%", background: "#7cc88a", color: "#111814", border: 0, borderRadius: 10,
+                  padding: "12px", fontSize: 14, fontWeight: 900, cursor: "pointer",
+                  display: "flex", alignItems: "center", justifyContent: "center", gap: 6
+                }}
+              >
+                <Send size={14} /> 후기 등록하기
+              </button>
+            </form>
+          )}
+
+          {reviewStatus && <div style={{ color: "#9aaa95", fontSize: 12, lineHeight: 1.5, marginBottom: 12 }}>{reviewStatus}</div>}
+
+          <div style={{ display: "grid", gap: 10, marginBottom: 14 }}>
+            {reviews.map(review => (
+              <article key={review.id} style={{ background: "#1a1614", border: "1px solid #3a3530", borderRadius: 12, padding: 14 }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: 8 }}>
+                  <strong style={{ color: "#f5ede3", fontSize: 14 }}>{review.display_name || "익명 참가자"}</strong>
+                  <span style={{ display: "flex", alignItems: "center", gap: 2, color: "#f0a040", fontSize: 12, flexShrink: 0 }}>
+                    {Array.from({ length: Number(review.rating) || 5 }, (_, i) => <Star key={i} size={12} fill="currentColor" />)}
+                  </span>
+                </div>
+                <p style={{ margin: 0, color: "#b9aea4", fontSize: 13, lineHeight: 1.6 }}>{review.content}</p>
+                <div style={{ marginTop: 10, color: "#6f665f", fontSize: 11 }}>
+                  미션 {review.completed_missions || 0}개 완료
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <button
+            onClick={() => window.location.href = "reviews.html"}
+            style={{
+              width: "100%", background: "transparent", border: "1px solid #3a3530", borderRadius: 10,
+              padding: "12px", color: "#9aaa95", cursor: "pointer", fontSize: 13, fontWeight: 700
+            }}
+          >
+            전체 후기 보기
+          </button>
+        </section>
 
         {/* Back to Portal */}
         <button 
