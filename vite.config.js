@@ -24,6 +24,8 @@ export default defineConfig({
         'article-boundaries': resolve(__dirname, 'articles/setting-boundaries.html'),
         'article-signals': resolve(__dirname, 'articles/taker-signals.html'),
         'article-guide': resolve(__dirname, 'articles/smart-giver-guide.html'),
+        'article-loss': resolve(__dirname, 'articles/loss-aversion-relationships.html'),
+        'article-curiosity': resolve(__dirname, 'articles/curiosity-gap-patterns.html'),
       },
     },
   },

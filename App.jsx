@@ -284,6 +284,8 @@ export default function App() {
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #3a3530; border-radius: 10px; }
         .locked { opacity: 0.4; cursor: not-allowed !important; filter: grayscale(1); }
+        .a2a_kit img { max-width: none; }
+        .a2a_kit_size_36 img { width: 36px; height: 36px; display: inline-block; }
       `}</style>
 
       {/* Header */}
