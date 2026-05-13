@@ -392,15 +392,22 @@ function showResult() {
     else key = 'wall';
     const d = results[key];
     document.querySelector('.result-header').style.background = `linear-gradient(180deg, ${d.color}33 0%, #f9f9fb 100%)`;
-    document.getElementById('character').innerHTML = characterSvg(key);
+    document.getElementById('character').innerHTML = characterSvg(d.color, d.mood);
     document.getElementById('typeName').textContent = d.name;
-    document.getElementById('typeTagline').textContent = '“' + d.tagline + '”';
+    document.getElementById('typeTagline').textContent = '”' + d.tagline + '”';
     document.getElementById('typeBody').textContent = d.body;
-    document.getElementById('cardStrength').innerHTML = '<div class="card-title">✨ 당신의 강점</div><p class="card-body">' + d.strength + '</p>';
-    document.getElementById('cardRisk').innerHTML = '<div class="card-title" style="color:#e53e3e">⚠️ 주의할 점</div><p class="card-body">' + d.risk + '</p>';
-    document.getElementById('cardAdvice').innerHTML = '<div class="card-title" style="color:var(--primary)">🚀 지금 할 수 있는 것</div><p class="card-body">' + d.advice + '</p>';
-    
-    // Expert Insight Update
+    document.getElementById('cardStrength').innerHTML = '<div class=”card-title”>✨ 당신의 강점</div><p class=”card-body”>' + d.strength + '</p>';
+    document.getElementById('cardRisk').innerHTML = '<div class=”card-title” style=”color:#e53e3e”>⚠️ 주의할 점</div><p class=”card-body”>' + d.risk + '</p>';
+    document.getElementById('cardAdvice').innerHTML = '<div class=”card-title” style=”color:var(--primary)”>🚀 지금 할 수 있는 것</div><p class=”card-body”>' + d.advice + '</p>';
+
+    const maxScore = (questions.length - 1) * 3;
+    const pct = Math.round((score / maxScore) * 100);
+    document.getElementById('scoreBar').innerHTML =
+        '<div style=”font-size:0.82rem;font-weight:700;color:#aeaeb2;margin-bottom:8px”>호구 지수 ' + pct + '%</div>' +
+        '<div style=”background:#f2f2f7;border-radius:100px;height:10px;overflow:hidden”>' +
+        '<div style=”background:linear-gradient(90deg,#00a885,#ffd166,#ff6b6b);width:' + pct + '%;height:100%;border-radius:100px;transition:width 1s cubic-bezier(.4,0,.2,1)”></div>' +
+        '</div>';
+
     if (d.insight) {
         document.getElementById('expertHeadline').textContent = d.insight.headline;
         document.getElementById('expertText').textContent = d.insight.text;
