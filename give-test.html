@@ -622,13 +622,13 @@ function getRewardText(idx) {
 }
 
 function selectAnswer(score) {
-    if (current < 4) scores.G += score;
-    else if (current < 8) scores.I += score;
-    else if (current < 12) scores.V += score;
+    if (4 > current) scores.G += score;
+    else if (8 > current) scores.I += score;
+    else if (12 > current) scores.V += score;
     else scores.E += score;
 
     current += 1;
-    if (current < questions.length) {
+    if (questions.length > current) {
         renderQuestion();
     } else {
         document.getElementById("progressFill").style.width = "100%";
@@ -638,12 +638,12 @@ function selectAnswer(score) {
 
 function getFinalKey() {
     const { G, I, V, E } = scores;
-    if (G >= 13 && V <= 8) return "burnout";
-    if (G >= 12 && V <= 8 && E <= 9) return "angel";
-    if (G >= 11 && I >= 12 && V <= 9) return "diplomat";
-    if (G <= 8 && V >= 12 && I >= 11) return "blocker";
+    if (G >= 13 && 8 >= V) return "burnout";
+    if (G >= 12 && 8 >= V && 9 >= E) return "angel";
+    if (G >= 11 && I >= 12 && 9 >= V) return "diplomat";
+    if (8 >= G && V >= 12 && I >= 11) return "blocker";
     if (G >= 10 && I >= 10 && V >= 11 && E >= 11) return "guardian";
-    if (E >= 12 && Math.abs(G - V) <= 4) return "architect";
+    if (E >= 12 && 4 >= Math.abs(G - V)) return "architect";
     return "mixed";
 }
 
@@ -745,7 +745,7 @@ function downloadShareCard() {
 function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
     const words = text.split(" ");
     let line = "";
-    for (let n = 0; n < words.length; n++) {
+    for (let n = 0; words.length > n; n++) {
         const testLine = line + words[n] + " ";
         if (ctx.measureText(testLine).width > maxWidth && n > 0) {
             ctx.fillText(line, x, y);
@@ -828,13 +828,13 @@ function getRewardText(idx) {
 }
 
 function selectAnswer(score) {
-    if (current < 4) scores.G += score;
-    else if (current < 8) scores.I += score;
-    else if (current < 12) scores.V += score;
+    if (4 > current) scores.G += score;
+    else if (8 > current) scores.I += score;
+    else if (12 > current) scores.V += score;
     else scores.E += score;
 
     current += 1;
-    if (current < questions.length) {
+    if (questions.length > current) {
         renderQuestion();
     } else {
         document.getElementById("progressFill").style.width = "100%";
@@ -844,12 +844,12 @@ function selectAnswer(score) {
 
 function getFinalKey() {
     const { G, I, V, E } = scores;
-    if (G >= 13 && V <= 8) return "burnout";
-    if (G >= 12 && V <= 8 && E <= 9) return "angel";
-    if (G >= 11 && I >= 12 && V <= 9) return "diplomat";
-    if (G <= 8 && V >= 12 && I >= 11) return "blocker";
+    if (G >= 13 && 8 >= V) return "burnout";
+    if (G >= 12 && 8 >= V && 9 >= E) return "angel";
+    if (G >= 11 && I >= 12 && 9 >= V) return "diplomat";
+    if (8 >= G && V >= 12 && I >= 11) return "blocker";
     if (G >= 10 && I >= 10 && V >= 11 && E >= 11) return "guardian";
-    if (E >= 12 && Math.abs(G - V) <= 4) return "architect";
+    if (E >= 12 && 4 >= Math.abs(G - V)) return "architect";
     return "mixed";
 }
 
@@ -951,7 +951,7 @@ function downloadShareCard() {
 function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
     const words = text.split(" ");
     let line = "";
-    for (let n = 0; n < words.length; n++) {
+    for (let n = 0; words.length > n; n++) {
         const testLine = line + words[n] + " ";
         if (ctx.measureText(testLine).width > maxWidth && n > 0) {
             ctx.fillText(line, x, y);

@@ -369,7 +369,7 @@ function startTest() {
 
 function renderQ() {
     const q = questions[current];
-    document.getElementById('qNumLabel').textContent = 'Question ' + (current + 1 < 10 ? '0' : '') + (current + 1);
+    document.getElementById('qNumLabel').textContent = 'Question ' + (10 > current + 1 ? '0' : '') + (current + 1);
     document.getElementById('qNum').textContent = (current + 1) + ' / ' + questions.length;
     const pct = Math.round((current / questions.length) * 100);
     document.getElementById('qPct').textContent = pct + '%';
@@ -468,7 +468,7 @@ function startTest() {
 
 function renderQ() {
     const q = questions[current];
-    document.getElementById('qNumLabel').textContent = 'Question ' + (current + 1 < 10 ? '0' : '') + (current + 1);
+    document.getElementById('qNumLabel').textContent = 'Question ' + (10 > current + 1 ? '0' : '') + (current + 1);
     document.getElementById('qNum').textContent = (current + 1) + ' / ' + questions.length;
     const pct = Math.round((current / questions.length) * 100);
     document.getElementById('qPct').textContent = pct + '%';
