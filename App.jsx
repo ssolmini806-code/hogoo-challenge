@@ -262,9 +262,31 @@ export default function App() {
     );
   }
 
+  function CertificateImage() {
+    const [error, setError] = React.useState(false);
+    if (error) {
+      return (
+        <div style={{
+          background: "#231f1c", border: "1px dashed #3a3530", borderRadius: 16,
+          padding: "40px 24px", color: "#8a7f75", fontSize: 14
+        }}>
+          수료증 이미지 준비 중입니다
+        </div>
+      );
+    }
+    return (
+      <img
+        src="/images/certificate-7day.png"
+        alt="7일 챌린지 수료증"
+        onError={() => setError(true)}
+        style={{ width: "100%", borderRadius: 16, display: "block" }}
+      />
+    );
+  }
+
   return (
-    <div style={{ 
-      fontFamily: '"Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", name, sans-serif', 
+    <div style={{
+      fontFamily: '"Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", name, sans-serif',
       background: "#1a1614", 
       minHeight: "100vh", 
       padding: "0",
@@ -758,8 +780,59 @@ export default function App() {
           </button>
         </section>
 
+        {/* Day 7 Completion Sections */}
+        {currentDay === 6 && (
+          <>
+            {/* Certificate */}
+            <div style={{ marginBottom: 24, textAlign: "center" }}>
+              <CertificateImage />
+              <p style={{ margin: "10px 0 0", fontSize: 12, color: "#8a7f75" }}>
+                저장하려면 꾹 눌러주세요 (모바일)
+              </p>
+            </div>
+
+            {/* 30-Day CTA */}
+            <div style={{
+              marginBottom: 24,
+              borderRadius: 20,
+              padding: "28px 24px",
+              background: "linear-gradient(135deg, #667EEA 0%, #764BA2 100%)",
+              textAlign: "center"
+            }}>
+              <h3 style={{ margin: "0 0 10px", fontSize: 22, fontWeight: 900, color: "#fff", lineHeight: 1.3 }}>
+                7일 완주를 축하해요 🎉
+              </h3>
+              <p style={{ margin: "0 0 6px", fontSize: 15, color: "rgba(255,255,255,0.9)", lineHeight: 1.6 }}>
+                지금 만든 흐름을 30일 루틴으로 이어가보세요.
+              </p>
+              <p style={{ margin: "0 0 24px", fontSize: 13, color: "rgba(255,255,255,0.72)", lineHeight: 1.6 }}>
+                30일 챌린지 시작 시 목표 설정 PDF와 위기 구간 대처 가이드가 제공돼요.
+              </p>
+              <a
+                href="https://givecosystem.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "inline-block",
+                  width: "100%",
+                  padding: "14px",
+                  background: "#fff",
+                  color: "#764BA2",
+                  borderRadius: 12,
+                  fontSize: 15,
+                  fontWeight: 900,
+                  textDecoration: "none",
+                  boxSizing: "border-box"
+                }}
+              >
+                30일 챌린지 시작하기 →
+              </a>
+            </div>
+          </>
+        )}
+
         {/* Back to Portal */}
-        <button 
+        <button
           onClick={() => window.location.href = 'index.html'}
           style={{
             width: "100%", background: "transparent", border: "1px solid #3a3530",
