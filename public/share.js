@@ -35,4 +35,10 @@
   window.snsTiktok=function(){
     copy(location.href,'링크 복사 완료! 틱톡 앱에 붙여넣기 해주세요 🎵');
   };
+  window.snsCopy=function(btn){
+    var span=btn&&btn.querySelector('span');
+    var orig=span?span.textContent:'링크 복사';
+    copy(location.href,'링크가 복사되었어요 🔗');
+    if(span){span.textContent='복사 완료!';setTimeout(function(){span.textContent=orig;},1500);}
+  };
 })();
