@@ -4,6 +4,7 @@ import DAYS from "./days";
 import { supabase } from "./src/supabase";
 import LoginButton from "./src/components/LoginButton";
 import LoginModal from "./src/components/LoginModal";
+import ChallengeRewardSection from "./src/components/ChallengeRewardSection";
 
 
 export default function App() {
@@ -22,6 +23,8 @@ export default function App() {
   const [reviewError, setReviewError] = useState("");
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [loginModalOpen, setLoginModalOpen] = useState(false);
+  const [isShared, setIsShared] = useState(false);
+  const [isReviewed, setIsReviewed] = useState(false);
 
   // Auth session listener
   useEffect(() => {
@@ -41,6 +44,7 @@ export default function App() {
     if (session) {
       fetchProgress();
       fetchReviews();
+      fetchRewardState();
     } else {
       setLoading(false);
       fetchReviews();
@@ -121,6 +125,94 @@ export default function App() {
     }
   };
 
+  const fetchRewardState = async () => {
+    if (!session) return;
+    try {
+      const [{ data: reward }, { count }] = await Promise.all([
+        supabase
+          .from('user_rewards')
+          .select('reward_type')
+          .eq('user_id', session.user.id)
+          .eq('reward_context', 'seven_day_challenge')
+          .maybeSingle(),
+        supabase
+          .from('challenge_reviews')
+          .select('id', { count: 'exact', head: true })
+          .eq('user_id', session.user.id),
+      ]);
+      if (reward) {
+        setIsShared(reward.reward_type === 'sns' || reward.reward_type === 'both');
+        setIsReviewed(reward.reward_type === 'review' || reward.reward_type === 'both');
+      }
+      if ((count ?? 0) > 0) setIsReviewed(true);
+    } catch (err) {
+      console.warn('Failed to fetch reward state:', err);
+    }
+  };
+
+  const handleShareComplete = async () => {
+    if (!session) { setLoginModalOpen(true); return; }
+    try {
+      const { data: existing } = await supabase
+        .from('user_rewards')
+        .select('id, reward_type')
+        .eq('user_id', session.user.id)
+        .eq('reward_context', 'seven_day_challenge')
+        .maybeSingle();
+      if (existing) {
+        const nextType = existing.reward_type === 'review' ? 'both' : 'sns';
+        await supabase.from('user_rewards').update({ reward_type: nextType, unlocked: true }).eq('id', existing.id);
+      } else {
+        await supabase.from('user_rewards').insert({
+          user_id: session.user.id,
+          reward_context: 'seven_day_challenge',
+          reward_type: 'sns',
+          unlocked: true,
+        });
+      }
+      setIsShared(true);
+    } catch (err) {
+      console.error('Failed to save share reward:', err);
+    }
+  };
+
+  const handleReviewClick = () => {
+    if (!session) { setLoginModalOpen(true); return; }
+    setShowReviewForm(true);
+    setTimeout(() => {
+      const el = document.getElementById('review-section');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+  };
+
+  const handleBothComplete = async ({ completionDays: days, label }) => {
+    if (!session) return;
+    try {
+      const { data: existing } = await supabase
+        .from('user_rewards')
+        .select('id')
+        .eq('user_id', session.user.id)
+        .eq('reward_context', 'seven_day_challenge')
+        .maybeSingle();
+      const content = { completionDays: days, label };
+      if (existing) {
+        await supabase.from('user_rewards')
+          .update({ reward_type: 'both', unlocked: true, generated_content: content })
+          .eq('id', existing.id);
+      } else {
+        await supabase.from('user_rewards').insert({
+          user_id: session.user.id,
+          reward_context: 'seven_day_challenge',
+          reward_type: 'both',
+          unlocked: true,
+          generated_content: content,
+        });
+      }
+    } catch (err) {
+      console.warn('Failed to save both reward:', err);
+    }
+  };
+
   const saveProgress = async (dayIdx, updates) => {
     if (!session) return;
 
@@ -178,6 +270,7 @@ export default function App() {
 
   const totalScore = DAYS.reduce((sum, _, i) => sum + getDayScore(i), 0);
   const completedMissions = Object.values(missions).reduce((sum, arr) => sum + (arr ? arr.length : 0), 0);
+  const completionDays = DAYS.reduce((count, _, i) => count + ((missions[`${i}`] || []).length === 3 ? 1 : 0), 0);
   const dayMissions = missions[`${currentDay}`] || [];
   const allMissionsDone = dayMissions.length === 3;
 
@@ -239,6 +332,7 @@ export default function App() {
       setReviewStatus("후기가 등록됐습니다.");
       setReviewForm({ displayName: "", rating: 5, content: "" });
       setShowReviewForm(false);
+      setIsReviewed(true);
     } catch (error) {
       console.warn('Review saved locally:', error);
       const localReview = { ...payload, id: `local-${Date.now()}`, created_at: new Date().toISOString() };
@@ -248,6 +342,7 @@ export default function App() {
       setReviewStatus("후기를 이 기기에 임시 저장했습니다. 공개 저장소 설정 후 전체 공개됩니다.");
       setReviewForm({ displayName: "", rating: 5, content: "" });
       setShowReviewForm(false);
+      setIsReviewed(true);
     }
   };
 
@@ -669,7 +764,7 @@ export default function App() {
         </div>
 
         {/* Reviews */}
-        <section style={{ marginBottom: 32, padding: 20, background: "#231f1c", border: "1px solid #3a3530", borderRadius: 16 }}>
+        <section id="review-section" style={{ marginBottom: 32, padding: 20, background: "#231f1c", border: "1px solid #3a3530", borderRadius: 16 }}>
           <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12, marginBottom: 16 }}>
             <div>
               <div style={{ display: "flex", alignItems: "center", gap: 8, color: "#7cc88a", fontSize: 12, fontWeight: 800, letterSpacing: 1, marginBottom: 8 }}>
@@ -782,6 +877,18 @@ export default function App() {
                 저장하려면 꾹 눌러주세요 (모바일)
               </p>
             </div>
+
+            {/* Reward Section */}
+            <ChallengeRewardSection
+              userId={session?.user?.id ?? null}
+              completionDays={completionDays}
+              isShared={isShared}
+              isReviewed={isReviewed}
+              onLoginRequired={() => setLoginModalOpen(true)}
+              onShareComplete={handleShareComplete}
+              onReviewClick={handleReviewClick}
+              onBothComplete={handleBothComplete}
+            />
 
             {/* 30-Day CTA */}
             <div style={{
