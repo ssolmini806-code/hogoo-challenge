@@ -177,11 +177,8 @@ export default function App() {
 
   const handleReviewClick = () => {
     if (!session) { setLoginModalOpen(true); return; }
-    setShowReviewForm(true);
-    setTimeout(() => {
-      const el = document.getElementById('review-section');
-      if (el) el.scrollIntoView({ behavior: 'smooth' });
-    }, 100);
+    const returnUrl = encodeURIComponent(window.location.href);
+    window.location.href = `reviews.html?context=seven_day_challenge&return=${returnUrl}`;
   };
 
   const handleBothComplete = async ({ completionDays: days, label }) => {

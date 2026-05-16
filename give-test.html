@@ -441,6 +441,14 @@
                     </div>
                 </section>
 
+                <div
+                    id="give-test-reward-root"
+                    style="margin-top:32px"
+                    data-free-test-reward-root="give-test-reward-root"
+                    data-test-id="give-test"
+                    data-result-type="GIVE ID 결과"
+                ></div>
+
                 <footer>
                     <div class="footer-links">
                         <a href="index.html">홈으로</a>
@@ -704,6 +712,10 @@ function showResult() {
     const url = new URL(location.href);
     url.searchParams.set("type", key);
     history.replaceState(null, "", url.toString());
+
+    window.dispatchEvent(new CustomEvent('free-test-result-ready', {
+        detail: { rootId: 'give-test-reward-root', resultType: finalResult.name }
+    }));
 }
 
 function paidUrl(source) {
@@ -790,5 +802,6 @@ function showToast(message) {
     setTimeout(() => toast.classList.remove("show"), 1800);
 }
 </script>
+<script type="module" src="/src/free-test-reward-widget.tsx"></script>
 </body>
 </html>

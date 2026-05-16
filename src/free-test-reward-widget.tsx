@@ -166,7 +166,7 @@ function FreeTestRewardWidget({ rootId, testId, initialResultType }: FreeTestRew
     }
 
     const returnUrl = window.location.href;
-    window.location.href = `reviews.html?context=free_test&return=${encodeURIComponent(returnUrl)}`;
+    window.location.href = `reviews.html?context=free_test&return=${encodeURIComponent(returnUrl)}&rid=${encodeURIComponent(resultId)}`;
   };
 
   const handleBothComplete = async () => {
