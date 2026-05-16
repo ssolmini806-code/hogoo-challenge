@@ -23,6 +23,8 @@ type KakaoSharePayload = {
 };
 
 type KakaoSdk = {
+  init: (appKey: string) => void;
+  isInitialized: () => boolean;
   Share?: {
     sendDefault: (payload: KakaoSharePayload) => void;
   };
@@ -56,7 +58,52 @@ function getCurrentUrl() {
   return window.location.href;
 }
 
-function openKakaoShare(resultType: string) {
+const KAKAO_SDK_URL = 'https://t1.kakaocdn.net/kakao_js_sdk/2.8.1/kakao.min.js';
+
+let kakaoSdkLoadPromise: Promise<KakaoSdk | null> | null = null;
+
+function loadKakaoSdk() {
+  if (typeof window === 'undefined') return Promise.resolve(null);
+  if (window.Kakao) return Promise.resolve(window.Kakao);
+
+  if (!kakaoSdkLoadPromise) {
+    kakaoSdkLoadPromise = new Promise((resolve) => {
+      const existingScript = document.querySelector<HTMLScriptElement>(`script[src="${KAKAO_SDK_URL}"]`);
+
+      if (existingScript) {
+        existingScript.addEventListener('load', () => resolve(window.Kakao ?? null), { once: true });
+        existingScript.addEventListener('error', () => resolve(null), { once: true });
+        return;
+      }
+
+      const script = document.createElement('script');
+      script.src = KAKAO_SDK_URL;
+      script.async = true;
+      script.crossOrigin = 'anonymous';
+      script.addEventListener('load', () => resolve(window.Kakao ?? null), { once: true });
+      script.addEventListener('error', () => resolve(null), { once: true });
+      document.head.appendChild(script);
+    });
+  }
+
+  return kakaoSdkLoadPromise;
+}
+
+async function getInitializedKakaoSdk() {
+  const kakaoJsKey = import.meta.env.VITE_KAKAO_JS_KEY;
+  if (!kakaoJsKey) return null;
+
+  const kakao = await loadKakaoSdk();
+  if (!kakao) return null;
+
+  if (!kakao.isInitialized()) {
+    kakao.init(kakaoJsKey);
+  }
+
+  return kakao;
+}
+
+async function openKakaoShare(resultType: string) {
   if (typeof window === 'undefined') return;
 
   const shareUrl = getCurrentUrl();
@@ -81,7 +128,8 @@ function openKakaoShare(resultType: string) {
     ],
   };
 
-  const kakaoShare = window.Kakao?.Share ?? window.Kakao?.Link;
+  const kakao = await getInitializedKakaoSdk();
+  const kakaoShare = kakao?.Share ?? kakao?.Link;
 
   if (kakaoShare?.sendDefault) {
     kakaoShare.sendDefault(payload);
