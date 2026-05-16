@@ -117,6 +117,9 @@ function FreeTestRewardWidget({ rootId, testId, initialResultType }: FreeTestRew
       setIsShared(false);
       setIsReviewed(false);
       setBothContent('');
+      window.dispatchEvent(new CustomEvent('free-test-reward-status', {
+        detail: { rootId, isShared: false, isReviewed: false },
+      }));
       return;
     }
 
@@ -133,12 +136,17 @@ function FreeTestRewardWidget({ rootId, testId, initialResultType }: FreeTestRew
     }
 
     const rewards = (data ?? []) as RewardRow[];
-    setIsShared(rewards.some((reward) => reward.reward_type === 'sns' && reward.unlocked));
-    setIsReviewed(rewards.some((reward) => reward.reward_type === 'review' && reward.unlocked));
+    const nextIsShared = rewards.some((reward) => reward.reward_type === 'sns' && reward.unlocked);
+    const nextIsReviewed = rewards.some((reward) => reward.reward_type === 'review' && reward.unlocked);
+    setIsShared(nextIsShared);
+    setIsReviewed(nextIsReviewed);
+    window.dispatchEvent(new CustomEvent('free-test-reward-status', {
+      detail: { rootId, isShared: nextIsShared, isReviewed: nextIsReviewed },
+    }));
 
     const bothReward = rewards.find((reward) => reward.reward_type === 'both' && reward.unlocked);
     setBothContent(getReadableContent(bothReward?.generated_content));
-  }, [resultId, userId]);
+  }, [resultId, rootId, userId]);
 
   useEffect(() => {
     fetchRewardStatus();
@@ -153,6 +161,9 @@ function FreeTestRewardWidget({ rootId, testId, initialResultType }: FreeTestRew
     try {
       await saveReward(userId, resultId, 'sns');
       setIsShared(true);
+      window.dispatchEvent(new CustomEvent('free-test-reward-status', {
+        detail: { rootId, isShared: true, isReviewed },
+      }));
     } catch (error) {
       console.error('Error saving share reward:', error);
       alert('공유 보상 저장에 실패했습니다. 잠시 후 다시 시도해주세요.');

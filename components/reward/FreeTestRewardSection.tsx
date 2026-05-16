@@ -62,16 +62,27 @@ const KAKAO_SDK_URL = 'https://t1.kakaocdn.net/kakao_js_sdk/2.8.1/kakao.min.js';
 
 let kakaoSdkLoadPromise: Promise<KakaoSdk | null> | null = null;
 
+function initializeKakaoSdk(kakao: KakaoSdk | undefined) {
+  const kakaoJsKey = import.meta.env.VITE_KAKAO_JS_KEY;
+  if (!kakao || !kakaoJsKey) return null;
+
+  if (!kakao.isInitialized()) {
+    kakao.init(kakaoJsKey);
+  }
+
+  return kakao;
+}
+
 function loadKakaoSdk() {
   if (typeof window === 'undefined') return Promise.resolve(null);
-  if (window.Kakao) return Promise.resolve(window.Kakao);
+  if (window.Kakao) return Promise.resolve(initializeKakaoSdk(window.Kakao));
 
   if (!kakaoSdkLoadPromise) {
     kakaoSdkLoadPromise = new Promise((resolve) => {
       const existingScript = document.querySelector<HTMLScriptElement>(`script[src="${KAKAO_SDK_URL}"]`);
 
       if (existingScript) {
-        existingScript.addEventListener('load', () => resolve(window.Kakao ?? null), { once: true });
+        existingScript.addEventListener('load', () => resolve(initializeKakaoSdk(window.Kakao)), { once: true });
         existingScript.addEventListener('error', () => resolve(null), { once: true });
         return;
       }
@@ -80,8 +91,10 @@ function loadKakaoSdk() {
       script.src = KAKAO_SDK_URL;
       script.async = true;
       script.crossOrigin = 'anonymous';
-      script.addEventListener('load', () => resolve(window.Kakao ?? null), { once: true });
-      script.addEventListener('error', () => resolve(null), { once: true });
+      script.onload = () => {
+        resolve(initializeKakaoSdk(window.Kakao));
+      };
+      script.onerror = () => resolve(null);
       document.head.appendChild(script);
     });
   }
@@ -90,17 +103,7 @@ function loadKakaoSdk() {
 }
 
 async function getInitializedKakaoSdk() {
-  const kakaoJsKey = import.meta.env.VITE_KAKAO_JS_KEY;
-  if (!kakaoJsKey) return null;
-
-  const kakao = await loadKakaoSdk();
-  if (!kakao) return null;
-
-  if (!kakao.isInitialized()) {
-    kakao.init(kakaoJsKey);
-  }
-
-  return kakao;
+  return loadKakaoSdk();
 }
 
 async function openKakaoShare(resultType: string) {
@@ -191,6 +194,18 @@ const styles = {
     margin: 0,
   } as React.CSSProperties,
 
+  unlockNotice: {
+    margin: '0 0 16px',
+    borderRadius: 10,
+    border: '1px solid #4a3f30',
+    background: '#2a2520',
+    padding: '12px 14px',
+    color: '#f5ede3',
+    fontSize: 13,
+    fontWeight: 800,
+    lineHeight: 1.5,
+  } as React.CSSProperties,
+
   btn: (bg: string, color: string, border?: string, disabled?: boolean): React.CSSProperties => ({
     display: 'inline-flex',
     alignItems: 'center',
@@ -208,18 +223,6 @@ const styles = {
     fontFamily: 'inherit',
     opacity: disabled ? 0.6 : 1,
     width: '100%',
-  }),
-
-  blurBox: (visible: boolean): React.CSSProperties => ({
-    marginTop: 12,
-    borderRadius: 10,
-    background: '#1a1614',
-    padding: 12,
-    filter: visible ? 'none' : 'blur(6px)',
-    opacity: visible ? 1 : 0.7,
-    userSelect: visible ? 'auto' : 'none',
-    pointerEvents: visible ? 'auto' : 'none',
-    transition: 'filter 0.4s, opacity 0.4s',
   }),
 };
 
@@ -269,6 +272,8 @@ export default function FreeTestRewardSection({
         <h2 style={{ fontSize: 18, fontWeight: 700, color: '#f5ede3', margin: 0 }}>완료 보상 받기</h2>
       </div>
 
+      <p style={styles.unlockNotice}>🔒 잠긴 해석을 보려면 아래에서 완료해주세요</p>
+
       <div>
         {/* A: SNS 공유 */}
         <article style={styles.card}>
@@ -303,16 +308,6 @@ export default function FreeTestRewardSection({
                     </>
                   ) : '공유했어요 ✓'}
                 </button>
-              </div>
-
-              <div style={styles.blurBox(isShared)} aria-label="유형별 추가 조언">
-                <p style={{ fontSize: 13, fontWeight: 600, color: '#f5ede3', margin: '0 0 6px' }}>
-                  {resultType} 유형 추가 조언
-                </p>
-                <p style={{ fontSize: 13, color: '#c5b8ac', lineHeight: 1.6, margin: 0 }}>
-                  지금의 관계 패턴에서는 먼저 마음의 여유를 확보하고, 부탁을 받았을 때 바로
-                  답하기보다 가능한 범위와 시간을 분명히 말하는 연습이 도움이 됩니다.
-                </p>
               </div>
             </div>
           </div>

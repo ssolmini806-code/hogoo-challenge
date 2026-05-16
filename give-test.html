@@ -131,6 +131,14 @@
         .insight p { font-size: 0.96rem; font-weight: 650; color: #252a31; }
         .risk { background: #fff7f7; border-color: #ffd8d8; }
         .advice { background: #f2f7ff; border-color: #d9e7ff; }
+        .locked-interpretation { position: relative; margin: 16px 0 18px; border: 1px solid #eadfce; background: #fffaf0; border-radius: 12px; overflow: hidden; box-shadow: 0 12px 26px rgba(70,45,15,.08); }
+        .locked-interpretation-text { padding: 18px; color: #3d454f; font-size: .96rem; font-weight: 800; line-height: 1.75; filter: blur(8px); user-select: none; transition: filter .45s ease, opacity .45s ease; }
+        .locked-interpretation-text p { margin: 0 0 10px; }
+        .locked-interpretation-text p:last-child { margin-bottom: 0; }
+        .locked-interpretation-overlay { position: absolute; inset: 0; width: 100%; border: 0; background: rgba(255,250,240,.74); backdrop-filter: blur(1px); display: flex; align-items: center; justify-content: center; color: #17191c; font-size: 1rem; font-weight: 950; cursor: pointer; font-family: inherit; transition: opacity .35s ease, visibility .35s ease; }
+        .locked-interpretation.unlocked .locked-interpretation-text { filter: none; user-select: auto; animation: fadeInterpretation .45s ease both; }
+        .locked-interpretation.unlocked .locked-interpretation-overlay { opacity: 0; visibility: hidden; pointer-events: none; }
+        @keyframes fadeInterpretation { from { opacity: .25; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
         .cta-section { margin-top: 16px; display: grid; gap: 10px; }
         .cta-kicker { color: var(--danger); font-size: 0.9rem; font-weight: 950; text-align: center; margin-top: 16px; }
         .paid-bridge { margin-top: 16px; background: #101418; color: #fff; border-radius: 8px; padding: 20px; box-shadow: 0 16px 34px rgba(16,20,24,0.16); }
@@ -291,6 +299,12 @@
                             <div class="insight"><h3>강점</h3><p id="strength"></p></div>
                             <div class="insight risk"><h3>위험 신호</h3><p id="risk"></p></div>
                             <div class="insight advice"><h3>오늘의 조언</h3><p id="advice"></p></div>
+                        </div>
+                        <div class="locked-interpretation" id="lockedInterpretation">
+                            <div class="locked-interpretation-text" id="lockedInterpretationText"></div>
+                            <button class="locked-interpretation-overlay" type="button" id="lockedInterpretationOverlay">
+                                나머지 해석 보기 🔒
+                            </button>
                         </div>
                         <div class="share-wrap" style="border-radius:12px;">
                             <p class="share-incentive">결과를 공유하면 내 유형별 추가 조언 카드를 확인할 수 있어요</p>
@@ -599,6 +613,37 @@ const paidDetails = {
     }
 };
 
+const lockedInterpretations = {
+    angel: [
+        "당신의 친절은 관계를 따뜻하게 만들지만, 상대의 급한 마음을 내 책임으로 받아들이는 순간 피로가 시작됩니다.",
+        "특히 반복 부탁 앞에서 '이번만'이라는 말이 자주 떠오른다면, 선의보다 습관이 먼저 움직이고 있을 가능성이 큽니다."
+    ],
+    diplomat: [
+        "당신은 분위기의 온도를 빠르게 읽는 사람입니다. 문제는 그 감각이 너무 정확해서, 내 불편함보다 상대의 표정을 먼저 처리한다는 점입니다.",
+        "갈등을 줄이는 능력은 강점이지만, 기준을 말하지 않는 배려는 시간이 지나면 억울함으로 쌓일 수 있습니다."
+    ],
+    architect: [
+        "당신은 관계에서도 에너지 대비 효율을 계산할 줄 압니다. 그래서 쉽게 휘둘리지 않지만, 때로는 필요한 감정 표현까지 생략할 수 있습니다.",
+        "중요한 건 모든 관계를 줄이는 것이 아니라, 남겨야 할 관계에는 충분한 온기를 투자하는 것입니다."
+    ],
+    guardian: [
+        "당신은 선을 넘는 요청을 비교적 빠르게 감지합니다. 다만 단단함이 오래 유지되면, 안전한 사람에게도 같은 방어가 켜질 수 있습니다.",
+        "앞으로의 과제는 더 강한 거절이 아니라, 믿을 만한 사람에게만 열리는 유연한 기준을 만드는 것입니다."
+    ],
+    burnout: [
+        "지금의 피로는 의지가 약해서가 아니라, 너무 오래 마음의 초과 근무를 해왔다는 신호에 가깝습니다.",
+        "작은 부탁에도 예민해진다면 사람을 싫어하게 된 것이 아니라, 회복할 시간을 충분히 받지 못한 상태일 수 있습니다."
+    ],
+    blocker: [
+        "당신은 위험한 부탁을 빨리 알아차리는 편입니다. 그래서 손해는 줄지만, 도움을 받아도 되는 장면까지 경계할 수 있습니다.",
+        "모든 요청을 차단하기보다, 내가 감당 가능한 범위와 믿을 수 있는 사람의 조건을 나눠보는 것이 필요합니다."
+    ],
+    mixed: [
+        "당신은 한쪽으로 치우치지 않고 상황을 보는 힘이 있습니다. 다만 매번 새로 판단하다 보면 기준이 늦게 도착할 수 있습니다.",
+        "관계에서 덜 지치려면 착함과 방어 사이를 오가는 대신, 반복해서 지킬 최소 원칙을 먼저 정해야 합니다."
+    ]
+};
+
 function characterSvg(fill) {
     return `<svg class="character" viewBox="0 0 120 128" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <circle cx="60" cy="64" r="44" fill="${fill}" stroke="#14181d" stroke-width="3"/>
@@ -697,6 +742,7 @@ function showResult() {
     document.getElementById("strength").textContent = finalResult.strength;
     document.getElementById("risk").textContent = finalResult.risk;
     document.getElementById("advice").textContent = finalResult.advice;
+    renderLockedInterpretation(key, false);
     document.getElementById("shareCharacter").innerHTML = svg;
     document.getElementById("shareType").textContent = finalResult.name;
     document.getElementById("shareTagline").textContent = finalResult.tagline;
@@ -717,6 +763,32 @@ function showResult() {
         detail: { rootId: 'give-test-reward-root', resultType: finalResult.name }
     }));
 }
+
+function renderLockedInterpretation(key, unlocked) {
+    const box = document.getElementById("lockedInterpretation");
+    const text = document.getElementById("lockedInterpretationText");
+    const paragraphs = lockedInterpretations[key] || lockedInterpretations.mixed;
+    text.innerHTML = "";
+    paragraphs.forEach((paragraph) => {
+        const p = document.createElement("p");
+        p.textContent = paragraph;
+        text.appendChild(p);
+    });
+    box.classList.toggle("unlocked", Boolean(unlocked));
+}
+
+function scrollToRewardSection() {
+    document.getElementById("give-test-reward-root")?.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+document.getElementById("lockedInterpretationOverlay").addEventListener("click", scrollToRewardSection);
+
+window.addEventListener("free-test-reward-status", (event) => {
+    const detail = event.detail || {};
+    if (detail.rootId && detail.rootId !== "give-test-reward-root") return;
+    if (!finalKey) return;
+    renderLockedInterpretation(finalKey, Boolean(detail.isShared));
+});
 
 function paidUrl(source) {
     const url = new URL("https://givecosystem.com/");
