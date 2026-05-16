@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import { CheckCircle, Circle, ChevronRight, ChevronLeft, Award, Flame, Copy, Check, LogOut, MessageSquare, Send, Star } from "lucide-react";
+import { CheckCircle, Circle, ChevronRight, ChevronLeft, Award, Flame, Copy, Check, MessageSquare, Send, Star } from "lucide-react";
 import DAYS from "./days";
 import { supabase } from "./src/supabase";
-import Auth from "./src/components/Auth";
+import LoginButton from "./src/components/LoginButton";
+import LoginModal from "./src/components/LoginModal";
 
 
 export default function App() {
@@ -20,6 +21,7 @@ export default function App() {
   const [reviewStatus, setReviewStatus] = useState("");
   const [reviewError, setReviewError] = useState("");
   const [showReviewForm, setShowReviewForm] = useState(false);
+  const [loginModalOpen, setLoginModalOpen] = useState(false);
 
   // Auth session listener
   useEffect(() => {
@@ -141,6 +143,7 @@ export default function App() {
   const day = DAYS[currentDay];
   
   const toggleMission = (dayIdx, mIdx) => {
+    if (!session) { setLoginModalOpen(true); return; }
     setMissions(prev => {
       const key = `${dayIdx}`;
       const arr = prev[key] || [];
@@ -151,6 +154,7 @@ export default function App() {
   };
 
   const updateField = (dayIdx, field, value) => {
+    if (!session) { setLoginModalOpen(true); return; }
     const setters = {
       note: setNotes,
       phrase: setSelectedPhrase,
@@ -201,6 +205,7 @@ export default function App() {
 
   const submitReview = async (event) => {
     event.preventDefault();
+    if (!session) { setLoginModalOpen(true); return; }
     const content = reviewForm.content.trim();
     const displayName = reviewForm.displayName.trim() || "익명 참가자";
 
@@ -245,14 +250,6 @@ export default function App() {
       setShowReviewForm(false);
     }
   };
-
-  if (!session) {
-    return (
-      <div style={{ background: "#1a1614", minHeight: "100vh", color: "#f5ede3", display: 'flex', alignItems: 'center' }}>
-        <Auth />
-      </div>
-    );
-  }
 
   if (loading) {
     return (
@@ -317,12 +314,7 @@ export default function App() {
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
                 <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.2em", color: "#8a7f75", textTransform: "uppercase" }}>7-Day Challenge</div>
-                <button 
-                  onClick={() => supabase.auth.signOut()}
-                  style={{ background: 'none', border: 'none', color: '#5a5048', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4, fontSize: 11 }}
-                >
-                  <LogOut size={12} /> 로그아웃
-                </button>
+                <LoginButton />
               </div>
               <h1 style={{ margin: 0, fontSize: 24, fontWeight: 800, color: "#f5ede3", letterSpacing: "-0.03em" }}>
                 호구 탈출 챌린지
@@ -843,6 +835,12 @@ export default function App() {
           ← 다른 테스트 보러가기 (메인으로)
         </button>
       </div>
+
+      <LoginModal
+        isOpen={loginModalOpen}
+        onClose={() => setLoginModalOpen(false)}
+        onSuccess={() => setLoginModalOpen(false)}
+      />
     </div>
   );
 }
