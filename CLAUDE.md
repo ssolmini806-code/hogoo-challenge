@@ -127,3 +127,27 @@ git remote에 토큰이 포함된 HTTPS URL 방식 사용 중.
 | anxiety | int | 불안 점수 (0~10) |
 | guilt | int | 죄책감 점수 (0~10) |
 | updated_at | timestamptz | 마지막 수정 시각 |
+
+@AI_RULES.md
+
+# GIVE 에코시스템 — 무료 사이트
+
+## 프로젝트 정보
+- 사이트: hogoo-challenge.pages.dev
+- 배포: Cloudflare Pages
+- 스택: Next.js (App Router), Supabase, Tailwind CSS
+- 언어: 한국어
+
+## 현재 목표
+무료 → 유료 전환 유도 + A/B/A+B 3단계 보상 구조
+
+## 무료 사이트 전용 규칙
+- 테스트 자체는 로그인 없이 가능
+- 보상 버튼 클릭 시 로그인 모달 표시
+- 보상 상태는 로그인 후 Supabase DB 저장
+- 무료 조언(A 보상)만 CSS blur 허용
+- 유료 링크는 환경변수 NEXT_PUBLIC_PAID_SITE_URL 사용
+
+## 보상 구조
+A(SNS 공유) / B(후기 작성) / A+B(둘 다) 3단계
+"공유했어요 ✓" 확인 버튼 클릭 = A 해금 (공유창 열기만으론 해금 안 됨)

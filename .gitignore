@@ -13,6 +13,8 @@ dist-ssr
 *.local
 
 # Editor directories and files
+.claude/
+.superpowers/
 .vscode/*
 !.vscode/extensions.json
 .idea
@@ -22,3 +24,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local duplicate/source image kept outside deployed public assets
+12105338.png
