@@ -255,7 +255,7 @@ export default function ChallengeRewardSection({
               완료 기록 {safe}/7을 기준으로 30일 챌린지 적합도를 확인했어요.
             </p>
             <a
-              href="https://givecosystem.com/"
+              href={import.meta.env.VITE_PAID_SITE_URL || 'https://givecosystem.com/'}
               target="_blank"
               rel="noopener noreferrer"
               style={{
