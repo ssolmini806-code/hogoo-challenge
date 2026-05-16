@@ -83,8 +83,7 @@ export default function App() {
       setReviews(data && data.length ? data : fallbackReviews);
     } catch (error) {
       console.warn('Using fallback reviews:', error);
-      const localReviews = JSON.parse(localStorage.getItem('challenge_reviews_local') || '[]');
-      setReviews([...localReviews, ...fallbackReviews].slice(0, 6));
+      setReviews(fallbackReviews);
     }
   };
 
@@ -334,15 +333,8 @@ export default function App() {
       setShowReviewForm(false);
       setIsReviewed(true);
     } catch (error) {
-      console.warn('Review saved locally:', error);
-      const localReview = { ...payload, id: `local-${Date.now()}`, created_at: new Date().toISOString() };
-      const localReviews = JSON.parse(localStorage.getItem('challenge_reviews_local') || '[]');
-      localStorage.setItem('challenge_reviews_local', JSON.stringify([localReview, ...localReviews].slice(0, 6)));
-      setReviews(prev => [localReview, ...prev].slice(0, 6));
-      setReviewStatus("후기를 이 기기에 임시 저장했습니다. 공개 저장소 설정 후 전체 공개됩니다.");
-      setReviewForm({ displayName: "", rating: 5, content: "" });
-      setShowReviewForm(false);
-      setIsReviewed(true);
+      console.error('Review insert failed:', error);
+      setReviewStatus("후기 등록에 실패했습니다. 잠시 후 다시 시도해주세요.");
     }
   };
 
