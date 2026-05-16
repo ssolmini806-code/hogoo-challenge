@@ -190,7 +190,7 @@
                     <span>인스타그램</span>
                 </button>
                 <button class="s-btn sb-threads" onclick="snsThreads()" aria-label="스레드에 공유">
-                    <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><text x="12" y="19" text-anchor="middle" font-family="'Helvetica Neue',Arial,sans-serif" font-size="20" font-weight="900" fill="currentColor">@</text></svg>
+                    <img src="/images/threads-icon.png" width="24" height="24" alt="" aria-hidden="true">
                     <span>스레드</span>
                 </button>
                 <button class="s-btn sb-tiktok" onclick="snsTiktok()" aria-label="틱톡에 공유">
@@ -228,6 +228,14 @@
                style="background:#2563EB;color:#fff;text-decoration:none;">심화 테스트 하러 가기 →</a>
         </div>
 
+        <div
+            id="relationship-risk-reward-root"
+            class="mt-8"
+            data-free-test-reward-root="relationship-risk-reward-root"
+            data-test-id="relationship-risk"
+            data-result-type="인간관계 위험도 결과"
+        ></div>
+
         <div class="retry-wrap">
             <button class="retry-link" onclick="retryTest()">테스트 다시 하기</button>
         </div>
@@ -243,6 +251,7 @@
     </div>
 </div>
 
+<script type="module" src="/src/free-test-reward-widget.tsx"></script>
 <script src="/share.js" defer></script>
 <script>
 const questions = [
@@ -412,6 +421,10 @@ function showResult() {
         '<div style="background:#f2f2f7;border-radius:100px;height:10px;overflow:hidden">' +
         '<div style="background:linear-gradient(90deg,#00a885,#ffd166,#ff6b6b);width:' + pct + '%;height:100%;border-radius:100px;transition:width 1s cubic-bezier(.4,0,.2,1)"></div>' +
         '</div>';
+
+    window.dispatchEvent(new CustomEvent('free-test-result-ready', {
+        detail: { rootId: 'relationship-risk-reward-root', resultType: d.name }
+    }));
 
     if (d.insight) {
         document.getElementById('expertHeadline').textContent = d.insight.headline;
