@@ -57,7 +57,6 @@ async function saveReward(userId: string, resultId: string, rewardType: RewardTy
     .from('user_rewards')
     .select('id')
     .eq('user_id', userId)
-    .eq('result_id', resultId)
     .eq('reward_context', 'free_test')
     .eq('reward_type', rewardType)
     .limit(1);
@@ -136,7 +135,6 @@ function FreeTestRewardWidget({ rootId, testId, initialResultType }: FreeTestRew
       .from('user_rewards')
       .select('id, reward_type, unlocked, generated_content')
       .eq('user_id', userId)
-      .eq('result_id', resultId)
       .eq('reward_context', 'free_test');
 
     if (error) {
