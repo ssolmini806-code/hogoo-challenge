@@ -231,6 +231,13 @@ export default function FreeTestRewardSection({
 
   return (
     <section style={styles.section}>
+      <style>{`
+        @keyframes bounceIn {
+          0%   { transform: scale(0.94); opacity: 0; }
+          60%  { transform: scale(1.04); opacity: 1; }
+          100% { transform: scale(1);    opacity: 1; }
+        }
+      `}</style>
       <div style={styles.header}>
         <span style={styles.iconCircle('#1e2e22', '#00a885')}>
           <Gift size={18} aria-hidden="true" />
@@ -318,22 +325,41 @@ export default function FreeTestRewardSection({
           style={{
             ...styles.card,
             marginBottom: 0,
-            border: isBothComplete ? '1px solid #2d4a35' : '1px solid #3a3530',
-            background: isBothComplete ? '#1e2e22' : '#1a1614',
+            border: isBothComplete ? '1px solid #a78bfa' : '1px solid #3a3530',
+            background: isBothComplete
+              ? 'linear-gradient(135deg, #667EEA 0%, #764BA2 100%)'
+              : '#1a1614',
+            animation: isBothComplete ? 'bounceIn 0.6s cubic-bezier(0.36,0.07,0.19,0.97) both' : 'none',
           }}
         >
           <div style={styles.cardHeader}>
-            <Sparkles
-              size={18}
-              style={{ color: isBothComplete ? '#7cc88a' : '#5a5048', flexShrink: 0, marginTop: 2 }}
-              aria-hidden="true"
-            />
+            <span style={{ fontSize: 22, flexShrink: 0, marginTop: 2 }} aria-hidden="true">🎁</span>
             <div style={{ flex: 1 }}>
-              <p style={{ ...styles.label, color: isBothComplete ? '#7cc88a' : '#8a7f75', fontSize: 13 }}>
-                둘 다 완료하면 → 개인화 요약 리포트 + 심화 테스트 준비 리포트
+              {isBothComplete ? (
+                <p style={{ ...styles.label, color: '#fff', fontSize: 15, marginBottom: 6 }}>
+                  보너스 잠금 해제!
+                </p>
+              ) : null}
+              <p style={{ ...styles.label, color: isBothComplete ? 'rgba(255,255,255,0.9)' : '#8a7f75', fontSize: 13 }}>
+                둘 다 완료하면 → 개인화 요약 리포트
               </p>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 6 }}>
+                <span style={{ fontSize: 12, fontWeight: 700, color: isBothComplete ? 'rgba(255,255,255,0.6)' : '#6a6060' }}>
+                  심화 테스트 준비 리포트
+                </span>
+                <span style={{
+                  background: isBothComplete ? 'rgba(255,255,255,0.18)' : '#2a2520',
+                  color: isBothComplete ? '#e0d8ff' : '#7a7070',
+                  borderRadius: 999,
+                  padding: '2px 8px',
+                  fontSize: 11,
+                  fontWeight: 800,
+                }}>
+                  곧 제공될 예정이에요 🔜
+                </span>
+              </div>
               {isBothRewardLoading ? (
-                <p style={{ marginTop: 8, fontSize: 13, fontWeight: 600, color: '#8a7f75', lineHeight: 1.6 }}>
+                <p style={{ marginTop: 8, fontSize: 13, fontWeight: 600, color: isBothComplete ? 'rgba(255,255,255,0.7)' : '#8a7f75', lineHeight: 1.6 }}>
                   보너스 리포트를 준비 중입니다.
                 </p>
               ) : null}
@@ -343,7 +369,7 @@ export default function FreeTestRewardSection({
                 </p>
               ) : null}
               {bothRewardContent ? (
-                <div style={{ marginTop: 10, borderRadius: 8, background: '#231f1c', padding: 12, fontSize: 13, lineHeight: 1.6, color: '#c5b8ac' }}>
+                <div style={{ marginTop: 10, borderRadius: 8, background: 'rgba(0,0,0,0.2)', padding: 12, fontSize: 13, lineHeight: 1.6, color: isBothComplete ? '#fff' : '#c5b8ac' }}>
                   {bothRewardContent}
                 </div>
               ) : null}

@@ -102,6 +102,15 @@ function FreeTestRewardWidget({ rootId, testId, initialResultType }: FreeTestRew
   }, []);
 
   useEffect(() => {
+    const url = new URL(window.location.href);
+    if (url.searchParams.get('reviewed') === 'true') {
+      setIsReviewed(true);
+      url.searchParams.delete('reviewed');
+      history.replaceState(null, '', url.toString());
+    }
+  }, []);
+
+  useEffect(() => {
     const handleUpdate = (event: Event) => {
       const { rootId: targetRootId, resultType: nextResultType } = (event as RewardUpdateEvent).detail ?? {};
       if (targetRootId && targetRootId !== rootId) return;
@@ -176,7 +185,9 @@ function FreeTestRewardWidget({ rootId, testId, initialResultType }: FreeTestRew
       return;
     }
 
-    const returnUrl = window.location.href;
+    const returnUrlObj = new URL(window.location.href);
+    returnUrlObj.searchParams.set('reviewed', 'true');
+    const returnUrl = returnUrlObj.toString();
     window.location.href = `reviews.html?context=free_test&return=${encodeURIComponent(returnUrl)}&rid=${encodeURIComponent(resultId)}`;
   };
 
