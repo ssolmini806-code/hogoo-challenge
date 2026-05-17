@@ -46,6 +46,8 @@ export default function App() {
       fetchReviews();
       fetchRewardState();
     } else {
+      setIsShared(false);
+      setIsReviewed(false);
       setLoading(false);
       fetchReviews();
     }
@@ -127,51 +129,62 @@ export default function App() {
   const fetchRewardState = async () => {
     if (!session) return;
     try {
-      const [{ data: reward }, { count }] = await Promise.all([
-        supabase
-          .from('user_rewards')
-          .select('reward_type')
-          .eq('user_id', session.user.id)
-          .eq('reward_context', 'seven_day_challenge')
-          .maybeSingle(),
-        supabase
-          .from('challenge_reviews')
-          .select('id', { count: 'exact', head: true })
-          .eq('user_id', session.user.id),
-      ]);
-      if (reward) {
-        setIsShared(reward.reward_type === 'sns' || reward.reward_type === 'both');
-        setIsReviewed(reward.reward_type === 'review' || reward.reward_type === 'both');
-      }
-      if ((count ?? 0) > 0) setIsReviewed(true);
+      const { data, error } = await supabase
+        .from('user_rewards')
+        .select('reward_type, unlocked')
+        .eq('user_id', session.user.id)
+        .eq('reward_context', 'seven_day_challenge');
+
+      if (error) throw error;
+
+      const rewards = data ?? [];
+      setIsShared(rewards.some(reward => reward.unlocked && ['sns', 'both'].includes(reward.reward_type)));
+      setIsReviewed(rewards.some(reward => reward.unlocked && ['review', 'both'].includes(reward.reward_type)));
     } catch (err) {
       console.warn('Failed to fetch reward state:', err);
     }
   };
 
+  const saveReward = async (rewardType, generatedContent) => {
+    const payload = {
+      user_id: session.user.id,
+      reward_context: 'seven_day_challenge',
+      reward_type: rewardType,
+      unlocked: true,
+      ...(generatedContent ? { generated_content: generatedContent } : {}),
+    };
+
+    const { data: existingRewards, error: findError } = await supabase
+      .from('user_rewards')
+      .select('id')
+      .eq('user_id', session.user.id)
+      .eq('reward_context', 'seven_day_challenge')
+      .eq('reward_type', rewardType)
+      .limit(1);
+
+    if (findError) throw findError;
+
+    if (existingRewards?.[0]?.id) {
+      const { error } = await supabase
+        .from('user_rewards')
+        .update(payload)
+        .eq('id', existingRewards[0].id);
+      if (error) throw error;
+      return;
+    }
+
+    const { error } = await supabase.from('user_rewards').insert(payload);
+    if (error) throw error;
+  };
+
   const handleShareComplete = async () => {
     if (!session) { setLoginModalOpen(true); return; }
     try {
-      const { data: existing } = await supabase
-        .from('user_rewards')
-        .select('id, reward_type')
-        .eq('user_id', session.user.id)
-        .eq('reward_context', 'seven_day_challenge')
-        .maybeSingle();
-      if (existing) {
-        const nextType = existing.reward_type === 'review' ? 'both' : 'sns';
-        await supabase.from('user_rewards').update({ reward_type: nextType, unlocked: true }).eq('id', existing.id);
-      } else {
-        await supabase.from('user_rewards').insert({
-          user_id: session.user.id,
-          reward_context: 'seven_day_challenge',
-          reward_type: 'sns',
-          unlocked: true,
-        });
-      }
+      await saveReward('sns');
       setIsShared(true);
     } catch (err) {
       console.error('Failed to save share reward:', err);
+      alert('공유 보상 저장에 실패했습니다. 잠시 후 다시 시도해주세요.');
     }
   };
 
@@ -184,26 +197,8 @@ export default function App() {
   const handleBothComplete = async ({ completionDays: days, label }) => {
     if (!session) return;
     try {
-      const { data: existing } = await supabase
-        .from('user_rewards')
-        .select('id')
-        .eq('user_id', session.user.id)
-        .eq('reward_context', 'seven_day_challenge')
-        .maybeSingle();
       const content = { completionDays: days, label };
-      if (existing) {
-        await supabase.from('user_rewards')
-          .update({ reward_type: 'both', unlocked: true, generated_content: content })
-          .eq('id', existing.id);
-      } else {
-        await supabase.from('user_rewards').insert({
-          user_id: session.user.id,
-          reward_context: 'seven_day_challenge',
-          reward_type: 'both',
-          unlocked: true,
-          generated_content: content,
-        });
-      }
+      await saveReward('both', content);
     } catch (err) {
       console.warn('Failed to save both reward:', err);
     }
@@ -896,7 +891,7 @@ export default function App() {
                 7일 동안 만든 흐름을 30일 루틴으로 이어가보세요.
               </p>
               <p style={{ margin: "0 0 24px", fontSize: 13, color: "rgba(255,255,255,0.72)", lineHeight: 1.6 }}>
-                30일 챌린지 시작 시 목표 설정 PDF와 위기 구간 대처 가이드가 제공돼요.
+                3일 안에 30일 챌린지를 시작하면 목표 설정 PDF와 위기 구간 대처 가이드가 제공돼요.
               </p>
               <a
                 href="https://givecosystem.com/"
