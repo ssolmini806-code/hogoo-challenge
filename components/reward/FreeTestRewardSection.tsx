@@ -63,7 +63,7 @@ const KAKAO_SDK_URL = 'https://t1.kakaocdn.net/kakao_js_sdk/2.8.1/kakao.min.js';
 let kakaoSdkLoadPromise: Promise<KakaoSdk | null> | null = null;
 
 function initializeKakaoSdk(kakao: KakaoSdk | undefined) {
-  const kakaoJsKey = import.meta.env.VITE_KAKAO_JS_KEY;
+  const kakaoJsKey = '3e86388cd24e0ec392041b91dd3e238f';
   if (!kakao || !kakaoJsKey) return null;
 
   if (!kakao.isInitialized()) {
@@ -243,7 +243,6 @@ export default function FreeTestRewardSection({
   const isBothComplete = isShared && isReviewed;
 
   useEffect(() => {
-    console.log(import.meta.env.VITE_KAKAO_JS_KEY);
     void loadKakaoSdk();
   }, []);
 
