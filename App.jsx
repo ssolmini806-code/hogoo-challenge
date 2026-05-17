@@ -269,6 +269,8 @@ export default function App() {
   const completionDays = DAYS.reduce((count, _, i) => count + ((missions[`${i}`] || []).length === 3 ? 1 : 0), 0);
   const dayMissions = missions[`${currentDay}`] || [];
   const allMissionsDone = dayMissions.length === 3;
+  const isFinalDay = currentDay === DAYS.length - 1;
+  const showFinalCompletion = isFinalDay && allMissionsDone;
 
   const isDayUnlocked = (dayIdx) => {
     if (dayIdx === 0) return true;
@@ -857,7 +859,7 @@ export default function App() {
         </section>
 
         {/* Day 7 Completion Sections */}
-        {currentDay === 6 && (
+        {showFinalCompletion && (
           <>
             {/* Certificate */}
             <div style={{ marginBottom: 24, textAlign: "center" }}>
@@ -891,7 +893,7 @@ export default function App() {
                 7일 완주를 축하해요 🎉
               </h3>
               <p style={{ margin: "0 0 6px", fontSize: 15, color: "rgba(255,255,255,0.9)", lineHeight: 1.6 }}>
-                지금 만든 흐름을 30일 루틴으로 이어가보세요.
+                7일 동안 만든 흐름을 30일 루틴으로 이어가보세요.
               </p>
               <p style={{ margin: "0 0 24px", fontSize: 13, color: "rgba(255,255,255,0.72)", lineHeight: 1.6 }}>
                 30일 챌린지 시작 시 목표 설정 PDF와 위기 구간 대처 가이드가 제공돼요.
