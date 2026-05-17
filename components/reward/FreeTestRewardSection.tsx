@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import { Check, Gift, MessageCircle, PenLine, Sparkles } from 'lucide-react';
 
@@ -200,6 +200,7 @@ export default function FreeTestRewardSection({
   bothRewardError,
 }: FreeTestRewardSectionProps) {
   const hasNotifiedBothComplete = useRef(false);
+  const [hasOpenedShare, setHasOpenedShare] = useState(false);
   const isBothComplete = isShared && isReviewed;
 
   useEffect(() => {
@@ -215,6 +216,7 @@ export default function FreeTestRewardSection({
   const handleShareClick = () => {
     if (!userId) { onLoginRequired(); return; }
     openKakaoShare(resultType);
+    setHasOpenedShare(true);
   };
 
   const handleShareComplete = () => {
@@ -255,23 +257,25 @@ export default function FreeTestRewardSection({
                 >
                   SNS에 공유하기
                 </button>
-                <button
-                  type="button"
-                  onClick={handleShareComplete}
-                  disabled={isShared}
-                  style={
-                    isShared
-                      ? styles.btn('#1e2e22', '#7cc88a', '1px solid #2d4a35', true)
-                      : styles.btn('#2a2520', '#c5b8ac', '1px solid #3a3530')
-                  }
-                >
-                  {isShared ? (
-                    <>
-                      <Check size={14} aria-hidden="true" />
-                      공유 완료
-                    </>
-                  ) : '공유했어요 ✓'}
-                </button>
+                {hasOpenedShare || isShared ? (
+                  <button
+                    type="button"
+                    onClick={handleShareComplete}
+                    disabled={isShared}
+                    style={
+                      isShared
+                        ? styles.btn('#1e2e22', '#7cc88a', '1px solid #2d4a35', true)
+                        : styles.btn('#2a2520', '#c5b8ac', '1px solid #3a3530')
+                    }
+                  >
+                    {isShared ? (
+                      <>
+                        <Check size={14} aria-hidden="true" />
+                        공유 완료
+                      </>
+                    ) : '공유했어요 ✓'}
+                  </button>
+                ) : null}
               </div>
             </div>
           </div>

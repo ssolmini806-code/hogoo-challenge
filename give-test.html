@@ -133,11 +133,11 @@
         .risk { background: #fff7f7; border-color: #ffd8d8; }
         .advice { background: #f2f7ff; border-color: #d9e7ff; }
         .locked-interpretation { position: relative; margin: 16px 0 18px; border: 1px solid #eadfce; background: #fffaf0; border-radius: 12px; overflow: hidden; box-shadow: 0 12px 26px rgba(70,45,15,.08); }
-        .locked-interpretation-text { padding: 18px; color: #3d454f; font-size: .96rem; font-weight: 800; line-height: 1.75; filter: blur(8px); user-select: none; transition: filter .45s ease, opacity .45s ease; }
+        .locked-interpretation-text { padding: 18px; color: #3d454f; font-size: .96rem; font-weight: 800; line-height: 1.75; filter: blur(8px); pointer-events: none; user-select: none; transition: filter .45s ease, opacity .45s ease; }
         .locked-interpretation-text p { margin: 0 0 10px; }
         .locked-interpretation-text p:last-child { margin-bottom: 0; }
         .locked-interpretation-overlay { position: absolute; inset: 0; width: 100%; border: 0; background: rgba(255,250,240,.74); backdrop-filter: blur(1px); display: flex; align-items: center; justify-content: center; color: #17191c; font-size: 1rem; font-weight: 950; cursor: pointer; font-family: inherit; transition: opacity .35s ease, visibility .35s ease; }
-        .locked-interpretation.unlocked .locked-interpretation-text { filter: none; user-select: auto; animation: fadeInterpretation .45s ease both; }
+        .locked-interpretation.unlocked .locked-interpretation-text { filter: none; pointer-events: auto; user-select: auto; animation: fadeInterpretation .45s ease both; }
         .locked-interpretation.unlocked .locked-interpretation-overlay { opacity: 0; visibility: hidden; pointer-events: none; }
         @keyframes fadeInterpretation { from { opacity: .25; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
         .cta-section { margin-top: 16px; display: grid; gap: 10px; }
@@ -304,7 +304,7 @@
                         <div class="locked-interpretation" id="lockedInterpretation">
                             <div class="locked-interpretation-text" id="lockedInterpretationText"></div>
                             <button class="locked-interpretation-overlay" type="button" id="lockedInterpretationOverlay">
-                                나머지 해석 보기 🔒
+                                🔒 공유 후 공개
                             </button>
                         </div>
                         <div class="share-wrap" style="border-radius:12px;">

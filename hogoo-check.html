@@ -69,6 +69,12 @@
         .result-card { background: white; border-radius: 24px; padding: 24px; margin-bottom: 16px; box-shadow: var(--card-shadow); border: 1px solid rgba(0,0,0,0.02); }
         .card-title { font-size: 0.9rem; font-weight: 800; color: var(--text-main); letter-spacing: 0.02em; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
         .card-body { font-size: 0.95rem; line-height: 1.7; color: var(--text-sub); font-weight: 500; }
+        .locked-advice { position: relative; overflow: hidden; }
+        .locked-advice-text { filter: blur(8px); pointer-events: none; user-select: none; transition: filter .45s ease, opacity .45s ease; }
+        .locked-advice-overlay { position: absolute; inset: 0; border: 0; background: rgba(238, 249, 246, .76); backdrop-filter: blur(1px); display: flex; align-items: center; justify-content: center; color: var(--text-main); font-size: 1rem; font-weight: 900; cursor: pointer; font-family: inherit; transition: opacity .35s ease, visibility .35s ease; }
+        .locked-advice.unlocked .locked-advice-text { filter: none; pointer-events: auto; user-select: auto; animation: fadeAdvice .45s ease both; }
+        .locked-advice.unlocked .locked-advice-overlay { opacity: 0; visibility: hidden; pointer-events: none; }
+        @keyframes fadeAdvice { from { opacity: .25; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
         
         /* Expert Insight Section */
         .expert-insight { background: #1a1a1a; color: white; border-radius: 24px; padding: 28px 24px; margin-bottom: 24px; position: relative; overflow: hidden; }
@@ -167,7 +173,11 @@
             <a href="#" class="expert-link" id="expertLink">전문 칼럼 읽어보기 →</a>
         </div>
 
-        <div class="result-card" style="background:var(--primary-soft);" id="cardAdvice"></div>
+        <div class="result-card locked-advice" style="background:var(--primary-soft);" id="cardAdvice">
+            <div class="card-title" style="color:var(--primary)">🚀 지금 할 수 있는 것</div>
+            <p class="card-body locked-advice-text" id="cardAdviceText"></p>
+            <button class="locked-advice-overlay" type="button" id="cardAdviceOverlay">🔒 공유 후 공개</button>
+        </div>
 
         <div class="share-wrap">
             <p class="share-incentive">결과를 공유하면 내 유형별 추가 조언 카드를 확인할 수 있어요</p>
@@ -348,6 +358,7 @@ const results = {
 };
 
 let score = 0, current = 0;
+let resultReady = false;
 
 function characterSvg(fill, mood) {
     const mouths = {
@@ -423,7 +434,9 @@ function showResult() {
     document.getElementById('typeBody').textContent = d.body;
     document.getElementById('cardStrength').innerHTML = '<div class=”card-title”>✨ 당신의 강점</div><p class=”card-body”>' + d.strength + '</p>';
     document.getElementById('cardRisk').innerHTML = '<div class=”card-title” style=”color:#e53e3e”>⚠️ 주의할 점</div><p class=”card-body”>' + d.risk + '</p>';
-    document.getElementById('cardAdvice').innerHTML = '<div class=”card-title” style=”color:var(--primary)”>🚀 지금 할 수 있는 것</div><p class=”card-body”>' + d.advice + '</p>';
+    resultReady = true;
+    document.getElementById('cardAdviceText').textContent = d.advice;
+    document.getElementById('cardAdvice').classList.remove('unlocked');
 
     const maxScore = (questions.length - 1) * 3;
     const pct = Math.round((score / maxScore) * 100);
@@ -446,10 +459,24 @@ function showResult() {
 
 function retryTest() {
     score = 0; current = 0;
+    resultReady = false;
     document.getElementById('result-page').classList.add('hidden');
     document.getElementById('intro-page').classList.remove('hidden');
     window.scrollTo(0, 0);
 }
+
+function scrollToHogooRewardSection() {
+    document.getElementById('hogoo-check-reward-root')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+document.getElementById('cardAdviceOverlay').addEventListener('click', scrollToHogooRewardSection);
+
+window.addEventListener('free-test-reward-status', (event) => {
+    const detail = event.detail || {};
+    if (detail.rootId && detail.rootId !== 'hogoo-check-reward-root') return;
+    if (!resultReady) return;
+    document.getElementById('cardAdvice').classList.toggle('unlocked', Boolean(detail.isShared));
+});
 </script>
 </body>
 </html>

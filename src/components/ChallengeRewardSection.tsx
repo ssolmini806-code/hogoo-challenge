@@ -76,6 +76,7 @@ export default function ChallengeRewardSection({
   const hasCalledBoth = useRef(false);
   const [showDiagnosis, setShowDiagnosis] = useState(bothDone);
   const [shareMessage, setShareMessage] = useState(DEFAULT_SHARE_MESSAGE);
+  const [hasOpenedShare, setHasOpenedShare] = useState(false);
 
   const diagnosisResult = useMemo<ChallengeDiagnosisResult>(
     () => ({ completionDays: safe, label: getDiagnosisLabel(safe) }),
@@ -94,7 +95,27 @@ export default function ChallengeRewardSection({
     onBothComplete(diagnosisResult);
   }, [bothDone, diagnosisResult, onBothComplete]);
 
-  const handleShare = () => {
+  const handleOpenShare = () => {
+    if (!userId) { onLoginRequired(); return; }
+
+    const shareUrl = typeof window === 'undefined' ? 'https://hogoo-challenge.pages.dev' : window.location.href;
+    if (typeof navigator !== 'undefined' && navigator.share) {
+      navigator.share({
+        title: '7일 호구 탈출 챌린지',
+        text: shareMessage,
+        url: shareUrl,
+      }).catch(() => undefined);
+    } else if (typeof window !== 'undefined') {
+      window.open(
+        `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareMessage)}&url=${encodeURIComponent(shareUrl)}`,
+        '_blank',
+        'width=600,height=400,noopener,noreferrer',
+      );
+    }
+    setHasOpenedShare(true);
+  };
+
+  const handleShareComplete = () => {
     if (!userId) { onLoginRequired(); return; }
     onShareComplete();
   };
@@ -169,15 +190,11 @@ export default function ChallengeRewardSection({
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginTop: 10 }}>
           <button
-            onClick={handleShare}
-            style={btn(
-              isShared ? '#1e2e22' : '#00a885',
-              isShared ? '#7cc88a' : '#fff',
-              isShared ? '1px solid #2d4a35' : undefined,
-            )}
+            onClick={handleOpenShare}
+            style={btn('#00a885', '#fff')}
           >
-            {isShared && <Check size={15} />}
-            공유했어요 ✓
+            <Share2 size={15} />
+            SNS에 공유하기
           </button>
           <button
             onClick={handleDownload}
@@ -192,6 +209,26 @@ export default function ChallengeRewardSection({
             인증서 저장
           </button>
         </div>
+
+        {(hasOpenedShare || isShared) && (
+          <button
+            onClick={handleShareComplete}
+            disabled={isShared}
+            style={{
+              ...btn(
+                isShared ? '#1e2e22' : '#00a885',
+                isShared ? '#7cc88a' : '#fff',
+                isShared ? '1px solid #2d4a35' : undefined,
+              ),
+              marginTop: 8,
+              cursor: isShared ? 'default' : 'pointer',
+              opacity: isShared ? 0.85 : 1,
+            }}
+          >
+            {isShared && <Check size={15} />}
+            {isShared ? '공유 완료' : '공유했어요 ✓'}
+          </button>
+        )}
 
         {isShared && (
           <p style={{ marginTop: 10, fontSize: 12, color: '#7cc88a', display: 'flex', alignItems: 'center', gap: 5, margin: '10px 0 0' }}>
