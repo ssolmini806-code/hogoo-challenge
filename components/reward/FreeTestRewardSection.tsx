@@ -58,55 +58,15 @@ function getCurrentUrl() {
   return window.location.href;
 }
 
-const KAKAO_SDK_URL = 'https://t1.kakaocdn.net/kakao_js_sdk/2.8.1/kakao.min.js';
-
-let kakaoSdkLoadPromise: Promise<KakaoSdk | null> | null = null;
-
-function initializeKakaoSdk(kakao: KakaoSdk | undefined) {
-  const kakaoJsKey = '3e86388cd24e0ec392041b91dd3e238f';
-  if (!kakao || !kakaoJsKey) return null;
-
-  if (!kakao.isInitialized()) {
-    kakao.init(kakaoJsKey);
+function getKakao(): KakaoSdk | null {
+  if (typeof window === 'undefined' || !window.Kakao) return null;
+  if (!window.Kakao.isInitialized()) {
+    window.Kakao.init('3e86388cd24e0ec392041b91dd3e238f');
   }
-
-  return kakao;
+  return window.Kakao;
 }
 
-function loadKakaoSdk() {
-  if (typeof window === 'undefined') return Promise.resolve(null);
-  if (window.Kakao) return Promise.resolve(initializeKakaoSdk(window.Kakao));
-
-  if (!kakaoSdkLoadPromise) {
-    kakaoSdkLoadPromise = new Promise((resolve) => {
-      const existingScript = document.querySelector<HTMLScriptElement>(`script[src="${KAKAO_SDK_URL}"]`);
-
-      if (existingScript) {
-        existingScript.addEventListener('load', () => resolve(initializeKakaoSdk(window.Kakao)), { once: true });
-        existingScript.addEventListener('error', () => resolve(null), { once: true });
-        return;
-      }
-
-      const script = document.createElement('script');
-      script.src = KAKAO_SDK_URL;
-      script.async = true;
-      script.crossOrigin = 'anonymous';
-      script.onload = () => {
-        resolve(initializeKakaoSdk(window.Kakao));
-      };
-      script.onerror = () => resolve(null);
-      document.head.appendChild(script);
-    });
-  }
-
-  return kakaoSdkLoadPromise;
-}
-
-async function getInitializedKakaoSdk() {
-  return loadKakaoSdk();
-}
-
-async function openKakaoShare(resultType: string) {
+function openKakaoShare(resultType: string) {
   if (typeof window === 'undefined') return;
 
   const shareUrl = getCurrentUrl();
@@ -131,7 +91,7 @@ async function openKakaoShare(resultType: string) {
     ],
   };
 
-  const kakao = await getInitializedKakaoSdk();
+  const kakao = getKakao();
   const kakaoShare = kakao?.Share ?? kakao?.Link;
 
   if (kakaoShare?.sendDefault) {
@@ -243,7 +203,7 @@ export default function FreeTestRewardSection({
   const isBothComplete = isShared && isReviewed;
 
   useEffect(() => {
-    void loadKakaoSdk();
+    getKakao();
   }, []);
 
   useEffect(() => {
