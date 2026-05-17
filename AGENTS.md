@@ -31,7 +31,7 @@
 ---
 
 ## 프로젝트 정보
-- 사이트: hogoo-challenge.pages.dev (Cloudflare Pages, Next.js App Router)
+- 사이트: hogoo-challenge.pages.dev (Vite + React, Cloudflare Pages)
 - 스택: Next.js, Supabase, Tailwind CSS
 - 언어: 한국어
 
@@ -43,4 +43,4 @@
 - 보상 버튼 클릭 시 로그인 모달
 - 보상 상태: 로그인 후 Supabase DB
 - 무료 조언(A 보상)만 CSS blur 허용
-- 유료 링크: 환경변수 NEXT_PUBLIC_PAID_SITE_URL
+- 유료 링크: 환경변수 VITE_PAID_SITE_URL

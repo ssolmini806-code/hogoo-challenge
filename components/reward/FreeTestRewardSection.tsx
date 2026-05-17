@@ -243,6 +243,11 @@ export default function FreeTestRewardSection({
   const isBothComplete = isShared && isReviewed;
 
   useEffect(() => {
+    console.log(import.meta.env.VITE_KAKAO_JS_KEY);
+    void loadKakaoSdk();
+  }, []);
+
+  useEffect(() => {
     if (!isBothComplete || hasNotifiedBothComplete.current) return;
     hasNotifiedBothComplete.current = true;
     onBothComplete();

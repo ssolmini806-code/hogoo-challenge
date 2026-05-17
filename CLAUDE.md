@@ -135,7 +135,7 @@ git remote에 토큰이 포함된 HTTPS URL 방식 사용 중.
 ## 프로젝트 정보
 - 사이트: hogoo-challenge.pages.dev
 - 배포: Cloudflare Pages
-- 스택: Next.js (App Router), Supabase, Tailwind CSS
+- 스택: Vite + React, Supabase, Tailwind CSS
 - 언어: 한국어
 
 ## 현재 목표
@@ -146,7 +146,7 @@ git remote에 토큰이 포함된 HTTPS URL 방식 사용 중.
 - 보상 버튼 클릭 시 로그인 모달 표시
 - 보상 상태는 로그인 후 Supabase DB 저장
 - 무료 조언(A 보상)만 CSS blur 허용
-- 유료 링크는 환경변수 NEXT_PUBLIC_PAID_SITE_URL 사용
+- 유료 링크는 환경변수 VITE_PAID_SITE_URL 사용
 
 ## 보상 구조
 A(SNS 공유) / B(후기 작성) / A+B(둘 다) 3단계
