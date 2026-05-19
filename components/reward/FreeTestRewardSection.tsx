@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import { Check, Gift, MessageCircle, PenLine, Sparkles } from 'lucide-react';
+import AdviceCard from '../advice/AdviceCard';
+import { getAdviceByType } from '../../lib/advice/freeTestAdvice';
 
 type KakaoSharePayload = {
   objectType: 'feed';
@@ -204,6 +206,7 @@ export default function FreeTestRewardSection({
   const hasNotifiedBothComplete = useRef(false);
   const [hasOpenedShare, setHasOpenedShare] = useState(false);
   const isBothComplete = isShared && isReviewed;
+  const advice = getAdviceByType(resultType);
 
   useEffect(() => {
     getKakao();
@@ -291,6 +294,7 @@ export default function FreeTestRewardSection({
                   </button>
                 ) : null}
               </div>
+              {isShared ? <AdviceCard advice={advice} /> : null}
             </div>
           </div>
         </article>

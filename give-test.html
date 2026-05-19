@@ -194,11 +194,47 @@
         .social-nudge { color: var(--muted); text-align: center; font-size: 0.78rem; font-weight: 800; margin-top: 10px; }
         .share-panel { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 18px; margin-top: 16px; }
         .share-card {
-            width: 100%; aspect-ratio: 1 / 1; border-radius: 8px; background: linear-gradient(160deg, #eaf8f5, #fff7e8);
-            border: 1px solid #dde9e7; display: grid; place-items: center; text-align: center; padding: 18px; margin: 12px 0;
+            position: relative; width: 100%; aspect-ratio: 1.586 / 1; min-height: 304px; border-radius: 18px;
+            background: linear-gradient(135deg, #fbfbff 0%, #f7f1ff 44%, #eaf8f5 100%);
+            border: 1px solid #d9d2ef; box-shadow: 0 22px 50px rgba(64, 44, 120, 0.18);
+            overflow: hidden; padding: 18px; margin: 12px 0; color: var(--ink);
         }
-        .share-card .type-name { font-size: 1.55rem; }
+        .share-card:before {
+            content: ""; position: absolute; inset: -30% -16% auto auto; width: 220px; height: 220px;
+            border-radius: 999px; background: var(--card-color, #e5d8ff); opacity: .72;
+        }
+        .share-card:after {
+            content: ""; position: absolute; left: 18px; right: 18px; bottom: 14px; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(23,25,28,.18), transparent);
+        }
+        .give-id-card-inner { position: relative; z-index: 1; height: 100%; display: grid; grid-template-rows: auto 1fr auto; gap: 12px; }
+        .give-id-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+        .give-id-brand { display: grid; gap: 2px; }
+        .give-id-label { color: #6d28d9; font-size: .72rem; font-weight: 950; letter-spacing: .16em; }
+        .give-id-issued { color: #747b87; font-size: .68rem; font-weight: 850; }
+        .give-id-chip { border: 1px solid rgba(109,40,217,.24); background: rgba(255,255,255,.74); border-radius: 999px; padding: 6px 9px; color: #5b21b6; font-size: .68rem; font-weight: 950; white-space: nowrap; }
+        .give-id-main { display: grid; grid-template-columns: .9fr 1.1fr; gap: 14px; align-items: center; min-height: 0; }
+        .give-id-portrait { align-self: center; display: grid; place-items: center; min-width: 0; }
+        .give-id-portrait .character { width: min(34vw, 138px); height: auto; margin: 0; filter: drop-shadow(0 14px 20px rgba(23,25,28,.16)); animation: none; }
+        .give-id-info { min-width: 0; }
+        .share-card .type-name { font-size: clamp(1.18rem, 5vw, 1.72rem); line-height: 1.08; margin: 0 0 8px; word-break: keep-all; }
+        .give-id-tagline { font-weight: 850; color: #3d454f; font-size: .82rem; line-height: 1.45; margin: 0; word-break: keep-all; }
+        .give-id-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 11px; }
+        .give-id-tag { border: 1px solid rgba(23,25,28,.1); background: rgba(255,255,255,.72); border-radius: 999px; padding: 4px 8px; color: #3d454f; font-size: .68rem; font-weight: 900; }
+        .give-id-bottom { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: end; }
+        .give-id-stats { display: grid; gap: 5px; min-width: 0; }
+        .give-id-stat { display: grid; grid-template-columns: 42px 1fr 28px; gap: 7px; align-items: center; color: #4b5563; font-size: .66rem; font-weight: 950; }
+        .give-id-bar { height: 6px; border-radius: 999px; background: rgba(23,25,28,.1); overflow: hidden; }
+        .give-id-bar span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #7c3aed, #00a885); }
+        .give-id-code { text-align: right; color: #5f6874; font-size: .65rem; font-weight: 900; letter-spacing: .08em; white-space: nowrap; }
+        .result-card-download-button {
+            min-height: 44px; width: 100%; border: 1px solid #7c3aed; background: #fff; color: #6d28d9;
+            border-radius: 8px; padding: 0 16px; font-family: inherit; font-size: .88rem; font-weight: 950; cursor: pointer;
+        }
+        .result-card-download-button:hover { background: #f5f0ff; }
+        .result-card-download-button:disabled { opacity: .62; cursor: wait; }
         .share-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .download-action { grid-column: 1 / -1; }
         .share-retry-actions { display: flex; justify-content: center; margin-top: 12px; }
         .toast { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); background: #101418; color: #fff; border-radius: 999px; padding: 10px 14px; font-size: 0.82rem; font-weight: 850; opacity: 0; pointer-events: none; transition: opacity 0.2s ease; z-index: 20; }
         .toast.show { opacity: 1; }
@@ -420,17 +456,41 @@
                 <section class="share-panel">
                     <h2 class="loop-title" style="margin:0">결과 공유하기</h2>
                     <div class="share-card" id="shareCard">
-                        <div>
-                            <div id="shareCharacter"></div>
-                            <p style="color:var(--muted);font-weight:900;font-size:.82rem;margin-bottom:6px">나의 GIVE ID</p>
-                            <h3 class="type-name" id="shareType"></h3>
-                            <p id="shareTagline" style="font-weight:750;color:#3d454f"></p>
+                        <div class="give-id-card-inner">
+                            <div class="give-id-card-top">
+                                <div class="give-id-brand">
+                                    <span class="give-id-label">GIVE ID</span>
+                                    <span class="give-id-issued">GIVE Ecosystem</span>
+                                </div>
+                                <span class="give-id-chip">RELATION CARD</span>
+                            </div>
+                            <div class="give-id-main">
+                                <div class="give-id-portrait" id="shareCharacter"></div>
+                                <div class="give-id-info">
+                                    <h3 class="type-name" id="shareType"></h3>
+                                    <p class="give-id-tagline" id="shareTagline"></p>
+                                    <div class="give-id-tags" id="shareTags"></div>
+                                </div>
+                            </div>
+                            <div class="give-id-bottom">
+                                <div class="give-id-stats">
+                                    <div class="give-id-stat"><span>배려</span><div class="give-id-bar"><span id="shareCareStat"></span></div><b id="shareCareValue"></b></div>
+                                    <div class="give-id-stat"><span>경계</span><div class="give-id-bar"><span id="shareBoundaryStat"></span></div><b id="shareBoundaryValue"></b></div>
+                                    <div class="give-id-stat"><span>회복</span><div class="give-id-bar"><span id="shareRecoveryStat"></span></div><b id="shareRecoveryValue"></b></div>
+                                </div>
+                                <div class="give-id-code" id="shareCode"></div>
+                            </div>
                         </div>
                     </div>
                     <div class="share-actions">
                         <button class="ghost-btn" onclick="shareResult()">공유하기</button>
                         <button class="ghost-btn" onclick="copyLink()">링크 복사</button>
-                        <button class="ghost-btn" onclick="downloadShareCard()">카드 저장</button>
+                        <div
+                            class="download-action"
+                            data-result-card-download-root
+                            data-target-id="shareCard"
+                            data-file-name="give-id-card.png"
+                        ></div>
                     </div>
                     <div class="share-retry-actions">
                         <button class="result-retry-btn" type="button" onclick="requestRetryTest()">다시 시도해보기</button>
@@ -580,6 +640,44 @@ const results = {
     }
 };
 
+const shareCardMeta = {
+    angel: {
+        code: "GIVE-ANGEL-01",
+        tags: ["#먼저챙김", "#거절연습중", "#따뜻한사람"],
+        stats: { care: 96, boundary: 34, recovery: 58 }
+    },
+    diplomat: {
+        code: "GIVE-DIPLO-02",
+        tags: ["#분위기감지", "#갈등완충", "#내기준찾기"],
+        stats: { care: 84, boundary: 48, recovery: 62 }
+    },
+    architect: {
+        code: "GIVE-ARCH-03",
+        tags: ["#관계설계", "#효율중시", "#온기추가"],
+        stats: { care: 61, boundary: 86, recovery: 74 }
+    },
+    guardian: {
+        code: "GIVE-GUARD-04",
+        tags: ["#선명한선", "#안전우선", "#유연함연습"],
+        stats: { care: 66, boundary: 94, recovery: 78 }
+    },
+    burnout: {
+        code: "GIVE-BURN-05",
+        tags: ["#지친기버", "#회복필요", "#멈춤연습"],
+        stats: { care: 91, boundary: 42, recovery: 29 }
+    },
+    blocker: {
+        code: "GIVE-BLOCK-06",
+        tags: ["#철벽방어", "#손해차단", "#연결연습"],
+        stats: { care: 45, boundary: 96, recovery: 69 }
+    },
+    mixed: {
+        code: "GIVE-MIX-07",
+        tags: ["#밸런서", "#상황판단", "#기준세우기"],
+        stats: { care: 73, boundary: 70, recovery: 68 }
+    }
+};
+
 let current = 0;
 let scores = { G: 0, I: 0, V: 0, E: 0 };
 let finalResult = null;
@@ -664,6 +762,34 @@ function characterSvg(fill) {
         <path d="M30 31 C34 12 51 20 60 34 C69 20 86 12 90 31" stroke="#14181d" stroke-width="3" stroke-linecap="round" fill="none"/>
         <rect x="45" y="103" width="30" height="18" rx="8" fill="${fill}" stroke="#14181d" stroke-width="3"/>
     </svg>`;
+}
+
+function renderShareIdCard(key, result) {
+    const meta = shareCardMeta[key] || shareCardMeta.mixed;
+    const card = document.getElementById("shareCard");
+    card.style.setProperty("--card-color", result.color);
+    document.getElementById("shareCharacter").innerHTML = characterSvg(result.color);
+    document.getElementById("shareType").textContent = result.name;
+    document.getElementById("shareTagline").textContent = result.tagline;
+    document.getElementById("shareCode").textContent = meta.code;
+
+    const tags = document.getElementById("shareTags");
+    tags.innerHTML = "";
+    meta.tags.forEach((tag) => {
+        const item = document.createElement("span");
+        item.className = "give-id-tag";
+        item.textContent = tag;
+        tags.appendChild(item);
+    });
+
+    setShareCardStat("shareCare", meta.stats.care);
+    setShareCardStat("shareBoundary", meta.stats.boundary);
+    setShareCardStat("shareRecovery", meta.stats.recovery);
+}
+
+function setShareCardStat(prefix, value) {
+    document.getElementById(`${prefix}Stat`).style.width = `${value}%`;
+    document.getElementById(`${prefix}Value`).textContent = value;
 }
 
 function startTest() {
@@ -791,9 +917,7 @@ function renderResult(key) {
     document.getElementById("risk").textContent = finalResult.risk;
     document.getElementById("advice").textContent = finalResult.advice;
     renderLockedInterpretation(key, false);
-    document.getElementById("shareCharacter").innerHTML = svg;
-    document.getElementById("shareType").textContent = finalResult.name;
-    document.getElementById("shareTagline").textContent = finalResult.tagline;
+    renderShareIdCard(key, finalResult);
     document.getElementById("nextTestTitle").textContent = finalResult.next.title;
     document.getElementById("nextTestCopy").textContent = finalResult.next.copy;
     document.getElementById("nextTestBtn").onclick = () => location.href = finalResult.next.url;
@@ -877,50 +1001,6 @@ async function copyLink() {
     showToast("링크가 복사되었습니다");
 }
 
-function downloadShareCard() {
-    if (!finalResult) return;
-    const canvas = document.createElement("canvas");
-    canvas.width = 900;
-    canvas.height = 900;
-    const ctx = canvas.getContext("2d");
-    const grd = ctx.createLinearGradient(0, 0, 900, 900);
-    grd.addColorStop(0, finalResult.color);
-    grd.addColorStop(1, "#fff7e8");
-    ctx.fillStyle = grd;
-    ctx.fillRect(0, 0, 900, 900);
-    ctx.fillStyle = "#17191c";
-    ctx.textAlign = "center";
-    ctx.font = "700 34px sans-serif";
-    ctx.fillText("나의 GIVE ID", 450, 220);
-    ctx.font = "900 58px sans-serif";
-    wrapText(ctx, finalResult.name, 450, 330, 720, 72);
-    ctx.font = "700 32px sans-serif";
-    wrapText(ctx, finalResult.tagline, 450, 560, 680, 48);
-    ctx.font = "700 28px sans-serif";
-    ctx.fillText("hogoo-challenge.pages.dev/give-test.html", 450, 780);
-    const link = document.createElement("a");
-    link.download = "give-id-result.png";
-    link.href = canvas.toDataURL("image/png");
-    link.click();
-    showToast("공유 카드가 생성되었습니다");
-}
-
-function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
-    const words = text.split(" ");
-    let line = "";
-    for (let n = 0; words.length > n; n++) {
-        const testLine = line + words[n] + " ";
-        if (ctx.measureText(testLine).width > maxWidth && n > 0) {
-            ctx.fillText(line, x, y);
-            line = words[n] + " ";
-            y += lineHeight;
-        } else {
-            line = testLine;
-        }
-    }
-    ctx.fillText(line, x, y);
-}
-
 function showToast(message) {
     const toast = document.getElementById("toast");
     toast.textContent = message;
@@ -945,5 +1025,6 @@ function showToast(message) {
 })();
 </script>
 <script type="module" src="/src/free-test-reward-widget.tsx"></script>
+<script type="module" src="/src/result-card-download-widget.tsx"></script>
 </body>
 </html>

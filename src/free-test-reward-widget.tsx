@@ -4,6 +4,7 @@ import type { Session } from '@supabase/supabase-js';
 import { supabase } from './supabase';
 import LoginModal from './components/LoginModal';
 import FreeTestRewardSection from '../components/reward/FreeTestRewardSection';
+import { initializeAdminModeFromUrl, isAdminModeEnabled } from './utils/adminMode';
 
 type RewardType = 'sns' | 'review' | 'both';
 
@@ -81,6 +82,7 @@ async function saveReward(userId: string, resultId: string, rewardType: RewardTy
 
 function FreeTestRewardWidget({ rootId, testId, initialResultType }: FreeTestRewardWidgetProps) {
   const [session, setSession] = useState<Session | null>(null);
+  const [adminMode, setAdminMode] = useState(() => isAdminModeEnabled());
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [resultType, setResultType] = useState(initialResultType);
   const [isShared, setIsShared] = useState(false);
@@ -90,8 +92,21 @@ function FreeTestRewardWidget({ rootId, testId, initialResultType }: FreeTestRew
   const [bothError, setBothError] = useState('');
   const [retryResetKey, setRetryResetKey] = useState(0);
 
-  const userId = session?.user?.id ?? null;
+  const userId = adminMode ? 'admin' : session?.user?.id ?? null;
   const resultId = useMemo(() => getResultId(testId, resultType), [testId, resultType]);
+
+  useEffect(() => {
+    let mounted = true;
+
+    initializeAdminModeFromUrl().then((enabled) => {
+      if (!mounted) return;
+      setAdminMode(enabled);
+    });
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setSession(data.session));
@@ -126,6 +141,15 @@ function FreeTestRewardWidget({ rootId, testId, initialResultType }: FreeTestRew
   }, [rootId]);
 
   const fetchRewardStatus = useCallback(async () => {
+    if (adminMode) {
+      setIsShared(true);
+      setIsReviewed(true);
+      window.dispatchEvent(new CustomEvent('free-test-reward-status', {
+        detail: { rootId, isShared: true, isReviewed: true },
+      }));
+      return;
+    }
+
     if (!userId) {
       setIsShared(false);
       setIsReviewed(false);
@@ -158,13 +182,24 @@ function FreeTestRewardWidget({ rootId, testId, initialResultType }: FreeTestRew
 
     const bothReward = rewards.find((reward) => reward.reward_type === 'both' && reward.unlocked);
     setBothContent(getReadableContent(bothReward?.generated_content));
-  }, [resultId, rootId, userId]);
+  }, [adminMode, rootId, userId]);
 
   useEffect(() => {
     fetchRewardStatus();
   }, [fetchRewardStatus]);
 
   const resetRewardUi = useCallback(() => {
+    if (adminMode) {
+      setIsShared(true);
+      setIsReviewed(true);
+      setBothError('');
+      setBothLoading(false);
+      window.dispatchEvent(new CustomEvent('free-test-reward-status', {
+        detail: { rootId, isShared: true, isReviewed: true },
+      }));
+      return;
+    }
+
     setIsShared(false);
     setIsReviewed(false);
     setBothContent('');
@@ -174,7 +209,7 @@ function FreeTestRewardWidget({ rootId, testId, initialResultType }: FreeTestRew
     window.dispatchEvent(new CustomEvent('free-test-reward-status', {
       detail: { rootId, isShared: false, isReviewed: false },
     }));
-  }, [rootId]);
+  }, [adminMode, rootId]);
 
   const handleRetryRequest = useCallback(async () => {
     const confirmMessage = isShared && isReviewed
@@ -221,6 +256,14 @@ function FreeTestRewardWidget({ rootId, testId, initialResultType }: FreeTestRew
   }, [handleRetryRequest, rootId]);
 
   const handleShareComplete = async () => {
+    if (adminMode) {
+      setIsShared(true);
+      window.dispatchEvent(new CustomEvent('free-test-reward-status', {
+        detail: { rootId, isShared: true, isReviewed: true },
+      }));
+      return;
+    }
+
     if (!userId) {
       setLoginModalOpen(true);
       return;
@@ -239,6 +282,14 @@ function FreeTestRewardWidget({ rootId, testId, initialResultType }: FreeTestRew
   };
 
   const handleReviewClick = () => {
+    if (adminMode) {
+      setIsReviewed(true);
+      window.dispatchEvent(new CustomEvent('free-test-reward-status', {
+        detail: { rootId, isShared: true, isReviewed: true },
+      }));
+      return;
+    }
+
     if (!userId) {
       setLoginModalOpen(true);
       return;
@@ -251,6 +302,7 @@ function FreeTestRewardWidget({ rootId, testId, initialResultType }: FreeTestRew
   };
 
   const handleBothComplete = async () => {
+    if (adminMode) return;
     if (!userId || bothLoading || bothContent) return;
 
     setBothLoading(true);
@@ -275,9 +327,11 @@ function FreeTestRewardWidget({ rootId, testId, initialResultType }: FreeTestRew
       <FreeTestRewardSection
         userId={userId}
         resultType={resultType}
-        isShared={isShared}
-        isReviewed={isReviewed}
-        onLoginRequired={() => setLoginModalOpen(true)}
+        isShared={adminMode || isShared}
+        isReviewed={adminMode || isReviewed}
+        onLoginRequired={() => {
+          if (!adminMode) setLoginModalOpen(true);
+        }}
         onShareComplete={handleShareComplete}
         onReviewClick={handleReviewClick}
         onBothComplete={handleBothComplete}
