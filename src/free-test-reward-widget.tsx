@@ -123,6 +123,7 @@ function FreeTestRewardWidget({ rootId, testId, initialResultType }: FreeTestRew
   useEffect(() => {
     const url = new URL(window.location.href);
     if (url.searchParams.get('reviewed') === 'true') {
+      window.localStorage.setItem('free_test_reviewed', 'true');
       setIsReviewed(true);
       url.searchParams.delete('reviewed');
       history.replaceState(null, '', url.toString());
@@ -174,6 +175,9 @@ function FreeTestRewardWidget({ rootId, testId, initialResultType }: FreeTestRew
     const rewards = (data ?? []) as RewardRow[];
     const nextIsShared = rewards.some((reward) => reward.reward_type === 'sns' && reward.unlocked);
     const nextIsReviewed = rewards.some((reward) => reward.reward_type === 'review' && reward.unlocked);
+    if (nextIsReviewed) {
+      window.localStorage.setItem('free_test_reviewed', 'true');
+    }
     setIsShared(nextIsShared);
     setIsReviewed(nextIsReviewed);
     window.dispatchEvent(new CustomEvent('free-test-reward-status', {
@@ -295,9 +299,7 @@ function FreeTestRewardWidget({ rootId, testId, initialResultType }: FreeTestRew
       return;
     }
 
-    const returnUrlObj = new URL(window.location.href);
-    returnUrlObj.searchParams.set('reviewed', 'true');
-    const returnUrl = returnUrlObj.toString();
+    const returnUrl = window.location.href;
     window.location.href = `reviews.html?context=free_test&return=${encodeURIComponent(returnUrl)}&rid=${encodeURIComponent(resultId)}`;
   };
 
