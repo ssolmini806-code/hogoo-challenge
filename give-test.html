@@ -392,35 +392,10 @@
                         </div>
                     </div>
                 </article>
-                <section class="conversion-panel">
-                    <div class="unlock-top">
-                        <strong>원하는 깊이만 선택하세요</strong>
-                        <span class="unlock-pill">유료 CTA</span>
-                    </div>
-                    <p style="color:var(--muted);font-weight:750;font-size:.9rem">무료 테스트에서 보인 신호를 실제 행동 계획으로 바꾸는 구간입니다.</p>
-                    <div class="conversion-grid">
-                        <button class="conversion-card" onclick="openPaid('lite_report')">
-                            <span class="conversion-name">심화 분석만</span>
-                            <span class="conversion-price">₩4,900부터</span>
-                            <span class="conversion-copy">내 유형의 반복 패턴 빠르게 확인</span>
-                        </button>
-                        <button class="conversion-card best" onclick="openPaid('full_package')">
-                            <span class="conversion-name">분석 + 거절 스크립트</span>
-                            <span class="conversion-price">추천 패키지</span>
-                            <span class="conversion-copy">상황별 문장까지 바로 적용</span>
-                        </button>
-                        <button class="conversion-card" onclick="openPaid('challenge')">
-                            <span class="conversion-name">7일 실천 플랜</span>
-                            <span class="conversion-price">행동 루틴</span>
-                            <span class="conversion-copy">매일 하나씩 관계 기준 세우기</span>
-                        </button>
-                    </div>
-                    <button class="primary-btn" onclick="openPaid('pricing_primary')">내 관계 약점 지금 분석하기 →</button>
-                    <span class="paid-sub" style="color:var(--muted)">무료 결과는 유지됩니다. 필요할 때 심화 분석만 이어서 보세요.</span>
-                    <div class="free-links">
-                        <a class="free-link" href="articles/giver-burnout.html"><span class="free-badge">무료</span>기버 번아웃: 나는 왜 항상 지치는가</a>
-                        <a class="free-link" href="articles/setting-boundaries.html"><span class="free-badge">무료</span>경계 설정이 어려운 진짜 이유</a>
-                    </div>
+                <section style="background:#f3f0ff;border:1px solid #d8ccff;border-radius:12px;padding:20px;margin-top:16px;">
+                    <p style="font-size:0.95rem;font-weight:750;color:#3d2d6e;margin:0 0 14px;line-height:1.5;">무료 검사에서 보인 신호를 실제 행동 계획으로 바꾸고 싶다면</p>
+                    <button class="primary-btn" onclick="openPaid('new_cta')" style="background:#7c3aed;box-shadow:0 12px 26px rgba(124,58,237,0.28);">GIVE ID 심화 테스트 시작하기 →</button>
+                    <p class="micro" style="margin-top:10px;color:#7c5cbf;">무료 결과는 유지됩니다.</p>
                 </section>
 
                 <section class="unlock-panel">
@@ -502,11 +477,13 @@
                 <section>
                     <h2 class="loop-title">다음은 이거 보세요</h2>
                     <div class="related-tests">
-                        <a class="related-card" href="hogoo-check.html">
-                            <span class="related-icon">01</span>
-                            <strong>나는 호구일까?</strong>
-                            <span>착한 건지, 만만한 건지</span>
-                        </a>
+                        <div class="related-card" id="hogooCheckCard" onclick="handleHogooCheckClick()" style="cursor:pointer;opacity:0.65;">
+                            <span class="related-icon" style="background:#f3f0f8;color:#7c5cbf;">🔒</span>
+                            <div>
+                                <strong>나는 호구일까?</strong>
+                                <span id="hogooCheckStatus">후기를 작성하면 열려요</span>
+                            </div>
+                        </div>
                         <a class="related-card" href="refusal-test.html">
                             <span class="related-icon">02</span>
                             <strong>거절력 테스트</strong>
@@ -966,6 +943,39 @@ window.addEventListener("free-test-reset-result", (event) => {
     const detail = event.detail || {};
     if (detail.rootId && detail.rootId !== "give-test-reward-root") return;
     resetFreeTestResult();
+});
+
+let hogooCheckUnlocked = false;
+
+function handleHogooCheckClick() {
+    if (hogooCheckUnlocked) {
+        location.href = 'hogoo-check.html';
+    } else {
+        document.getElementById('give-test-reward-root')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+}
+
+window.addEventListener("free-test-reward-status", (event) => {
+    const detail = event.detail || {};
+    if (detail.rootId && detail.rootId !== "give-test-reward-root") return;
+    hogooCheckUnlocked = Boolean(detail.isReviewed);
+    const card = document.getElementById("hogooCheckCard");
+    const icon = card?.querySelector(".related-icon");
+    const status = document.getElementById("hogooCheckStatus");
+    if (!card || !icon || !status) return;
+    if (hogooCheckUnlocked) {
+        card.style.opacity = "1";
+        icon.style.background = "var(--mint)";
+        icon.style.color = "var(--green-dark)";
+        icon.textContent = "01";
+        status.textContent = "착한 건지, 만만한 건지";
+    } else {
+        card.style.opacity = "0.65";
+        icon.style.background = "#f3f0f8";
+        icon.style.color = "#7c5cbf";
+        icon.textContent = "🔒";
+        status.textContent = "후기를 작성하면 열려요";
+    }
 });
 
 function paidUrl(source) {

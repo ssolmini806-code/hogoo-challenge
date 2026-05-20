@@ -294,6 +294,17 @@ export default function FreeTestRewardSection({
                   </button>
                 ) : null}
               </div>
+              {isShared ? (
+                <div style={{ marginTop: 10, borderRadius: 8, background: '#2a241c', border: '1px solid #4a3f30', padding: '10px 12px', display: 'flex', gap: 8, alignItems: 'flex-start' }}>
+                  <span style={{ fontSize: 16, flexShrink: 0 }} aria-hidden="true">🏅</span>
+                  <div>
+                    <p style={{ fontSize: 12, fontWeight: 800, color: '#f7c56b', margin: '0 0 4px' }}>SNS 공유 완료 배지</p>
+                    <p style={{ fontSize: 12, color: '#dccdbf', lineHeight: 1.55, margin: 0 }}>
+                      후기 게시판에서 닉네임 옆에 이 배지가 표시돼요.<br />다른 완주자들이 볼 수 있어요.
+                    </p>
+                  </div>
+                </div>
+              ) : null}
               {isShared ? <AdviceCard advice={advice} /> : null}
             </div>
           </div>
@@ -382,6 +393,31 @@ export default function FreeTestRewardSection({
               {bothRewardContent ? (
                 <div style={{ marginTop: 10, borderRadius: 8, background: 'rgba(0,0,0,0.2)', padding: 12, fontSize: 13, lineHeight: 1.6, color: isBothComplete ? '#fff' : '#c5b8ac' }}>
                   {bothRewardContent}
+                </div>
+              ) : null}
+              {isBothComplete ? (
+                <div style={{ marginTop: 14, borderTop: '1px solid rgba(255,255,255,0.15)', paddingTop: 14 }}>
+                  <p style={{ fontSize: 12, fontWeight: 700, color: 'rgba(255,255,255,0.7)', margin: '0 0 8px' }}>내 유형을 더 깊게 알고 싶다면</p>
+                  <a
+                    href="https://givecosystem.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: 4,
+                      padding: '8px 14px',
+                      borderRadius: 8,
+                      background: 'rgba(255,255,255,0.15)',
+                      color: '#e0d8ff',
+                      fontSize: 13,
+                      fontWeight: 800,
+                      textDecoration: 'none',
+                      border: '1px solid rgba(255,255,255,0.2)',
+                    }}
+                  >
+                    GIVE ID 심화 테스트 →
+                  </a>
                 </div>
               ) : null}
             </div>
