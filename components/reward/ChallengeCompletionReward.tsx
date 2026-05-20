@@ -1,10 +1,10 @@
 'use client';
 
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
+import { toPng } from 'html-to-image';
 import {
   Award,
-  BookOpenText,
   Check,
   ChevronRight,
   Download,
@@ -20,6 +20,7 @@ import { openSevenDayChallengeShare } from '../../src/utils/challengeShare';
 type ChallengeCompletionRewardProps = {
   userId: string | null;
   completionRate: number;
+  completedDays: number;
   isShared: boolean;
   isReviewed: boolean;
   onLoginRequired: () => void;
@@ -33,15 +34,100 @@ type Diagnosis = {
   description: string;
 };
 
+const CHALLENGE_COMPLETED_AT_KEY = 'challenge_completed_at';
+const THREE_DAYS_MS = 3 * 24 * 60 * 60 * 1000;
+
 const STARTER_ITEMS = [
-  '30일 목표 설정 PDF',
-  '위기 구간 대처 가이드',
-  '완주 인증서',
-  '30일 스타터 체크리스트',
+  { label: '30일 목표 설정 PDF' },
+  { label: '위기 구간 대처 가이드' },
+  { label: '3,000원 할인권', badge: '준비 중' },
 ];
 
 function getPaidSiteUrl() {
   return import.meta.env.VITE_PAID_SITE_URL ?? 'https://givecosystem.com/';
+}
+
+function getCompletionDate(): Date {
+  if (typeof window === 'undefined') return new Date();
+
+  const stored = window.localStorage.getItem(CHALLENGE_COMPLETED_AT_KEY);
+  if (stored) {
+    const parsed = new Date(stored);
+    if (!Number.isNaN(parsed.getTime())) return parsed;
+  }
+
+  const now = new Date();
+  window.localStorage.setItem(CHALLENGE_COMPLETED_AT_KEY, now.toISOString());
+  return now;
+}
+
+function formatCompletionDate(date: Date) {
+  return new Intl.DateTimeFormat('ko-KR', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }).format(date);
+}
+
+function formatCountdown(ms: number) {
+  const safeMs = Math.max(0, ms);
+  const totalSeconds = Math.floor(safeMs / 1000);
+  const days = Math.floor(totalSeconds / 86400);
+  const hours = Math.floor((totalSeconds % 86400) / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  return `${days}일 ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+}
+
+function downloadGoalSettingPdf() {
+  if (typeof document === 'undefined') return;
+
+  const stream = `BT
+/F1 24 Tf
+72 720 Td
+(30 Day Goal Setting PDF) Tj
+/F1 13 Tf
+0 -44 Td
+(1. Pick one boundary habit you will repeat for 30 days.) Tj
+0 -26 Td
+(2. Choose the time and situation where you will practice it.) Tj
+0 -26 Td
+(3. Write one fallback sentence for moments of guilt or anxiety.) Tj
+0 -26 Td
+(4. Review every 7 days and keep only what actually worked.) Tj
+0 -52 Td
+(GIVE Ecosystem) Tj
+ET`;
+  const objects = [
+    '<< /Type /Catalog /Pages 2 0 R >>',
+    '<< /Type /Pages /Kids [3 0 R] /Count 1 >>',
+    '<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>',
+    '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>',
+    `<< /Length ${stream.length} >>\nstream\n${stream}\nendstream`,
+  ];
+  let pdf = '%PDF-1.4\n';
+  const offsets = [0];
+
+  objects.forEach((object, index) => {
+    offsets.push(pdf.length);
+    pdf += `${index + 1} 0 obj\n${object}\nendobj\n`;
+  });
+
+  const xrefStart = pdf.length;
+  pdf += `xref\n0 ${objects.length + 1}\n`;
+  pdf += '0000000000 65535 f \n';
+  offsets.slice(1).forEach((offset) => {
+    pdf += `${String(offset).padStart(10, '0')} 00000 n \n`;
+  });
+  pdf += `trailer\n<< /Size ${objects.length + 1} /Root 1 0 R >>\nstartxref\n${xrefStart}\n%%EOF`;
+
+  const blob = new Blob([pdf], { type: 'application/pdf' });
+  const link = document.createElement('a');
+  link.download = '30day-goal-setting.pdf';
+  link.href = URL.createObjectURL(blob);
+  link.click();
+  URL.revokeObjectURL(link.href);
 }
 
 function getDiagnosis(completionRate: number): Diagnosis {
@@ -129,22 +215,136 @@ function RewardActionButton({
   );
 }
 
+function RetrospectiveCard({ completedDays }: { completedDays: number }) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [isSaving, setIsSaving] = useState(false);
+  const completionDate = useMemo(() => formatCompletionDate(getCompletionDate()), []);
+  const safeCompletedDays = Math.min(7, Math.max(0, completedDays));
+
+  const handleSave = async () => {
+    if (!cardRef.current || isSaving) return;
+    setIsSaving(true);
+
+    try {
+      const dataUrl = await toPng(cardRef.current, {
+        cacheBust: true,
+        pixelRatio: 2,
+        backgroundColor: '#ffffff',
+      });
+      const link = document.createElement('a');
+      link.download = '7day-challenge-retrospective.png';
+      link.href = dataUrl;
+      link.click();
+    } catch (error) {
+      console.error('Failed to save retrospective image:', error);
+      alert('회고록 저장에 실패했습니다. 잠시 후 다시 시도해주세요.');
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  return (
+    <div className="mt-4">
+      <div
+        ref={cardRef}
+        className="rounded-lg border border-gray-200 bg-white p-6 text-gray-950 shadow-sm"
+        style={{ width: '100%' }}
+      >
+        <div className="flex items-start justify-between gap-4 border-b border-gray-100 pb-4">
+          <div>
+            <p className="text-xl font-extrabold tracking-normal text-gray-950">
+              7일 챌린지 회고록
+            </p>
+            <p className="mt-1 text-sm font-semibold text-gray-500">{completionDate}</p>
+          </div>
+          <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-extrabold text-emerald-700">
+            완료
+          </span>
+        </div>
+
+        <div className="mt-6 rounded-lg bg-gray-50 p-4">
+          <p className="text-xs font-bold uppercase tracking-wider text-gray-500">완료한 미션 수</p>
+          <p className="mt-2 text-4xl font-black text-gray-950">{safeCompletedDays}/7</p>
+        </div>
+
+        <div className="mt-5">
+          <p className="text-xs font-bold uppercase tracking-wider text-gray-500">한 줄 소감</p>
+          <p className="mt-2 text-lg font-extrabold leading-7 text-gray-950">
+            경계를 연습한 7일이었습니다
+          </p>
+        </div>
+
+        <p className="mt-8 text-right text-sm font-extrabold text-gray-700">GIVE 에코시스템</p>
+      </div>
+
+      <button
+        type="button"
+        onClick={handleSave}
+        disabled={isSaving}
+        className="mt-3 inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-emerald-700 px-4 text-sm font-extrabold text-white transition hover:bg-emerald-800 disabled:cursor-not-allowed disabled:bg-emerald-200"
+      >
+        <Download className="h-4 w-4" aria-hidden="true" />
+        {isSaving ? '저장 중...' : '회고록 저장하기'}
+      </button>
+    </div>
+  );
+}
+
 function PaidChallengeCta() {
   const paidSiteUrl = getPaidSiteUrl();
+  const [now, setNow] = useState(() => Date.now());
+  const completedAt = useMemo(() => getCompletionDate(), []);
+  const remainingMs = completedAt.getTime() + THREE_DAYS_MS - now;
+  const isExpired = remainingMs <= 0;
+
+  useEffect(() => {
+    if (isExpired) return;
+    const timer = window.setInterval(() => setNow(Date.now()), 1000);
+    return () => window.clearInterval(timer);
+  }, [isExpired]);
+
+  if (isExpired) {
+    return (
+      <article className="rounded-lg border border-amber-200 bg-amber-50 p-5 text-amber-950">
+        <p className="text-base font-extrabold">기간이 지났어요.</p>
+        <p className="mt-2 text-sm leading-6 text-amber-900">
+          30일 목표 설정 PDF는 여전히 받을 수 있어요.
+        </p>
+        <button
+          type="button"
+          onClick={downloadGoalSettingPdf}
+          className="mt-4 inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-amber-600 px-4 text-sm font-extrabold text-white transition hover:bg-amber-700"
+        >
+          <Download className="h-4 w-4" aria-hidden="true" />
+          30일 목표 설정 PDF 다운로드
+        </button>
+      </article>
+    );
+  }
 
   return (
     <article className="overflow-hidden rounded-lg bg-gradient-to-br from-violet-700 via-fuchsia-700 to-indigo-800 p-5 text-white shadow-lg shadow-violet-900/20">
-      <p className="inline-flex rounded-full bg-white/15 px-3 py-1 text-xs font-bold text-violet-50 ring-1 ring-white/20">
-        3일 안에 시작 시
-      </p>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <p className="inline-flex rounded-full bg-white/15 px-3 py-1 text-xs font-bold text-violet-50 ring-1 ring-white/20">
+          3일 안에 시작 시
+        </p>
+        <p className="rounded-lg bg-white/15 px-3 py-1 text-xs font-extrabold tabular-nums text-white ring-1 ring-white/20">
+          {formatCountdown(remainingMs)}
+        </p>
+      </div>
 
       <div className="mt-4 space-y-3">
         {STARTER_ITEMS.map((item) => (
-          <div key={item} className="flex items-center gap-3 text-sm font-semibold text-white/95">
+          <div key={item.label} className="flex items-center gap-3 text-sm font-semibold text-white/95">
             <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white/15">
               <Check className="h-4 w-4" aria-hidden="true" />
             </span>
-            {item}
+            <span className="min-w-0 flex-1">{item.label}</span>
+            {item.badge ? (
+              <span className="shrink-0 rounded-full bg-white/15 px-2 py-1 text-[11px] font-extrabold text-violet-50 ring-1 ring-white/20">
+                {item.badge}
+              </span>
+            ) : null}
           </div>
         ))}
       </div>
@@ -163,11 +363,12 @@ function PaidChallengeCta() {
 function ShareRewardCard({
   userId,
   isShared,
+  completedDays,
   onLoginRequired,
   onShareComplete,
 }: Pick<
   ChallengeCompletionRewardProps,
-  'userId' | 'isShared' | 'onLoginRequired' | 'onShareComplete'
+  'userId' | 'isShared' | 'onLoginRequired' | 'onShareComplete' | 'completedDays'
 >) {
   const handleShareClick = () => {
     if (!userId) {
@@ -188,8 +389,7 @@ function ShareRewardCard({
         <div className="min-w-0 flex-1">
           <h3 className="text-base font-extrabold text-gray-950">혜택 A · 7일 회고록 + 배지</h3>
           <p className="mt-1 text-sm leading-6 text-gray-600">
-            후기 작성 후 다운 받은 7일 완주 인증서를 공유하면 30일 스타터 체크리스트가
-            열려요
+            공유 완료 후 회고록 PNG를 저장하고 후기 게시판 배지를 받을 수 있어요.
           </p>
         </div>
       </div>
@@ -210,37 +410,8 @@ function ShareRewardCard({
         </RewardActionButton>
       </div>
 
-      <div
-        className={`mt-4 rounded-lg border border-dashed border-emerald-200 bg-emerald-50 p-4 transition duration-500 ${
-          isShared ? 'animate-[fadeIn_420ms_ease-out] opacity-100 blur-0' : 'opacity-70 blur-sm'
-        }`}
-      >
-        <p className="flex items-center gap-2 text-sm font-extrabold text-emerald-950">
-          {isShared ? (
-            <Check className="h-4 w-4 text-emerald-700" aria-hidden="true" />
-          ) : (
-            <Lock className="h-4 w-4 text-emerald-700" aria-hidden="true" />
-          )}
-          30일 스타터 체크리스트
-        </p>
-        <ul className="mt-3 space-y-2 text-sm leading-6 text-emerald-900">
-          <li>1일차 목표를 한 문장으로 고정하기</li>
-          <li>흔들리는 시간대와 대체 행동 정하기</li>
-          <li>7일 회고에서 반복할 장점 1개 고르기</li>
-        </ul>
-      </div>
-
       {isShared ? (
-        <div className="mt-4 animate-[fadeIn_420ms_ease-out] rounded-lg bg-gray-50 p-4">
-          <p className="flex items-center gap-2 text-sm font-extrabold text-gray-950">
-            <BookOpenText className="h-4 w-4 text-gray-700" aria-hidden="true" />
-            7일 회고록
-          </p>
-          <p className="mt-2 text-sm leading-6 text-gray-600">
-            7일 동안 유지한 행동, 흔들린 순간, 30일로 이어갈 한 가지 기준이 여기에
-            표시됩니다.
-          </p>
-        </div>
+        <RetrospectiveCard completedDays={completedDays} />
       ) : null}
     </article>
   );
@@ -336,6 +507,7 @@ function BonusDiagnosisCard({ diagnosis }: { diagnosis: Diagnosis }) {
 export default function ChallengeCompletionReward({
   userId,
   completionRate,
+  completedDays,
   isShared,
   isReviewed,
   onLoginRequired,
@@ -387,6 +559,7 @@ export default function ChallengeCompletionReward({
           <ShareRewardCard
             userId={userId}
             isShared={isShared}
+            completedDays={completedDays}
             onLoginRequired={onLoginRequired}
             onShareComplete={onShareComplete}
           />
