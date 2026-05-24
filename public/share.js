@@ -30,7 +30,11 @@
     else{copy(location.href,'링크 복사 완료! 카카오톡에 붙여넣기 해주세요 💛');}
   };
   window.snsInsta=function(){
-    copy(location.href,'링크 복사 완료! 인스타 스토리에 붙여넣기 해주세요 📸');
+    if(navigator.share){
+      navigator.share({title:document.title,url:location.href}).catch(function(){});
+    }else{
+      copy(location.href,'링크 복사 완료! 인스타 스토리에 붙여넣기 해주세요 📸');
+    }
   };
   window.snsTiktok=function(){
     copy(location.href,'링크 복사 완료! 틱톡 앱에 붙여넣기 해주세요 🎵');
