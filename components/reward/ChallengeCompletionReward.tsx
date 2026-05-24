@@ -370,13 +370,68 @@ function ShareRewardCard({
   ChallengeCompletionRewardProps,
   'userId' | 'isShared' | 'onLoginRequired' | 'onShareComplete' | 'completedDays'
 >) {
-  const handleShareClick = () => {
-    if (!userId) {
-      onLoginRequired();
-      return;
-    }
+  const [toast, setToast] = useState('');
+  const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  useEffect(() => {
+    return () => {
+      if (toastTimer.current) clearTimeout(toastTimer.current);
+    };
+  }, []);
+
+  function showToast(msg: string) {
+    setToast(msg);
+    if (toastTimer.current) clearTimeout(toastTimer.current);
+    toastTimer.current = setTimeout(() => setToast(''), 3000);
+  }
+
+  function fallbackCopy(url: string) {
+    const el = document.createElement('textarea');
+    el.value = url;
+    el.style.cssText = 'position:fixed;top:-999px;opacity:0';
+    document.body.appendChild(el);
+    el.select();
+    try { document.execCommand('copy'); } catch {}
+    document.body.removeChild(el);
+  }
+
+  const handleKakaoShare = () => {
+    if (!userId) { onLoginRequired(); return; }
     openSevenDayChallengeShare();
+    onShareComplete();
+  };
+
+  const handleInstaShare = () => {
+    if (!userId) { onLoginRequired(); return; }
+    const url = window.location.href;
+    if (navigator.share) {
+      navigator.share({ title: '7일 호구 탈출 챌린지 완주! 🎉', url }).catch(() => {});
+    } else {
+      navigator.clipboard.writeText(url)
+        .then(() => showToast('링크 복사 완료! 인스타 스토리에 붙여넣기 해주세요 📸'))
+        .catch(() => { fallbackCopy(url); showToast('링크 복사 완료! 인스타 스토리에 붙여넣기 해주세요 📸'); });
+    }
+    onShareComplete();
+  };
+
+  const handleXShare = () => {
+    if (!userId) { onLoginRequired(); return; }
+    const url = window.location.href;
+    const text = '7일 호구 탈출 챌린지 완주! 🎉 나처럼 해봐!';
+    window.open(
+      `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`,
+      '_blank',
+      'noopener,noreferrer,width=600,height=400',
+    );
+    onShareComplete();
+  };
+
+  const handleCopyShare = () => {
+    if (!userId) { onLoginRequired(); return; }
+    const url = window.location.href;
+    navigator.clipboard.writeText(url)
+      .then(() => showToast('링크가 복사되었어요 🔗'))
+      .catch(() => { fallbackCopy(url); showToast('링크가 복사되었어요 🔗'); });
     onShareComplete();
   };
 
@@ -394,21 +449,55 @@ function ShareRewardCard({
         </div>
       </div>
 
-      <div className="mt-4">
-        <RewardActionButton onClick={handleShareClick} disabled={isShared}>
-          {isShared ? (
-            <>
-              <Check className="h-4 w-4" aria-hidden="true" />
-              공유했어요 ✓
-            </>
-          ) : (
-            <>
-              <Share2 className="h-4 w-4" aria-hidden="true" />
-              SNS에 공유하기
-            </>
-          )}
-        </RewardActionButton>
+      <div className="mt-4 grid grid-cols-2 gap-2">
+        <button
+          type="button"
+          onClick={handleKakaoShare}
+          disabled={isShared}
+          className="inline-flex h-10 items-center justify-center gap-1.5 rounded-lg bg-[#FEE500] px-3 text-xs font-bold text-[#191919] transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3C6.48 3 2 6.72 2 11.25c0 2.9 1.67 5.47 4.22 7.06l-1.1 4.03 4.52-2.14c.76.14 1.55.21 2.36.21 5.52 0 10-3.72 10-8.25S17.52 3 12 3z"/></svg>
+          카카오톡
+        </button>
+        <button
+          type="button"
+          onClick={handleInstaShare}
+          disabled={isShared}
+          className="inline-flex h-10 items-center justify-center gap-1.5 rounded-lg bg-[#E1306C] px-3 text-xs font-bold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          인스타그램
+        </button>
+        <button
+          type="button"
+          onClick={handleXShare}
+          disabled={isShared}
+          className="inline-flex h-10 items-center justify-center gap-1.5 rounded-lg bg-black px-3 text-xs font-bold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.259 5.63L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          X(트위터)
+        </button>
+        <button
+          type="button"
+          onClick={handleCopyShare}
+          disabled={isShared}
+          className="inline-flex h-10 items-center justify-center gap-1.5 rounded-lg border border-gray-200 px-3 text-xs font-bold text-gray-700 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+          링크 복사
+        </button>
       </div>
+
+      {toast ? (
+        <p className="mt-2 text-center text-xs font-semibold text-gray-600">{toast}</p>
+      ) : null}
+
+      {isShared ? (
+        <p className="mt-3 flex items-start gap-2 text-sm font-medium text-emerald-700">
+          <Award className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
+          후기 게시판에 닉네임 옆 배지가 표시돼요 🏅
+        </p>
+      ) : null}
 
       {isShared ? (
         <RetrospectiveCard completedDays={completedDays} />
