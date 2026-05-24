@@ -390,9 +390,8 @@ export default function App() {
       setIsReviewed(true);
       await saveReward('review');
     } catch (error) {
-      console.error('Review insert failed:', error?.message, '|', error?.code, '|', error?.details, '|', error?.hint);
-      const msg = error?.message || JSON.stringify(error);
-      setReviewStatus(`후기 등록 실패: ${msg}`);
+      console.error('Review insert failed:', error);
+      setReviewStatus("후기 등록에 실패했습니다. 잠시 후 다시 시도해주세요.");
     }
   };
 
