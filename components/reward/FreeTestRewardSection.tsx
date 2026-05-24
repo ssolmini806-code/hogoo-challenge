@@ -51,6 +51,7 @@ export type FreeTestRewardSectionProps = {
   bothRewardContent?: ReactNode;
   isBothRewardLoading?: boolean;
   bothRewardError?: string;
+  retryResetKey?: number;
 };
 
 function getCurrentUrl() {
@@ -198,6 +199,7 @@ export default function FreeTestRewardSection({
   bothRewardContent,
   isBothRewardLoading = false,
   bothRewardError,
+  retryResetKey = 0,
 }: FreeTestRewardSectionProps) {
   const hasNotifiedBothComplete = useRef(false);
   const [hasOpenedShare, setHasOpenedShare] = useState(false);
@@ -212,6 +214,11 @@ export default function FreeTestRewardSection({
     hasNotifiedBothComplete.current = true;
     onBothComplete();
   }, [isBothComplete, onBothComplete]);
+
+  useEffect(() => {
+    setHasOpenedShare(false);
+    hasNotifiedBothComplete.current = false;
+  }, [retryResetKey]);
 
   const handleShareClick = () => {
     if (!userId) { onLoginRequired(); return; }

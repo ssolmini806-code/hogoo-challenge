@@ -1,7 +1,45 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Award, BookOpenText, Check, Download, Gift, Lock, MessageCircle, Share2, Sparkles } from 'lucide-react';
 
-const DEFAULT_SHARE_MESSAGE = '7일 호구 탈출 챌린지 완주! 🎉 7일 동안 해냈어. 나처럼 해봐!';
+const SHARE_TITLE = '7일 호구 탈출 챌린지 완주! 🎉';
+const SHARE_DESCRIPTION = '7일 동안 해냈어. 나처럼 해봐!';
+const PAID_SITE_URL = import.meta.env.VITE_PAID_SITE_URL || 'https://givecosystem.com';
+
+type KakaoSharePayload = {
+  objectType: 'feed';
+  content: {
+    title: string;
+    description: string;
+    link: {
+      mobileWebUrl: string;
+      webUrl: string;
+    };
+  };
+  buttons?: Array<{
+    title: string;
+    link: {
+      mobileWebUrl: string;
+      webUrl: string;
+    };
+  }>;
+};
+
+type KakaoSdk = {
+  init: (appKey: string) => void;
+  isInitialized: () => boolean;
+  Share?: {
+    sendDefault: (payload: KakaoSharePayload) => void;
+  };
+  Link?: {
+    sendDefault: (payload: KakaoSharePayload) => void;
+  };
+};
+
+declare global {
+  interface Window {
+    Kakao?: KakaoSdk;
+  }
+}
 
 type ChallengeDiagnosisResult = {
   completionDays: number;
@@ -20,9 +58,60 @@ type Props = {
 };
 
 function getDiagnosisLabel(days: number): string {
-  if (days >= 7) return '30일 준비 완료 유형';
-  if (days >= 5) return '루틴 형성 중, 30일이 강화해줄 수 있어요';
-  return '구조가 필요한 유형, 30일 챌린지가 그걸 만들어줍니다';
+  if (days >= 7) return '30일 준비 완료 유형입니다. 지금 시작하세요.';
+  if (days >= 5) return '루틴 형성 중입니다. 30일이 더 강화해줄 수 있어요.';
+  return '구조가 필요한 유형입니다. 30일 챌린지가 그걸 만들어줍니다.';
+}
+
+function getCurrentUrl() {
+  if (typeof window === 'undefined') return 'https://hogoo-challenge.pages.dev/hogoo-test.html';
+  return window.location.href;
+}
+
+function getKakao(): KakaoSdk | null {
+  if (typeof window === 'undefined' || !window.Kakao) return null;
+  if (!window.Kakao.isInitialized()) {
+    window.Kakao.init('3e86388cd24e0ec392041b91dd3e238f');
+  }
+  return window.Kakao;
+}
+
+function openKakaoShare() {
+  if (typeof window === 'undefined') return;
+
+  const shareUrl = getCurrentUrl();
+  const payload: KakaoSharePayload = {
+    objectType: 'feed',
+    content: {
+      title: SHARE_TITLE,
+      description: SHARE_DESCRIPTION,
+      link: {
+        mobileWebUrl: shareUrl,
+        webUrl: shareUrl,
+      },
+    },
+    buttons: [
+      {
+        title: '챌린지 보기',
+        link: {
+          mobileWebUrl: shareUrl,
+          webUrl: shareUrl,
+        },
+      },
+    ],
+  };
+
+  const kakaoShare = getKakao()?.Share ?? getKakao()?.Link;
+  if (kakaoShare?.sendDefault) {
+    kakaoShare.sendDefault(payload);
+    return;
+  }
+
+  window.open(
+    `https://sharer.kakao.com/talk/friends/picker/link?url=${encodeURIComponent(shareUrl)}`,
+    'kakao-share',
+    'noopener,noreferrer,width=480,height=640',
+  );
 }
 
 const card: React.CSSProperties = {
@@ -75,7 +164,6 @@ export default function ChallengeRewardSection({
   const bothDone = isShared && isReviewed;
   const hasCalledBoth = useRef(false);
   const [showDiagnosis, setShowDiagnosis] = useState(bothDone);
-  const [shareMessage, setShareMessage] = useState(DEFAULT_SHARE_MESSAGE);
   const [hasOpenedShare, setHasOpenedShare] = useState(false);
 
   const diagnosisResult = useMemo<ChallengeDiagnosisResult>(
@@ -97,21 +185,7 @@ export default function ChallengeRewardSection({
 
   const handleOpenShare = () => {
     if (!userId) { onLoginRequired(); return; }
-
-    const shareUrl = typeof window === 'undefined' ? 'https://hogoo-challenge.pages.dev' : window.location.href;
-    if (typeof navigator !== 'undefined' && navigator.share) {
-      navigator.share({
-        title: '7일 호구 탈출 챌린지',
-        text: shareMessage,
-        url: shareUrl,
-      }).catch(() => undefined);
-    } else if (typeof window !== 'undefined') {
-      window.open(
-        `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareMessage)}&url=${encodeURIComponent(shareUrl)}`,
-        '_blank',
-        'width=600,height=400,noopener,noreferrer',
-      );
-    }
+    openKakaoShare();
     setHasOpenedShare(true);
   };
 
@@ -154,11 +228,14 @@ export default function ChallengeRewardSection({
 
   return (
     <section style={{ marginBottom: 24 }}>
+      <h2 style={{ fontSize: 18, fontWeight: 800, color: '#f5ede3', margin: '0 0 10px' }}>
+        완료 보상 받기
+      </h2>
       <p style={{ fontSize: 13, fontWeight: 600, color: '#00a885', margin: '0 0 4px' }}>
         공유하면 인증서를, 후기를 남기면 7일 회고록을 드려요.
       </p>
       <p style={{ fontSize: 13, color: '#8a7f75', lineHeight: 1.6, margin: '0 0 16px' }}>
-        둘 다 완료하면 30일 챌린지가 지금 나한테 필요한지 진단해드립니다.
+        둘 다 완료하면 30일 챌린지가 나한테 맞는지 진단해드립니다.
       </p>
 
       {/* A: SNS 공유 */}
@@ -172,21 +249,6 @@ export default function ChallengeRewardSection({
             <p style={{ fontSize: 13, fontWeight: 600, color: '#c5b8ac', margin: 0 }}>혜택 A: 7일 완주 인증서 이미지 + 배지</p>
           </div>
         </div>
-
-        <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#8a7f75', marginBottom: 6 }}>
-          공유 문구
-        </label>
-        <textarea
-          value={shareMessage}
-          onChange={e => setShareMessage(e.target.value)}
-          rows={2}
-          style={{
-            width: '100%', background: '#1a1614', border: '1px solid #3a3530',
-            color: '#f5ede3', borderRadius: 8, padding: 10, fontSize: 13,
-            lineHeight: 1.6, outline: 'none', resize: 'none', boxSizing: 'border-box',
-            fontFamily: 'inherit',
-          }}
-        />
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginTop: 10 }}>
           <button
@@ -206,7 +268,7 @@ export default function ChallengeRewardSection({
             }}
           >
             {isShared ? <Download size={15} /> : <Lock size={15} />}
-            인증서 저장
+            인증서 이미지 다운로드
           </button>
         </div>
 
@@ -265,7 +327,7 @@ export default function ChallengeRewardSection({
           <div style={{ marginTop: 12, background: '#2d2a1a', border: '1px dashed #3a3018', borderRadius: 8, padding: 12 }}>
             <p style={{ fontSize: 13, fontWeight: 700, color: '#f59e0b', margin: '0 0 4px' }}>7일 회고록</p>
             <p style={{ fontSize: 12, color: '#b09050', lineHeight: 1.6, margin: 0 }}>
-              후기가 저장됐어요. 30일 챌린지로 이어가면 자동으로 회고록이 작성됩니다.
+              7일 동안 남긴 미션 기록과 후기를 바탕으로 회고록이 생성될 예정입니다.
             </p>
           </div>
         )}
@@ -288,11 +350,8 @@ export default function ChallengeRewardSection({
             <p style={{ fontSize: 13, fontWeight: 700, color: '#818cf8', display: 'flex', alignItems: 'center', gap: 6, margin: '0 0 8px' }}>
               <Sparkles size={14} /> {diagnosisResult.label}
             </p>
-            <p style={{ fontSize: 13, color: '#a5b4fc', lineHeight: 1.6, margin: '0 0 12px' }}>
-              완료 기록 {safe}/7을 기준으로 30일 챌린지 적합도를 확인했어요.
-            </p>
             <a
-              href={import.meta.env.VITE_PAID_SITE_URL || 'https://givecosystem.com/'}
+              href={PAID_SITE_URL}
               target="_blank"
               rel="noopener noreferrer"
               style={{
@@ -301,7 +360,7 @@ export default function ChallengeRewardSection({
                 fontWeight: 800, fontSize: 14, textDecoration: 'none',
               }}
             >
-              30일 챌린지 시작하기
+              30일 챌린지 시작하기 →
             </a>
           </div>
         ) : (

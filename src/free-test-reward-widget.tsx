@@ -19,6 +19,10 @@ type RewardUpdateEvent = CustomEvent<{
   resultType?: string;
 }>;
 
+type RetryRequestEvent = CustomEvent<{
+  rootId?: string;
+}>;
+
 type FreeTestRewardWidgetProps = {
   rootId: string;
   testId: string;
@@ -84,6 +88,7 @@ function FreeTestRewardWidget({ rootId, testId, initialResultType }: FreeTestRew
   const [bothContent, setBothContent] = useState('');
   const [bothLoading, setBothLoading] = useState(false);
   const [bothError, setBothError] = useState('');
+  const [retryResetKey, setRetryResetKey] = useState(0);
 
   const userId = session?.user?.id ?? null;
   const resultId = useMemo(() => getResultId(testId, resultType), [testId, resultType]);
@@ -159,6 +164,62 @@ function FreeTestRewardWidget({ rootId, testId, initialResultType }: FreeTestRew
     fetchRewardStatus();
   }, [fetchRewardStatus]);
 
+  const resetRewardUi = useCallback(() => {
+    setIsShared(false);
+    setIsReviewed(false);
+    setBothContent('');
+    setBothError('');
+    setBothLoading(false);
+    setRetryResetKey((key) => key + 1);
+    window.dispatchEvent(new CustomEvent('free-test-reward-status', {
+      detail: { rootId, isShared: false, isReviewed: false },
+    }));
+  }, [rootId]);
+
+  const handleRetryRequest = useCallback(async () => {
+    const confirmMessage = isShared && isReviewed
+      ? '공유 및 후기 보상이 모두 초기화됩니다. 다시 시도하시겠어요?'
+      : isShared
+        ? 'SNS 공유 보상이 초기화됩니다. 다시 시도하시겠어요?'
+        : isReviewed
+          ? '후기 보상이 초기화됩니다. 다시 시도하시겠어요?'
+          : '';
+
+    if (confirmMessage && !window.confirm(confirmMessage)) return;
+
+    try {
+      if (userId) {
+        const { error } = await supabase
+          .from('user_rewards')
+          .delete()
+          .eq('user_id', userId)
+          .eq('reward_context', 'free_test');
+
+        if (error) throw error;
+      }
+
+      resetRewardUi();
+      setResultType(initialResultType);
+      window.dispatchEvent(new CustomEvent('free-test-reset-result', {
+        detail: { rootId },
+      }));
+    } catch (error) {
+      console.error('Error resetting free test rewards:', error);
+      alert('보상 초기화에 실패했습니다. 잠시 후 다시 시도해주세요.');
+    }
+  }, [initialResultType, isReviewed, isShared, resetRewardUi, rootId, userId]);
+
+  useEffect(() => {
+    const handleRetryEvent = (event: Event) => {
+      const { rootId: targetRootId } = (event as RetryRequestEvent).detail ?? {};
+      if (targetRootId && targetRootId !== rootId) return;
+      handleRetryRequest();
+    };
+
+    window.addEventListener('free-test-retry-requested', handleRetryEvent);
+    return () => window.removeEventListener('free-test-retry-requested', handleRetryEvent);
+  }, [handleRetryRequest, rootId]);
+
   const handleShareComplete = async () => {
     if (!userId) {
       setLoginModalOpen(true);
@@ -223,6 +284,7 @@ function FreeTestRewardWidget({ rootId, testId, initialResultType }: FreeTestRew
         isBothRewardLoading={bothLoading}
         bothRewardError={bothError}
         bothRewardContent={bothContent ? <p className="whitespace-pre-wrap">{bothContent}</p> : null}
+        retryResetKey={retryResetKey}
       />
       <LoginModal
         isOpen={loginModalOpen}

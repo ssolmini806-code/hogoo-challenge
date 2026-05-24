@@ -121,7 +121,6 @@
         .result-shell { background: #fff; border: 1px solid var(--line); border-radius: 8px; box-shadow: var(--shadow); overflow: hidden; }
         .result-hero { padding: 26px 20px 22px; text-align: center; background: linear-gradient(180deg, var(--mint), #fff); }
         .result-label { color: var(--muted); font-weight: 900; font-size: 0.82rem; margin-bottom: 8px; }
-        .result-top-actions { display: flex; justify-content: center; margin: 14px 0 0; }
         .character { width: 122px; height: 132px; display: block; margin: 0 auto 8px; overflow: visible; animation: float 3.4s ease-in-out infinite; }
         @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
         .type-name { font-size: 1.85rem; line-height: 1.15; font-weight: 950; letter-spacing: 0; color: var(--ink); margin-bottom: 10px; }
@@ -164,7 +163,7 @@
         .free-links { display: grid; gap: 8px; margin-top: 14px; }
         .free-link { display: flex; align-items: center; gap: 8px; padding: 12px; border: 1px solid var(--line); border-radius: 8px; background: #f7f8fa; font-size: 0.9rem; font-weight: 850; }
         .free-badge { background: var(--mint); color: var(--green-dark); border-radius: 999px; padding: 3px 7px; font-size: 0.68rem; font-weight: 950; flex: 0 0 auto; }
-        .result-retry-btn { border: 1px solid var(--line); background: transparent; color: var(--muted); border-radius: 999px; padding: 9px 14px; font-size: .84rem; font-weight: 850; font-family: inherit; cursor: pointer; }
+        .result-retry-btn { border: 1px solid var(--line); background: transparent; color: var(--muted); border-radius: 999px; padding: 8px 13px; font-size: .8rem; font-weight: 850; font-family: inherit; cursor: pointer; min-height: 0; width: auto; justify-self: center; }
         .result-retry-btn:hover { color: var(--ink); border-color: #cbd3dc; background: #fff; }
         .unlock-badge { display: none; background: #e6f9f0; color: #00a885; border: 1px solid #b2e8d5; border-radius: 999px; padding: 4px 10px; font-size: .75rem; font-weight: 800; margin: 12px 18px 0; }
         .locked-interpretation.unlocked .unlock-badge { display: inline-block; animation: fadeInBadge .45s ease .1s both; }
@@ -200,6 +199,7 @@
         }
         .share-card .type-name { font-size: 1.55rem; }
         .share-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .share-retry-actions { display: flex; justify-content: center; margin-top: 12px; }
         .toast { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); background: #101418; color: #fff; border-radius: 999px; padding: 10px 14px; font-size: 0.82rem; font-weight: 850; opacity: 0; pointer-events: none; transition: opacity 0.2s ease; z-index: 20; }
         .toast.show { opacity: 1; }
         footer { margin-top: 44px; padding: 30px 0; border-top: 1px solid var(--line); color: #8b94a1; text-align: center; font-size: 0.8rem; }
@@ -300,9 +300,6 @@
                         <div id="character"></div>
                         <h1 class="type-name" id="typeName"></h1>
                         <p class="summary" id="typeSummary"></p>
-                        <div class="result-top-actions">
-                            <button class="result-retry-btn" type="button" onclick="retryTest()">다시 시도해보기</button>
-                        </div>
                     </div>
                     <div class="result-body">
                         <div class="insight-grid">
@@ -434,6 +431,9 @@
                         <button class="ghost-btn" onclick="shareResult()">공유하기</button>
                         <button class="ghost-btn" onclick="copyLink()">링크 복사</button>
                         <button class="ghost-btn" onclick="downloadShareCard()">카드 저장</button>
+                    </div>
+                    <div class="share-retry-actions">
+                        <button class="result-retry-btn" type="button" onclick="requestRetryTest()">다시 시도해보기</button>
                     </div>
                 </section>
 
@@ -748,14 +748,28 @@ function showResultFromKey(key) {
     renderResult(key);
 }
 
-function retryTest() {
+function resetFreeTestResult() {
     localStorage.removeItem('give_test_result');
     const url = new URL(location.href);
-    if (url.searchParams.has("type")) {
-        url.searchParams.delete("type");
-        history.replaceState(null, "", url.toString());
-    }
-    startTest();
+    url.searchParams.delete("type");
+    url.searchParams.delete("reviewed");
+    history.replaceState(null, "", url.toString());
+
+    current = 0;
+    scores = { G: 0, I: 0, V: 0, E: 0 };
+    finalResult = null;
+    finalKey = null;
+    document.getElementById("completion").classList.remove("show");
+    document.getElementById("test-page").classList.add("hidden");
+    document.getElementById("result-page").classList.add("hidden");
+    document.getElementById("landing-page").classList.remove("hidden");
+    window.scrollTo(0, 0);
+}
+
+function requestRetryTest() {
+    window.dispatchEvent(new CustomEvent('free-test-retry-requested', {
+        detail: { rootId: 'give-test-reward-root' }
+    }));
 }
 
 function renderResult(key) {
@@ -822,6 +836,12 @@ window.addEventListener("free-test-reward-status", (event) => {
     if (detail.rootId && detail.rootId !== "give-test-reward-root") return;
     if (!finalKey) return;
     renderLockedInterpretation(finalKey, Boolean(detail.isShared));
+});
+
+window.addEventListener("free-test-reset-result", (event) => {
+    const detail = event.detail || {};
+    if (detail.rootId && detail.rootId !== "give-test-reward-root") return;
+    resetFreeTestResult();
 });
 
 function paidUrl(source) {
