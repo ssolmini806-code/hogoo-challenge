@@ -405,13 +405,14 @@ function ShareRewardCard({
     if (!userId) { onLoginRequired(); return; }
     const url = window.location.href;
     if (navigator.share) {
-      navigator.share({ title: '7일 호구 탈출 챌린지 완주! 🎉', url }).catch(() => {});
+      navigator.share({ title: '7일 호구 탈출 챌린지 완주! 🎉', url })
+        .then(() => onShareComplete())
+        .catch(() => {});
     } else {
       navigator.clipboard.writeText(url)
-        .then(() => showToast('링크 복사 완료! 인스타 스토리에 붙여넣기 해주세요 📸'))
-        .catch(() => { fallbackCopy(url); showToast('링크 복사 완료! 인스타 스토리에 붙여넣기 해주세요 📸'); });
+        .then(() => { showToast('링크 복사 완료! 인스타 스토리에 붙여넣기 해주세요 📸'); onShareComplete(); })
+        .catch(() => { fallbackCopy(url); showToast('링크 복사 완료! 인스타 스토리에 붙여넣기 해주세요 📸'); onShareComplete(); });
     }
-    onShareComplete();
   };
 
   const handleXShare = () => {
@@ -430,9 +431,8 @@ function ShareRewardCard({
     if (!userId) { onLoginRequired(); return; }
     const url = window.location.href;
     navigator.clipboard.writeText(url)
-      .then(() => showToast('링크가 복사되었어요 🔗'))
-      .catch(() => { fallbackCopy(url); showToast('링크가 복사되었어요 🔗'); });
-    onShareComplete();
+      .then(() => { showToast('링크가 복사되었어요 🔗'); onShareComplete(); })
+      .catch(() => { fallbackCopy(url); showToast('링크가 복사되었어요 🔗'); onShareComplete(); });
   };
 
   return (
