@@ -20,6 +20,11 @@
     <link rel="stylesheet" href="/share.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config = { corePlugins: { preflight: false } }</script>
+    <script>
+        if (localStorage.getItem('free_test_reviewed') !== 'true') {
+            document.documentElement.classList.add('free-test-locked');
+        }
+    </script>
     <style>
         :root { 
             --primary: #00a885; 
@@ -35,6 +40,16 @@
         body { font-family: 'Pretendard', -apple-system, sans-serif; background: #f9f9fb; color: var(--text-main); line-height: 1.6; }
         .inner { max-width: 480px; margin: 0 auto; padding: 0 20px; }
         .hidden { display: none !important; }
+        #locked-page { display: none; min-height: 100vh; align-items: center; justify-content: center; padding: 40px 20px; background: var(--bg-gradient); text-align: center; }
+        .lock-card { width: 100%; max-width: 420px; background: white; border: 1px solid rgba(0,0,0,0.04); border-radius: 28px; padding: 40px 28px; box-shadow: var(--card-shadow); }
+        .lock-icon { font-size: 3rem; margin-bottom: 18px; }
+        .lock-title { font-size: 1.55rem; font-weight: 900; color: var(--text-main); line-height: 1.35; letter-spacing: -0.03em; margin-bottom: 12px; }
+        .lock-desc { font-size: 1rem; color: var(--text-sub); line-height: 1.7; margin-bottom: 28px; }
+        .lock-btn { display: inline-flex; width: 100%; align-items: center; justify-content: center; min-height: 54px; border-radius: 16px; background: linear-gradient(135deg, #00a885, #00c4a0); color: white; text-decoration: none; font-size: 1rem; font-weight: 850; box-shadow: 0 10px 24px rgba(0,168,133,0.2); }
+        .free-test-locked #intro-page,
+        .free-test-locked #test-page,
+        .free-test-locked #result-page { display: none !important; }
+        .free-test-locked #locked-page { display: flex; }
 
         #intro-page { padding: 80px 0 100px; text-align: center; background: var(--bg-gradient); min-height: 100vh; display: flex; align-items: center; }
         .test-badge { display: inline-block; background: white; color: var(--primary); font-size: 0.75rem; font-weight: 800; padding: 8px 16px; border-radius: 100px; margin-bottom: 24px; letter-spacing: 0.05em; box-shadow: 0 4px 12px rgba(0,168,133,0.1); }
@@ -106,6 +121,15 @@
     </style>
 </head>
 <body>
+
+<div id="locked-page">
+    <div class="lock-card">
+        <div class="lock-icon" aria-hidden="true">🔒</div>
+        <h1 class="lock-title">이 테스트는 후기 작성 후 열려요</h1>
+        <p class="lock-desc">무료 검사 후기를 작성하면 바로 이용할 수 있어요</p>
+        <a class="lock-btn" href="reviews.html?context=free_test&amp;return=hogoo-check.html">후기 작성하러 가기</a>
+    </div>
+</div>
 
 <div id="intro-page">
     <div class="inner">

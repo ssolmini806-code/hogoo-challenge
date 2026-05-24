@@ -4,12 +4,16 @@ import DAYS from "./days";
 import { supabase } from "./src/supabase";
 import LoginButton from "./src/components/LoginButton";
 import LoginModal from "./src/components/LoginModal";
-import ChallengeRewardSection from "./src/components/ChallengeRewardSection";
+import ChallengeCompletionReward from "./components/reward/ChallengeCompletionReward";
+import { initializeAdminModeFromUrl, isAdminModeEnabled } from "./src/utils/adminMode";
 
+const CHALLENGE_COMPLETED_AT_KEY = 'challenge_completed_at';
 
 export default function App() {
   const [session, setSession] = useState(null);
+  const [adminMode, setAdminMode] = useState(() => isAdminModeEnabled());
   const [currentDay, setCurrentDay] = useState(0);
+  const [activeTab, setActiveTab] = useState("day");
   const [missions, setMissions] = useState({});
   const [selectedPhrase, setSelectedPhrase] = useState({});
   const [notes, setNotes] = useState({});
@@ -26,6 +30,20 @@ export default function App() {
   const [isShared, setIsShared] = useState(false);
   const [isReviewed, setIsReviewed] = useState(false);
 
+  // Admin token listener
+  useEffect(() => {
+    let mounted = true;
+
+    initializeAdminModeFromUrl().then((enabled) => {
+      if (!mounted) return;
+      setAdminMode(enabled);
+    });
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
   // Auth session listener
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -41,6 +59,14 @@ export default function App() {
 
   // Fetch data when session or currentDay changes
   useEffect(() => {
+    if (adminMode) {
+      setIsShared(true);
+      setIsReviewed(true);
+      setLoading(false);
+      fetchReviews();
+      return;
+    }
+
     if (session) {
       fetchProgress();
       fetchReviews();
@@ -51,7 +77,7 @@ export default function App() {
       setLoading(false);
       fetchReviews();
     }
-  }, [session]);
+  }, [session, adminMode]);
 
   const fallbackReviews = [
     {
@@ -127,6 +153,11 @@ export default function App() {
   };
 
   const fetchRewardState = async () => {
+    if (adminMode) {
+      setIsShared(true);
+      setIsReviewed(true);
+      return;
+    }
     if (!session) return;
     try {
       const { data, error } = await supabase
@@ -146,6 +177,8 @@ export default function App() {
   };
 
   const saveReward = async (rewardType, generatedContent) => {
+    if (adminMode) return;
+
     const payload = {
       user_id: session.user.id,
       reward_context: 'seven_day_challenge',
@@ -178,6 +211,10 @@ export default function App() {
   };
 
   const handleShareComplete = async () => {
+    if (adminMode) {
+      setIsShared(true);
+      return;
+    }
     if (!session) { setLoginModalOpen(true); return; }
     try {
       await saveReward('sns');
@@ -189,15 +226,24 @@ export default function App() {
   };
 
   const handleReviewClick = () => {
+    if (adminMode) {
+      setIsReviewed(true);
+      return;
+    }
     if (!session) { setLoginModalOpen(true); return; }
     const returnUrl = encodeURIComponent(window.location.href);
     window.location.href = `reviews.html?context=seven_day_challenge&return=${returnUrl}`;
   };
 
-  const handleBothComplete = async ({ completionDays: days, label }) => {
+  const handleBothComplete = async () => {
+    if (adminMode) return;
     if (!session) return;
     try {
-      const content = { completionDays: days, label };
+      const content = {
+        completionRate,
+        completedMissions,
+        totalMissions: DAYS.length * 3,
+      };
       await saveReward('both', content);
     } catch (err) {
       console.warn('Failed to save both reward:', err);
@@ -205,6 +251,7 @@ export default function App() {
   };
 
   const saveProgress = async (dayIdx, updates) => {
+    if (adminMode) return;
     if (!session) return;
 
     try {
@@ -226,7 +273,7 @@ export default function App() {
   const day = DAYS[currentDay];
   
   const toggleMission = (dayIdx, mIdx) => {
-    if (!session) { setLoginModalOpen(true); return; }
+    if (!adminMode && !session) { setLoginModalOpen(true); return; }
     setMissions(prev => {
       const key = `${dayIdx}`;
       const arr = prev[key] || [];
@@ -237,7 +284,7 @@ export default function App() {
   };
 
   const updateField = (dayIdx, field, value) => {
-    if (!session) { setLoginModalOpen(true); return; }
+    if (!adminMode && !session) { setLoginModalOpen(true); return; }
     const setters = {
       note: setNotes,
       phrase: setSelectedPhrase,
@@ -261,17 +308,26 @@ export default function App() {
 
   const totalScore = DAYS.reduce((sum, _, i) => sum + getDayScore(i), 0);
   const completedMissions = Object.values(missions).reduce((sum, arr) => sum + (arr ? arr.length : 0), 0);
-  const completionDays = DAYS.reduce((count, _, i) => count + ((missions[`${i}`] || []).length === 3 ? 1 : 0), 0);
+  const completedDays = DAYS.reduce((sum, _, i) => sum + ((missions[`${i}`] || []).length === 3 ? 1 : 0), 0);
+  const completionRate = Math.round((completedMissions / (DAYS.length * 3)) * 100);
+  const effectiveCompletionRate = adminMode ? 100 : completionRate;
   const dayMissions = missions[`${currentDay}`] || [];
-  const allMissionsDone = dayMissions.length === 3;
-  const isFinalDay = currentDay === DAYS.length - 1;
-  const showFinalCompletion = isFinalDay && allMissionsDone;
+  const allMissionsDone = adminMode || dayMissions.length === 3;
+  const isChallengeCompleted = adminMode || completedDays === DAYS.length;
 
   const isDayUnlocked = (dayIdx) => {
+    if (adminMode) return true;
     if (dayIdx === 0) return true;
     const prevDayMissions = missions[`${dayIdx - 1}`] || [];
     return prevDayMissions.length === 3;
   };
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || adminMode || completedDays < DAYS.length) return;
+    if (!window.localStorage.getItem(CHALLENGE_COMPLETED_AT_KEY)) {
+      window.localStorage.setItem(CHALLENGE_COMPLETED_AT_KEY, new Date().toISOString());
+    }
+  }, [adminMode, completedDays]);
 
   const getCertText = () => {
     const phrase = (selectedPhrase[`${currentDay}`] !== undefined && selectedPhrase[`${currentDay}`] !== null)
@@ -291,6 +347,12 @@ export default function App() {
 
   const submitReview = async (event) => {
     event.preventDefault();
+    if (adminMode) {
+      setIsReviewed(true);
+      setReviewStatus("어드민 모드에서 후기 보상이 해금됐습니다.");
+      setShowReviewForm(false);
+      return;
+    }
     if (!session) { setLoginModalOpen(true); return; }
     const content = reviewForm.content.trim();
     const displayName = reviewForm.displayName.trim() || "익명 참가자";
@@ -326,6 +388,7 @@ export default function App() {
       setReviewForm({ displayName: "", rating: 5, content: "" });
       setShowReviewForm(false);
       setIsReviewed(true);
+      await saveReward('review');
     } catch (error) {
       console.error('Review insert failed:', error);
       setReviewStatus("후기 등록에 실패했습니다. 잠시 후 다시 시도해주세요.");
@@ -341,7 +404,7 @@ export default function App() {
   }
 
   function CertificateImage() {
-    const [error, setError] = React.useState(false);
+    const [error, setError] = useState(false);
     if (error) {
       return (
         <div style={{
@@ -415,11 +478,11 @@ export default function App() {
             </div>
           </div>
 
-          {/* Progress bar */}
-          <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+          {/* Challenge tabs */}
+          <div style={{ display: "flex", gap: 6, alignItems: "center", flexWrap: "wrap" }}>
             {DAYS.map((d, i) => {
               const score = getDayScore(i);
-              const isActive = i === currentDay;
+              const isActive = activeTab === "day" && i === currentDay;
               const isDone = (missions[`${i}`] || []).length === 3;
               const unlocked = isDayUnlocked(i);
               const hexColor = {
@@ -431,11 +494,14 @@ export default function App() {
                   key={i}
                   className={`day-btn ${!unlocked && !isActive ? 'locked' : ''}`}
                   onClick={() => {
-                    if (unlocked) setCurrentDay(i);
+                    if (unlocked) {
+                      setCurrentDay(i);
+                      setActiveTab("day");
+                    }
                     else alert('이전 날짜의 미션을 모두 완료해야 합니다!');
                   }}
                   style={{
-                    flex: 1, height: isActive ? 36 : 28, border: "none", cursor: unlocked ? "pointer" : "not-allowed",
+                    flex: "1 1 64px", height: isActive ? 36 : 30, border: "none", cursor: unlocked ? "pointer" : "not-allowed",
                     borderRadius: 6, display: "flex", alignItems: "center", justifyContent: "center",
                     fontSize: isActive ? 13 : 11, fontWeight: isActive ? "bold" : "normal",
                     background: isActive ? hexColor : isDone ? "#2d4a35" : score > 0 ? "#3a3530" : "#2a2520",
@@ -443,16 +509,67 @@ export default function App() {
                     outline: isActive ? `2px solid ${hexColor}` : "none", outlineOffset: 2
                   }}
                 >
-                  {isDone ? "✓" : `D${i + 1}`}
+                  {isDone ? `✓ Day ${i + 1}` : `Day ${i + 1}`}
                 </button>
               );
             })}
+            <button
+              type="button"
+              className={`day-btn ${!isChallengeCompleted && activeTab !== "reward" ? 'locked' : ''}`}
+              onClick={() => {
+                if (isChallengeCompleted) {
+                  setActiveTab("reward");
+                  return;
+                }
+                alert("7일을 모두 완료하면 열려요");
+              }}
+              style={{
+                flex: "1 1 112px",
+                height: activeTab === "reward" ? 36 : 30,
+                border: "none",
+                borderRadius: 6,
+                cursor: isChallengeCompleted ? "pointer" : "not-allowed",
+                background: activeTab === "reward" ? "#7cc88a" : isChallengeCompleted ? "#2d4a35" : "#2a2520",
+                color: activeTab === "reward" ? "#111814" : isChallengeCompleted ? "#7cc88a" : "#5a5048",
+                fontSize: activeTab === "reward" ? 13 : 11,
+                fontWeight: activeTab === "reward" ? "bold" : 700,
+                outline: activeTab === "reward" ? "2px solid #7cc88a" : "none",
+                outlineOffset: 2
+              }}
+            >
+              🎁 완료 보상
+            </button>
           </div>
         </div>
       </div>
 
       {/* Main Content */}
       <div style={{ maxWidth: 680, margin: "0 auto", padding: "24px 20px 80px" }}>
+        {activeTab === "reward" ? (
+          <div>
+            <div style={{ marginBottom: 24, textAlign: "center" }}>
+              <CertificateImage />
+              <p style={{ margin: "10px 0 0", fontSize: 12, color: "#8a7f75" }}>
+                저장하려면 꾹 눌러주세요 (모바일)
+              </p>
+            </div>
+
+            <ChallengeCompletionReward
+              userId={adminMode ? 'admin' : session?.user?.id ?? null}
+              completionRate={effectiveCompletionRate}
+              completedDays={adminMode ? DAYS.length : completedDays}
+              isShared={adminMode || isShared}
+              isReviewed={adminMode || isReviewed}
+              onLoginRequired={() => {
+                if (!adminMode) setLoginModalOpen(true);
+              }}
+              onShareComplete={handleShareComplete}
+              onReviewClick={handleReviewClick}
+              onBothComplete={handleBothComplete}
+            />
+          </div>
+        ) : (
+          <>
 
         {/* Day Header */}
         <div style={{ marginBottom: 20 }}>
@@ -852,67 +969,6 @@ export default function App() {
             전체 후기 보기
           </button>
         </section>
-
-        {/* Day 7 Completion Sections */}
-        {showFinalCompletion && (
-          <>
-            {/* Certificate */}
-            <div style={{ marginBottom: 24, textAlign: "center" }}>
-              <CertificateImage />
-              <p style={{ margin: "10px 0 0", fontSize: 12, color: "#8a7f75" }}>
-                저장하려면 꾹 눌러주세요 (모바일)
-              </p>
-            </div>
-
-            {/* Reward Section */}
-            <ChallengeRewardSection
-              userId={session?.user?.id ?? null}
-              completionDays={completionDays}
-              isShared={isShared}
-              isReviewed={isReviewed}
-              onLoginRequired={() => setLoginModalOpen(true)}
-              onShareComplete={handleShareComplete}
-              onReviewClick={handleReviewClick}
-              onBothComplete={handleBothComplete}
-            />
-
-            {/* 30-Day CTA */}
-            <div style={{
-              marginBottom: 24,
-              borderRadius: 20,
-              padding: "28px 24px",
-              background: "linear-gradient(135deg, #667EEA 0%, #764BA2 100%)",
-              textAlign: "center"
-            }}>
-              <h3 style={{ margin: "0 0 10px", fontSize: 22, fontWeight: 900, color: "#fff", lineHeight: 1.3 }}>
-                7일 완주를 축하해요 🎉
-              </h3>
-              <p style={{ margin: "0 0 6px", fontSize: 15, color: "rgba(255,255,255,0.9)", lineHeight: 1.6 }}>
-                7일 동안 만든 흐름을 30일 루틴으로 이어가보세요.
-              </p>
-              <p style={{ margin: "0 0 24px", fontSize: 13, color: "rgba(255,255,255,0.72)", lineHeight: 1.6 }}>
-                3일 안에 30일 챌린지를 시작하면 목표 설정 PDF와 위기 구간 대처 가이드가 제공돼요.
-              </p>
-              <a
-                href="https://givecosystem.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: "inline-block",
-                  width: "100%",
-                  padding: "14px",
-                  background: "#fff",
-                  color: "#764BA2",
-                  borderRadius: 12,
-                  fontSize: 15,
-                  fontWeight: 900,
-                  textDecoration: "none",
-                  boxSizing: "border-box"
-                }}
-              >
-                30일 챌린지 시작하기 →
-              </a>
-            </div>
           </>
         )}
 
