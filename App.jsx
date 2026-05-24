@@ -29,6 +29,8 @@ export default function App() {
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [isShared, setIsShared] = useState(false);
   const [isReviewed, setIsReviewed] = useState(false);
+  const [reviewConfirm, setReviewConfirm] = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState(null);
 
   // Admin token listener
   useEffect(() => {
@@ -102,7 +104,7 @@ export default function App() {
     try {
       const { data, error } = await supabase
         .from('challenge_reviews')
-        .select('id, display_name, rating, content, completed_missions, created_at')
+        .select('id, user_id, display_name, rating, content, completed_missions, created_at')
         .eq('is_public', true)
         .order('created_at', { ascending: false })
         .limit(6);
@@ -345,7 +347,7 @@ export default function App() {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const submitReview = async (event) => {
+  const submitReview = (event) => {
     event.preventDefault();
     if (adminMode) {
       setIsReviewed(true);
@@ -355,16 +357,19 @@ export default function App() {
     }
     if (!session) { setLoginModalOpen(true); return; }
     const content = reviewForm.content.trim();
-    const displayName = reviewForm.displayName.trim() || "익명 참가자";
-
     if (content.length < 10) {
       setReviewError("후기는 10자 이상으로 남겨주세요.");
       return;
     }
-
     setReviewError("");
-    setReviewStatus("저장 중...");
+    setReviewConfirm(true);
+  };
 
+  const confirmSubmitReview = async () => {
+    setReviewConfirm(false);
+    setReviewStatus("저장 중...");
+    const content = reviewForm.content.trim();
+    const displayName = reviewForm.displayName.trim() || "익명 참가자";
     const payload = {
       user_id: session?.user?.id,
       display_name: displayName.slice(0, 24),
@@ -374,14 +379,12 @@ export default function App() {
       completed_missions: completedMissions,
       is_public: true
     };
-
     try {
       const { data, error } = await supabase
         .from('challenge_reviews')
         .insert(payload)
-        .select('id, display_name, rating, content, completed_missions, created_at')
+        .select('id, user_id, display_name, rating, content, completed_missions, created_at')
         .single();
-
       if (error) throw error;
       setReviews(prev => [data, ...prev].slice(0, 6));
       setReviewStatus("후기가 등록됐습니다.");
@@ -392,6 +395,22 @@ export default function App() {
     } catch (error) {
       console.error('Review insert failed:', error);
       setReviewStatus("후기 등록에 실패했습니다. 잠시 후 다시 시도해주세요.");
+    }
+  };
+
+  const deleteReview = async (reviewId) => {
+    setDeleteConfirm(null);
+    try {
+      const { error } = await supabase
+        .from('challenge_reviews')
+        .delete()
+        .eq('id', reviewId)
+        .eq('user_id', session.user.id);
+      if (error) throw error;
+      setReviews(prev => prev.filter(r => r.id !== reviewId));
+    } catch (error) {
+      console.error('Delete review failed:', error);
+      alert('삭제에 실패했습니다. 잠시 후 다시 시도해주세요.');
     }
   };
 
@@ -947,9 +966,20 @@ export default function App() {
               <article key={review.id} style={{ background: "#1a1614", border: "1px solid #3a3530", borderRadius: 12, padding: 14 }}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: 8 }}>
                   <strong style={{ color: "#f5ede3", fontSize: 14 }}>{review.display_name || "익명 참가자"}</strong>
-                  <span style={{ display: "flex", alignItems: "center", gap: 2, color: "#f0a040", fontSize: 12, flexShrink: 0 }}>
-                    {Array.from({ length: Number(review.rating) || 5 }, (_, i) => <Star key={i} size={12} fill="currentColor" />)}
-                  </span>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
+                    <span style={{ display: "flex", alignItems: "center", gap: 2, color: "#f0a040", fontSize: 12 }}>
+                      {Array.from({ length: Number(review.rating) || 5 }, (_, i) => <Star key={i} size={12} fill="currentColor" />)}
+                    </span>
+                    {session?.user?.id && review.user_id === session.user.id && (
+                      <button
+                        onClick={() => setDeleteConfirm(review.id)}
+                        style={{
+                          background: "transparent", border: "1px solid #5a3a3a", borderRadius: 6,
+                          padding: "2px 8px", color: "#c07070", fontSize: 11, cursor: "pointer"
+                        }}
+                      >삭제</button>
+                    )}
+                  </div>
                 </div>
                 <p style={{ margin: 0, color: "#b9aea4", fontSize: 13, lineHeight: 1.6 }}>{review.content}</p>
                 <div style={{ marginTop: 10, color: "#6f665f", fontSize: 11 }}>
@@ -984,6 +1014,46 @@ export default function App() {
           ← 다른 테스트 보러가기 (메인으로)
         </button>
       </div>
+
+      {reviewConfirm && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.75)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
+          <div style={{ background: "#231f1c", border: "1px solid #3a3530", borderRadius: 16, padding: 28, maxWidth: 340, width: "100%" }}>
+            <div style={{ color: "#7cc88a", fontSize: 12, fontWeight: 800, letterSpacing: 1, marginBottom: 10 }}>후기 등록</div>
+            <p style={{ margin: "0 0 6px", color: "#f5ede3", fontSize: 16, fontWeight: 700 }}>후기를 등록할까요?</p>
+            <p style={{ margin: "0 0 24px", color: "#8a7f75", fontSize: 13, lineHeight: 1.6 }}>등록 후에는 수정이 불가합니다.</p>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+              <button
+                onClick={() => setReviewConfirm(false)}
+                style={{ background: "transparent", border: "1px solid #3a3530", borderRadius: 10, padding: 12, color: "#8a7f75", cursor: "pointer", fontSize: 14, fontWeight: 700 }}
+              >취소</button>
+              <button
+                onClick={confirmSubmitReview}
+                style={{ background: "#7cc88a", border: 0, borderRadius: 10, padding: 12, color: "#111814", cursor: "pointer", fontSize: 14, fontWeight: 900 }}
+              >등록하기</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {deleteConfirm && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.75)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
+          <div style={{ background: "#231f1c", border: "1px solid #3a3530", borderRadius: 16, padding: 28, maxWidth: 340, width: "100%" }}>
+            <div style={{ color: "#ef7777", fontSize: 12, fontWeight: 800, letterSpacing: 1, marginBottom: 10 }}>후기 삭제</div>
+            <p style={{ margin: "0 0 6px", color: "#f5ede3", fontSize: 16, fontWeight: 700 }}>후기를 삭제할까요?</p>
+            <p style={{ margin: "0 0 24px", color: "#8a7f75", fontSize: 13, lineHeight: 1.6 }}>삭제한 후기는 복구할 수 없습니다.</p>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+              <button
+                onClick={() => setDeleteConfirm(null)}
+                style={{ background: "transparent", border: "1px solid #3a3530", borderRadius: 10, padding: 12, color: "#8a7f75", cursor: "pointer", fontSize: 14, fontWeight: 700 }}
+              >취소</button>
+              <button
+                onClick={() => deleteReview(deleteConfirm)}
+                style={{ background: "#c07070", border: 0, borderRadius: 10, padding: 12, color: "#fff", cursor: "pointer", fontSize: 14, fontWeight: 900 }}
+              >삭제하기</button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <LoginModal
         isOpen={loginModalOpen}
