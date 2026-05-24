@@ -4,7 +4,6 @@ import type { Session } from '@supabase/supabase-js';
 import { supabase } from './supabase';
 import LoginModal from './components/LoginModal';
 import FreeTestRewardSection from '../components/reward/FreeTestRewardSection';
-import { initializeAdminModeFromUrl, isAdminModeEnabled } from './utils/adminMode';
 
 type RewardType = 'sns' | 'review' | 'both';
 
@@ -18,10 +17,6 @@ type RewardRow = {
 type RewardUpdateEvent = CustomEvent<{
   rootId?: string;
   resultType?: string;
-}>;
-
-type RetryRequestEvent = CustomEvent<{
-  rootId?: string;
 }>;
 
 type FreeTestRewardWidgetProps = {
@@ -82,7 +77,6 @@ async function saveReward(userId: string, resultId: string, rewardType: RewardTy
 
 function FreeTestRewardWidget({ rootId, testId, initialResultType }: FreeTestRewardWidgetProps) {
   const [session, setSession] = useState<Session | null>(null);
-  const [adminMode, setAdminMode] = useState(() => isAdminModeEnabled());
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [resultType, setResultType] = useState(initialResultType);
   const [isShared, setIsShared] = useState(false);
@@ -90,23 +84,9 @@ function FreeTestRewardWidget({ rootId, testId, initialResultType }: FreeTestRew
   const [bothContent, setBothContent] = useState('');
   const [bothLoading, setBothLoading] = useState(false);
   const [bothError, setBothError] = useState('');
-  const [retryResetKey, setRetryResetKey] = useState(0);
 
-  const userId = adminMode ? 'admin' : session?.user?.id ?? null;
+  const userId = session?.user?.id ?? null;
   const resultId = useMemo(() => getResultId(testId, resultType), [testId, resultType]);
-
-  useEffect(() => {
-    let mounted = true;
-
-    initializeAdminModeFromUrl().then((enabled) => {
-      if (!mounted) return;
-      setAdminMode(enabled);
-    });
-
-    return () => {
-      mounted = false;
-    };
-  }, []);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setSession(data.session));
@@ -123,7 +103,6 @@ function FreeTestRewardWidget({ rootId, testId, initialResultType }: FreeTestRew
   useEffect(() => {
     const url = new URL(window.location.href);
     if (url.searchParams.get('reviewed') === 'true') {
-      window.localStorage.setItem('free_test_reviewed', 'true');
       setIsReviewed(true);
       url.searchParams.delete('reviewed');
       history.replaceState(null, '', url.toString());
@@ -142,15 +121,6 @@ function FreeTestRewardWidget({ rootId, testId, initialResultType }: FreeTestRew
   }, [rootId]);
 
   const fetchRewardStatus = useCallback(async () => {
-    if (adminMode) {
-      setIsShared(true);
-      setIsReviewed(true);
-      window.dispatchEvent(new CustomEvent('free-test-reward-status', {
-        detail: { rootId, isShared: true, isReviewed: true },
-      }));
-      return;
-    }
-
     if (!userId) {
       setIsShared(false);
       setIsReviewed(false);
@@ -175,9 +145,6 @@ function FreeTestRewardWidget({ rootId, testId, initialResultType }: FreeTestRew
     const rewards = (data ?? []) as RewardRow[];
     const nextIsShared = rewards.some((reward) => reward.reward_type === 'sns' && reward.unlocked);
     const nextIsReviewed = rewards.some((reward) => reward.reward_type === 'review' && reward.unlocked);
-    if (nextIsReviewed) {
-      window.localStorage.setItem('free_test_reviewed', 'true');
-    }
     setIsShared(nextIsShared);
     setIsReviewed(nextIsReviewed);
     window.dispatchEvent(new CustomEvent('free-test-reward-status', {
@@ -186,88 +153,13 @@ function FreeTestRewardWidget({ rootId, testId, initialResultType }: FreeTestRew
 
     const bothReward = rewards.find((reward) => reward.reward_type === 'both' && reward.unlocked);
     setBothContent(getReadableContent(bothReward?.generated_content));
-  }, [adminMode, rootId, userId]);
+  }, [resultId, rootId, userId]);
 
   useEffect(() => {
     fetchRewardStatus();
   }, [fetchRewardStatus]);
 
-  const resetRewardUi = useCallback(() => {
-    if (adminMode) {
-      setIsShared(true);
-      setIsReviewed(true);
-      setBothError('');
-      setBothLoading(false);
-      window.dispatchEvent(new CustomEvent('free-test-reward-status', {
-        detail: { rootId, isShared: true, isReviewed: true },
-      }));
-      return;
-    }
-
-    setIsShared(false);
-    setIsReviewed(false);
-    setBothContent('');
-    setBothError('');
-    setBothLoading(false);
-    setRetryResetKey((key) => key + 1);
-    window.dispatchEvent(new CustomEvent('free-test-reward-status', {
-      detail: { rootId, isShared: false, isReviewed: false },
-    }));
-  }, [adminMode, rootId]);
-
-  const handleRetryRequest = useCallback(async () => {
-    const confirmMessage = isShared && isReviewed
-      ? '공유 및 후기 보상이 모두 초기화됩니다. 다시 시도하시겠어요?'
-      : isShared
-        ? 'SNS 공유 보상이 초기화됩니다. 다시 시도하시겠어요?'
-        : isReviewed
-          ? '후기 보상이 초기화됩니다. 다시 시도하시겠어요?'
-          : '';
-
-    if (confirmMessage && !window.confirm(confirmMessage)) return;
-
-    try {
-      if (userId) {
-        const { error } = await supabase
-          .from('user_rewards')
-          .delete()
-          .eq('user_id', userId)
-          .eq('reward_context', 'free_test');
-
-        if (error) throw error;
-      }
-
-      resetRewardUi();
-      setResultType(initialResultType);
-      window.dispatchEvent(new CustomEvent('free-test-reset-result', {
-        detail: { rootId },
-      }));
-    } catch (error) {
-      console.error('Error resetting free test rewards:', error);
-      alert('보상 초기화에 실패했습니다. 잠시 후 다시 시도해주세요.');
-    }
-  }, [initialResultType, isReviewed, isShared, resetRewardUi, rootId, userId]);
-
-  useEffect(() => {
-    const handleRetryEvent = (event: Event) => {
-      const { rootId: targetRootId } = (event as RetryRequestEvent).detail ?? {};
-      if (targetRootId && targetRootId !== rootId) return;
-      handleRetryRequest();
-    };
-
-    window.addEventListener('free-test-retry-requested', handleRetryEvent);
-    return () => window.removeEventListener('free-test-retry-requested', handleRetryEvent);
-  }, [handleRetryRequest, rootId]);
-
   const handleShareComplete = async () => {
-    if (adminMode) {
-      setIsShared(true);
-      window.dispatchEvent(new CustomEvent('free-test-reward-status', {
-        detail: { rootId, isShared: true, isReviewed: true },
-      }));
-      return;
-    }
-
     if (!userId) {
       setLoginModalOpen(true);
       return;
@@ -286,25 +178,18 @@ function FreeTestRewardWidget({ rootId, testId, initialResultType }: FreeTestRew
   };
 
   const handleReviewClick = () => {
-    if (adminMode) {
-      setIsReviewed(true);
-      window.dispatchEvent(new CustomEvent('free-test-reward-status', {
-        detail: { rootId, isShared: true, isReviewed: true },
-      }));
-      return;
-    }
-
     if (!userId) {
       setLoginModalOpen(true);
       return;
     }
 
-    const returnUrl = window.location.href;
+    const returnUrlObj = new URL(window.location.href);
+    returnUrlObj.searchParams.set('reviewed', 'true');
+    const returnUrl = returnUrlObj.toString();
     window.location.href = `reviews.html?context=free_test&return=${encodeURIComponent(returnUrl)}&rid=${encodeURIComponent(resultId)}`;
   };
 
   const handleBothComplete = async () => {
-    if (adminMode) return;
     if (!userId || bothLoading || bothContent) return;
 
     setBothLoading(true);
@@ -329,18 +214,15 @@ function FreeTestRewardWidget({ rootId, testId, initialResultType }: FreeTestRew
       <FreeTestRewardSection
         userId={userId}
         resultType={resultType}
-        isShared={adminMode || isShared}
-        isReviewed={adminMode || isReviewed}
-        onLoginRequired={() => {
-          if (!adminMode) setLoginModalOpen(true);
-        }}
+        isShared={isShared}
+        isReviewed={isReviewed}
+        onLoginRequired={() => setLoginModalOpen(true)}
         onShareComplete={handleShareComplete}
         onReviewClick={handleReviewClick}
         onBothComplete={handleBothComplete}
         isBothRewardLoading={bothLoading}
         bothRewardError={bothError}
         bothRewardContent={bothContent ? <p className="whitespace-pre-wrap">{bothContent}</p> : null}
-        retryResetKey={retryResetKey}
       />
       <LoginModal
         isOpen={loginModalOpen}

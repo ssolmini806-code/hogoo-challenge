@@ -265,9 +265,6 @@
                         is_public: true,
                     });
                     if (reviewErr) throw reviewErr;
-                    if (reviewContext === 'free_test') {
-                        localStorage.setItem('free_test_reviewed', 'true');
-                    }
 
                     const rewardPayload = {
                         user_id: session.user.id,

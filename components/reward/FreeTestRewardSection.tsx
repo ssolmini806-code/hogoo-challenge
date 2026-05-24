@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
-import { Check, Gift, MessageCircle, PenLine, Sparkles, Unlock } from 'lucide-react';
-import AdviceCard from '../advice/AdviceCard';
-import { getAdviceByType } from '../../lib/advice/freeTestAdvice';
+import { Check, Gift, MessageCircle, PenLine, Sparkles } from 'lucide-react';
 
 type KakaoSharePayload = {
   objectType: 'feed';
@@ -53,7 +51,6 @@ export type FreeTestRewardSectionProps = {
   bothRewardContent?: ReactNode;
   isBothRewardLoading?: boolean;
   bothRewardError?: string;
-  retryResetKey?: number;
 };
 
 function getCurrentUrl() {
@@ -201,12 +198,10 @@ export default function FreeTestRewardSection({
   bothRewardContent,
   isBothRewardLoading = false,
   bothRewardError,
-  retryResetKey = 0,
 }: FreeTestRewardSectionProps) {
   const hasNotifiedBothComplete = useRef(false);
   const [hasOpenedShare, setHasOpenedShare] = useState(false);
   const isBothComplete = isShared && isReviewed;
-  const advice = getAdviceByType(resultType);
 
   useEffect(() => {
     getKakao();
@@ -217,11 +212,6 @@ export default function FreeTestRewardSection({
     hasNotifiedBothComplete.current = true;
     onBothComplete();
   }, [isBothComplete, onBothComplete]);
-
-  useEffect(() => {
-    setHasOpenedShare(false);
-    hasNotifiedBothComplete.current = false;
-  }, [retryResetKey]);
 
   const handleShareClick = () => {
     if (!userId) { onLoginRequired(); return; }
@@ -237,10 +227,6 @@ export default function FreeTestRewardSection({
   const handleReviewClick = () => {
     if (!userId) { onLoginRequired(); return; }
     onReviewClick();
-  };
-
-  const openHogooCheck = () => {
-    window.location.href = 'hogoo-check.html';
   };
 
   return (
@@ -298,18 +284,6 @@ export default function FreeTestRewardSection({
                   </button>
                 ) : null}
               </div>
-              {isShared ? (
-                <div style={{ marginTop: 10, borderRadius: 8, background: '#2a241c', border: '1px solid #4a3f30', padding: '10px 12px', display: 'flex', gap: 8, alignItems: 'flex-start' }}>
-                  <span style={{ fontSize: 16, flexShrink: 0 }} aria-hidden="true">🏅</span>
-                  <div>
-                    <p style={{ fontSize: 12, fontWeight: 800, color: '#f7c56b', margin: '0 0 4px' }}>SNS 공유 완료 배지</p>
-                    <p style={{ fontSize: 12, color: '#dccdbf', lineHeight: 1.55, margin: 0 }}>
-                      후기 게시판에서 닉네임 옆에 이 배지가 표시돼요.<br />다른 완주자들이 볼 수 있어요.
-                    </p>
-                  </div>
-                </div>
-              ) : null}
-              {isShared ? <AdviceCard advice={advice} /> : null}
             </div>
           </div>
         </article>
@@ -321,7 +295,7 @@ export default function FreeTestRewardSection({
               <PenLine size={16} aria-hidden="true" />
             </span>
             <div style={{ flex: 1 }}>
-              <p style={styles.label}>혜택 B: 나는 호구인가? 테스트 unlock</p>
+              <p style={styles.label}>혜택 B: 결과별 추가 해석 공개</p>
               <button
                 type="button"
                 onClick={handleReviewClick}
@@ -333,17 +307,13 @@ export default function FreeTestRewardSection({
 
               {isReviewed ? (
                 <div style={{ marginTop: 12, borderRadius: 10, background: '#1e1e35', padding: 12 }}>
-                  <p style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 800, color: '#a5b4fc', margin: '0 0 10px' }}>
-                    <Unlock size={14} aria-hidden="true" />
-                    🔓 호구인가? 테스트가 열렸어요!
+                  <p style={{ fontSize: 13, fontWeight: 600, color: '#818cf8', margin: '0 0 6px' }}>
+                    {resultType} 결과별 추가 해석
                   </p>
-                  <button
-                    type="button"
-                    onClick={openHogooCheck}
-                    style={styles.btn('#818cf8', '#111827')}
-                  >
-                    테스트 하러 가기
-                  </button>
+                  <p style={{ fontSize: 13, color: '#a5b4fc', lineHeight: 1.6, margin: 0 }}>
+                    이 결과는 단순히 많이 베푸는 성향만 뜻하지 않습니다. 상대의 반응을 먼저
+                    살피느라 내 기준이 뒤로 밀릴 때가 있는지 함께 점검하는 신호로 볼 수 있어요.
+                  </p>
                 </div>
               ) : null}
             </div>
@@ -401,39 +371,6 @@ export default function FreeTestRewardSection({
               {bothRewardContent ? (
                 <div style={{ marginTop: 10, borderRadius: 8, background: 'rgba(0,0,0,0.2)', padding: 12, fontSize: 13, lineHeight: 1.6, color: isBothComplete ? '#fff' : '#c5b8ac' }}>
                   {bothRewardContent}
-                </div>
-              ) : null}
-              {isBothComplete ? (
-                <div style={{ marginTop: 14, borderTop: '1px solid rgba(255,255,255,0.15)', paddingTop: 14 }}>
-                  <p style={{ fontSize: 15, fontWeight: 900, color: '#fff', margin: '0 0 8px', lineHeight: 1.4 }}>
-                    무료 검사는 패턴을 보여줬어요
-                  </p>
-                  <p style={{ fontSize: 13, fontWeight: 600, color: 'rgba(255,255,255,0.78)', margin: '0 0 12px', lineHeight: 1.65 }}>
-                    GIVE ID 심화 테스트에서는 왜 이 패턴이 반복되는지, 어떻게 바꿀 수 있는지를 알 수 있어요.
-                  </p>
-                  <a
-                    href="https://givecosystem.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: 4,
-                      padding: '8px 14px',
-                      borderRadius: 8,
-                      background: 'rgba(255,255,255,0.15)',
-                      color: '#e0d8ff',
-                      fontSize: 13,
-                      fontWeight: 800,
-                      textDecoration: 'none',
-                      border: '1px solid rgba(255,255,255,0.2)',
-                    }}
-                  >
-                    GIVE ID 심화 테스트 →
-                  </a>
-                  <p style={{ fontSize: 12, fontWeight: 700, color: 'rgba(255,255,255,0.66)', margin: '10px 0 0' }}>
-                    무료 결과는 유지됩니다.
-                  </p>
                 </div>
               ) : null}
             </div>

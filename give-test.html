@@ -121,6 +121,7 @@
         .result-shell { background: #fff; border: 1px solid var(--line); border-radius: 8px; box-shadow: var(--shadow); overflow: hidden; }
         .result-hero { padding: 26px 20px 22px; text-align: center; background: linear-gradient(180deg, var(--mint), #fff); }
         .result-label { color: var(--muted); font-weight: 900; font-size: 0.82rem; margin-bottom: 8px; }
+        .result-top-actions { display: flex; justify-content: center; margin: 14px 0 0; }
         .character { width: 122px; height: 132px; display: block; margin: 0 auto 8px; overflow: visible; animation: float 3.4s ease-in-out infinite; }
         @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
         .type-name { font-size: 1.85rem; line-height: 1.15; font-weight: 950; letter-spacing: 0; color: var(--ink); margin-bottom: 10px; }
@@ -163,7 +164,7 @@
         .free-links { display: grid; gap: 8px; margin-top: 14px; }
         .free-link { display: flex; align-items: center; gap: 8px; padding: 12px; border: 1px solid var(--line); border-radius: 8px; background: #f7f8fa; font-size: 0.9rem; font-weight: 850; }
         .free-badge { background: var(--mint); color: var(--green-dark); border-radius: 999px; padding: 3px 7px; font-size: 0.68rem; font-weight: 950; flex: 0 0 auto; }
-        .result-retry-btn { border: 1px solid var(--line); background: transparent; color: var(--muted); border-radius: 999px; padding: 8px 13px; font-size: .8rem; font-weight: 850; font-family: inherit; cursor: pointer; min-height: 0; width: auto; justify-self: center; }
+        .result-retry-btn { border: 1px solid var(--line); background: transparent; color: var(--muted); border-radius: 999px; padding: 9px 14px; font-size: .84rem; font-weight: 850; font-family: inherit; cursor: pointer; }
         .result-retry-btn:hover { color: var(--ink); border-color: #cbd3dc; background: #fff; }
         .unlock-badge { display: none; background: #e6f9f0; color: #00a885; border: 1px solid #b2e8d5; border-radius: 999px; padding: 4px 10px; font-size: .75rem; font-weight: 800; margin: 12px 18px 0; }
         .locked-interpretation.unlocked .unlock-badge { display: inline-block; animation: fadeInBadge .45s ease .1s both; }
@@ -194,48 +195,11 @@
         .social-nudge { color: var(--muted); text-align: center; font-size: 0.78rem; font-weight: 800; margin-top: 10px; }
         .share-panel { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 18px; margin-top: 16px; }
         .share-card {
-            position: relative; width: 100%; aspect-ratio: 1.586 / 1; min-height: 304px; border-radius: 18px;
-            background: linear-gradient(135deg, #fbfbff 0%, #f7f1ff 44%, #eaf8f5 100%);
-            border: 1px solid #d9d2ef; box-shadow: 0 22px 50px rgba(64, 44, 120, 0.18);
-            overflow: hidden; padding: 18px; margin: 12px 0; color: var(--ink);
+            width: 100%; aspect-ratio: 1 / 1; border-radius: 8px; background: linear-gradient(160deg, #eaf8f5, #fff7e8);
+            border: 1px solid #dde9e7; display: grid; place-items: center; text-align: center; padding: 18px; margin: 12px 0;
         }
-        .share-card:before {
-            content: ""; position: absolute; inset: -30% -16% auto auto; width: 220px; height: 220px;
-            border-radius: 999px; background: var(--card-color, #e5d8ff); opacity: .72;
-        }
-        .share-card:after {
-            content: ""; position: absolute; left: 18px; right: 18px; bottom: 14px; height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(23,25,28,.18), transparent);
-        }
-        .give-id-card-inner { position: relative; z-index: 1; height: 100%; display: grid; grid-template-rows: auto 1fr auto; gap: 12px; }
-        .give-id-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
-        .give-id-brand { display: grid; gap: 2px; }
-        .give-id-label { color: #6d28d9; font-size: .72rem; font-weight: 950; letter-spacing: .16em; }
-        .give-id-issued { color: #747b87; font-size: .68rem; font-weight: 850; }
-        .give-id-chip { border: 1px solid rgba(109,40,217,.24); background: rgba(255,255,255,.74); border-radius: 999px; padding: 6px 9px; color: #5b21b6; font-size: .68rem; font-weight: 950; white-space: nowrap; }
-        .give-id-main { display: grid; grid-template-columns: .9fr 1.1fr; gap: 14px; align-items: center; min-height: 0; }
-        .give-id-portrait { align-self: center; display: grid; place-items: center; min-width: 0; }
-        .give-id-portrait .character { width: min(34vw, 138px); height: auto; margin: 0; filter: drop-shadow(0 14px 20px rgba(23,25,28,.16)); animation: none; }
-        .give-id-info { min-width: 0; }
-        .share-card .type-name { font-size: clamp(1.18rem, 5vw, 1.72rem); line-height: 1.08; margin: 0 0 8px; word-break: keep-all; }
-        .give-id-tagline { font-weight: 850; color: #3d454f; font-size: .82rem; line-height: 1.45; margin: 0; word-break: keep-all; }
-        .give-id-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 11px; }
-        .give-id-tag { border: 1px solid rgba(23,25,28,.1); background: rgba(255,255,255,.72); border-radius: 999px; padding: 4px 8px; color: #3d454f; font-size: .68rem; font-weight: 900; }
-        .give-id-bottom { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: end; }
-        .give-id-stats { display: grid; gap: 5px; min-width: 0; }
-        .give-id-stat { display: grid; grid-template-columns: 42px 1fr 28px; gap: 7px; align-items: center; color: #4b5563; font-size: .66rem; font-weight: 950; }
-        .give-id-bar { height: 6px; border-radius: 999px; background: rgba(23,25,28,.1); overflow: hidden; }
-        .give-id-bar span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #7c3aed, #00a885); }
-        .give-id-code { text-align: right; color: #5f6874; font-size: .65rem; font-weight: 900; letter-spacing: .08em; white-space: nowrap; }
-        .result-card-download-button {
-            min-height: 44px; width: 100%; border: 1px solid #7c3aed; background: #fff; color: #6d28d9;
-            border-radius: 8px; padding: 0 16px; font-family: inherit; font-size: .88rem; font-weight: 950; cursor: pointer;
-        }
-        .result-card-download-button:hover { background: #f5f0ff; }
-        .result-card-download-button:disabled { opacity: .62; cursor: wait; }
+        .share-card .type-name { font-size: 1.55rem; }
         .share-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .download-action { grid-column: 1 / -1; }
-        .share-retry-actions { display: flex; justify-content: center; margin-top: 12px; }
         .toast { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); background: #101418; color: #fff; border-radius: 999px; padding: 10px 14px; font-size: 0.82rem; font-weight: 850; opacity: 0; pointer-events: none; transition: opacity 0.2s ease; z-index: 20; }
         .toast.show { opacity: 1; }
         footer { margin-top: 44px; padding: 30px 0; border-top: 1px solid var(--line); color: #8b94a1; text-align: center; font-size: 0.8rem; }
@@ -336,6 +300,9 @@
                         <div id="character"></div>
                         <h1 class="type-name" id="typeName"></h1>
                         <p class="summary" id="typeSummary"></p>
+                        <div class="result-top-actions">
+                            <button class="result-retry-btn" type="button" onclick="retryTest()">다시 시도해보기</button>
+                        </div>
                     </div>
                     <div class="result-body">
                         <div class="insight-grid">
@@ -392,10 +359,35 @@
                         </div>
                     </div>
                 </article>
-                <section style="background:#f3f0ff;border:1px solid #d8ccff;border-radius:12px;padding:20px;margin-top:16px;">
-                    <p style="font-size:0.95rem;font-weight:750;color:#3d2d6e;margin:0 0 14px;line-height:1.5;">무료 검사에서 보인 신호를 실제 행동 계획으로 바꾸고 싶다면</p>
-                    <button class="primary-btn" onclick="openPaid('new_cta')" style="background:#7c3aed;box-shadow:0 12px 26px rgba(124,58,237,0.28);">GIVE ID 심화 테스트 시작하기 →</button>
-                    <p class="micro" style="margin-top:10px;color:#7c5cbf;">무료 결과는 유지됩니다.</p>
+                <section class="conversion-panel">
+                    <div class="unlock-top">
+                        <strong>원하는 깊이만 선택하세요</strong>
+                        <span class="unlock-pill">유료 CTA</span>
+                    </div>
+                    <p style="color:var(--muted);font-weight:750;font-size:.9rem">무료 테스트에서 보인 신호를 실제 행동 계획으로 바꾸는 구간입니다.</p>
+                    <div class="conversion-grid">
+                        <button class="conversion-card" onclick="openPaid('lite_report')">
+                            <span class="conversion-name">심화 분석만</span>
+                            <span class="conversion-price">₩4,900부터</span>
+                            <span class="conversion-copy">내 유형의 반복 패턴 빠르게 확인</span>
+                        </button>
+                        <button class="conversion-card best" onclick="openPaid('full_package')">
+                            <span class="conversion-name">분석 + 거절 스크립트</span>
+                            <span class="conversion-price">추천 패키지</span>
+                            <span class="conversion-copy">상황별 문장까지 바로 적용</span>
+                        </button>
+                        <button class="conversion-card" onclick="openPaid('challenge')">
+                            <span class="conversion-name">7일 실천 플랜</span>
+                            <span class="conversion-price">행동 루틴</span>
+                            <span class="conversion-copy">매일 하나씩 관계 기준 세우기</span>
+                        </button>
+                    </div>
+                    <button class="primary-btn" onclick="openPaid('pricing_primary')">내 관계 약점 지금 분석하기 →</button>
+                    <span class="paid-sub" style="color:var(--muted)">무료 결과는 유지됩니다. 필요할 때 심화 분석만 이어서 보세요.</span>
+                    <div class="free-links">
+                        <a class="free-link" href="articles/giver-burnout.html"><span class="free-badge">무료</span>기버 번아웃: 나는 왜 항상 지치는가</a>
+                        <a class="free-link" href="articles/setting-boundaries.html"><span class="free-badge">무료</span>경계 설정이 어려운 진짜 이유</a>
+                    </div>
                 </section>
 
                 <section class="unlock-panel">
@@ -431,44 +423,17 @@
                 <section class="share-panel">
                     <h2 class="loop-title" style="margin:0">결과 공유하기</h2>
                     <div class="share-card" id="shareCard">
-                        <div class="give-id-card-inner">
-                            <div class="give-id-card-top">
-                                <div class="give-id-brand">
-                                    <span class="give-id-label">GIVE ID</span>
-                                    <span class="give-id-issued">GIVE Ecosystem</span>
-                                </div>
-                                <span class="give-id-chip">RELATION CARD</span>
-                            </div>
-                            <div class="give-id-main">
-                                <div class="give-id-portrait" id="shareCharacter"></div>
-                                <div class="give-id-info">
-                                    <h3 class="type-name" id="shareType"></h3>
-                                    <p class="give-id-tagline" id="shareTagline"></p>
-                                    <div class="give-id-tags" id="shareTags"></div>
-                                </div>
-                            </div>
-                            <div class="give-id-bottom">
-                                <div class="give-id-stats">
-                                    <div class="give-id-stat"><span>배려</span><div class="give-id-bar"><span id="shareCareStat"></span></div><b id="shareCareValue"></b></div>
-                                    <div class="give-id-stat"><span>경계</span><div class="give-id-bar"><span id="shareBoundaryStat"></span></div><b id="shareBoundaryValue"></b></div>
-                                    <div class="give-id-stat"><span>회복</span><div class="give-id-bar"><span id="shareRecoveryStat"></span></div><b id="shareRecoveryValue"></b></div>
-                                </div>
-                                <div class="give-id-code" id="shareCode"></div>
-                            </div>
+                        <div>
+                            <div id="shareCharacter"></div>
+                            <p style="color:var(--muted);font-weight:900;font-size:.82rem;margin-bottom:6px">나의 GIVE ID</p>
+                            <h3 class="type-name" id="shareType"></h3>
+                            <p id="shareTagline" style="font-weight:750;color:#3d454f"></p>
                         </div>
                     </div>
                     <div class="share-actions">
                         <button class="ghost-btn" onclick="shareResult()">공유하기</button>
                         <button class="ghost-btn" onclick="copyLink()">링크 복사</button>
-                        <div
-                            class="download-action"
-                            data-result-card-download-root
-                            data-target-id="shareCard"
-                            data-file-name="give-id-card.png"
-                        ></div>
-                    </div>
-                    <div class="share-retry-actions">
-                        <button class="result-retry-btn" type="button" onclick="requestRetryTest()">다시 시도해보기</button>
+                        <button class="ghost-btn" onclick="downloadShareCard()">카드 저장</button>
                     </div>
                 </section>
 
@@ -477,13 +442,11 @@
                 <section>
                     <h2 class="loop-title">다음은 이거 보세요</h2>
                     <div class="related-tests">
-                        <div class="related-card" id="hogooCheckCard" onclick="handleHogooCheckClick()" style="cursor:pointer;opacity:0.65;">
-                            <span class="related-icon" style="background:#f3f0f8;color:#7c5cbf;">🔒</span>
-                            <div>
-                                <strong>나는 호구일까?</strong>
-                                <span id="hogooCheckStatus">후기를 작성하면 열려요</span>
-                            </div>
-                        </div>
+                        <a class="related-card" href="hogoo-check.html">
+                            <span class="related-icon">01</span>
+                            <strong>나는 호구일까?</strong>
+                            <span>착한 건지, 만만한 건지</span>
+                        </a>
                         <a class="related-card" href="refusal-test.html">
                             <span class="related-icon">02</span>
                             <strong>거절력 테스트</strong>
@@ -617,44 +580,6 @@ const results = {
     }
 };
 
-const shareCardMeta = {
-    angel: {
-        code: "GIVE-ANGEL-01",
-        tags: ["#먼저챙김", "#거절연습중", "#따뜻한사람"],
-        stats: { care: 96, boundary: 34, recovery: 58 }
-    },
-    diplomat: {
-        code: "GIVE-DIPLO-02",
-        tags: ["#분위기감지", "#갈등완충", "#내기준찾기"],
-        stats: { care: 84, boundary: 48, recovery: 62 }
-    },
-    architect: {
-        code: "GIVE-ARCH-03",
-        tags: ["#관계설계", "#효율중시", "#온기추가"],
-        stats: { care: 61, boundary: 86, recovery: 74 }
-    },
-    guardian: {
-        code: "GIVE-GUARD-04",
-        tags: ["#선명한선", "#안전우선", "#유연함연습"],
-        stats: { care: 66, boundary: 94, recovery: 78 }
-    },
-    burnout: {
-        code: "GIVE-BURN-05",
-        tags: ["#지친기버", "#회복필요", "#멈춤연습"],
-        stats: { care: 91, boundary: 42, recovery: 29 }
-    },
-    blocker: {
-        code: "GIVE-BLOCK-06",
-        tags: ["#철벽방어", "#손해차단", "#연결연습"],
-        stats: { care: 45, boundary: 96, recovery: 69 }
-    },
-    mixed: {
-        code: "GIVE-MIX-07",
-        tags: ["#밸런서", "#상황판단", "#기준세우기"],
-        stats: { care: 73, boundary: 70, recovery: 68 }
-    }
-};
-
 let current = 0;
 let scores = { G: 0, I: 0, V: 0, E: 0 };
 let finalResult = null;
@@ -741,34 +666,6 @@ function characterSvg(fill) {
     </svg>`;
 }
 
-function renderShareIdCard(key, result) {
-    const meta = shareCardMeta[key] || shareCardMeta.mixed;
-    const card = document.getElementById("shareCard");
-    card.style.setProperty("--card-color", result.color);
-    document.getElementById("shareCharacter").innerHTML = characterSvg(result.color);
-    document.getElementById("shareType").textContent = result.name;
-    document.getElementById("shareTagline").textContent = result.tagline;
-    document.getElementById("shareCode").textContent = meta.code;
-
-    const tags = document.getElementById("shareTags");
-    tags.innerHTML = "";
-    meta.tags.forEach((tag) => {
-        const item = document.createElement("span");
-        item.className = "give-id-tag";
-        item.textContent = tag;
-        tags.appendChild(item);
-    });
-
-    setShareCardStat("shareCare", meta.stats.care);
-    setShareCardStat("shareBoundary", meta.stats.boundary);
-    setShareCardStat("shareRecovery", meta.stats.recovery);
-}
-
-function setShareCardStat(prefix, value) {
-    document.getElementById(`${prefix}Stat`).style.width = `${value}%`;
-    document.getElementById(`${prefix}Value`).textContent = value;
-}
-
 function startTest() {
     current = 0;
     scores = { G: 0, I: 0, V: 0, E: 0 };
@@ -851,28 +748,14 @@ function showResultFromKey(key) {
     renderResult(key);
 }
 
-function resetFreeTestResult() {
+function retryTest() {
     localStorage.removeItem('give_test_result');
     const url = new URL(location.href);
-    url.searchParams.delete("type");
-    url.searchParams.delete("reviewed");
-    history.replaceState(null, "", url.toString());
-
-    current = 0;
-    scores = { G: 0, I: 0, V: 0, E: 0 };
-    finalResult = null;
-    finalKey = null;
-    document.getElementById("completion").classList.remove("show");
-    document.getElementById("test-page").classList.add("hidden");
-    document.getElementById("result-page").classList.add("hidden");
-    document.getElementById("landing-page").classList.remove("hidden");
-    window.scrollTo(0, 0);
-}
-
-function requestRetryTest() {
-    window.dispatchEvent(new CustomEvent('free-test-retry-requested', {
-        detail: { rootId: 'give-test-reward-root' }
-    }));
+    if (url.searchParams.has("type")) {
+        url.searchParams.delete("type");
+        history.replaceState(null, "", url.toString());
+    }
+    startTest();
 }
 
 function renderResult(key) {
@@ -894,7 +777,9 @@ function renderResult(key) {
     document.getElementById("risk").textContent = finalResult.risk;
     document.getElementById("advice").textContent = finalResult.advice;
     renderLockedInterpretation(key, false);
-    renderShareIdCard(key, finalResult);
+    document.getElementById("shareCharacter").innerHTML = svg;
+    document.getElementById("shareType").textContent = finalResult.name;
+    document.getElementById("shareTagline").textContent = finalResult.tagline;
     document.getElementById("nextTestTitle").textContent = finalResult.next.title;
     document.getElementById("nextTestCopy").textContent = finalResult.next.copy;
     document.getElementById("nextTestBtn").onclick = () => location.href = finalResult.next.url;
@@ -939,45 +824,6 @@ window.addEventListener("free-test-reward-status", (event) => {
     renderLockedInterpretation(finalKey, Boolean(detail.isShared));
 });
 
-window.addEventListener("free-test-reset-result", (event) => {
-    const detail = event.detail || {};
-    if (detail.rootId && detail.rootId !== "give-test-reward-root") return;
-    resetFreeTestResult();
-});
-
-let hogooCheckUnlocked = false;
-
-function handleHogooCheckClick() {
-    if (hogooCheckUnlocked) {
-        location.href = 'hogoo-check.html';
-    } else {
-        document.getElementById('give-test-reward-root')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-}
-
-window.addEventListener("free-test-reward-status", (event) => {
-    const detail = event.detail || {};
-    if (detail.rootId && detail.rootId !== "give-test-reward-root") return;
-    hogooCheckUnlocked = Boolean(detail.isReviewed);
-    const card = document.getElementById("hogooCheckCard");
-    const icon = card?.querySelector(".related-icon");
-    const status = document.getElementById("hogooCheckStatus");
-    if (!card || !icon || !status) return;
-    if (hogooCheckUnlocked) {
-        card.style.opacity = "1";
-        icon.style.background = "var(--mint)";
-        icon.style.color = "var(--green-dark)";
-        icon.textContent = "01";
-        status.textContent = "착한 건지, 만만한 건지";
-    } else {
-        card.style.opacity = "0.65";
-        icon.style.background = "#f3f0f8";
-        icon.style.color = "#7c5cbf";
-        icon.textContent = "🔒";
-        status.textContent = "후기를 작성하면 열려요";
-    }
-});
-
 function paidUrl(source) {
     const url = new URL("https://givecosystem.com/");
     url.searchParams.set("utm_source", "give_id_free_result");
@@ -1011,6 +857,50 @@ async function copyLink() {
     showToast("링크가 복사되었습니다");
 }
 
+function downloadShareCard() {
+    if (!finalResult) return;
+    const canvas = document.createElement("canvas");
+    canvas.width = 900;
+    canvas.height = 900;
+    const ctx = canvas.getContext("2d");
+    const grd = ctx.createLinearGradient(0, 0, 900, 900);
+    grd.addColorStop(0, finalResult.color);
+    grd.addColorStop(1, "#fff7e8");
+    ctx.fillStyle = grd;
+    ctx.fillRect(0, 0, 900, 900);
+    ctx.fillStyle = "#17191c";
+    ctx.textAlign = "center";
+    ctx.font = "700 34px sans-serif";
+    ctx.fillText("나의 GIVE ID", 450, 220);
+    ctx.font = "900 58px sans-serif";
+    wrapText(ctx, finalResult.name, 450, 330, 720, 72);
+    ctx.font = "700 32px sans-serif";
+    wrapText(ctx, finalResult.tagline, 450, 560, 680, 48);
+    ctx.font = "700 28px sans-serif";
+    ctx.fillText("hogoo-challenge.pages.dev/give-test.html", 450, 780);
+    const link = document.createElement("a");
+    link.download = "give-id-result.png";
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+    showToast("공유 카드가 생성되었습니다");
+}
+
+function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+    const words = text.split(" ");
+    let line = "";
+    for (let n = 0; words.length > n; n++) {
+        const testLine = line + words[n] + " ";
+        if (ctx.measureText(testLine).width > maxWidth && n > 0) {
+            ctx.fillText(line, x, y);
+            line = words[n] + " ";
+            y += lineHeight;
+        } else {
+            line = testLine;
+        }
+    }
+    ctx.fillText(line, x, y);
+}
+
 function showToast(message) {
     const toast = document.getElementById("toast");
     toast.textContent = message;
@@ -1035,6 +925,5 @@ function showToast(message) {
 })();
 </script>
 <script type="module" src="/src/free-test-reward-widget.tsx"></script>
-<script type="module" src="/src/result-card-download-widget.tsx"></script>
 </body>
 </html>
