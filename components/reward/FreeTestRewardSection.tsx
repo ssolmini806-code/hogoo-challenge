@@ -252,6 +252,12 @@ export default function FreeTestRewardSection({
     hasNotifiedBothComplete.current = false;
   }, [retryResetKey]);
 
+  useEffect(() => {
+    return () => {
+      if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    };
+  }, []);
+
   const showShareToast = (msg: string) => {
     setShareToast(msg);
     if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
@@ -270,8 +276,9 @@ export default function FreeTestRewardSection({
     if (navigator.share) {
       navigator.share({ title: `GIVE ID ${resultType} 결과`, url }).catch(() => {});
     } else {
-      navigator.clipboard.writeText(url).catch(() => fallbackCopyLink(url));
-      showShareToast('링크 복사 완료! 인스타 스토리에 붙여넣기 해주세요 📸');
+      navigator.clipboard.writeText(url)
+        .then(() => showShareToast('링크 복사 완료! 인스타 스토리에 붙여넣기 해주세요 📸'))
+        .catch(() => { fallbackCopyLink(url); showShareToast('링크 복사 완료! 인스타 스토리에 붙여넣기 해주세요 📸'); });
     }
     setHasOpenedShare(true);
   };
@@ -291,8 +298,9 @@ export default function FreeTestRewardSection({
   const handleCopyShare = () => {
     if (!userId) { onLoginRequired(); return; }
     const url = getCurrentUrl();
-    navigator.clipboard.writeText(url).catch(() => fallbackCopyLink(url));
-    showShareToast('링크가 복사되었어요 🔗');
+    navigator.clipboard.writeText(url)
+      .then(() => showShareToast('링크가 복사되었어요 🔗'))
+      .catch(() => { fallbackCopyLink(url); showShareToast('링크가 복사되었어요 🔗'); });
     setHasOpenedShare(true);
   };
 
