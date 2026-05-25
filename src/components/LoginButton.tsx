@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, type FormEvent } from 'react';
 import { supabase } from '../supabase';
-import { ChevronDown, LogOut, Mail } from 'lucide-react';
+import { ChevronDown, LogOut, Mail, UserPlus } from 'lucide-react';
 import type { User } from '@supabase/supabase-js';
 import LoginModal from './LoginModal';
 
@@ -13,6 +13,10 @@ export default function LoginButton() {
   const [newEmail, setNewEmail] = useState('');
   const [emailChangeSent, setEmailChangeSent] = useState(false);
   const [emailChangeLoading, setEmailChangeLoading] = useState(false);
+  const [showInvite, setShowInvite] = useState(false);
+  const [inviteEmail, setInviteEmail] = useState('');
+  const [inviteSent, setInviteSent] = useState(false);
+  const [inviteLoading, setInviteLoading] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -41,6 +45,24 @@ export default function LoginButton() {
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     window.location.reload();
+  };
+
+  const handleInvite = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setInviteLoading(true);
+    try {
+      const session = (await supabase.auth.getSession()).data.session;
+      const { error } = await supabase.functions.invoke('invite-user', {
+        body: { email: inviteEmail },
+        headers: { Authorization: `Bearer ${session?.access_token}` },
+      });
+      if (error) throw error;
+      setInviteSent(true);
+    } catch (err: any) {
+      alert(err.message);
+    } finally {
+      setInviteLoading(false);
+    }
   };
 
   const handleEmailChange = async (e: FormEvent<HTMLFormElement>) => {
@@ -110,6 +132,29 @@ export default function LoginButton() {
           >
             <button
               type="button"
+              onClick={() => { setMenuOpen(false); setShowInvite(true); setInviteSent(false); setInviteEmail(''); }}
+              style={{
+                width: '100%',
+                background: 'transparent',
+                border: 'none',
+                borderRadius: 8,
+                color: '#c5b8ac',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 7,
+                padding: '9px 10px',
+                fontSize: 12,
+                fontWeight: 800,
+                fontFamily: 'inherit',
+                textAlign: 'left',
+              }}
+            >
+              <UserPlus size={14} aria-hidden="true" />
+              친구 초대
+            </button>
+            <button
+              type="button"
               onClick={() => { setMenuOpen(false); setShowEmailChange(true); setEmailChangeSent(false); setNewEmail(''); }}
               style={{
                 width: '100%',
@@ -156,6 +201,87 @@ export default function LoginButton() {
             </button>
           </div>
         ) : null}
+
+        {showInvite && (
+          <div
+            role="dialog"
+            aria-modal="true"
+            onClick={(e) => { if (e.target === e.currentTarget) setShowInvite(false); }}
+            style={{
+              position: 'fixed', inset: 0, zIndex: 1000,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              background: 'rgba(0,0,0,0.72)', padding: '16px',
+            }}
+          >
+            <div style={{
+              width: '100%', maxWidth: 360,
+              background: '#231f1c', borderRadius: 20, padding: '32px 24px',
+              border: '1px solid #3a3530',
+            }}>
+              {inviteSent ? (
+                <>
+                  <h2 style={{ color: '#f5ede3', fontSize: 20, fontWeight: 800, marginBottom: 8 }}>🎉 초대를 보냈어요!</h2>
+                  <p style={{ color: '#8a7f75', fontSize: 13, lineHeight: 1.6, marginBottom: 24 }}>
+                    <strong style={{ color: '#f5ede3' }}>{inviteEmail}</strong>로<br />
+                    초대 링크를 보냈어요. 친구가 클릭하면 바로 시작할 수 있어요.
+                  </p>
+                  <button
+                    onClick={() => setShowInvite(false)}
+                    style={{
+                      width: '100%', padding: '13px', borderRadius: 10,
+                      border: '1px solid #3a3530', background: 'transparent',
+                      color: '#8a7f75', cursor: 'pointer', fontSize: 14, fontWeight: 700,
+                    }}
+                  >
+                    닫기
+                  </button>
+                </>
+              ) : (
+                <>
+                  <h2 style={{ color: '#f5ede3', fontSize: 20, fontWeight: 800, marginBottom: 8 }}>친구 초대하기</h2>
+                  <p style={{ color: '#8a7f75', fontSize: 13, lineHeight: 1.5, marginBottom: 24 }}>
+                    친구 이메일을 입력하면 챌린지 초대 링크를 보내드려요
+                  </p>
+                  <form onSubmit={handleInvite} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                    <input
+                      type="email"
+                      placeholder="친구 이메일 주소"
+                      value={inviteEmail}
+                      onChange={(e) => setInviteEmail(e.target.value)}
+                      required
+                      style={{
+                        padding: '13px 14px', borderRadius: 10, border: '1px solid #3a3530',
+                        background: '#1a1614', color: '#f5ede3', outline: 'none', fontSize: 14,
+                      }}
+                    />
+                    <button
+                      type="submit"
+                      disabled={inviteLoading}
+                      style={{
+                        padding: '13px', borderRadius: 10, border: 'none',
+                        background: '#00a885', color: '#fff', fontWeight: 800,
+                        cursor: inviteLoading ? 'not-allowed' : 'pointer', fontSize: 15,
+                        opacity: inviteLoading ? 0.7 : 1,
+                      }}
+                    >
+                      {inviteLoading ? '전송 중...' : '초대 링크 보내기'}
+                    </button>
+                  </form>
+                  <button
+                    onClick={() => setShowInvite(false)}
+                    style={{
+                      marginTop: 12, background: 'none', border: 'none',
+                      color: '#6a5f55', cursor: 'pointer', fontSize: 12,
+                      textDecoration: 'underline', width: '100%',
+                    }}
+                  >
+                    취소
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+        )}
 
         {showEmailChange && (
           <div
