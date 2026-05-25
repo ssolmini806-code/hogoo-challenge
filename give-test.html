@@ -854,6 +854,7 @@ function getFinalKey() {
 function showResult() {
     const key = getFinalKey();
     localStorage.setItem('give_test_result', key);
+    trackEvent('give_test_completed', { give_type: key });
     renderResult(key);
 }
 
@@ -896,6 +897,7 @@ function renderResult(key) {
     document.getElementById("result-page").classList.remove("hidden");
     document.getElementById("completion").classList.add("show");
     window.scrollTo(0, 0);
+    trackEvent('give_result_viewed', { give_type: key });
 
     const svg = characterSvg(finalResult.color);
     document.getElementById("character").innerHTML = svg;
