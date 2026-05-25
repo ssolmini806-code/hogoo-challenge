@@ -13,6 +13,15 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: Props) {
   const [password, setPassword] = useState('');
   const [isSignUp, setIsSignUp] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
+  const [forgotSent, setForgotSent] = useState(false);
+
+  useEffect(() => {
+    if (!isOpen) {
+      setIsForgotPassword(false);
+      setForgotSent(false);
+    }
+  }, [isOpen]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -33,6 +42,22 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: Props) {
   }, [isOpen, onClose, onSuccess]);
 
   if (!isOpen) return null;
+
+  const handleForgotPassword = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: 'https://hogoo-challenge.pages.dev/hogoo-test.html',
+      });
+      if (error) throw error;
+      setForgotSent(true);
+    } catch (err: any) {
+      alert(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -83,62 +108,144 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: Props) {
           <X size={18} />
         </button>
 
-        <h2 id="login-modal-title" style={{ color: '#f5ede3', fontSize: 20, fontWeight: 800, marginBottom: 6 }}>
-          {isSignUp ? '챌린지 시작하기' : '보상을 받으려면 로그인이 필요해요'}
-        </h2>
-        <p style={{ color: '#8a7f75', fontSize: 13, marginBottom: 24, lineHeight: 1.5 }}>
-          {isSignUp
-            ? '계정을 만들고 진행 상황을 저장하세요'
-            : '로그인하면 내 보상이 저장되고 다음에도 확인할 수 있어요'}
-        </p>
+        {isForgotPassword ? (
+          forgotSent ? (
+            <>
+              <h2 id="login-modal-title" style={{ color: '#f5ede3', fontSize: 20, fontWeight: 800, marginBottom: 6 }}>
+                📬 메일을 확인해주세요
+              </h2>
+              <p style={{ color: '#8a7f75', fontSize: 13, marginBottom: 24, lineHeight: 1.6 }}>
+                <strong style={{ color: '#f5ede3' }}>{email}</strong>로<br />
+                재설정 링크를 보냈어요. 메일함을 확인해주세요.
+              </p>
+              <button
+                onClick={() => { setIsForgotPassword(false); setForgotSent(false); }}
+                style={{
+                  padding: '13px', borderRadius: 10, border: '1px solid #3a3530',
+                  background: 'transparent', color: '#8a7f75', cursor: 'pointer', fontSize: 14, fontWeight: 700,
+                }}
+              >
+                ← 로그인으로 돌아가기
+              </button>
+            </>
+          ) : (
+            <>
+              <h2 id="login-modal-title" style={{ color: '#f5ede3', fontSize: 20, fontWeight: 800, marginBottom: 6 }}>
+                비밀번호 재설정
+              </h2>
+              <p style={{ color: '#8a7f75', fontSize: 13, marginBottom: 24, lineHeight: 1.5 }}>
+                가입한 이메일을 입력하면 재설정 링크를 보내드려요
+              </p>
+              <form onSubmit={handleForgotPassword} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                <input
+                  type="email"
+                  placeholder="이메일"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  style={{
+                    padding: '13px 14px', borderRadius: 10, border: '1px solid #3a3530',
+                    background: '#1a1614', color: '#f5ede3', outline: 'none', fontSize: 14,
+                  }}
+                />
+                <button
+                  type="submit"
+                  disabled={loading}
+                  style={{
+                    padding: '13px', borderRadius: 10, border: 'none',
+                    background: '#00a885', color: '#fff', fontWeight: 800,
+                    cursor: loading ? 'not-allowed' : 'pointer', fontSize: 15,
+                    opacity: loading ? 0.7 : 1,
+                  }}
+                >
+                  {loading ? '전송 중...' : '재설정 링크 받기'}
+                </button>
+              </form>
+              <button
+                onClick={() => setIsForgotPassword(false)}
+                style={{
+                  marginTop: 16, background: 'none', border: 'none',
+                  color: '#6a5f55', cursor: 'pointer', fontSize: 12,
+                  textDecoration: 'underline', width: '100%',
+                }}
+              >
+                ← 로그인으로 돌아가기
+              </button>
+            </>
+          )
+        ) : (
+          <>
+            <h2 id="login-modal-title" style={{ color: '#f5ede3', fontSize: 20, fontWeight: 800, marginBottom: 6 }}>
+              {isSignUp ? '챌린지 시작하기' : '보상을 받으려면 로그인이 필요해요'}
+            </h2>
+            <p style={{ color: '#8a7f75', fontSize: 13, marginBottom: 24, lineHeight: 1.5 }}>
+              {isSignUp
+                ? '계정을 만들고 진행 상황을 저장하세요'
+                : '로그인하면 내 보상이 저장되고 다음에도 확인할 수 있어요'}
+            </p>
 
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <input
-            type="email"
-            placeholder="이메일"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            style={{
-              padding: '13px 14px', borderRadius: 10, border: '1px solid #3a3530',
-              background: '#1a1614', color: '#f5ede3', outline: 'none', fontSize: 14,
-            }}
-          />
-          <input
-            type="password"
-            placeholder="비밀번호"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            style={{
-              padding: '13px 14px', borderRadius: 10, border: '1px solid #3a3530',
-              background: '#1a1614', color: '#f5ede3', outline: 'none', fontSize: 14,
-            }}
-          />
-          <button
-            type="submit"
-            disabled={loading}
-            style={{
-              padding: '13px', borderRadius: 10, border: 'none',
-              background: '#00a885', color: '#fff', fontWeight: 800,
-              cursor: loading ? 'not-allowed' : 'pointer', fontSize: 15,
-              opacity: loading ? 0.7 : 1,
-            }}
-          >
-            {loading ? '처리 중...' : (isSignUp ? '가입하기' : '로그인')}
-          </button>
-        </form>
+            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+              <input
+                type="email"
+                placeholder="이메일"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                style={{
+                  padding: '13px 14px', borderRadius: 10, border: '1px solid #3a3530',
+                  background: '#1a1614', color: '#f5ede3', outline: 'none', fontSize: 14,
+                }}
+              />
+              <input
+                type="password"
+                placeholder="비밀번호"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                style={{
+                  padding: '13px 14px', borderRadius: 10, border: '1px solid #3a3530',
+                  background: '#1a1614', color: '#f5ede3', outline: 'none', fontSize: 14,
+                }}
+              />
+              <button
+                type="submit"
+                disabled={loading}
+                style={{
+                  padding: '13px', borderRadius: 10, border: 'none',
+                  background: '#00a885', color: '#fff', fontWeight: 800,
+                  cursor: loading ? 'not-allowed' : 'pointer', fontSize: 15,
+                  opacity: loading ? 0.7 : 1,
+                }}
+              >
+                {loading ? '처리 중...' : (isSignUp ? '가입하기' : '로그인')}
+              </button>
+            </form>
 
-        <button
-          onClick={() => setIsSignUp((v) => !v)}
-          style={{
-            marginTop: 16, background: 'none', border: 'none',
-            color: '#6a5f55', cursor: 'pointer', fontSize: 12,
-            textDecoration: 'underline', width: '100%',
-          }}
-        >
-          {isSignUp ? '이미 계정이 있으신가요? 로그인하기' : '계정이 없으신가요? 가입하기'}
-        </button>
+            {!isSignUp && (
+              <button
+                onClick={() => setIsForgotPassword(true)}
+                style={{
+                  marginTop: 12, background: 'none', border: 'none',
+                  color: '#6a5f55', cursor: 'pointer', fontSize: 12,
+                  textDecoration: 'underline', width: '100%',
+                }}
+              >
+                비밀번호를 잊으셨나요?
+              </button>
+            )}
+
+            <button
+              onClick={() => setIsSignUp((v) => !v)}
+              style={{
+                marginTop: 8, background: 'none', border: 'none',
+                color: '#6a5f55', cursor: 'pointer', fontSize: 12,
+                textDecoration: 'underline', width: '100%',
+              }}
+            >
+              {isSignUp ? '이미 계정이 있으신가요? 로그인하기' : '계정이 없으신가요? 가입하기'}
+            </button>
+          </>
+        )}
       </div>
     </div>
   );

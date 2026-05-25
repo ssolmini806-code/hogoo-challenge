@@ -27,6 +27,9 @@ export default function App() {
   const [reviewError, setReviewError] = useState("");
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [loginModalOpen, setLoginModalOpen] = useState(false);
+  const [showPasswordReset, setShowPasswordReset] = useState(false);
+  const [newPassword, setNewPassword] = useState('');
+  const [passwordResetLoading, setPasswordResetLoading] = useState(false);
   const [isShared, setIsShared] = useState(false);
   const [isReviewed, setIsReviewed] = useState(false);
   const [reviewConfirm, setReviewConfirm] = useState(false);
@@ -52,8 +55,11 @@ export default function App() {
       setSession(session);
     });
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       setSession(session);
+      if (event === 'PASSWORD_RECOVERY') {
+        setShowPasswordReset(true);
+      }
     });
 
     return () => subscription.unsubscribe();
@@ -1051,6 +1057,73 @@ export default function App() {
                 style={{ background: "#c07070", border: 0, borderRadius: 10, padding: 12, color: "#fff", cursor: "pointer", fontSize: 14, fontWeight: 900 }}
               >삭제하기</button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {showPasswordReset && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          style={{
+            position: 'fixed', inset: 0, zIndex: 1000,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            background: 'rgba(0,0,0,0.72)', padding: '16px',
+          }}
+        >
+          <div style={{
+            width: '100%', maxWidth: 360,
+            background: '#231f1c', borderRadius: 20, padding: '32px 24px',
+            border: '1px solid #3a3530',
+          }}>
+            <h2 style={{ color: '#f5ede3', fontSize: 20, fontWeight: 800, marginBottom: 8 }}>새 비밀번호 설정</h2>
+            <p style={{ color: '#8a7f75', fontSize: 13, lineHeight: 1.5, marginBottom: 24 }}>
+              새로 사용할 비밀번호를 입력해주세요
+            </p>
+            <form
+              onSubmit={async (e) => {
+                e.preventDefault();
+                setPasswordResetLoading(true);
+                try {
+                  const { error } = await supabase.auth.updateUser({ password: newPassword });
+                  if (error) throw error;
+                  alert('비밀번호가 변경됐어요! 다시 로그인해주세요.');
+                  setShowPasswordReset(false);
+                  setNewPassword('');
+                  await supabase.auth.signOut();
+                } catch (err) {
+                  alert(err.message);
+                } finally {
+                  setPasswordResetLoading(false);
+                }
+              }}
+              style={{ display: 'flex', flexDirection: 'column', gap: 12 }}
+            >
+              <input
+                type="password"
+                placeholder="새 비밀번호 (6자 이상)"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                minLength={6}
+                required
+                style={{
+                  padding: '13px 14px', borderRadius: 10, border: '1px solid #3a3530',
+                  background: '#1a1614', color: '#f5ede3', outline: 'none', fontSize: 14,
+                }}
+              />
+              <button
+                type="submit"
+                disabled={passwordResetLoading}
+                style={{
+                  padding: '13px', borderRadius: 10, border: 'none',
+                  background: '#00a885', color: '#fff', fontWeight: 800,
+                  cursor: passwordResetLoading ? 'not-allowed' : 'pointer', fontSize: 15,
+                  opacity: passwordResetLoading ? 0.7 : 1,
+                }}
+              >
+                {passwordResetLoading ? '변경 중...' : '비밀번호 변경하기'}
+              </button>
+            </form>
           </div>
         </div>
       )}
