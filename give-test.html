@@ -382,8 +382,8 @@
                         <div class="share-toast" id="snst"></div>
                         <p class="cta-kicker">여기서 멈추면 또 같은 사람에게 당해요.</p>
                         <div class="cta-section">
-                            <button class="secondary-btn" onclick="location.href='articles/setting-boundaries.html'">내 약점 까보기</button>
-                            <button class="primary-btn" onclick="location.href='articles/smart-giver-guide.html'">다시는 손해 안 보기</button>
+                            <button class="secondary-btn" onclick="trackEvent('article_clicked', { article_slug: 'setting-boundaries' }); location.href='articles/setting-boundaries.html'">내 약점 까보기</button>
+                            <button class="primary-btn" onclick="trackEvent('article_clicked', { article_slug: 'smart-giver-guide' }); location.href='articles/smart-giver-guide.html'">다시는 손해 안 보기</button>
                         </div>
                         <div class="paid-bridge">
                             <div class="paid-eyebrow">FREE RESULT → PAID DEEP DIVE</div>
@@ -1002,6 +1002,7 @@ function paidUrl(source) {
 }
 
 function openPaid(source) {
+    trackEvent('paid_cta_clicked', { source: source, give_type: finalKey });
     window.open(paidUrl(source), "_blank", "noopener,noreferrer");
 }
 
