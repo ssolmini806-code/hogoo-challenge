@@ -9,6 +9,11 @@
       gtag('config', 'G-P6PM6JBJH1');
     </script>
     <script>
+      function trackEvent(name, params) {
+        if (typeof gtag === 'function') gtag('event', name, params || {});
+      }
+    </script>
+    <script>
       (function(c,l,a,r,i,t,y){
         c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
         t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
@@ -817,6 +822,10 @@ function getRewardText(idx) {
 }
 
 function selectAnswer(score) {
+    if (current === 0) trackEvent('give_test_start');
+    if (current === 4) trackEvent('give_test_progress', { checkpoint: 5 });
+    if (current === 9) trackEvent('give_test_progress', { checkpoint: 10 });
+
     if (4 > current) scores.G += score;
     else if (8 > current) scores.I += score;
     else if (12 > current) scores.V += score;
