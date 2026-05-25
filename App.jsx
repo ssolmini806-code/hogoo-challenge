@@ -6,6 +6,17 @@ import LoginButton from "./src/components/LoginButton";
 import LoginModal from "./src/components/LoginModal";
 import ChallengeCompletionReward from "./components/reward/ChallengeCompletionReward";
 import { initializeAdminModeFromUrl, isAdminModeEnabled } from "./src/utils/adminMode";
+import MyPage from "./src/components/MyPage";
+
+function getBrowserTimezone() {
+  return Intl.DateTimeFormat().resolvedOptions().timeZone || 'Asia/Seoul';
+}
+
+async function syncUserTimezone(userId) {
+  if (!userId) return;
+  const timezone = getBrowserTimezone();
+  await supabase.from('profiles').upsert({ id: userId, timezone }, { onConflict: 'id' });
+}
 
 const CHALLENGE_COMPLETED_AT_KEY = 'challenge_completed_at';
 
@@ -59,6 +70,9 @@ export default function App() {
       setSession(session);
       if (event === 'PASSWORD_RECOVERY') {
         setShowPasswordReset(true);
+      }
+      if (session?.user?.id) {
+        syncUserTimezone(session.user.id).catch(err => console.warn('timezone sync failed:', err));
       }
     });
 
@@ -425,6 +439,17 @@ export default function App() {
       <div style={{ background: "#1a1614", minHeight: "100vh", display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#8a7f75' }}>
         불러오는 중...
       </div>
+    );
+  }
+
+  const pathname = typeof window !== 'undefined' ? window.location.pathname : '/';
+  if (pathname === '/mypage') {
+    return (
+      <MyPage
+        session={session}
+        challenge="seven_day_challenge"
+        onBack={() => { window.location.href = '/'; }}
+      />
     );
   }
 
