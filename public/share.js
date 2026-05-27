@@ -1,4 +1,7 @@
 (function(){
+  function trackEvent(name, params) {
+    if (typeof gtag === 'function') gtag('event', name, params || {});
+  }
   function toast(m){
     var e=document.getElementById('snst');
     if(!e)return;
@@ -20,16 +23,20 @@
     document.body.removeChild(el);toast(m);
   }
   window.snsX=function(){
+    trackEvent('give_share_clicked', { channel: 'x', give_type: window.finalKey || null });
     window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(document.title)+'&url='+encodeURIComponent(location.href),'_blank','width=600,height=400,noopener');
   };
   window.snsThreads=function(){
+    trackEvent('give_share_clicked', { channel: 'threads', give_type: window.finalKey || null });
     window.open('https://www.threads.net/intent/post?text='+encodeURIComponent(document.title+'\n\n'+location.href),'_blank','width=600,height=600,noopener');
   };
   window.snsKakao=function(){
+    trackEvent('give_share_clicked', { channel: 'kakao', give_type: window.finalKey || null });
     if(navigator.share){navigator.share({title:document.title,url:location.href});}
     else{copy(location.href,'링크 복사 완료! 카카오톡에 붙여넣기 해주세요 💛');}
   };
   window.snsInsta=function(){
+    trackEvent('give_share_clicked', { channel: 'insta', give_type: window.finalKey || null });
     if(navigator.share){
       navigator.share({title:document.title,url:location.href}).catch(function(){});
     }else{
@@ -37,9 +44,11 @@
     }
   };
   window.snsTiktok=function(){
+    trackEvent('give_share_clicked', { channel: 'tiktok', give_type: window.finalKey || null });
     copy(location.href,'링크 복사 완료! 틱톡 앱에 붙여넣기 해주세요 🎵');
   };
   window.snsCopy=function(btn){
+    trackEvent('give_share_clicked', { channel: 'copy', give_type: window.finalKey || null });
     var span=btn&&btn.querySelector('span');
     var orig=span?span.textContent:'링크 복사';
     copy(location.href,'링크가 복사되었어요 🔗');
