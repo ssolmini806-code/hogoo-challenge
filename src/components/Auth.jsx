@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { supabase } from '../supabase';
 
+function trackEvent(name, params) {
+  if (typeof gtag === 'function') gtag('event', name, params || {});
+}
+
 export default function Auth() {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
@@ -10,15 +14,17 @@ export default function Auth() {
   const handleAuth = async (e) => {
     e.preventDefault();
     setLoading(true);
-    
+
     try {
       if (isSignUp) {
         const { error } = await supabase.auth.signUp({ email, password });
         if (error) throw error;
+        trackEvent('sign_up', { method: 'email' });
         alert('회원가입 확인 메일을 확인해주세요!');
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
+        trackEvent('login', { method: 'email' });
       }
     } catch (error) {
       alert(error.error_description || error.message);
