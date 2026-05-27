@@ -21,6 +21,8 @@
       })(window, document, "clarity", "script", "wh9qtg72q5");
     </script>
     <meta charset="UTF-8">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://www.googletagmanager.com">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <title>GIVE ID Test | 왜 항상 나만 손해 볼까?</title>
@@ -37,10 +39,10 @@
     <meta name="twitter:card" content="summary_large_image">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8564310871125079" crossorigin="anonymous"></script>
     <meta name="google-adsense-account" content="ca-pub-8564310871125079">
-    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" crossorigin>
+    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" crossorigin>
     <script src="/share.js" defer></script>
     <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.8.1/kakao.min.js" defer></script>
-    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" crossorigin></noscript>
+    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" crossorigin></noscript>
     <style>
         :root {
             --green: #00a885;
@@ -945,11 +947,18 @@ function scrollToRewardSection() {
 
 document.getElementById("lockedInterpretationOverlay").addEventListener("click", scrollToRewardSection);
 
+let _shareTracked = false;
 window.addEventListener("free-test-reward-status", (event) => {
     const detail = event.detail || {};
     if (detail.rootId && detail.rootId !== "give-test-reward-root") return;
     if (!finalKey) return;
-    renderLockedInterpretation(finalKey, Boolean(detail.isShared));
+    const isShared = Boolean(detail.isShared);
+    if (isShared && !_shareTracked) {
+        _shareTracked = true;
+        trackEvent('give_share_confirmed', { give_type: finalKey });
+        trackEvent('give_reward_unlocked', { reward_type: 'sns_share', give_type: finalKey });
+    }
+    renderLockedInterpretation(finalKey, isShared);
 });
 
 window.addEventListener("free-test-reset-result", (event) => {
