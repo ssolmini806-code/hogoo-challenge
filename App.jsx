@@ -1021,31 +1021,57 @@ export default function App() {
           {reviewStatus && <div style={{ color: "#9aaa95", fontSize: 12, lineHeight: 1.5, marginBottom: 12 }}>{reviewStatus}</div>}
 
           <div style={{ display: "grid", gap: 10, marginBottom: 14 }}>
-            {reviews.map(review => (
-              <article key={review.id} style={{ background: "#1a1614", border: "1px solid #3a3530", borderRadius: 12, padding: 14 }}>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: 8 }}>
-                  <strong style={{ color: "#f5ede3", fontSize: 14 }}>{review.display_name || "익명 참가자"}</strong>
-                  <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
-                    <span style={{ display: "flex", alignItems: "center", gap: 2, color: "#f0a040", fontSize: 12 }}>
-                      {Array.from({ length: Number(review.rating) || 5 }, (_, i) => <Star key={i} size={12} fill="currentColor" />)}
-                    </span>
-                    {session?.user?.id && review.user_id === session.user.id && (
-                      <button
-                        onClick={() => setDeleteConfirm(review.id)}
-                        style={{
-                          background: "transparent", border: "1px solid #5a3a3a", borderRadius: 6,
-                          padding: "2px 8px", color: "#c07070", fontSize: 11, cursor: "pointer"
-                        }}
-                      >삭제</button>
-                    )}
-                  </div>
-                </div>
-                <p style={{ margin: 0, color: "#b9aea4", fontSize: 13, lineHeight: 1.6 }}>{review.content}</p>
-                <div style={{ marginTop: 10, color: "#6f665f", fontSize: 11 }}>
-                  미션 {review.completed_missions || 0}개 완료
-                </div>
-              </article>
-            ))}
+            {[...reviews]
+              .sort((a, b) => {
+                const uid = session?.user?.id;
+                if (!uid) return 0;
+                if (a.user_id === uid) return -1;
+                if (b.user_id === uid) return 1;
+                return 0;
+              })
+              .map(review => {
+                const isOwn = !!(session?.user?.id && review.user_id === session.user.id);
+                return (
+                  <article key={review.id} style={{
+                    background: "#1a1614",
+                    border: isOwn ? "1px solid #4a7a5a" : "1px solid #3a3530",
+                    borderRadius: 12, padding: 14
+                  }}>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: 8 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0 }}>
+                        {isOwn && (
+                          <span style={{
+                            background: "#2a4a38", color: "#7cc88a", fontSize: 10,
+                            fontWeight: 800, padding: "2px 7px", borderRadius: 20, flexShrink: 0
+                          }}>내 후기</span>
+                        )}
+                        <strong style={{ color: "#f5ede3", fontSize: 14, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                          {review.display_name || "익명 참가자"}
+                        </strong>
+                      </div>
+                      <span style={{ display: "flex", alignItems: "center", gap: 2, color: "#f0a040", fontSize: 12, flexShrink: 0 }}>
+                        {Array.from({ length: Number(review.rating) || 5 }, (_, i) => <Star key={i} size={12} fill="currentColor" />)}
+                      </span>
+                    </div>
+                    <p style={{ margin: 0, color: "#b9aea4", fontSize: 13, lineHeight: 1.6 }}>{review.content}</p>
+                    <div style={{ marginTop: 10, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                      <span style={{ color: "#6f665f", fontSize: 11 }}>미션 {review.completed_missions || 0}개 완료</span>
+                      {isOwn && (
+                        <button
+                          onClick={() => setDeleteConfirm(review.id)}
+                          style={{
+                            background: "transparent", border: "1px solid #5a3030", borderRadius: 8,
+                            padding: "5px 10px", color: "#c07070", fontSize: 12, cursor: "pointer",
+                            display: "flex", alignItems: "center", gap: 5, fontWeight: 700
+                          }}
+                        >
+                          <Trash2 size={12} /> 삭제
+                        </button>
+                      )}
+                    </div>
+                  </article>
+                );
+              })}
           </div>
 
           <button
