@@ -243,11 +243,13 @@ export default function App() {
         .update(payload)
         .eq('id', existingRewards[0].id);
       if (error) throw error;
+      trackEvent('challenge_reward_unlocked', { reward_type: rewardType });
       return;
     }
 
     const { error } = await supabase.from('user_rewards').insert(payload);
     if (error) throw error;
+    trackEvent('challenge_reward_unlocked', { reward_type: rewardType });
   };
 
   const handleShareComplete = async () => {
@@ -259,6 +261,7 @@ export default function App() {
     try {
       await saveReward('sns');
       setIsShared(true);
+      trackEvent('challenge_share_completed');
     } catch (err) {
       console.error('Failed to save share reward:', err);
       alert('공유 보상 저장에 실패했습니다. 잠시 후 다시 시도해주세요.');
