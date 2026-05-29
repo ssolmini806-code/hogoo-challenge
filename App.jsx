@@ -55,6 +55,15 @@ export default function App() {
   const [reviewConfirm, setReviewConfirm] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState(null);
 
+  // GA4: challenge landing view (non-logged-in visitors only)
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session: initialSession } }) => {
+      if (!initialSession) {
+        trackEvent('challenge_landing_viewed');
+      }
+    });
+  }, []);
+
   // Admin token listener
   useEffect(() => {
     let mounted = true;
