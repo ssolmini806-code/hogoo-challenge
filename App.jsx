@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { CheckCircle, Circle, ChevronRight, ChevronLeft, Award, Flame, Copy, Check, MessageSquare, Send, Star } from "lucide-react";
+import { CheckCircle, Circle, ChevronRight, ChevronLeft, Award, Flame, Copy, Check, MessageSquare, Send, Star, Trash2 } from "lucide-react";
 import DAYS from "./days";
 import { supabase } from "./src/supabase";
 import LoginButton from "./src/components/LoginButton";
@@ -19,6 +19,15 @@ async function syncUserTimezone(userId) {
 }
 
 const CHALLENGE_COMPLETED_AT_KEY = 'challenge_completed_at';
+
+function trackEvent(name, params) {
+  if (typeof gtag === 'function') gtag('event', name, params || {});
+}
+
+function openLoginModal(setFn, trigger) {
+  trackEvent('login_modal_opened', { trigger: trigger });
+  setFn(true);
+}
 
 export default function App() {
   const [session, setSession] = useState(null);
@@ -237,7 +246,7 @@ export default function App() {
       setIsShared(true);
       return;
     }
-    if (!session) { setLoginModalOpen(true); return; }
+    if (!session) { openLoginModal(setLoginModalOpen, 'share'); return; }
     try {
       await saveReward('sns');
       setIsShared(true);
@@ -252,7 +261,7 @@ export default function App() {
       setIsReviewed(true);
       return;
     }
-    if (!session) { setLoginModalOpen(true); return; }
+    if (!session) { openLoginModal(setLoginModalOpen, 'review'); return; }
     const returnUrl = encodeURIComponent(window.location.href);
     window.location.href = `reviews.html?context=seven_day_challenge&return=${returnUrl}`;
   };
@@ -295,7 +304,7 @@ export default function App() {
   const day = DAYS[currentDay];
   
   const toggleMission = (dayIdx, mIdx) => {
-    if (!adminMode && !session) { setLoginModalOpen(true); return; }
+    if (!adminMode && !session) { openLoginModal(setLoginModalOpen, 'mission_click'); return; }
     setMissions(prev => {
       const key = `${dayIdx}`;
       const arr = prev[key] || [];
@@ -306,7 +315,7 @@ export default function App() {
   };
 
   const updateField = (dayIdx, field, value) => {
-    if (!adminMode && !session) { setLoginModalOpen(true); return; }
+    if (!adminMode && !session) { openLoginModal(setLoginModalOpen, 'field_update'); return; }
     const setters = {
       note: setNotes,
       phrase: setSelectedPhrase,
@@ -375,7 +384,7 @@ export default function App() {
       setShowReviewForm(false);
       return;
     }
-    if (!session) { setLoginModalOpen(true); return; }
+    if (!session) { openLoginModal(setLoginModalOpen, 'review'); return; }
     const content = reviewForm.content.trim();
     if (content.length < 10) {
       setReviewError("후기는 10자 이상으로 남겨주세요.");
@@ -427,7 +436,26 @@ export default function App() {
         .eq('id', reviewId)
         .eq('user_id', session.user.id);
       if (error) throw error;
+
       setReviews(prev => prev.filter(r => r.id !== reviewId));
+
+      // B 보상(review) 비활성화
+      await supabase
+        .from('user_rewards')
+        .update({ unlocked: false })
+        .eq('user_id', session.user.id)
+        .eq('reward_context', 'seven_day_challenge')
+        .eq('reward_type', 'review');
+
+      // A+B(both) 보상은 A(sns)로 다운그레이드
+      await supabase
+        .from('user_rewards')
+        .update({ reward_type: 'sns' })
+        .eq('user_id', session.user.id)
+        .eq('reward_context', 'seven_day_challenge')
+        .eq('reward_type', 'both');
+
+      setIsReviewed(false);
     } catch (error) {
       console.error('Delete review failed:', error);
       alert('삭제에 실패했습니다. 잠시 후 다시 시도해주세요.');
