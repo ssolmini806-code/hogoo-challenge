@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { CheckCircle, Circle, ChevronRight, ChevronLeft, Award, Flame, Copy, Check, MessageSquare, Send, Star, Trash2 } from "lucide-react";
 import DAYS from "./days";
 import { supabase } from "./src/supabase";
@@ -354,6 +354,14 @@ export default function App() {
   const dayMissions = missions[`${currentDay}`] || [];
   const allMissionsDone = adminMode || dayMissions.length === 3;
   const isChallengeCompleted = adminMode || completedDays === DAYS.length;
+
+  const prevDayRef = useRef(null);
+  useEffect(() => {
+    if (prevDayRef.current !== null && prevDayRef.current !== currentDay) {
+      trackEvent('challenge_day_started', { day_index: currentDay + 1 });
+    }
+    prevDayRef.current = currentDay;
+  }, [currentDay]);
 
   const isDayUnlocked = (dayIdx) => {
     if (adminMode) return true;
