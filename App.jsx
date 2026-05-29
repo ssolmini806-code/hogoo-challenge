@@ -4,7 +4,7 @@ import DAYS from "./days";
 import { supabase } from "./src/supabase";
 import LoginButton from "./src/components/LoginButton";
 import LoginModal from "./src/components/LoginModal";
-import ChallengeCompletionReward from "./components/reward/ChallengeCompletionReward";
+import ChallengeRewardSection from "./components/reward/ChallengeRewardSection";
 import { initializeAdminModeFromUrl, isAdminModeEnabled } from "./src/utils/adminMode";
 import MyPage from "./src/components/MyPage";
 
@@ -675,10 +675,9 @@ export default function App() {
               </p>
             </div>
 
-            <ChallengeCompletionReward
+            <ChallengeRewardSection
               userId={adminMode ? 'admin' : session?.user?.id ?? null}
-              completionRate={effectiveCompletionRate}
-              completedDays={adminMode ? DAYS.length : completedDays}
+              completionDays={adminMode ? DAYS.length : completedDays}
               isShared={adminMode || isShared}
               isReviewed={adminMode || isReviewed}
               onLoginRequired={() => {
