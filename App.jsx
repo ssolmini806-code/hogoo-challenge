@@ -639,7 +639,7 @@ export default function App() {
               isShared={adminMode || isShared}
               isReviewed={adminMode || isReviewed}
               onLoginRequired={() => {
-                if (!adminMode) setLoginModalOpen(true);
+                if (!adminMode) openLoginModal(setLoginModalOpen, 'challenge_reward');
               }}
               onShareComplete={handleShareComplete}
               onReviewClick={handleReviewClick}
