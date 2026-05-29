@@ -312,17 +312,6 @@ export default function App() {
 
   const day = DAYS[currentDay];
   
-  const toggleMission = (dayIdx, mIdx) => {
-    if (!adminMode && !session) { openLoginModal(setLoginModalOpen, 'mission_click'); return; }
-    setMissions(prev => {
-      const key = `${dayIdx}`;
-      const arr = prev[key] || [];
-      const newArr = arr.includes(mIdx) ? arr.filter(i => i !== mIdx) : [...arr, mIdx];
-      saveProgress(dayIdx, { missions: newArr });
-      return { ...prev, [key]: newArr };
-    });
-  };
-
   const updateField = (dayIdx, field, value) => {
     if (!adminMode && !session) { openLoginModal(setLoginModalOpen, 'field_update'); return; }
     const setters = {
@@ -349,6 +338,40 @@ export default function App() {
   const totalScore = DAYS.reduce((sum, _, i) => sum + getDayScore(i), 0);
   const completedMissions = Object.values(missions).reduce((sum, arr) => sum + (arr ? arr.length : 0), 0);
   const completedDays = DAYS.reduce((sum, _, i) => sum + ((missions[`${i}`] || []).length === 3 ? 1 : 0), 0);
+
+  const toggleMission = (dayIdx, mIdx) => {
+    if (!adminMode && !session) { openLoginModal(setLoginModalOpen, 'mission_click'); return; }
+    const key = `${dayIdx}`;
+    const arr = missions[key] || [];
+    const isAdding = !arr.includes(mIdx);
+    const newArr = isAdding ? [...arr, mIdx] : arr.filter(i => i !== mIdx);
+    saveProgress(dayIdx, { missions: newArr });
+    setMissions(prev => ({ ...prev, [key]: newArr }));
+
+    if (isAdding) {
+      const totalForDay = DAYS[dayIdx].missions.length;
+      trackEvent('challenge_mission_completed', {
+        day_index: dayIdx + 1,
+        missions_done: newArr.length,
+        missions_total: totalForDay,
+      });
+      if (newArr.length === totalForDay) {
+        const newTotalMissions = completedMissions + 1;
+        const newCompletionRate = Math.round((newTotalMissions / (DAYS.length * 3)) * 100);
+        trackEvent('challenge_day_completed', {
+          day_index: dayIdx + 1,
+          completion_rate: newCompletionRate,
+        });
+        if (completedDays + 1 === DAYS.length) {
+          trackEvent('challenge_all_completed', {
+            completion_rate: newCompletionRate,
+            total_days: DAYS.length,
+          });
+        }
+      }
+    }
+  };
+
   const completionRate = Math.round((completedMissions / (DAYS.length * 3)) * 100);
   const effectiveCompletionRate = adminMode ? 100 : completionRate;
   const dayMissions = missions[`${currentDay}`] || [];
