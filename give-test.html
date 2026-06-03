@@ -40,6 +40,9 @@
     <meta name="twitter:card" content="summary_large_image">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8564310871125079" crossorigin="anonymous"></script>
     <meta name="google-adsense-account" content="ca-pub-8564310871125079">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,1,400;9..144,1,500&display=swap" rel="stylesheet">
     <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" crossorigin>
     <script src="/share.js" defer></script>
     <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.8.1/kakao.min.js" defer></script>
@@ -264,6 +267,7 @@
         /* share.css inlined */
         .share-wrap{margin:48px 0;padding:36px 28px;background:#f7f7f7;border-radius:28px;text-align:center}.sh-title{font-size:.95rem;font-weight:700;color:#6e6e73;margin-bottom:24px}.share-row{display:flex;gap:10px;justify-content:center;overflow-x:auto;padding:2px 0 8px;-webkit-overflow-scrolling:touch;scrollbar-width:none}.share-row::-webkit-scrollbar{display:none}.s-btn{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:7px;width:78px;padding:17px 6px 12px;border:none;border-radius:20px;cursor:pointer;font-size:.73rem;font-weight:700;letter-spacing:-.01em;line-height:1.3;transition:transform .18s cubic-bezier(.34,1.56,.64,1),box-shadow .18s}.s-btn:hover{transform:translateY(-6px);box-shadow:0 12px 28px rgba(0,0,0,.18)}.s-btn:active{transform:scale(.93);box-shadow:none}.sb-x{background:#000;color:#fff}.sb-threads{background:#101010;color:#fff}.sb-kakao{background:#FEE500;color:#191200}.sb-insta{background:radial-gradient(circle at 30% 107%,#fdf497 0%,#fdf497 5%,#fd5949 45%,#d6249f 60%,#285AEB 90%);color:#fff}.sb-tiktok{background:#010101;color:#fff}.sb-copy{background:#8e8e93;color:#fff}.share-incentive{font-size:.78rem;color:#6e6e73;font-weight:600;margin-bottom:4px;line-height:1.5;text-align:center}.share-toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:#1d1d1f;color:#fff;padding:13px 26px;border-radius:100px;font-size:.88rem;font-weight:600;opacity:0;transition:opacity .25s,transform .25s;pointer-events:none;z-index:9999;max-width:calc(100vw - 48px);text-align:center;word-break:keep-all}.share-toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
     </style>
+    <link rel="stylesheet" href="/give-theme.css">
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -280,6 +284,7 @@
     </script>
 </head>
 <body>
+    <a class="skip" href="#main">본문 바로가기</a>
     <nav class="nav">
         <div class="inner">
             <a class="brand" href="index.html">GIVE ECOSYSTEM</a>
@@ -290,11 +295,14 @@
         </div>
     </nav>
 
-    <main>
+    <main id="main">
         <section id="landing-page" class="landing">
             <div class="inner hero">
 
-                <h1>왜 항상<br>나만 손해 볼까?</h1>
+                <div class="test-intro-image">
+                    <img src="/images/tests/give-id-illustration.png" alt="세 사람이 균형 잡힌 관계를 이야기하는 따뜻한 일러스트" loading="eager">
+                </div>
+                <h1>왜 항상 나만 손해 볼까?</h1>
                 <p class="hero-copy">착해서가 아니에요. 계속 선 넘는 사람을 너무 오래 봐준 거예요.</p>
                 <button class="primary-btn" onclick="startTest()">내가 당하는 이유 보기</button>
                 <p class="micro">3분 뒤, 제일 찔리는 결과가 나옵니다</p>
@@ -306,6 +314,31 @@
                         <li><span class="dot"></span><span>착하다는 말이 더 이상 칭찬처럼 들리지 않는다</span></li>
                     </ul>
                 </div>
+
+                <section class="test-tabs" aria-label="GIVE ID 테스트 안내">
+                    <div class="tab-list" role="tablist" aria-label="테스트 안내 탭">
+                        <button class="tab-btn" type="button" role="tab" id="give-tab-1" aria-controls="give-panel-1" aria-selected="true">무엇을 보나요</button>
+                        <button class="tab-btn" type="button" role="tab" id="give-tab-2" aria-controls="give-panel-2" aria-selected="false">결과는 어떻게</button>
+                        <button class="tab-btn" type="button" role="tab" id="give-tab-3" aria-controls="give-panel-3" aria-selected="false">다음 행동</button>
+                        <button class="tab-btn" type="button" role="tab" id="give-tab-4" aria-controls="give-panel-4" aria-selected="false">무료 보상</button>
+                    </div>
+                    <div class="tab-panel active" role="tabpanel" id="give-panel-1" aria-labelledby="give-tab-1">
+                        <h3>배려가 손해로 바뀌는 지점</h3>
+                        <p>16문항으로 부탁, 인정 욕구, 거절 부담, 회복 속도를 함께 봅니다.</p>
+                    </div>
+                    <div class="tab-panel" role="tabpanel" id="give-panel-2" aria-labelledby="give-tab-2">
+                        <h3>결과는 한 장의 리포트처럼</h3>
+                        <p>유형명만 보여주지 않고 강점, 위험 신호, 오늘의 조언을 이어서 읽게 구성했습니다.</p>
+                    </div>
+                    <div class="tab-panel" role="tabpanel" id="give-panel-3" aria-labelledby="give-tab-3">
+                        <h3>바로 움직일 수 있게</h3>
+                        <p>결과에 맞는 칼럼과 다음 테스트를 추천해 같은 패턴을 반복하지 않도록 돕습니다.</p>
+                    </div>
+                    <div class="tab-panel" role="tabpanel" id="give-panel-4" aria-labelledby="give-tab-4">
+                        <h3>로그인 없이 시작</h3>
+                        <p>검사는 바로 가능하고, 보상 버튼을 누를 때만 로그인 모달로 이어집니다.</p>
+                    </div>
+                </section>
 
                 <div class="ad-slot">AD · Landing native/banner area</div>
 
@@ -348,6 +381,15 @@
                         <p class="summary" id="typeSummary"></p>
                     </div>
                     <div class="result-body">
+                        <section class="result-report-lead" aria-label="결과 리포트 안내">
+                            <div class="result-visual">
+                                <img src="/images/tests/give-id-illustration.png" alt="관계 패턴을 함께 살피는 따뜻한 일러스트" loading="lazy">
+                            </div>
+                            <div class="result-report-copy">
+                                <strong>결과는 유형보다 다음 행동이 중요합니다</strong>
+                                <p>아래 리포트는 당신의 배려가 강점으로 작동하는 부분과, 손해로 바뀌기 쉬운 신호를 한 흐름으로 보여줍니다.</p>
+                            </div>
+                        </section>
                         <div class="insight-grid">
                             <div class="insight"><h3>강점</h3><p id="strength"></p></div>
                             <div class="insight risk"><h3>위험 신호</h3><p id="risk"></p></div>
@@ -534,6 +576,38 @@
     </main>
     <div class="toast" id="toast">복사되었습니다</div>
 
+<script>
+document.querySelectorAll('.test-tabs').forEach(function(tabs) {
+    const tabButtons = Array.from(tabs.querySelectorAll('[role="tab"]'));
+    const panels = Array.from(tabs.querySelectorAll('[role="tabpanel"]'));
+
+    function activateTab(nextTab, moveFocus) {
+        tabButtons.forEach(function(tab) {
+            const selected = tab === nextTab;
+            tab.setAttribute('aria-selected', selected ? 'true' : 'false');
+            tab.tabIndex = selected ? 0 : -1;
+        });
+        panels.forEach(function(panel) {
+            panel.classList.toggle('active', panel.id === nextTab.getAttribute('aria-controls'));
+        });
+        if (moveFocus) nextTab.focus();
+    }
+
+    tabButtons.forEach(function(tab, index) {
+        tab.tabIndex = tab.getAttribute('aria-selected') === 'true' ? 0 : -1;
+        tab.addEventListener('click', function() {
+            activateTab(tab, false);
+        });
+        tab.addEventListener('keydown', function(event) {
+            const keyMap = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 };
+            if (!(event.key in keyMap)) return;
+            event.preventDefault();
+            const nextIndex = (index + keyMap[event.key] + tabButtons.length) % tabButtons.length;
+            activateTab(tabButtons[nextIndex], true);
+        });
+    });
+});
+</script>
 <script src="/give-test-logic.js" defer></script>
 <script type="module" src="/src/free-test-reward-widget.tsx"></script>
 <script type="module" src="/src/result-card-download-widget.tsx"></script>
