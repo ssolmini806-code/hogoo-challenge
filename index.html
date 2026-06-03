@@ -115,88 +115,20 @@
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8564310871125079"
      crossorigin="anonymous"></script>
     <meta name="google-adsense-account" content="ca-pub-8564310871125079">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,1,400;9..144,1,500&display=swap" rel="stylesheet">
     <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" crossorigin>
     <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" crossorigin></noscript>
-    <style>
-        :root {
-            --primary: #00a885;
-            --primary-soft: #f0f9f7;
-            --text-main: #1d1d1f;
-            --text-sub: #6e6e73;
-            --bg: #ffffff;
-            --white: #ffffff;
-            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; word-break: keep-all; }
-        body { font-family: 'Pretendard', sans-serif; background-color: var(--bg); color: var(--text-main); line-height: 1.6; }
-
-        .container { max-width: 600px; margin: 0 auto; padding: 0 20px; }
-        
-        nav { padding: 24px 0; text-align: center; border-bottom: 1px solid #f2f2f2; display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-size: 1.2rem; font-weight: 900; color: var(--primary); text-decoration: none; letter-spacing: -0.05em; }
-        .nav-links { display: flex; gap: 15px; }
-        .nav-links a { text-decoration: none; color: var(--text-sub); font-size: 0.9rem; font-weight: 500; }
-        .nav-links a:hover { color: var(--primary); }
-
-        .ad-top { margin: 20px 0; min-height: 100px; background: #fafafa; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #ccc; border: 1px dashed #eee; }
-
-        .hero { padding: 40px 0; text-align: center; }
-        .hero h1 { font-size: 1.8rem; font-weight: 800; margin-bottom: 16px; line-height: 1.3; }
-        .hero p { font-size: 1rem; color: var(--text-sub); margin-bottom: 32px; }
-        .hero-actions { display: grid; grid-template-columns: 1fr; gap: 10px; margin: 0 auto; max-width: 420px; }
-        .hero-btn { min-height: 54px; border-radius: 8px; display: flex; align-items: center; justify-content: center; text-decoration: none; font-weight: 900; font-size: 0.98rem; }
-        .hero-btn.primary { background: var(--primary); color: #fff; box-shadow: 0 12px 26px rgba(0, 168, 133, 0.22); }
-        .hero-btn.secondary { background: #101418; color: #fff; }
-        .hero-note { margin-top: 10px; color: #8a8f98; font-size: 0.8rem; font-weight: 700; }
-
-        .choice-grid { display: grid; gap: 24px; }
-        .choice-card { 
-            background: var(--white); border-radius: 28px; padding: 32px; 
-            text-decoration: none; color: inherit; border: 1px solid #f2f2f2; 
-            transition: var(--transition); display: block; position: relative; overflow: hidden;
-        }
-        .choice-card.featured { border-color: rgba(0, 168, 133, 0.34); box-shadow: 0 16px 36px rgba(0, 168, 133, 0.09); }
-        .choice-card.secondary-path { background: #fbfcfc; }
-        .choice-label { display: inline-flex; align-items: center; margin-bottom: 16px; padding: 5px 9px; border-radius: 999px; background: var(--primary-soft); color: var(--primary); font-size: 0.72rem; font-weight: 900; }
-        .choice-card:hover { border-color: var(--primary); transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0, 168, 133, 0.08); }
-        .card-icon { font-size: 3rem; margin-bottom: 20px; display: block; }
-        .card-title { font-size: 1.4rem; font-weight: 800; margin-bottom: 8px; color: var(--text-main); }
-        .card-desc { font-size: 0.95rem; color: var(--text-sub); margin-bottom: 20px; }
-        .card-btn { display: inline-block; padding: 10px 20px; background: var(--primary-soft); color: var(--primary); border-radius: 50px; font-weight: 700; font-size: 0.85rem; }
-
-        .ad-mid { margin: 32px 0; background: #fafafa; border-radius: 20px; padding: 40px 20px; text-align: center; border: 1px dashed #eee; font-size: 12px; color: #bbb; }
-
-        .content-section { padding: 40px 0; border-top: 1px solid #f2f2f2; }
-        .section-title { font-size: 1.4rem; font-weight: 800; margin-bottom: 20px; color: var(--text-main); }
-        .section-text { font-size: 1rem; color: var(--text-sub); margin-bottom: 20px; line-height: 1.7; }
-        .highlight { color: var(--primary); font-weight: 700; }
-
-        footer { padding: 60px 0 40px; text-align: center; border-top: 1px solid #f2f2f2; font-size: 0.85rem; color: #999; }
-        .footer-links { margin-bottom: 20px; display: flex; justify-content: center; gap: 20px; }
-        .footer-links a { text-decoration: none; color: #666; }
-        .footer-links a:hover { text-decoration: underline; }
-
-        @media (min-width: 560px) {
-            .hero-actions { grid-template-columns: 1fr 1fr; }
-        }
-
-        @media (max-width: 520px) {
-            nav { align-items: flex-start; gap: 14px; }
-            .nav-links { flex-wrap: wrap; justify-content: flex-end; gap: 10px 12px; }
-            .hero { padding: 34px 0 28px; }
-            .choice-card { border-radius: 18px; padding: 24px; }
-        }
-    </style>
-    <link rel="preload" href="/share.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="/share.css"></noscript>
+    <link rel="stylesheet" href="/give-theme.css">
     <script src="/share.js" defer></script>
 </head>
 <body>
+    <a class="skip" href="#main">본문 바로가기</a>
 
-    <div class="container">
-        <nav>
-            <a href="./index.html" class="logo">GIVE ECOSYSTEM</a>
+    <header class="wrap">
+        <nav class="site-nav" aria-label="주요 메뉴">
+            <a href="./index.html" class="logo">GIVE Ecosystem</a>
             <div class="nav-links">
                 <a href="./about.html">소개</a>
                 <a href="./give-test.html">진단</a>
@@ -204,195 +136,207 @@
                 <a href="./articles/index.html">심리 칼럼</a>
             </div>
         </nav>
+    </header>
 
+    <main id="main" class="wrap">
         <section class="hero">
+            <span class="eyebrow">Smart giver, healthier boundaries</span>
             <h1>당신의 선의가 이용당하지 않도록</h1>
-            <p>기버(Giver)가 지치지 않는 건강한 관계 생태계,<br>GIVE Ecosystem은 심리적 경계를 세우는 지혜를 나눕니다.</p>
+            <p>기버가 지치지 않는 건강한 관계 생태계. GIVE Ecosystem은 심리적 경계를 세우는 지혜를 나눕니다.</p>
             <div class="hero-actions">
-                <a href="give-test.html" class="hero-btn primary">무료 진단 시작하기</a>
-                <a href="hogoo-test.html" class="hero-btn secondary">7일 챌린지 보기</a>
+                <a href="give-test.html" class="btn btn-primary">무료 진단 시작하기</a>
+                <a href="hogoo-test.html" class="btn btn-ghost">7일 챌린지 보기</a>
             </div>
             <div class="hero-note">로그인 없이 테스트 가능 · 결과 확인 후 보상 해금</div>
         </section>
 
-        <div class="choice-grid">
-            <a href="give-test.html" class="choice-card featured">
-                <span class="choice-label">가장 먼저 추천</span>
-                <span class="card-icon">🤝</span>
-                <h2 class="card-title">GIVE ID 진단</h2>
-                <p class="card-desc">나의 배려 패턴을 분석하고, 관계에서 나를 지키는 최적의 솔루션을 확인하세요.</p>
-                <div class="card-btn">지금 무료 진단하기</div>
+        <section class="choice-grid" aria-label="무료 검사와 챌린지">
+            <a href="give-test.html" class="choice-card featured test-card">
+                <div class="test-card-image">
+                    <img src="/images/tests/give-id-illustration.png" alt="세 사람이 균형 잡힌 관계를 이야기하는 따뜻한 일러스트" loading="eager">
+                </div>
+                <span class="pill">가장 먼저 추천</span>
+                <h2>GIVE ID 진단</h2>
+                <p class="card-desc">나의 배려 패턴을 분석하고 관계에서 나를 지키는 솔루션을 확인하세요.</p>
+                <span class="go">지금 무료 진단하기</span>
             </a>
 
             <a href="hogoo-test.html" class="choice-card featured">
-                <span class="choice-label">실천 루틴</span>
-                <span class="card-icon">🔥</span>
-                <h2 class="card-title">7일 챌린지</h2>
+                <span class="pill">실천 루틴</span>
+                <span class="itile lg" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3.5V20.5"/><path class="fa" d="M6 5H17L14 8.5L17 12H6Z"/></svg></span>
+                <h2>7일 챌린지</h2>
                 <p class="card-desc">아는 것을 넘어 실천으로. 7일간의 미션을 통해 건강한 관계 습관을 만듭니다.</p>
-                <div class="card-btn">챌린지 참여하기</div>
+                <span class="go">챌린지 참여하기</span>
             </a>
 
-            <a href="hogoo-check.html" class="choice-card secondary-path">
-                <span class="card-icon">🤔</span>
-                <h2 class="card-title">나는 호구일까?</h2>
+            <a href="hogoo-check.html" class="choice-card test-card">
+                <div class="test-card-image">
+                    <img src="/images/tests/hogoo-check-illustration.png" alt="부탁 앞에서 자신의 경계를 고민하는 사람의 따뜻한 일러스트" loading="lazy">
+                </div>
+                <h2>나는 호구일까?</h2>
                 <p class="card-desc">착한 것과 호구는 다릅니다. 12가지 질문으로 내 호구 지수를 지금 확인해보세요.</p>
-                <div class="card-btn">무료 테스트하기</div>
+                <span class="go">무료 테스트하기</span>
             </a>
 
-            <a href="relationship-risk.html" class="choice-card secondary-path">
-                <span class="card-icon">⚠️</span>
-                <h2 class="card-title">인간관계 위험도</h2>
+            <a href="relationship-risk.html" class="choice-card test-card">
+                <div class="test-card-image">
+                    <img src="/images/tests/relationship-risk-illustration.png" alt="관계의 피로 신호를 차분히 살피는 상담 장면 일러스트" loading="lazy">
+                </div>
+                <span class="tag tag-amber">위험 신호 점검</span>
+                <h2>인간관계 위험도</h2>
                 <p class="card-desc">지금 내 관계가 나를 지치게 하고 있나요? 12가지 질문으로 위험 신호를 확인하세요.</p>
-                <div class="card-btn">무료 테스트하기</div>
+                <span class="go">무료 테스트하기</span>
             </a>
 
-            <a href="reviews.html" class="choice-card secondary-path">
-                <span class="card-icon">💬</span>
-                <h2 class="card-title">챌린지 후기</h2>
+            <a href="reviews.html" class="choice-card row-card">
+                <span class="itile sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 5H19a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H11l-4 3.5V16H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z"/><circle class="fa" cx="9" cy="10.5" r="1"/><circle class="fa" cx="12" cy="10.5" r="1"/><circle class="fa" cx="15" cy="10.5" r="1"/></svg></span>
+                <h2>챌린지 후기</h2>
                 <p class="card-desc">7일 챌린지를 직접 해본 사람들이 남긴 변화 기록과 후기를 확인하세요.</p>
-                <div class="card-btn">후기 보러가기</div>
+                <span class="go">보기</span>
             </a>
-        </div>
+        </section>
 
-        <div class="share-wrap" style="margin:28px 0 0;padding:24px 20px;">
+        <section class="share-wrap" aria-label="공유하기">
             <div class="sh-title">친구에게 공유하기</div>
             <div class="share-row">
-                <button class="s-btn sb-x" onclick="snsX()">
+                <button class="s-btn sb-x" type="button" onclick="snsX()" aria-label="X에 공유">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.261 5.636 5.903-5.636zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                     X
                 </button>
-                <button class="s-btn sb-threads" onclick="snsThreads()">
+                <button class="s-btn sb-threads" type="button" onclick="snsThreads()" aria-label="Threads에 공유">
                     <img src="/images/threads-icon.png" width="24" height="24" alt="" aria-hidden="true">
                     Threads
                 </button>
-                <button class="s-btn sb-kakao" onclick="snsKakao()">
+                <button class="s-btn sb-kakao" type="button" onclick="snsKakao()" aria-label="카카오톡에 공유">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3C6.477 3 2 6.477 2 10.857c0 2.67 1.516 5.025 3.838 6.512l-.98 3.648a.25.25 0 0 0 .375.272l4.23-2.795C9.791 18.776 10.887 18.857 12 18.857c5.523 0 10-3.477 10-7.857S17.523 3 12 3"/></svg>
                     카카오톡
                 </button>
-                <button class="s-btn sb-insta" onclick="snsInsta()">
+                <button class="s-btn sb-insta" type="button" onclick="snsInsta()" aria-label="인스타그램에 공유">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
                     인스타
                 </button>
-                <button class="s-btn sb-tiktok" onclick="snsTiktok()">
+                <button class="s-btn sb-tiktok" type="button" onclick="snsTiktok()" aria-label="틱톡 공유 안내">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.3 6.3 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg>
                     틱톡
                 </button>
             </div>
-        </div>
+        </section>
         <div class="share-toast" id="snst"></div>
 
-        <section class="content-section">
-            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 32px;">
+        <section class="block">
+            <div class="block-head">
                 <div>
-                    <h2 class="section-title" style="margin-bottom: 8px;">지식 허브 (Knowledge Hub)</h2>
-                    <p style="font-size: 0.95rem; color: var(--text-sub);">스마트 기버로 거듭나기 위한 심리학 전문 리포트</p>
+                    <span class="section-label">Knowledge Hub</span>
+                    <h2>지식 허브</h2>
                 </div>
-                <a href="articles/giver-burnout.html" style="font-size: 0.9rem; color: var(--primary); font-weight: 700; text-decoration: none;">전체 보기 →</a>
+                <a class="more" href="articles/index.html">전체 보기</a>
             </div>
+            <p class="lead">스마트 기버로 거듭나기 위한 심리학 전문 리포트</p>
 
-            <div style="display: grid; gap: 20px;">
-                <a href="./articles/giver-burnout.html" style="text-decoration: none; color: inherit; display: flex; gap: 24px; align-items: center; padding: 28px; background: #ffffff; border-radius: 28px; border: 1px solid #f2f2f2; transition: var(--transition); box-shadow: 0 4px 12px rgba(0,0,0,0.02);">
-                    <div style="font-size: 2.5rem; background: var(--primary-soft); width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; border-radius: 20px; flex-shrink: 0;">🧘‍♂️</div>
-                    <div style="flex: 1;">
-                        <span style="font-size: 0.75rem; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 6px;">Psychology Report</span>
-                        <h3 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.03em;">착한 사람의 번아웃: 병적 이타주의의 함정</h3>
-                        <p style="font-size: 0.95rem; color: var(--text-sub); line-height: 1.5;">왜 베풀수록 공허해질까요? '희생'이 아닌 '지속 가능한 선의'를 위한 심리학적 분석.</p>
+            <div class="art">
+                <a href="./articles/giver-burnout.html">
+                    <span class="itile" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3C8.5 6.2 6.7 9.2 6.7 12.4A5.3 5.3 0 0 0 12 17.7A5.3 5.3 0 0 0 17.3 12.4C17.3 9.2 15.5 6.2 12 3Z"/><path class="sa" d="M9 12.8C10.3 14 11.7 14 13 12.8"/></svg></span>
+                    <div>
+                        <span class="kicker">Psychology Report</span>
+                        <h3>착한 사람의 번아웃</h3>
+                        <p>왜 베풀수록 공허해질까요? 지속 가능한 선의를 위한 심리학적 분석.</p>
                     </div>
                 </a>
 
-                <a href="./articles/setting-boundaries.html" style="text-decoration: none; color: inherit; display: flex; gap: 24px; align-items: center; padding: 28px; background: #ffffff; border-radius: 28px; border: 1px solid #f2f2f2; transition: var(--transition); box-shadow: 0 4px 12px rgba(0,0,0,0.02);">
-                    <div style="font-size: 2.5rem; background: #fff5f5; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; border-radius: 20px; flex-shrink: 0;">✋</div>
-                    <div style="flex: 1;">
-                        <span style="font-size: 0.75rem; font-weight: 800; color: #ff6b6b; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 6px;">Communication Science</span>
-                        <h3 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.03em;">관계를 살리는 경계선의 과학: 죄책감 없는 거절</h3>
-                        <p style="font-size: 0.95rem; color: var(--text-sub); line-height: 1.5;">관계를 망치지 않으면서도 나를 지키는 법. 전문가들이 제안하는 3단계 거절 전략.</p>
+                <a href="./articles/setting-boundaries.html">
+                    <span class="itile" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path class="sa" d="M8 12H16"/></svg></span>
+                    <div>
+                        <span class="kicker">Communication Science</span>
+                        <h3>관계를 살리는 경계선</h3>
+                        <p>관계를 망치지 않으면서 나를 지키는 3단계 거절 전략.</p>
                     </div>
                 </a>
 
-                <a href="./articles/taker-signals.html" style="text-decoration: none; color: inherit; display: flex; gap: 24px; align-items: center; padding: 28px; background: #ffffff; border-radius: 28px; border: 1px solid #f2f2f2; transition: var(--transition); box-shadow: 0 4px 12px rgba(0,0,0,0.02);">
-                    <div style="font-size: 2.5rem; background: #fff9db; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; border-radius: 20px; flex-shrink: 0;">🕵️‍♂️</div>
-                    <div style="flex: 1;">
-                        <span style="font-size: 0.75rem; font-weight: 800; color: #fcc419; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 6px;">Relationship Analysis</span>
-                        <h3 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.03em;">테이커(Taker)의 심리학: 선의를 먹고 자라는 사람들</h3>
-                        <p style="font-size: 0.95rem; color: var(--text-sub); line-height: 1.5;">당신의 호의를 당연하게 여기는 테이커들의 5가지 특징과 대응 방안.</p>
+                <a href="./articles/taker-signals.html">
+                    <span class="itile warn" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="8" width="16" height="8" rx="2"/><path d="M21 10.5V13.5"/><rect class="fw" x="5.2" y="10" width="3" height="4" rx=".6"/></svg></span>
+                    <div>
+                        <span class="kicker">Relationship Analysis</span>
+                        <h3>테이커의 심리학</h3>
+                        <p>당신의 호의를 당연하게 여기는 사람들의 특징과 대응 방안.</p>
                     </div>
                 </a>
 
-                <a href="./articles/smart-giver-guide.html" style="text-decoration: none; color: inherit; display: flex; gap: 24px; align-items: center; padding: 28px; background: #ffffff; border-radius: 28px; border: 1px solid #f2f2f2; transition: var(--transition); box-shadow: 0 4px 12px rgba(0,0,0,0.02);">
-                    <div style="font-size: 2.5rem; background: #e6fcf5; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; border-radius: 20px; flex-shrink: 0;">🚀</div>
-                    <div style="flex: 1;">
-                        <span style="font-size: 0.75rem; font-weight: 800; color: #20c997; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 6px;">Success Strategy</span>
-                        <h3 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.03em;">성공하는 이타주의자의 3가지 비밀 리포트</h3>
-                        <p style="font-size: 0.95rem; color: var(--text-sub); line-height: 1.5;">성공 사다리의 최상단에 위치한 기버들은 무엇이 다른가? 실증적 데이터 분석.</p>
+                <a href="./articles/smart-giver-guide.html">
+                    <span class="itile" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3L19 6V11C19 16 12 20.5 12 20.5S5 16 5 11V6Z"/><path class="sa" d="M9 11.5L11 13.5L15 9.5"/></svg></span>
+                    <div>
+                        <span class="kicker">Success Strategy</span>
+                        <h3>성공하는 이타주의자</h3>
+                        <p>성과 높은 기버들은 무엇이 다른지 실증 데이터로 살펴봅니다.</p>
                     </div>
                 </a>
 
-                <a href="./articles/loss-aversion-relationships.html" style="text-decoration: none; color: inherit; display: flex; gap: 24px; align-items: center; padding: 28px; background: #ffffff; border-radius: 28px; border: 1px solid #ffe5e5; transition: var(--transition); box-shadow: 0 4px 12px rgba(0,0,0,0.02);">
-                    <div style="font-size: 2.5rem; background: #fff8f8; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; border-radius: 20px; flex-shrink: 0;">😰</div>
-                    <div style="flex: 1;">
-                        <span style="font-size: 0.75rem; font-weight: 800; color: #e53e3e; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 6px;">NEW · Psychology</span>
-                        <h3 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.03em;">거절이 이렇게 힘든 이유: 손실 회피 심리학</h3>
-                        <p style="font-size: 0.95rem; color: var(--text-sub); line-height: 1.5;">거절하면 왜 이렇게 죄책감이 드는 걸까? 카너먼의 손실 회피 이론으로 분석합니다.</p>
+                <a href="./articles/loss-aversion-relationships.html">
+                    <span class="itile warn" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3L21 19H3Z"/><path d="M12 8V13"/><path class="fw" d="M12 16.5h.01"/></svg></span>
+                    <div>
+                        <span class="kicker">NEW · Psychology</span>
+                        <h3>거절이 힘든 이유</h3>
+                        <p>거절할 때 생기는 죄책감을 손실 회피 이론으로 분석합니다.</p>
                     </div>
                 </a>
 
-                <a href="./articles/curiosity-gap-patterns.html" style="text-decoration: none; color: inherit; display: flex; gap: 24px; align-items: center; padding: 28px; background: #ffffff; border-radius: 28px; border: 1px solid #f3e5f5; transition: var(--transition); box-shadow: 0 4px 12px rgba(0,0,0,0.02);">
-                    <div style="font-size: 2.5rem; background: #f9f0ff; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; border-radius: 20px; flex-shrink: 0;">🪞</div>
-                    <div style="flex: 1;">
-                        <span style="font-size: 0.75rem; font-weight: 800; color: #ab47bc; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 6px;">NEW · Self-Awareness</span>
-                        <h3 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.03em;">나도 모르는 나의 관계 패턴: 호기심의 틈</h3>
-                        <p style="font-size: 0.95rem; color: var(--text-sub); line-height: 1.5;">왜 같은 관계 실수를 반복할까요? 자신도 몰랐던 패턴을 인식하는 방법.</p>
+                <a href="./articles/curiosity-gap-patterns.html">
+                    <span class="itile" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 4H19V20H5Z"/><path class="sa" d="M8 8H16M8 12H14M8 16H12"/></svg></span>
+                    <div>
+                        <span class="kicker">NEW · Self-Awareness</span>
+                        <h3>나의 관계 패턴</h3>
+                        <p>왜 같은 관계 실수를 반복하는지 패턴 인식으로 살펴봅니다.</p>
                     </div>
                 </a>
             </div>
         </section>
 
-        <section class="content-section define-section">
-            <h2 class="section-title">기버·테이커·매처란 무엇인가?</h2>
+        <section class="block define-section">
+            <h2>기버·테이커·매처란 무엇인가?</h2>
             <p class="section-text">와튼스쿨 조직심리학자 <strong>애덤 그랜트(Adam Grant)</strong>는 저서 <em>Give and Take</em>에서 사람의 관계 유형을 3가지로 분류했습니다.</p>
-            <div style="display: grid; gap: 16px; margin-bottom: 24px;">
-                <div style="padding: 24px; background: var(--primary-soft); border-radius: 20px; border-left: 5px solid var(--primary);">
-                    <strong style="color: var(--primary); display: block; margin-bottom: 8px; font-size: 1.05rem;">기버(Giver)</strong>
-                    <p style="margin: 0; font-size: 0.95rem; color: var(--text-sub); line-height: 1.7;">타인에게 먼저 베푸는 사람. 대가를 기대하지 않고 돕는 성향으로, 조직 내 최하위 성과자이면서 동시에 최상위 성과자이기도 하다.</p>
+            <div class="types">
+                <div class="type g">
+                    <strong>기버(Giver)</strong>
+                    <p>타인에게 먼저 베푸는 사람. 대가를 기대하지 않고 돕는 성향으로, 조직 내 최하위 성과자이면서 동시에 최상위 성과자이기도 하다.</p>
                 </div>
-                <div style="padding: 24px; background: #fff9db; border-radius: 20px; border-left: 5px solid #fcc419;">
-                    <strong style="color: #e67700; display: block; margin-bottom: 8px; font-size: 1.05rem;">테이커(Taker)</strong>
-                    <p style="margin: 0; font-size: 0.95rem; color: var(--text-sub); line-height: 1.7;">받는 것을 우선시하는 사람. 관계를 제로섬 게임으로 인식하며, 자신의 이익이 상대의 손실보다 커야 만족한다.</p>
+                <div class="type t">
+                    <strong>테이커(Taker)</strong>
+                    <p>받는 것을 우선시하는 사람. 관계를 제로섬 게임으로 인식하며, 자신의 이익이 상대의 손실보다 커야 만족한다.</p>
                 </div>
-                <div style="padding: 24px; background: #f8f9fa; border-radius: 20px; border-left: 5px solid #868e96;">
-                    <strong style="color: #495057; display: block; margin-bottom: 8px; font-size: 1.05rem;">매처(Matcher)</strong>
-                    <p style="margin: 0; font-size: 0.95rem; color: var(--text-sub); line-height: 1.7;">주고받음의 균형을 추구하는 사람. 상대가 베풀면 베풀고, 상대가 착취하면 방어한다. 전체 인구의 다수를 차지한다.</p>
+                <div class="type m">
+                    <strong>매처(Matcher)</strong>
+                    <p>주고받음의 균형을 추구하는 사람. 상대가 베풀면 베풀고, 상대가 착취하면 방어한다. 전체 인구의 다수를 차지한다.</p>
                 </div>
             </div>
-            <p class="section-text">GIVE Ecosystem은 기버들이 <span class="highlight">'똑똑한 기버(Smart Giver)'</span>가 될 수 있도록 돕습니다. 과학적인 심리 진단과 구체적인 행동 가이드를 통해, 당신의 선의가 더 가치 있게 쓰일 수 있도록 지원합니다.</p>
+            <p class="section-text">GIVE Ecosystem은 기버들이 <strong>똑똑한 기버(Smart Giver)</strong>가 될 수 있도록 돕습니다. 과학적인 심리 진단과 구체적인 행동 가이드를 통해, 당신의 선의가 더 가치 있게 쓰일 수 있도록 지원합니다.</p>
         </section>
 
-        <section class="content-section">
-            <h2 class="section-title">우리가 제공하는 가치</h2>
+        <section class="block">
+            <h2>우리가 제공하는 가치</h2>
             <p class="section-text">1. <strong>객관적 자아 성찰</strong>: 전문적인 문항을 통해 현재 나의 관계 맺기 패턴을 분석합니다.</p>
             <p class="section-text">2. <strong>맞춤형 가이드라인</strong>: 각 유형에 맞는 실질적인 관계 대처법을 제안합니다.</p>
             <p class="section-text">3. <strong>실천 중심의 훈련</strong>: 7일간의 소소한 미션을 통해 심리적 경계선을 세우는 연습을 합니다.</p>
         </section>
 
-        <section class="content-section">
-            <h2 class="section-title">자주 묻는 질문 (FAQ)</h2>
-            <div style="display: grid; gap: 20px;">
-                <div style="padding: 20px; background: #fafafa; border-radius: 16px;">
-                    <h3 style="font-size: 1.1rem; margin-bottom: 8px;">Q. 호구 탈출 챌린지는 정말 효과가 있나요?</h3>
-                    <p style="font-size: 0.95rem; color: var(--text-sub);">네, 심리학적 기반의 '거절 연습'과 '경계선 설정' 미션을 통해 7일간 실습하며 몸에 익히는 과정이므로 실질적인 행동 변화를 이끌어냅니다.</p>
-                </div>
-                <div style="padding: 20px; background: #fafafa; border-radius: 16px;">
-                    <h3 style="font-size: 1.1rem; margin-bottom: 8px;">Q. 테스트 결과는 익명인가요?</h3>
-                    <p style="font-size: 0.95rem; color: var(--text-sub);">네, 모든 진단 결과는 개인정보 보호정책에 따라 안전하게 관리되며, 서비스 개선을 위한 통계 자료로만 활용됩니다.</p>
-                </div>
-                <div style="padding: 20px; background: #fafafa; border-radius: 16px;">
-                    <h3 style="font-size: 1.1rem; margin-bottom: 8px;">Q. 사기 예방에 도움이 되나요?</h3>
-                    <p style="font-size: 0.95rem; color: var(--text-sub);">호구 성향의 핵심인 '과도한 타인 의존'과 '거절의 두려움'을 해결함으로써, 심리적 취약점을 파고드는 사기 행위로부터 자신을 지키는 힘을 길러줍니다.</p>
-                </div>
+        <section class="block">
+            <h2 class="mb18">자주 묻는 질문</h2>
+            <div class="faq">
+                <details>
+                    <summary>호구 탈출 챌린지는 정말 효과가 있나요?</summary>
+                    <p>네, 심리학적 기반의 거절 연습과 경계선 설정 미션을 통해 7일간 실습하며 몸에 익히는 과정이므로 실질적인 행동 변화를 이끌어냅니다.</p>
+                </details>
+                <details>
+                    <summary>테스트 결과는 익명인가요?</summary>
+                    <p>네, 모든 진단 결과는 개인정보 보호정책에 따라 안전하게 관리되며, 서비스 개선을 위한 통계 자료로만 활용됩니다.</p>
+                </details>
+                <details>
+                    <summary>사기 예방에 도움이 되나요?</summary>
+                    <p>호구 성향의 핵심인 과도한 타인 의존과 거절의 두려움을 해결함으로써, 심리적 취약점을 파고드는 사기 행위로부터 자신을 지키는 힘을 길러줍니다.</p>
+                </details>
             </div>
         </section>
+    </main>
 
-        <footer>
+        <footer class="wrap">
             <div class="footer-links">
                 <a href="index.html">홈으로</a>
                 <a href="about.html">브랜드 스토리</a>
@@ -403,7 +347,6 @@
             </div>
             <p>&copy; 2026 GIVE Ecosystem. All rights reserved.</p>
         </footer>
-    </div>
 
     <script>
       window.addEventListener('load', function() {
