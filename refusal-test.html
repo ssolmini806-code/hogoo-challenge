@@ -17,6 +17,9 @@
     <meta property="og:image" content="https://hogoo-challenge.pages.dev/og-image.jpg">
     <meta property="og:type" content="website">
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,1,400;9..144,1,500&display=swap" rel="stylesheet">
     <link rel="preload" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css"></noscript>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8564310871125079" crossorigin="anonymous"></script>
@@ -78,23 +81,46 @@
         
         footer { margin-top: 80px; padding: 60px 0; border-top: 1px solid #eee; text-align: center; font-size: 0.85rem; color: #aeaeb2; }
     </style>
+    <link rel="stylesheet" href="/give-theme.css">
 </head>
 <body>
+<a class="skip" href="#intro">본문 바로가기</a>
 <main>
     <section id="intro" class="page">
         <div class="inner">
             <div>
                 <span class="badge">무료 심리 테스트</span>
+                <div class="test-intro-image">
+                    <img src="/images/tests/refusal-test-illustration.png" alt="상대에게 따뜻하게 기준을 말하는 거절 연습 일러스트" loading="eager">
+                </div>
                 <h1>거절력 테스트</h1>
                 <p>부탁 앞에서 내 기준을 지키는 힘이 어느 정도인지 확인하세요.</p>
                 <p class="meta">10문항 · 약 2분 · 결과 즉시 확인</p>
                 <button onclick="start()">지금 진단 시작하기</button>
-                <div class="info">
-                    <section class="info-card note">
-                        <h2>거절력은 차가움이 아니라 조절 능력입니다</h2>
-                        <p>좋은 관계는 무조건 들어주는 관계가 아니라, 가능한 것과 어려운 것을 서로 알 수 있는 관계입니다. 이 테스트는 부탁, 죄책감, 반복 요청, 일정 침범, 정서적 압박 앞에서 내 기준이 얼마나 유지되는지 확인하도록 설계했습니다.</p>
-                    </section>
-                </div>
+                <section class="test-tabs" aria-label="거절력 테스트 안내">
+                    <div class="tab-list" role="tablist" aria-label="테스트 안내 탭">
+                        <button class="tab-btn" type="button" role="tab" id="refusal-tab-1" aria-controls="refusal-panel-1" aria-selected="true">무엇을 보나요</button>
+                        <button class="tab-btn" type="button" role="tab" id="refusal-tab-2" aria-controls="refusal-panel-2" aria-selected="false">거절 문장</button>
+                        <button class="tab-btn" type="button" role="tab" id="refusal-tab-3" aria-controls="refusal-panel-3" aria-selected="false">죄책감</button>
+                        <button class="tab-btn" type="button" role="tab" id="refusal-tab-4" aria-controls="refusal-panel-4" aria-selected="false">관계 유지</button>
+                    </div>
+                    <div class="tab-panel active" role="tabpanel" id="refusal-panel-1" aria-labelledby="refusal-tab-1">
+                        <h3>거절력은 차가움이 아니라 조절 능력입니다</h3>
+                        <p>부탁, 죄책감, 반복 요청, 일정 침범 앞에서 내 기준이 얼마나 유지되는지 확인합니다.</p>
+                    </div>
+                    <div class="tab-panel" role="tabpanel" id="refusal-panel-2" aria-labelledby="refusal-tab-2">
+                        <h3>결과마다 한 문장을 남깁니다</h3>
+                        <p>바로 복사해 연습할 수 있는 짧고 부드러운 거절 문장을 제공합니다.</p>
+                    </div>
+                    <div class="tab-panel" role="tabpanel" id="refusal-panel-3" aria-labelledby="refusal-tab-3">
+                        <h3>죄책감의 크기를 함께 봅니다</h3>
+                        <p>거절이 어려운 이유를 성격 문제가 아니라 관계 손실에 대한 부담으로 해석합니다.</p>
+                    </div>
+                    <div class="tab-panel" role="tabpanel" id="refusal-panel-4" aria-labelledby="refusal-tab-4">
+                        <h3>관계를 끊기 위한 검사가 아닙니다</h3>
+                        <p>좋은 관계를 오래 유지하기 위해 가능한 범위와 어려운 범위를 말하는 연습입니다.</p>
+                    </div>
+                </section>
             </div>
         </div>
     </section>
@@ -112,6 +138,16 @@
                 <h1 id="name" style="font-size: 2.2rem; margin-bottom: 12px;"></h1>
                 <p id="body" style="font-size: 1.05rem; color: var(--text-sub);"></p>
             </div>
+
+            <section class="result-report-lead" aria-label="거절력 결과 리포트 안내">
+                <div class="result-visual">
+                    <img src="/images/tests/refusal-test-illustration.png" alt="따뜻하지만 분명하게 거절을 연습하는 일러스트" loading="lazy">
+                </div>
+                <div class="result-report-copy">
+                    <strong>거절은 관계를 끝내는 말이 아닙니다</strong>
+                    <p>아래 결과는 내 기준을 지키는 힘과, 오늘 바로 연습할 수 있는 한 문장을 함께 보여줍니다.</p>
+                </div>
+            </section>
             
             <div class="card" style="background: var(--primary-soft); border: none;">
                 <h2 style="color: var(--primary-dark)">오늘 바로 연습할 한 문장</h2>
@@ -150,6 +186,38 @@
     </section>
 </main>
 <script>
+document.querySelectorAll('.test-tabs').forEach(function(tabs) {
+    const tabButtons = Array.from(tabs.querySelectorAll('[role="tab"]'));
+    const panels = Array.from(tabs.querySelectorAll('[role="tabpanel"]'));
+
+    function activateTab(nextTab, moveFocus) {
+        tabButtons.forEach(function(tab) {
+            const selected = tab === nextTab;
+            tab.setAttribute('aria-selected', selected ? 'true' : 'false');
+            tab.tabIndex = selected ? 0 : -1;
+        });
+        panels.forEach(function(panel) {
+            panel.classList.toggle('active', panel.id === nextTab.getAttribute('aria-controls'));
+        });
+        if (moveFocus) nextTab.focus();
+    }
+
+    tabButtons.forEach(function(tab, index) {
+        tab.tabIndex = tab.getAttribute('aria-selected') === 'true' ? 0 : -1;
+        tab.addEventListener('click', function() {
+            activateTab(tab, false);
+        });
+        tab.addEventListener('keydown', function(event) {
+            const keyMap = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 };
+            if (!(event.key in keyMap)) return;
+            event.preventDefault();
+            const nextIndex = (index + keyMap[event.key] + tabButtons.length) % tabButtons.length;
+            activateTab(tabButtons[nextIndex], true);
+        });
+    });
+});
+</script>
+<script>
 const qs=[
 ["급한 부탁을 받으면?",["바로 한다","고민하다 한다","가능 범위를 말한다","어렵다고 말한다"]],
 ["거절 후 죄책감은?",["매우 크다","조금 있다","금방 사라진다","거의 없다"]],
@@ -160,7 +228,7 @@ const qs=[
 ["거절 문장을 말할 때?",["말이 안 나온다","돌려 말한다","짧게 말한다","명확히 말한다"]],
 ["거절하고 관계가 멀어질까 걱정되나?",["항상 그렇다","자주 그렇다","가끔 그렇다","거의 없다"]],
 ["도움의 범위를 정하나?",["정하지 않는다","마음속으로만 정한다","가끔 말한다","처음부터 말한다"]],
-["내 거절은 나를 지키는 행동이라고 느끼나?",["전혀 아니다","잘 모르겠다","어느 정도 그렇다","그활 그렇다"]]
+["내 거절은 나를 지키는 행동이라고 느끼나?",["전혀 아니다","잘 모르겠다","어느 정도 그렇다","매우 그렇다"]]
 ];
 const rs=[
 {limit:17,name:"😰 거절 초보형",body:"부탁 앞에서 내 기준보다 상대 감정을 먼저 봅니다. 작은 거절 문장부터 연습해야 합니다.",script:"\"지금 바로 답하기는 어려워. 내 일정 확인하고 오늘 저녁에 말해줄게.\"", insight: { h: "거절이 힘든 당신, '손실 회피' 중인가요?", t: "사람은 얻는 기쁨보다 잃는 슬픔을 2배 더 크게 느낍니다. 거절을 관계의 손실로 보지 않는 연습이 필요합니다.", l: "articles/loss-aversion-relationships.html"}},
