@@ -359,6 +359,12 @@ export default function App() {
         missions_total: totalForDay,
       });
       if (newArr.length === totalForDay) {
+        if (window.giveProgress && window.giveProgress.get().day < dayIdx + 1) {
+          var s = window.giveProgress.completeDay();
+          if (s.isComplete) {
+            location.href = 'challenge-done.html';
+          }
+        }
         const newTotalMissions = completedMissions + 1;
         const newCompletionRate = Math.round((newTotalMissions / (DAYS.length * 3)) * 100);
         trackEvent('challenge_day_completed', {
