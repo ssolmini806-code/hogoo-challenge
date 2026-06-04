@@ -432,10 +432,10 @@
                         </div>
                     </div>
                 </article>
-                <section style="background:#f3f0ff;border:1px solid #d8ccff;border-radius:12px;padding:20px;margin-top:16px;">
-                    <p style="font-size:0.95rem;font-weight:750;color:#3d2d6e;margin:0 0 14px;line-height:1.5;">무료 검사에서 보인 신호를 실제 행동 계획으로 바꾸고 싶다면</p>
-                    <button class="primary-btn" onclick="openPaid('new_cta')" style="background:#7c3aed;box-shadow:0 12px 26px rgba(124,58,237,0.28);">GIVE ID 심화 테스트 시작하기 →</button>
-                    <p class="micro" style="margin-top:10px;color:#7c5cbf;">무료 결과는 유지됩니다.</p>
+                <section class="paid-lite-cta">
+                    <p>무료 검사에서 보인 신호를 실제 행동 계획으로 바꾸고 싶다면</p>
+                    <button class="primary-btn" onclick="openPaid('new_cta')">GIVE ID 심화 테스트 시작하기 →</button>
+                    <p class="micro">무료 결과는 유지됩니다.</p>
                 </section>
 
                 <section class="unlock-panel">
@@ -443,7 +443,7 @@
                         <strong>아직 핵심은 안 열렸어요</strong>
                         <span class="unlock-pill">남은 38%</span>
                     </div>
-                    <p style="color:var(--ink-sub);font-weight:750;font-size:.9rem">여기서 멈추면, 다음에도 똑같이 당합니다.</p>
+                    <p class="unlock-note">여기서 멈추면, 다음에도 똑같이 당합니다.</p>
                     <div class="unlock-track"><div class="unlock-fill"></div></div>
                     <div class="locked-list">
                         <div class="locked-item">🔒 내가 매번 당하는 그 장면</div>
@@ -469,7 +469,7 @@
                 </section>
 
                 <section class="share-panel">
-                    <h2 class="loop-title" style="margin:0">결과 공유하기</h2>
+                    <h2 class="loop-title flush-title">결과 공유하기</h2>
                     <div class="share-card" id="shareCard">
                         <div class="give-id-card-inner">
                             <div class="give-id-card-top">
@@ -517,8 +517,8 @@
                 <section>
                     <h2 class="loop-title">다음은 이거 보세요</h2>
                     <div class="related-tests">
-                        <div class="related-card" id="hogooCheckCard" onclick="handleHogooCheckClick()" style="cursor:pointer;opacity:0.65;">
-                            <span class="related-icon" style="background:#f3f0f8;color:#7c5cbf;">🔒</span>
+                        <div class="related-card is-locked" id="hogooCheckCard" onclick="handleHogooCheckClick()">
+                            <span class="related-icon locked">잠김</span>
                             <div>
                                 <strong>나는 호구일까?</strong>
                                 <span id="hogooCheckStatus">후기를 작성하면 열려요</span>
@@ -544,7 +544,7 @@
 
                 <div
                     id="give-test-reward-root"
-                    style="margin-top:32px"
+                    class="reward-root-spaced"
                     data-free-test-reward-root="give-test-reward-root"
                     data-test-id="give-test"
                     data-result-type="GIVE ID 결과"

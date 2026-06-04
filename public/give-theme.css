@@ -414,6 +414,14 @@ footer{padding:54px 0 44px;border-top:1px solid var(--line);margin-top:48px;text
 .reset-wrap{margin-top:28px;padding-top:24px;border-top:1px solid var(--line);text-align:center;}
 .reset-btn{border:0;background:none;color:var(--ink-faint);font-family:inherit;font-size:.84rem;cursor:pointer;text-decoration:underline;text-underline-offset:3px;}
 .reset-btn:hover{color:var(--ink-sub);}
+.paid-lite-cta{margin-top:16px;padding:20px;border:1px solid var(--line);border-radius:var(--r);background:var(--green-soft);}
+.paid-lite-cta p{margin:0 0 14px;color:var(--green);font-size:.95rem;font-weight:800;line-height:1.5;}
+.paid-lite-cta .micro{margin-top:10px;color:var(--ink-sub);}
+.unlock-note{color:var(--ink-sub);font-size:.9rem;font-weight:800;}
+.flush-title{margin:0;}
+.related-card.is-locked{cursor:pointer;opacity:.72;}
+.related-icon.locked{background:var(--surface-2);color:var(--green);}
+.reward-root-spaced{margin-top:32px;}
 
 .mt8{margin-top:8px;}
 .mb8{margin-bottom:8px;}
