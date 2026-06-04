@@ -19,66 +19,12 @@
     <meta name="google-adsense-account" content="ca-pub-8564310871125079">
     <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" crossorigin>
     <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" crossorigin></noscript>
-    <style>
-        :root {
-            --green: #00a885;
-            --green-dark: #007a62;
-            --ink: #17191c;
-            --muted: #6a7078;
-            --line: #e7e9ee;
-            --soft: #f0f9f7;
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; word-break: keep-all; }
-        body { font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif; background: #f7f8fa; color: var(--ink); line-height: 1.6; }
-        a { color: inherit; text-decoration: none; }
-        .wrap { width: min(100%, 760px); margin: 0 auto; padding: 0 20px; }
-        nav { height: 62px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); background: rgba(255,255,255,.92); position: sticky; top: 0; backdrop-filter: blur(12px); z-index: 2; }
-        nav .wrap { display: flex; align-items: center; justify-content: space-between; }
-        .logo { color: var(--green-dark); font-weight: 950; letter-spacing: 0; }
-        .nav-links { display: flex; gap: 14px; color: var(--muted); font-size: .88rem; font-weight: 750; }
-        .hero { padding: 42px 0 26px; }
-        .badge { display: inline-flex; background: var(--soft); color: var(--green-dark); border: 1px solid #d7efe9; border-radius: 999px; padding: 7px 11px; font-size: .78rem; font-weight: 900; margin-bottom: 16px; }
-        h1 { font-size: clamp(2rem, 8vw, 3.4rem); line-height: 1.08; letter-spacing: 0; font-weight: 950; margin-bottom: 14px; }
-        .lead { color: #414852; font-size: 1.02rem; font-weight: 700; max-width: 560px; }
-        .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 24px 0; }
-        .stat { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
-        .stat strong { display: block; color: var(--green-dark); font-size: 1.3rem; font-weight: 950; }
-        .stat span { color: var(--muted); font-size: .78rem; font-weight: 800; }
-        .review-grid { display: grid; gap: 12px; padding-bottom: 34px; }
-        .review-card { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 18px; box-shadow: 0 10px 28px rgba(24,31,43,.06); }
-        .review-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
-        .name { font-weight: 950; }
-        .stars { color: #f0a040; font-size: .9rem; flex: 0 0 auto; }
-        .content { color: #2d333b; font-size: .96rem; font-weight: 650; }
-        .meta { margin-top: 12px; color: var(--muted); font-size: .78rem; font-weight: 800; }
-        .empty { background: #fff; border: 1px dashed #cfd6dd; border-radius: 8px; padding: 28px; color: var(--muted); text-align: center; font-weight: 800; }
-        .cta { background: #101418; color: #fff; border-radius: 8px; padding: 22px; margin: 6px 0 54px; display: grid; gap: 12px; }
-        .cta p { color: #cfd5dc; font-size: .92rem; }
-        .btn { min-height: 52px; border-radius: 8px; background: var(--green); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-weight: 950; }
-        footer { border-top: 1px solid var(--line); padding: 30px 0; color: #8b94a1; text-align: center; font-size: .8rem; }
-        .write-card { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 22px; margin-bottom: 28px; box-shadow: 0 4px 16px rgba(24,31,43,.06); }
-        .write-card h2 { font-size: 1.05rem; font-weight: 900; margin-bottom: 18px; }
-        .field { margin-bottom: 14px; }
-        .field label { display: block; font-size: .8rem; font-weight: 800; color: var(--muted); margin-bottom: 6px; }
-        .field input, .field textarea { width: 100%; border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; font-family: inherit; font-size: .92rem; outline: none; box-sizing: border-box; transition: border-color .15s; }
-        .field input:focus, .field textarea:focus { border-color: var(--green); }
-        .field textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
-        .star-row { display: flex; gap: 4px; }
-        .star-btn { background: none; border: none; font-size: 1.6rem; cursor: pointer; color: #ddd; padding: 0; line-height: 1; transition: color .1s; }
-        .star-btn.on { color: #f0a040; }
-        .submit-btn { width: 100%; min-height: 52px; border-radius: 8px; background: var(--green); color: #fff; border: none; font-weight: 950; font-size: 1rem; cursor: pointer; font-family: inherit; transition: opacity .15s; }
-        .submit-btn:disabled { opacity: .6; cursor: default; }
-        .form-msg { text-align: center; font-size: .85rem; margin-top: 10px; min-height: 1.2em; }
-        .auth-notice { background: var(--soft); border: 1px solid #d7efe9; border-radius: 8px; padding: 20px; margin-bottom: 28px; text-align: center; }
-        @media (max-width: 560px) {
-            .stats { grid-template-columns: 1fr; }
-            .nav-links { gap: 10px; font-size: .8rem; }
-        }
-    </style>
+    <link rel="stylesheet" href="/give-theme.css">
 </head>
 <body>
-    <nav>
-        <div class="wrap">
+    <a class="skip" href="#main">본문 바로가기</a>
+    <nav class="site-nav" aria-label="주요 메뉴">
+        <div class="review-shell">
             <a class="logo" href="index.html">GIVE ECOSYSTEM</a>
             <div class="nav-links">
                 <a href="hogoo-test.html">챌린지</a>
@@ -88,11 +34,11 @@
         </div>
     </nav>
 
-    <main class="wrap">
+    <main id="main" class="review-shell">
         <div id="writeSection" hidden></div>
 
-        <section class="hero">
-            <span class="badge">Challenge Reviews</span>
+        <section class="review-hero">
+            <span class="pill">Challenge Reviews</span>
             <h1>호구 탈출 챌린지 후기</h1>
             <p class="lead">공유 버튼으로 끝나지 않도록, 참가자들이 직접 남긴 변화 기록을 모았습니다.</p>
             <div class="stats">
@@ -106,67 +52,67 @@
             <div class="empty">후기를 불러오는 중입니다.</div>
         </section>
 
-        <section class="cta">
+        <section class="review-cta">
             <strong>나도 챌린지를 해보고 후기를 남기고 싶다면</strong>
             <p>7일 동안 부탁, 거절, 경계선 미션을 직접 실천하고 마지막에 후기를 남길 수 있습니다.</p>
-            <a class="btn" href="hogoo-test.html">챌린지 참여하고 후기 남기기</a>
+            <a class="btn btn-line" href="hogoo-test.html">챌린지 참여하고 후기 남기기</a>
         </section>
 
-        <section style="background:#fff;border:1px solid #e7e9ee;border-radius:8px;padding:28px;margin:8px 0 32px;">
-            <h2 style="font-size:1.1rem;font-weight:900;margin-bottom:16px;color:#17191c;">7일 챌린지란 무엇인가요?</h2>
-            <p style="font-size:0.95rem;color:#6a7078;line-height:1.8;margin-bottom:16px;">호구 탈출 7일 챌린지는 애덤 그랜트의 기버/테이커 이론을 바탕으로 설계된 관계 훈련 프로그램입니다. 매일 구체적인 실천 미션을 통해 거절 연습, 즉답 피하기, 경계선 설정 등 건강한 관계 습관을 7일 안에 형성할 수 있도록 돕습니다.</p>
-            <p style="font-size:0.95rem;color:#6a7078;line-height:1.8;margin-bottom:16px;">각 날의 미션은 실제 상황에서 바로 적용할 수 있도록 설계되었으며, 미션 완료 후 불안 점수와 죄책감 점수 변화를 직접 기록하며 나의 성장을 확인할 수 있습니다. 위에 표시된 후기들은 챌린지를 직접 완료한 참가자들이 남긴 실제 경험담입니다.</p>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px;">
-                <div style="background:#f0f9f7;border-radius:12px;padding:16px;">
-                    <div style="font-size:0.75rem;font-weight:800;color:#00a885;margin-bottom:6px;">DAY 1-2</div>
-                    <div style="font-size:0.9rem;font-weight:700;color:#17191c;">즉답 피하기 연습</div>
-                    <div style="font-size:0.82rem;color:#6a7078;margin-top:4px;">부탁을 받아도 바로 대답하지 않는 훈련</div>
+        <section class="review-info">
+            <h2>7일 챌린지란 무엇인가요?</h2>
+            <p>호구 탈출 7일 챌린지는 애덤 그랜트의 기버/테이커 이론을 바탕으로 설계된 관계 훈련 프로그램입니다. 매일 구체적인 실천 미션을 통해 거절 연습, 즉답 피하기, 경계선 설정 등 건강한 관계 습관을 7일 안에 형성할 수 있도록 돕습니다.</p>
+            <p>각 날의 미션은 실제 상황에서 바로 적용할 수 있도록 설계되었으며, 미션 완료 후 불안 점수와 죄책감 점수 변화를 직접 기록하며 나의 성장을 확인할 수 있습니다. 위에 표시된 후기들은 챌린지를 직접 완료한 참가자들이 남긴 실제 경험담입니다.</p>
+            <div class="mission-grid">
+                <div class="mission-tile">
+                    <div class="mission-day">DAY 1-2</div>
+                    <div class="mission-title">즉답 피하기 연습</div>
+                    <div class="mission-desc">부탁을 받아도 바로 대답하지 않는 훈련</div>
                 </div>
-                <div style="background:#f0f9f7;border-radius:12px;padding:16px;">
-                    <div style="font-size:0.75rem;font-weight:800;color:#00a885;margin-bottom:6px;">DAY 3-4</div>
-                    <div style="font-size:0.9rem;font-weight:700;color:#17191c;">경계선 표현하기</div>
-                    <div style="font-size:0.82rem;color:#6a7078;margin-top:4px;">나의 한계를 명확하게 말하는 연습</div>
+                <div class="mission-tile">
+                    <div class="mission-day">DAY 3-4</div>
+                    <div class="mission-title">경계선 표현하기</div>
+                    <div class="mission-desc">나의 한계를 명확하게 말하는 연습</div>
                 </div>
-                <div style="background:#f0f9f7;border-radius:12px;padding:16px;">
-                    <div style="font-size:0.75rem;font-weight:800;color:#00a885;margin-bottom:6px;">DAY 5-6</div>
-                    <div style="font-size:0.9rem;font-weight:700;color:#17191c;">조건부 거절 연습</div>
-                    <div style="font-size:0.82rem;color:#6a7078;margin-top:4px;">관계를 유지하며 거절하는 3단계 방법</div>
+                <div class="mission-tile">
+                    <div class="mission-day">DAY 5-6</div>
+                    <div class="mission-title">조건부 거절 연습</div>
+                    <div class="mission-desc">관계를 유지하며 거절하는 3단계 방법</div>
                 </div>
-                <div style="background:#f0f9f7;border-radius:12px;padding:16px;">
-                    <div style="font-size:0.75rem;font-weight:800;color:#00a885;margin-bottom:6px;">DAY 7</div>
-                    <div style="font-size:0.9rem;font-weight:700;color:#17191c;">나를 위한 선택</div>
-                    <div style="font-size:0.82rem;color:#6a7078;margin-top:4px;">7일간의 변화를 돌아보고 앞으로의 계획 세우기</div>
+                <div class="mission-tile">
+                    <div class="mission-day">DAY 7</div>
+                    <div class="mission-title">나를 위한 선택</div>
+                    <div class="mission-desc">7일간의 변화를 돌아보고 앞으로의 계획 세우기</div>
                 </div>
             </div>
         </section>
 
-        <section style="margin:0 0 48px;">
-            <h2 style="font-size:1rem;font-weight:900;margin-bottom:16px;color:#17191c;">관련 심리학 칼럼도 읽어보세요</h2>
-            <div style="display:grid;gap:10px;">
-                <a href="articles/giver-burnout.html" style="display:flex;align-items:center;gap:14px;padding:16px;background:#fff;border:1px solid #e7e9ee;border-radius:10px;text-decoration:none;color:#17191c;">
-                    <span style="font-size:1.4rem;">🧘‍♂️</span>
+        <section class="related-block">
+            <h2>관련 심리학 칼럼도 읽어보세요</h2>
+            <div class="related-list">
+                <a class="related-link" href="articles/giver-burnout.html">
+                    <span class="itile sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 4v16"></path><path d="M6 10c3 0 6 2 6 6"></path><path d="M18 10c-3 0-6 2-6 6"></path><path d="M5 6c3 0 5 1.5 7 4"></path><path d="M19 6c-3 0-5 1.5-7 4"></path></svg></span>
                     <div>
-                        <div style="font-size:0.9rem;font-weight:700;margin-bottom:2px;">착한 사람의 번아웃: 병적 이타주의의 함정</div>
-                        <div style="font-size:0.78rem;color:#6a7078;">왜 베풀수록 공허해질까요? 기버 번아웃의 원인과 회복 전략.</div>
+                        <strong>착한 사람의 번아웃: 병적 이타주의의 함정</strong>
+                        <span>왜 베풀수록 공허해질까요? 기버 번아웃의 원인과 회복 전략.</span>
                     </div>
                 </a>
-                <a href="articles/setting-boundaries.html" style="display:flex;align-items:center;gap:14px;padding:16px;background:#fff;border:1px solid #e7e9ee;border-radius:10px;text-decoration:none;color:#17191c;">
-                    <span style="font-size:1.4rem;">✋</span>
+                <a class="related-link" href="articles/setting-boundaries.html">
+                    <span class="itile sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 12V5a2 2 0 0 1 4 0v6"></path><path d="M12 11V4a2 2 0 0 1 4 0v8"></path><path d="M16 12V7a2 2 0 0 1 4 0v6c0 5-3 8-8 8h-1a7 7 0 0 1-7-7v-3a2 2 0 0 1 4 0v1"></path></svg></span>
                     <div>
-                        <div style="font-size:0.9rem;font-weight:700;margin-bottom:2px;">관계를 살리는 경계선의 과학: 죄책감 없는 거절</div>
-                        <div style="font-size:0.78rem;color:#6a7078;">관계를 망치지 않으면서 나를 지키는 3단계 전략.</div>
+                        <strong>관계를 살리는 경계선의 과학: 죄책감 없는 거절</strong>
+                        <span>관계를 망치지 않으면서 나를 지키는 3단계 전략.</span>
                     </div>
                 </a>
-                <a href="articles/index.html" style="display:flex;align-items:center;gap:14px;padding:16px;background:#f0f9f7;border:1px solid #d7efe9;border-radius:10px;text-decoration:none;color:#00866a;font-weight:800;font-size:0.9rem;">
-                    <span style="font-size:1.4rem;">📚</span>
-                    전체 칼럼 보기 →
+                <a class="related-link" href="articles/index.html">
+                    <span class="itile sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"></path></svg></span>
+                    <strong>전체 칼럼 보기 →</strong>
                 </a>
             </div>
         </section>
     </main>
 
     <footer>
-        <div class="wrap">&copy; 2026 GIVE Ecosystem. All rights reserved.</div>
+        <div class="review-shell">&copy; 2026 GIVE Ecosystem. All rights reserved.</div>
     </footer>
 
     <script type="module">
@@ -259,8 +205,8 @@
             if (!session) {
                 container.innerHTML = `
                     <div class="auth-notice">
-                        <p style="font-weight:900;margin-bottom:8px">후기를 작성하려면 로그인이 필요합니다.</p>
-                        <a href="hogoo-test.html" style="color:var(--green);font-weight:900">챌린지 앱에서 로그인 후 다시 시도해주세요</a>
+                        <strong>후기를 작성하려면 로그인이 필요합니다.</strong>
+                        <a href="hogoo-test.html">챌린지 앱에서 로그인 후 다시 시도해주세요</a>
                     </div>`;
                 return;
             }
@@ -307,13 +253,13 @@
                 const btn = document.getElementById('formSubmit');
 
                 if (content.length < 10) {
-                    msg.style.color = '#e53e3e';
+                    msg.className = 'form-msg error';
                     msg.textContent = '후기는 10자 이상으로 남겨주세요.';
                     return;
                 }
 
                 btn.disabled = true;
-                msg.style.color = 'var(--muted)';
+                msg.className = 'form-msg';
                 msg.textContent = '저장 중...';
 
                 try {
@@ -348,7 +294,7 @@
                         await supabase.from('user_rewards').insert(rewardPayload);
                     }
 
-                    msg.style.color = 'var(--green)';
+                    msg.className = 'form-msg success';
                     msg.textContent = '후기가 등록됐습니다! 잠시 후 이동합니다.';
                     if (returnUrl) {
                         setTimeout(() => { window.location.href = returnUrl; }, 1200);
@@ -358,7 +304,7 @@
                 } catch (err) {
                     console.error(err);
                     btn.disabled = false;
-                    msg.style.color = '#e53e3e';
+                    msg.className = 'form-msg error';
                     msg.textContent = '등록에 실패했습니다. 잠시 후 다시 시도해주세요.';
                 }
             });
