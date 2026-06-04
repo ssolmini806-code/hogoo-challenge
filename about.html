@@ -88,68 +88,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,1,400;9..144,1,500&display=swap" rel="stylesheet">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8564310871125079" crossorigin="anonymous"></script>
     <meta name="google-adsense-account" content="ca-pub-8564310871125079">
-    <style>
-        :root { --primary: #00a885; --primary-soft: #f0f9f7; --text-main: #1d1d1f; --text-sub: #424245; --bg: #ffffff; --border: #f2f2f2; }
-        * { box-sizing: border-box; margin: 0; padding: 0; word-break: keep-all; }
-        body { font-family: 'Pretendard', sans-serif; background-color: var(--bg); color: var(--text-main); line-height: 1.8; -webkit-font-smoothing: antialiased; }
-        .container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
-        nav { padding: 20px 0; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); margin-bottom: 60px; }
-        .logo { font-size: 1.1rem; font-weight: 900; color: var(--primary); text-decoration: none; letter-spacing: -0.03em; }
-        .nav-links { display: flex; gap: 20px; }
-        .nav-links a { text-decoration: none; color: var(--text-sub); font-size: 0.9rem; font-weight: 500; }
-        .nav-links a:hover { color: var(--primary); }
-        h1 { font-size: 2.4rem; font-weight: 800; line-height: 1.3; margin-bottom: 20px; letter-spacing: -0.04em; }
-        h2 { font-size: 1.5rem; font-weight: 800; margin: 56px 0 20px; letter-spacing: -0.03em; border-left: 5px solid var(--primary); padding-left: 16px; }
-        h3 { font-size: 1.15rem; font-weight: 800; margin-bottom: 10px; color: var(--text-main); }
-        p { margin-bottom: 24px; font-size: 1.05rem; color: var(--text-sub); line-height: 1.85; }
-        .lead { font-size: 1.15rem; color: #424245; margin-bottom: 48px; line-height: 1.8; }
-        .highlight-box { padding: 32px; background: var(--primary-soft); border-radius: 24px; margin: 40px 0; border-left: 6px solid var(--primary); }
-        .highlight-box h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 12px; color: var(--primary); }
-        .highlight-box p { margin: 0; font-size: 1rem; color: #333; }
-        .value-grid { display: grid; gap: 20px; margin: 32px 0; }
-        .value-card { padding: 24px; background: #fafafa; border-radius: 20px; border: 1px solid var(--border); }
-        .value-card .icon { font-size: 1.8rem; margin-bottom: 12px; display: block; }
-        .value-card h3 { font-size: 1rem; font-weight: 800; color: var(--primary); margin-bottom: 8px; }
-        .value-card p { font-size: 0.95rem; color: var(--text-sub); margin: 0; line-height: 1.7; }
-        .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 40px 0; }
-        .stat-box { text-align: center; padding: 28px 16px; background: #fafafa; border-radius: 20px; border: 1px solid var(--border); }
-        .stat-box strong { display: block; font-size: 2rem; font-weight: 900; color: var(--primary); margin-bottom: 6px; }
-        .stat-box span { font-size: 0.85rem; color: var(--text-sub); font-weight: 600; }
-        .research-box { background: #fff9f0; border-left: 5px solid #f0a030; border-radius: 0 20px 20px 0; padding: 24px 28px; margin: 32px 0; }
-        .research-box .label { font-size: 0.75rem; font-weight: 800; color: #e08000; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; display: block; }
-        .research-box p { margin: 0; font-size: 0.95rem; color: #555; line-height: 1.7; }
-        .team-grid { display: grid; gap: 16px; margin: 32px 0; }
-        .team-card { display: flex; gap: 20px; padding: 24px; background: #fafafa; border-radius: 20px; border: 1px solid var(--border); align-items: flex-start; }
-        .team-avatar { width: 56px; height: 56px; border-radius: 50%; background: var(--primary-soft); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; flex-shrink: 0; }
-        .team-info h3 { font-size: 1rem; font-weight: 800; color: var(--text-main); margin-bottom: 4px; }
-        .team-info .role { font-size: 0.8rem; font-weight: 700; color: var(--primary); margin-bottom: 8px; display: block; }
-        .team-info p { margin: 0; font-size: 0.9rem; color: var(--text-sub); line-height: 1.6; }
-        .faq-section { margin: 60px 0 40px; }
-        .faq-section h2 { font-size: 1.5rem; font-weight: 800; margin: 0 0 32px; letter-spacing: -0.03em; border-left: 5px solid var(--primary); padding-left: 16px; }
-        .faq-item { border-bottom: 1px solid var(--border); padding: 24px 0; }
-        .faq-item:last-child { border-bottom: none; }
-        .faq-q { font-size: 1rem; font-weight: 700; color: var(--text-main); margin-bottom: 12px; display: flex; gap: 10px; }
-        .faq-q::before { content: "Q."; color: var(--primary); font-weight: 900; flex-shrink: 0; }
-        .faq-a { font-size: 0.95rem; color: var(--text-sub); line-height: 1.8; padding-left: 28px; margin: 0; }
-        .cta-box { background: var(--text-main); color: white; border-radius: 28px; padding: 48px 40px; text-align: center; margin: 60px 0; }
-        .cta-box h3 { font-size: 1.6rem; font-weight: 800; margin-bottom: 16px; }
-        .cta-box p { color: #a1a1a6; margin-bottom: 28px; font-size: 1rem; }
-        .cta-btn { display: inline-block; padding: 16px 32px; background: var(--primary); color: white; text-decoration: none; border-radius: 50px; font-weight: 700; font-size: 1rem; }
-        footer { padding: 80px 0 40px; border-top: 1px solid var(--border); text-align: center; color: #86868b; font-size: 0.9rem; }
-        .footer-links { margin-bottom: 20px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
-        .footer-links a { text-decoration: none; color: #424245; }
-        @media (max-width: 560px) {
-            h1 { font-size: 1.8rem; }
-            h2 { font-size: 1.25rem; }
-            .stats-row { grid-template-columns: 1fr; }
-        }
-    </style>
     <link rel="stylesheet" href="/give-theme.css">
 </head>
-<body>
+<body class="about-page">
     <a class="skip" href="#main">본문 바로가기</a>
     <div class="container">
-        <nav>
+        <nav class="site-nav" aria-label="주요 메뉴">
             <a href="index.html" class="logo">GIVE ECOSYSTEM</a>
             <div class="nav-links">
                 <a href="give-test.html">진단</a>
@@ -200,22 +144,22 @@
             <h2>우리가 제공하는 것</h2>
             <div class="value-grid">
                 <div class="value-card">
-                    <span class="icon">🔬</span>
+                    <span class="itile" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10 2v6L5 19a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3L14 8V2"></path><path d="M8 14h8"></path></svg></span>
                     <h3>GIVE ID 진단</h3>
                     <p>16문항의 심층 질문으로 나의 관계 유형을 7가지로 분류합니다. 단순한 테스트를 넘어, 현재 내가 어떤 관계 루프에 빠져 있는지 데이터 기반으로 보여줍니다. 결과 리포트에는 맞춤형 행동 가이드가 포함됩니다.</p>
                 </div>
                 <div class="value-card">
-                    <span class="icon">🔥</span>
+                    <span class="itile warn" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 22c4 0 7-3 7-7 0-3-2-5-4-8-.4 2-1.4 3.3-3 4-1.8-2-2-4-1-7-3 2-6 5-6 10 0 5 3 8 7 8z"></path></svg></span>
                     <h3>7일 챌린지</h3>
                     <p>아는 것과 실천은 다릅니다. 7일 챌린지는 거절 연습, 즉답 피하기, 경계선 설정, 감사 수용하기 등 구체적인 미션을 통해 건강한 관계 습관을 몸에 익히도록 설계되었습니다. 미션 완료 후 불안 점수와 죄책감 점수 변화를 직접 기록하며 성장을 확인합니다.</p>
                 </div>
                 <div class="value-card">
-                    <span class="icon">📚</span>
+                    <span class="itile" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"></path></svg></span>
                     <h3>심리학 칼럼</h3>
                     <p>병적 이타주의, 손실 회피, 경계선의 과학, 테이커 식별법 등 관계 심리학의 핵심 개념을 깊이 있게 다루는 전문 콘텐츠를 제공합니다. 학문적 근거를 바탕으로 하되, 누구나 이해할 수 있는 언어로 풀어냅니다.</p>
                 </div>
                 <div class="value-card">
-                    <span class="icon">🤔</span>
+                    <span class="itile" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"></circle><path d="M9.8 9a2.2 2.2 0 0 1 4.2.8c0 1.7-2 1.8-2 3.4"></path><path d="M12 17h.01"></path></svg></span>
                     <h3>추가 진단 도구</h3>
                     <p>'나는 호구일까?' 테스트와 '인간관계 위험도' 진단을 통해 더 다양한 각도에서 나의 관계 패턴을 점검할 수 있습니다. 각 진단은 즉각적인 피드백과 함께 다음 단계를 안내합니다.</p>
                 </div>
@@ -234,7 +178,7 @@
             <h2>연구 팀 소개</h2>
             <div class="team-grid">
                 <div class="team-card">
-                    <div class="team-avatar">👨‍⚕️</div>
+                    <div class="team-avatar" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M5 21a7 7 0 0 1 14 0"></path></svg></div>
                     <div class="team-info">
                         <h3>GIVE Research Lab</h3>
                         <span class="role">콘텐츠 & 심리학 연구</span>
@@ -242,7 +186,7 @@
                     </div>
                 </div>
                 <div class="team-card">
-                    <div class="team-avatar">💻</div>
+                    <div class="team-avatar" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="11" rx="2"></rect><path d="M8 21h8"></path><path d="M12 16v5"></path></svg></div>
                     <div class="team-info">
                         <h3>플랫폼 개발팀</h3>
                         <span class="role">서비스 설계 & 개발</span>
