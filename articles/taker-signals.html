@@ -44,47 +44,6 @@
     <noscript><link rel="stylesheet" href="/share.css"></noscript>
     <link rel="stylesheet" href="/give-theme.css">
     <script src="/share.js" defer></script>
-    <style>
-        :root { --primary: #00a885; --primary-soft: #f0f9f7; --text-main: #1d1d1f; --text-sub: #424245; --bg: #ffffff; --border: #f2f2f2; }
-        * { box-sizing: border-box; margin: 0; padding: 0; word-break: keep-all; }
-        body { font-family: 'Pretendard', sans-serif; background-color: var(--bg); color: var(--text-main); line-height: 1.9; -webkit-font-smoothing: antialiased; }
-        .container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
-        nav { padding: 24px 0; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); margin-bottom: 60px; }
-        .logo { font-size: 1.2rem; font-weight: 900; color: var(--primary); text-decoration: none; letter-spacing: -0.04em; }
-        .nav-links { display: flex; gap: 24px; }
-        .nav-links a { text-decoration: none; color: var(--text-sub); font-size: 0.95rem; font-weight: 600; }
-        .article-header { margin-bottom: 56px; }
-        .category { display: inline-block; color: var(--primary); font-weight: 800; font-size: 0.9rem; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.05em; }
-        .article-title { font-size: 2.8rem; font-weight: 850; line-height: 1.25; letter-spacing: -0.05em; margin-bottom: 28px; }
-        .featured-image { width: 100%; height: 400px; background: #fff9db; border-radius: 32px; margin-bottom: 56px; display: flex; align-items: center; justify-content: center; font-size: 6rem; }
-        .article-content h2 { font-size: 1.8rem; font-weight: 800; margin: 64px 0 24px; letter-spacing: -0.03em; border-left: 6px solid var(--primary); padding-left: 20px; }
-        .article-content p { margin-bottom: 28px; font-size: 1.15rem; color: var(--text-sub); }
-        .signal-card { border: 1px solid var(--border); border-radius: 24px; padding: 32px; margin-bottom: 24px; background: #fff; transition: all 0.3s ease; }
-        .signal-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.05); }
-        .signal-title { font-weight: 800; font-size: 1.2rem; color: var(--primary); margin-bottom: 12px; display: block; }
-        footer { padding: 80px 0; border-top: 1px solid var(--border); text-align: center; color: #86868b; font-size: 0.95rem; }
-        .footer-links { margin-bottom: 24px; display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; }
-        .footer-links a { text-decoration: none; color: #424245; font-weight: 500; }
-        .summary-box { background: var(--primary-soft); border-radius: 24px; padding: 32px; margin-bottom: 56px; border-left: 6px solid var(--primary); }
-        .summary-box h3 { font-size: 0.85rem; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 16px; }
-        .summary-box ul { padding-left: 0; list-style: none; }
-        .summary-box li { font-size: 1.05rem; color: var(--text-main); padding: 10px 0; border-bottom: 1px solid rgba(0,168,133,0.15); font-weight: 500; }
-        .summary-box li:last-child { border-bottom: none; }
-        .summary-box li::before { content: "✓  "; color: var(--primary); font-weight: 900; }
-        .faq-section { margin: 80px 0 48px; }
-        .faq-section > h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 32px; letter-spacing: -0.03em; border-left: 6px solid var(--primary); padding-left: 20px; }
-        .faq-item { border-bottom: 1px solid var(--border); padding: 28px 0; }
-        .faq-item:last-child { border-bottom: none; }
-        .faq-q { font-size: 1.1rem; font-weight: 700; color: var(--text-main); margin-bottom: 14px; display: flex; gap: 10px; }
-        .faq-q::before { content: "Q."; color: var(--primary); font-weight: 900; flex-shrink: 0; }
-        .faq-a { font-size: 1.05rem; color: var(--text-sub); line-height: 1.8; padding-left: 28px; margin: 0; }
-        .related-section { margin: 48px 0; padding: 36px; background: #fafafa; border-radius: 28px; }
-        .related-section h3 { font-size: 1rem; font-weight: 800; margin-bottom: 20px; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.06em; }
-        .related-links { display: grid; gap: 10px; }
-        .related-link { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text-main); padding: 14px 18px; background: white; border-radius: 14px; border: 1px solid var(--border); transition: all 0.2s; font-weight: 600; font-size: 0.95rem; }
-        .related-link:hover { border-color: var(--primary); color: var(--primary); }
-        .related-link-icon { font-size: 1.3rem; flex-shrink: 0; }
-    </style>
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -159,9 +118,10 @@
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8564310871125079" crossorigin="anonymous"></script>
     <meta name="google-adsense-account" content="ca-pub-8564310871125079">
 </head>
-<body>
+<body class="article-detail-page">
+    <a class="skip" href="#main">본문 바로가기</a>
     <div class="container">
-        <nav>
+        <nav class="site-nav" aria-label="주요 메뉴">
             <a href="../index.html" class="logo">GIVE ECOSYSTEM</a>
             <div class="nav-links"><a href="../about.html">브랜드 스토리</a><a href="../give-test.html">GIVE ID 진단</a></div>
         </nav>
@@ -170,7 +130,7 @@
                 <span class="category">Relationship Analysis</span>
                 <h1 class="article-title">테이커(Taker)의 심리학:<br>당신의 선의를 먹고 자라는 사람들</h1>
             </header>
-            <div class="featured-image">🦂</div>
+            <div class="featured-image"><span class="itile lg warn" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 13c2-3 5-4 7-1s5 2 7-1"></path><path d="M12 12v7"></path><path d="M8 19h8"></path><path d="M17 8l3-3"></path></svg></span></div>
 
             <div class="summary-box">
                 <h3>이 글의 핵심 3가지</h3>
@@ -249,15 +209,15 @@
             <h3>관련 아티클</h3>
             <div class="related-links">
                 <a href="./giver-burnout.html" class="related-link">
-                    <span class="related-link-icon">🌊</span>
+                    <span class="related-link-icon itile sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 12h10"></path><path d="M13 8l4 4-4 4"></path><path d="M5 5h14v14H5z"></path></svg></span>
                     <span>착한 사람의 번아웃 — 병적 이타주의의 함정과 회복 전략</span>
                 </a>
                 <a href="./setting-boundaries.html" class="related-link">
-                    <span class="related-link-icon">🚧</span>
+                    <span class="related-link-icon itile sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 12h10"></path><path d="M13 8l4 4-4 4"></path><path d="M5 5h14v14H5z"></path></svg></span>
                     <span>죄책감 없이 NO라고 말하는 법 — 경계선의 과학 3단계</span>
                 </a>
                 <a href="./smart-giver-guide.html" class="related-link">
-                    <span class="related-link-icon">🏆</span>
+                    <span class="related-link-icon itile sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 12h10"></path><path d="M13 8l4 4-4 4"></path><path d="M5 5h14v14H5z"></path></svg></span>
                     <span>성공하는 이타주의자 — 스마트 기버의 3가지 비밀</span>
                 </a>
             </div>
