@@ -96,61 +96,12 @@
     <link rel="stylesheet" href="/give-theme.css">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8564310871125079" crossorigin="anonymous"></script>
     <meta name="google-adsense-account" content="ca-pub-8564310871125079">
-    <style>
-        :root { --primary: #00a885; --primary-soft: #f0f9f7; --text-main: #1d1d1f; --text-sub: #424245; --bg: #ffffff; --border: #f2f2f2; }
-        * { box-sizing: border-box; margin: 0; padding: 0; word-break: keep-all; }
-        body { font-family: 'Pretendard', sans-serif; background: #f7f8fa; color: var(--text-main); line-height: 1.6; -webkit-font-smoothing: antialiased; }
-        a { text-decoration: none; color: inherit; }
-        .container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
-        nav { padding: 24px 0; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); background: white; }
-        .logo { font-size: 1.1rem; font-weight: 900; color: var(--primary); letter-spacing: -0.03em; }
-        .nav-links { display: flex; gap: 20px; }
-        .nav-links a { color: var(--text-sub); font-size: 0.9rem; font-weight: 500; }
-        .nav-links a:hover { color: var(--primary); }
-        .page-hero { background: white; padding: 56px 0 48px; border-bottom: 1px solid var(--border); margin-bottom: 48px; }
-        .hero-inner { max-width: 720px; margin: 0 auto; padding: 0 24px; }
-        .hero-badge { display: inline-block; background: var(--primary-soft); color: var(--primary); font-size: 0.75rem; font-weight: 800; padding: 6px 14px; border-radius: 100px; margin-bottom: 20px; letter-spacing: 0.05em; }
-        h1 { font-size: 2.2rem; font-weight: 900; margin-bottom: 16px; letter-spacing: -0.04em; line-height: 1.25; }
-        .hero-desc { font-size: 1.05rem; color: var(--text-sub); max-width: 560px; line-height: 1.7; margin-bottom: 32px; }
-        .category-row { display: flex; gap: 10px; flex-wrap: wrap; }
-        .cat-btn { display: inline-flex; align-items: center; padding: 8px 18px; background: #f2f2f7; color: var(--text-sub); border-radius: 100px; font-size: 0.82rem; font-weight: 700; cursor: pointer; border: none; font-family: inherit; transition: all 0.2s; }
-        .cat-btn.active, .cat-btn:hover { background: var(--primary); color: white; }
-        .articles-section { padding-bottom: 60px; }
-        .section-label { font-size: 0.8rem; font-weight: 800; color: var(--text-sub); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 20px; }
-        .article-list { display: flex; flex-direction: column; gap: 16px; }
-        .article-card { background: white; border-radius: 20px; border: 1px solid var(--border); padding: 28px; display: flex; gap: 20px; align-items: flex-start; transition: all 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
-        .article-card:hover { border-color: var(--primary); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,168,133,0.08); }
-        .article-icon { width: 72px; height: 72px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 2rem; flex-shrink: 0; }
-        .article-body { flex: 1; }
-        .article-tag { font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; display: block; }
-        .article-title { font-size: 1.15rem; font-weight: 800; color: var(--text-main); margin-bottom: 8px; line-height: 1.4; letter-spacing: -0.02em; }
-        .article-desc { font-size: 0.92rem; color: var(--text-sub); line-height: 1.6; margin-bottom: 14px; }
-        .article-meta { display: flex; gap: 14px; align-items: center; }
-        .read-time { font-size: 0.78rem; color: #86868b; font-weight: 600; }
-        .read-btn { font-size: 0.82rem; font-weight: 700; color: var(--primary); padding: 6px 14px; background: var(--primary-soft); border-radius: 100px; }
-        .article-card:hover .read-btn { background: var(--primary); color: white; }
-        .intro-text { background: white; border-radius: 20px; border: 1px solid var(--border); padding: 32px; margin-bottom: 32px; }
-        .intro-text h2 { font-size: 1.2rem; font-weight: 800; margin-bottom: 16px; color: var(--text-main); }
-        .intro-text p { font-size: 0.95rem; color: var(--text-sub); line-height: 1.8; margin: 0; }
-        .cta-banner { background: var(--text-main); color: white; border-radius: 20px; padding: 36px 32px; margin: 48px 0; display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; }
-        .cta-banner h3 { font-size: 1.2rem; font-weight: 800; margin-bottom: 8px; }
-        .cta-banner p { font-size: 0.9rem; color: #a1a1a6; margin: 0; }
-        .cta-btn { display: inline-block; padding: 14px 28px; background: var(--primary); color: white; border-radius: 50px; font-weight: 700; font-size: 0.95rem; white-space: nowrap; flex-shrink: 0; }
-        footer { border-top: 1px solid var(--border); background: white; padding: 40px 0; text-align: center; font-size: 0.85rem; color: #86868b; }
-        .footer-links { margin-bottom: 16px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
-        .footer-links a { color: #424245; }
-        @media (max-width: 560px) {
-            h1 { font-size: 1.7rem; }
-            .article-card { flex-direction: column; }
-            .article-icon { width: 56px; height: 56px; font-size: 1.5rem; }
-            .cta-banner { flex-direction: column; text-align: center; }
-        }
-    </style>
 </head>
 <body>
-    <div style="background:white;">
-        <div class="container">
-            <nav>
+    <a class="skip" href="#main">본문 바로가기</a>
+    <div>
+        <div class="article-shell">
+            <nav class="site-nav" aria-label="주요 메뉴">
                 <a href="../index.html" class="logo">GIVE ECOSYSTEM</a>
                 <div class="nav-links">
                     <a href="../about.html">소개</a>
@@ -161,10 +112,10 @@
         </div>
     </div>
 
-    <div class="page-hero">
-        <div class="hero-inner">
-            <span class="hero-badge">Knowledge Hub</span>
-            <h1>관계 심리학<br>전문 칼럼</h1>
+    <header class="article-hub-hero">
+        <div class="article-shell">
+            <span class="pill">Knowledge Hub</span>
+            <h1>관계 심리학 전문 칼럼</h1>
             <p class="hero-desc">애덤 그랜트, 대니얼 카너먼 등 세계적 심리학자들의 연구를 바탕으로 한 실용적인 관계 심리학 리포트를 읽어보세요. 지식을 넘어 실천으로 이어지는 인사이트를 제공합니다.</p>
             <div class="category-row">
                 <span class="cat-btn active">전체 보기</span>
@@ -174,9 +125,9 @@
                 <span class="cat-btn">성공 전략</span>
             </div>
         </div>
-    </div>
+    </header>
 
-    <div class="container">
+    <main id="main" class="article-shell">
         <div class="articles-section">
 
             <div class="intro-text">
@@ -189,9 +140,9 @@
             <div class="article-list">
 
                 <a href="./curiosity-gap-patterns.html" class="article-card">
-                    <div class="article-icon" style="background:#f9f0ff;">🪞</div>
+                    <span class="itile lg" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 5h12v14H6z"></path><path d="M9 8h6"></path><path d="M9 12h4"></path><path d="M8 19l-2 2"></path><path d="M16 19l2 2"></path></svg></span>
                     <div class="article-body">
-                        <span class="article-tag" style="color:#ab47bc;">NEW · Self-Awareness</span>
+                        <span class="article-tag">NEW · Self-Awareness</span>
                         <div class="article-title">나도 모르는 나의 관계 패턴: 호기심의 틈</div>
                         <p class="article-desc">왜 같은 관계 실수를 반복할까요? 로웬스타인의 '호기심의 틈' 이론으로 자신도 몰랐던 관계 패턴을 인식하는 방법을 알아봅니다.</p>
                         <div class="article-meta">
@@ -202,9 +153,9 @@
                 </a>
 
                 <a href="./loss-aversion-relationships.html" class="article-card">
-                    <div class="article-icon" style="background:#fff8f8;">😰</div>
+                    <span class="itile lg warn" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 3 20h18L12 3z"></path><path d="M12 9v5"></path><path d="M12 17h.01"></path></svg></span>
                     <div class="article-body">
-                        <span class="article-tag" style="color:#e53e3e;">NEW · Psychology</span>
+                        <span class="article-tag">NEW · Psychology</span>
                         <div class="article-title">거절이 이렇게 힘든 이유: 손실 회피 심리학</div>
                         <p class="article-desc">거절하면 왜 이렇게 죄책감이 드는 걸까요? 노벨 경제학상 수상자 카너먼의 손실 회피 이론으로 거절 공포의 심리 메커니즘을 분석합니다.</p>
                         <div class="article-meta">
@@ -215,9 +166,9 @@
                 </a>
 
                 <a href="./giver-burnout.html" class="article-card">
-                    <div class="article-icon" style="background:#f0f9f7;">🧘‍♂️</div>
+                    <span class="itile lg" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 4v16"></path><path d="M6 10c3 0 6 2 6 6"></path><path d="M18 10c-3 0-6 2-6 6"></path><path d="M5 6c3 0 5 1.5 7 4"></path><path d="M19 6c-3 0-5 1.5-7 4"></path></svg></span>
                     <div class="article-body">
-                        <span class="article-tag" style="color:#00a885;">Psychology Report</span>
+                        <span class="article-tag">Psychology Report</span>
                         <div class="article-title">착한 사람의 번아웃: 병적 이타주의(Pathological Altruism)의 함정</div>
                         <p class="article-desc">남을 돕는 행위가 오히려 나를 파괴하고 있다면? 심리학이 말하는 병적 이타주의의 원인과 기버들을 위한 정서적 회복 전략을 공개합니다.</p>
                         <div class="article-meta">
@@ -228,9 +179,9 @@
                 </a>
 
                 <a href="./setting-boundaries.html" class="article-card">
-                    <div class="article-icon" style="background:#fff5f5;">✋</div>
+                    <span class="itile lg" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 12V5a2 2 0 0 1 4 0v6"></path><path d="M12 11V4a2 2 0 0 1 4 0v8"></path><path d="M16 12V7a2 2 0 0 1 4 0v6c0 5-3 8-8 8h-1a7 7 0 0 1-7-7v-3a2 2 0 0 1 4 0v1"></path></svg></span>
                     <div class="article-body">
-                        <span class="article-tag" style="color:#ff6b6b;">Communication Science</span>
+                        <span class="article-tag">Communication Science</span>
                         <div class="article-title">관계를 살리는 경계선의 과학: 죄책감 없이 NO라고 말하는 법</div>
                         <p class="article-desc">거절이 어려운 당신을 위한 심리학 솔루션. 관계를 망치지 않으면서도 나를 지키는 3단계 거절 전략과 실전 스크립트를 제공합니다.</p>
                         <div class="article-meta">
@@ -241,9 +192,9 @@
                 </a>
 
                 <a href="./taker-signals.html" class="article-card">
-                    <div class="article-icon" style="background:#fff9db;">🕵️‍♂️</div>
+                    <span class="itile lg warn" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"></circle><path d="m16 16 4 4"></path><path d="M9 10h4"></path><path d="M11 8v4"></path></svg></span>
                     <div class="article-body">
-                        <span class="article-tag" style="color:#fcc419;">Relationship Analysis</span>
+                        <span class="article-tag">Relationship Analysis</span>
                         <div class="article-title">테이커(Taker)의 심리학: 당신의 선의를 먹고 자라는 사람들</div>
                         <p class="article-desc">당신의 배려를 당연하게 여기는 사람들의 심리는 무엇일까요? 테이커의 5가지 전형적인 패턴과 그들로부터 나를 보호하는 전략을 공개합니다.</p>
                         <div class="article-meta">
@@ -254,9 +205,9 @@
                 </a>
 
                 <a href="./smart-giver-guide.html" class="article-card">
-                    <div class="article-icon" style="background:#e6fcf5;">🚀</div>
+                    <span class="itile lg" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 18c4-1 7-4 9-8l2-4 3 3-4 2c-4 2-7 5-8 9z"></path><path d="M9 15l-4 4"></path><path d="M14 6l4 4"></path></svg></span>
                     <div class="article-body">
-                        <span class="article-tag" style="color:#20c997;">Success Strategy</span>
+                        <span class="article-tag">Success Strategy</span>
                         <div class="article-title">스마트 기버(Smart Giver) 리포트: 성공하는 이타주의자의 3가지 비밀</div>
                         <p class="article-desc">성공 사다리 최상단에는 항상 기버가 있습니다. 나를 지키면서도 최고의 성과를 내는 스마트 기버들의 핵심 전략 3가지를 분석합니다.</p>
                         <div class="article-meta">
@@ -277,10 +228,10 @@
             </div>
 
         </div>
-    </div>
+    </main>
 
     <footer>
-        <div class="container">
+        <div class="article-shell">
             <div class="footer-links">
                 <a href="../index.html">홈으로</a>
                 <a href="../about.html">브랜드 스토리</a>
