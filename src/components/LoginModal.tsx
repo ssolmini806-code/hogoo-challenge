@@ -1,4 +1,4 @@
-import { useState, useEffect, type FormEvent } from 'react';
+import { useState, useEffect, useRef, type FormEvent } from 'react';
 import { supabase } from '../supabase';
 import { X } from 'lucide-react';
 
@@ -15,6 +15,8 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: Props) {
   const [loading, setLoading] = useState(false);
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [forgotSent, setForgotSent] = useState(false);
+  const dialogRef = useRef<HTMLDivElement | null>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     if (!isOpen) {
@@ -25,9 +27,35 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: Props) {
 
   useEffect(() => {
     if (!isOpen) return;
-    const handleKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    previousFocusRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const focusableSelector = 'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
+    const getFocusable = () => Array.from(dialogRef.current?.querySelectorAll<HTMLElement>(focusableSelector) ?? [])
+      .filter((element) => element.offsetParent !== null || element === document.activeElement);
+    window.setTimeout(() => getFocusable()[0]?.focus(), 0);
+
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+        return;
+      }
+      if (e.key !== 'Tab') return;
+      const focusable = getFocusable();
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
     document.addEventListener('keydown', handleKey);
-    return () => document.removeEventListener('keydown', handleKey);
+    return () => {
+      document.removeEventListener('keydown', handleKey);
+      previousFocusRef.current?.focus();
+    };
   }, [isOpen, onClose]);
 
   useEffect(() => {
@@ -90,7 +118,7 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: Props) {
         background: 'rgba(0,0,0,0.72)', padding: '16px',
       }}
     >
-      <div style={{
+      <div ref={dialogRef} style={{
         width: '100%', maxWidth: 380,
         background: 'var(--surface)', borderRadius: 20, padding: '32px 24px',
         border: '1px solid var(--line)', position: 'relative',
