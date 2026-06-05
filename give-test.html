@@ -119,6 +119,7 @@
         .result-hero { padding: 26px 20px 22px; text-align: center; background: linear-gradient(180deg, var(--mint-soft), #fff); }
         .result-label { color: var(--ink-sub); font-weight: 900; font-size: 0.82rem; margin-bottom: 8px; }
         .character { width: 122px; height: 132px; display: block; margin: 0 auto 8px; overflow: visible; animation: float 3.4s ease-in-out infinite; }
+        .type-char { width: 150px; height: 150px; object-fit: contain; overflow: hidden; border-radius: 8px; }
         @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
         .type-name { font-size: 1.85rem; line-height: 1.15; font-weight: 950; letter-spacing: 0; color: var(--ink); margin-bottom: 10px; }
         .summary { color: #363d46; font-size: 1rem; font-weight: 750; }
@@ -213,6 +214,7 @@
         .give-id-main { display: grid; grid-template-columns: .9fr 1.1fr; gap: 14px; align-items: center; min-height: 0; }
         .give-id-portrait { align-self: center; display: grid; place-items: center; min-width: 0; }
         .give-id-portrait .character { width: min(34vw, 138px); height: auto; margin: 0; filter: drop-shadow(0 14px 20px rgba(23,25,28,.16)); animation: none; }
+        .give-id-portrait .type-char { aspect-ratio: 1; object-fit: contain; }
         .give-id-info { min-width: 0; }
         .share-card .type-name { font-size: clamp(1.18rem, 5vw, 1.72rem); line-height: 1.08; margin: 0 0 8px; word-break: keep-all; }
         .give-id-tagline { font-weight: 850; color: #3d454f; font-size: .82rem; line-height: 1.45; margin: 0; word-break: keep-all; }
