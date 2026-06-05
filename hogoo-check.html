@@ -288,6 +288,7 @@ const results = {
         advice: "오늘 딱 하나, 작은 '아니오'를 연습해보세요. 죄책감 없이 거절하는 근육은 훈련으로 키울 수 있습니다.",
         color: "var(--amber-accent)",
         mood: "sad",
+        character: "/images/types/hogoo-check/type-hogoo.webp",
         insight: {
             headline: "거절이 유독 힘든 이유: 손실 회피 심리",
             text: "심리학적으로 사람은 얻는 기쁨보다 잃는 고통을 2배 더 크게 느낍니다. 당신에게 거절은 '관계의 손실'로 인식되어 남들보다 더 큰 죄책감을 유발할 수 있습니다.",
@@ -303,6 +304,7 @@ const results = {
         advice: "부탁을 받았을 때 즉각 답하지 말고, '잠깐 생각해볼게'라는 시간을 만들어 보세요.",
         color: "var(--amber-accent)",
         mood: "soft",
+        character: "/images/types/hogoo-check/type-nice.webp",
         insight: {
             headline: "관계를 살리는 '경계선'의 과학",
             text: "경계선은 상대를 밀어내는 벽이 아니라, 나를 지켜서 더 오래 베풀 수 있게 하는 울타리입니다. 죄책감 없는 거절의 기술을 익혀보세요.",
@@ -318,6 +320,7 @@ const results = {
         advice: "어떤 상황에서 경계가 무너지는지 패턴을 기록해보세요. 인식이 변화의 첫걸음입니다.",
         color: "var(--green-soft)",
         mood: "neutral",
+        character: "/images/types/hogoo-check/type-middle.webp",
         insight: {
             headline: "나도 모르는 관계의 '호기심의 틈'",
             text: "왜 어떤 사람에게는 강하고 어떤 사람에게는 약할까요? 자신도 몰랐던 무의식적인 관계 패턴을 인식하는 것이 중요합니다.",
@@ -333,6 +336,7 @@ const results = {
         advice: "경계는 잘 지키고 있으니, 이제는 관계의 '따뜻함'을 조금 더 표현해보는 것도 좋습니다.",
         color: "var(--mint)",
         mood: "confident",
+        character: "/images/types/hogoo-check/type-realist.webp",
         insight: {
             headline: "성공하는 이타주의자, '스마트 기버'의 전략",
             text: "자신의 이익과 타인의 이익을 동시에 고려하는 기버들이 가장 높은 성과를 냅니다. 당신의 현실 감각에 따뜻함을 한 스푼 더해보세요.",
@@ -348,6 +352,7 @@ const results = {
         advice: "신뢰할 수 있는 사람에게 작은 것 하나씩 솔직하게 나눠보세요. 경계와 온기는 공존할 수 있습니다.",
         color: "var(--surface-2)",
         mood: "guarded",
+        character: "/images/types/hogoo-check/type-wall.webp",
         insight: {
             headline: "테이커를 감별하는 단호함의 지혜",
             text: "강한 경계는 테이커(Taker)들로부터 나를 완벽히 보호합니다. 이제는 안전한 사람들에게 마음을 여는 연습이 필요할지도 모릅니다.",
@@ -382,6 +387,11 @@ function characterSvg(fill, mood) {
         <path d="M30 31 C34 12 51 20 60 34 C69 20 86 12 90 31" stroke="var(--ink)" stroke-width="3" stroke-linecap="round" fill="none"/>
         <rect x="45" y="103" width="30" height="18" rx="8" fill="${fill}" stroke="var(--ink)" stroke-width="3"/>
     </svg>`;
+}
+
+function characterVisual(result) {
+    const img = '<img src="' + result.character + '" alt="' + result.name + ' 캐릭터" loading="lazy" decoding="async" onerror="this.remove()">';
+    return '<div class="result-character-frame">' + img + characterSvg(result.color, result.mood) + '</div>';
 }
 
 function startTest() {
@@ -427,7 +437,7 @@ function showResult() {
     else key = 'wall';
     const d = results[key];
     document.getElementById('sequenceLink').href = 'result-sequence.html?test=hogoo&type=' + encodeURIComponent(key);
-    document.getElementById('character').innerHTML = characterSvg(d.color, d.mood);
+    document.getElementById('character').innerHTML = characterVisual(d);
     document.getElementById('typeName').textContent = d.name;
     document.getElementById('typeTagline').textContent = '“' + d.tagline + '”';
     document.getElementById('typeBody').textContent = d.body;

@@ -270,6 +270,7 @@ const results = {
         advice: "지금 당장 가장 에너지를 빼앗는 관계 하나를 파악하고, 그 관계에서 할 수 있는 가장 작은 경계 하나를 설정해보세요.",
         color: "var(--amber-accent)",
         mood: "alert",
+        character: "/images/types/relationship-risk/type-high.webp",
         insight: {
             headline: "에너지를 갈취하는 '테이커' 식별법",
             text: "당신의 호의를 당연하게 여기고, 필요할 때만 찾는 사람들을 경계해야 합니다. 테이커들의 5가지 주요 특징과 대응 방안을 확인하세요.",
@@ -285,6 +286,7 @@ const results = {
         advice: "에너지를 빼앗는 관계와 주는 관계를 구분해보세요. 그리고 빼앗는 관계에 어떤 경계를 설정할 수 있는지 생각해보세요.",
         color: "var(--amber-accent)",
         mood: "caution",
+        character: "/images/types/relationship-risk/type-caution.webp",
         insight: {
             headline: "착한 사람의 번아웃 주의보",
             text: "베풀수록 공허해진다면 '병적 이타주의'에 빠진 것은 아닌지 점검해야 합니다. 지속 가능한 선의를 위한 심리학적 분석을 만나보세요.",
@@ -300,6 +302,7 @@ const results = {
         advice: "관계에서 불편했던 순간을 하나 떠올리고, 그때 다르게 할 수 있었던 것이 무엇인지 생각해보세요.",
         color: "var(--green-soft)",
         mood: "steady",
+        character: "/images/types/relationship-risk/type-ok.webp",
         insight: {
             headline: "나를 지키는 '죄책감 없는 거절'",
             text: "관계를 망치지 않으면서도 나의 에너지를 지키는 법. 전문가들이 제안하는 3단계 거절 전략으로 더 단단한 관계를 만드세요.",
@@ -315,6 +318,7 @@ const results = {
         advice: "현재의 건강한 패턴을 더 의식적으로 발전시켜보세요. 더 깊은 연결과 성장이 가능합니다.",
         color: "var(--mint)",
         mood: "healthy",
+        character: "/images/types/relationship-risk/type-healthy.webp",
         insight: {
             headline: "성공하는 기버의 3가지 비밀",
             text: "가장 높은 성과를 내는 사람들은 '똑똑한 기버(Smart Giver)'들입니다. 당신의 건강한 관계를 더 가치 있게 만드는 데이터 분석 리포트.",
@@ -353,6 +357,11 @@ function characterSvg(fill, mood) {
         <path d="M30 31 C34 12 51 20 60 34 C69 20 86 12 90 31" stroke="var(--ink)" stroke-width="3" stroke-linecap="round" fill="none"/>
         <rect x="45" y="103" width="30" height="18" rx="8" fill="${fill}" stroke="var(--ink)" stroke-width="3"/>
     </svg>`;
+}
+
+function characterVisual(result) {
+    const img = '<img src="' + result.character + '" alt="' + result.name + ' 캐릭터" loading="lazy" decoding="async" onerror="this.remove()">';
+    return '<div class="result-character-frame">' + img + characterSvg(result.color, result.mood) + '</div>';
 }
 
 function startTest() {
@@ -397,7 +406,7 @@ function showResult() {
     else key = 'healthy';
     const d = results[key];
     document.getElementById('sequenceLink').href = 'result-sequence.html?test=relationship&type=' + encodeURIComponent(key);
-    document.getElementById('character').innerHTML = characterSvg(d.color, d.mood);
+    document.getElementById('character').innerHTML = characterVisual(d);
     document.getElementById('typeName').textContent = d.name;
     document.getElementById('typeTagline').textContent = '"' + d.tagline + '"';
     document.getElementById('typeBody').textContent = d.body;
