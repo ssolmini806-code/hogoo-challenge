@@ -4,6 +4,47 @@ import { ChevronDown, LogOut, Mail, UserPlus } from 'lucide-react';
 import type { User } from '@supabase/supabase-js';
 import LoginModal from './LoginModal';
 
+function useDialogFocusTrap(isOpen: boolean, onClose: () => void) {
+  const dialogRef = useRef<HTMLDivElement | null>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    previousFocusRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const focusableSelector = 'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
+    const getFocusable = () => Array.from(dialogRef.current?.querySelectorAll<HTMLElement>(focusableSelector) ?? [])
+      .filter((element) => element.offsetParent !== null || element === document.activeElement);
+    window.setTimeout(() => getFocusable()[0]?.focus(), 0);
+
+    const handleKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClose();
+        return;
+      }
+      if (event.key !== 'Tab') return;
+      const focusable = getFocusable();
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener('keydown', handleKey);
+    return () => {
+      document.removeEventListener('keydown', handleKey);
+      previousFocusRef.current?.focus();
+    };
+  }, [isOpen, onClose]);
+
+  return dialogRef;
+}
+
 export default function LoginButton() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -18,6 +59,8 @@ export default function LoginButton() {
   const [inviteSent, setInviteSent] = useState(false);
   const [inviteLoading, setInviteLoading] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
+  const inviteDialogRef = useDialogFocusTrap(showInvite, () => setShowInvite(false));
+  const emailChangeDialogRef = useDialogFocusTrap(showEmailChange, () => setShowEmailChange(false));
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
@@ -97,16 +140,16 @@ export default function LoginButton() {
           aria-expanded={menuOpen}
           style={{
             background: 'transparent',
-            border: '1px solid #3a3530',
+            border: '1px solid var(--line)',
             borderRadius: 999,
-            color: '#f5ede3',
+            color: 'var(--green)',
             cursor: 'pointer',
             display: 'inline-flex',
             alignItems: 'center',
             gap: 6,
-            minHeight: 30,
-            padding: '4px 10px',
-            fontSize: 12,
+            minHeight: 44,
+            padding: '8px 12px',
+            fontSize: 13,
             fontWeight: 800,
             fontFamily: 'inherit',
           }}
@@ -123,9 +166,9 @@ export default function LoginButton() {
               right: 0,
               zIndex: 20,
               minWidth: 148,
-              border: '1px solid #3a3530',
+              border: '1px solid var(--line)',
               borderRadius: 10,
-              background: '#231f1c',
+              background: 'var(--surface)',
               boxShadow: '0 14px 30px rgba(0,0,0,.24)',
               padding: 6,
             }}
@@ -138,13 +181,14 @@ export default function LoginButton() {
                 background: 'transparent',
                 border: 'none',
                 borderRadius: 8,
-                color: '#c5b8ac',
+                color: 'var(--ink-sub)',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
                 gap: 7,
+                minHeight: 44,
                 padding: '9px 10px',
-                fontSize: 12,
+                fontSize: 14,
                 fontWeight: 800,
                 fontFamily: 'inherit',
                 textAlign: 'left',
@@ -161,13 +205,14 @@ export default function LoginButton() {
                 background: 'transparent',
                 border: 'none',
                 borderRadius: 8,
-                color: '#c5b8ac',
+                color: 'var(--ink-sub)',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
                 gap: 7,
+                minHeight: 44,
                 padding: '9px 10px',
-                fontSize: 12,
+                fontSize: 14,
                 fontWeight: 800,
                 fontFamily: 'inherit',
                 textAlign: 'left',
@@ -184,13 +229,14 @@ export default function LoginButton() {
                 background: 'transparent',
                 border: 'none',
                 borderRadius: 8,
-                color: '#c5b8ac',
+                color: 'var(--ink-sub)',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
                 gap: 7,
+                minHeight: 44,
                 padding: '9px 10px',
-                fontSize: 12,
+                fontSize: 14,
                 fontWeight: 800,
                 fontFamily: 'inherit',
                 textAlign: 'left',
@@ -206,6 +252,7 @@ export default function LoginButton() {
           <div
             role="dialog"
             aria-modal="true"
+            aria-labelledby="invite-dialog-title"
             onClick={(e) => { if (e.target === e.currentTarget) setShowInvite(false); }}
             style={{
               position: 'fixed', inset: 0, zIndex: 1000,
@@ -213,24 +260,24 @@ export default function LoginButton() {
               background: 'rgba(0,0,0,0.72)', padding: '16px',
             }}
           >
-            <div style={{
+            <div ref={inviteDialogRef} style={{
               width: '100%', maxWidth: 360,
-              background: '#231f1c', borderRadius: 20, padding: '32px 24px',
-              border: '1px solid #3a3530',
+              background: 'var(--surface)', borderRadius: 20, padding: '32px 24px',
+              border: '1px solid var(--line)',
             }}>
               {inviteSent ? (
                 <>
-                  <h2 style={{ color: '#f5ede3', fontSize: 20, fontWeight: 800, marginBottom: 8 }}>🎉 초대를 보냈어요!</h2>
-                  <p style={{ color: '#8a7f75', fontSize: 13, lineHeight: 1.6, marginBottom: 24 }}>
-                    <strong style={{ color: '#f5ede3' }}>{inviteEmail}</strong>로<br />
+                  <h2 id="invite-dialog-title" style={{ color: 'var(--ink)', fontSize: 20, fontWeight: 800, marginBottom: 8 }}>🎉 초대를 보냈어요!</h2>
+                  <p style={{ color: 'var(--ink-sub)', fontSize: 15, lineHeight: 1.6, marginBottom: 24 }}>
+                    <strong style={{ color: 'var(--ink)' }}>{inviteEmail}</strong>로<br />
                     초대 링크를 보냈어요. 친구가 클릭하면 바로 시작할 수 있어요.
                   </p>
                   <button
                     onClick={() => setShowInvite(false)}
                     style={{
-                      width: '100%', padding: '13px', borderRadius: 10,
-                      border: '1px solid #3a3530', background: 'transparent',
-                      color: '#8a7f75', cursor: 'pointer', fontSize: 14, fontWeight: 700,
+                      width: '100%', minHeight: 44, padding: '13px', borderRadius: 10,
+                      border: '1px solid var(--line)', background: 'transparent',
+                      color: 'var(--ink-sub)', cursor: 'pointer', fontSize: 15, fontWeight: 700,
                     }}
                   >
                     닫기
@@ -238,8 +285,8 @@ export default function LoginButton() {
                 </>
               ) : (
                 <>
-                  <h2 style={{ color: '#f5ede3', fontSize: 20, fontWeight: 800, marginBottom: 8 }}>친구 초대하기</h2>
-                  <p style={{ color: '#8a7f75', fontSize: 13, lineHeight: 1.5, marginBottom: 24 }}>
+                  <h2 id="invite-dialog-title" style={{ color: 'var(--ink)', fontSize: 20, fontWeight: 800, marginBottom: 8 }}>친구 초대하기</h2>
+                  <p style={{ color: 'var(--ink-sub)', fontSize: 15, lineHeight: 1.5, marginBottom: 24 }}>
                     친구 이메일을 입력하면 챌린지 초대 링크를 보내드려요
                   </p>
                   <form onSubmit={handleInvite} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
@@ -250,16 +297,16 @@ export default function LoginButton() {
                       onChange={(e) => setInviteEmail(e.target.value)}
                       required
                       style={{
-                        padding: '13px 14px', borderRadius: 10, border: '1px solid #3a3530',
-                        background: '#1a1614', color: '#f5ede3', outline: 'none', fontSize: 14,
+                        padding: '13px 14px', borderRadius: 10, border: '1px solid var(--line)',
+                        background: 'var(--surface)', color: 'var(--ink)', outline: 'none', fontSize: 15,
                       }}
                     />
                     <button
                       type="submit"
                       disabled={inviteLoading}
                       style={{
-                        padding: '13px', borderRadius: 10, border: 'none',
-                        background: '#00a885', color: '#fff', fontWeight: 800,
+                        minHeight: 44, padding: '13px', borderRadius: 10, border: 'none',
+                        background: 'var(--green)', color: 'var(--surface)', fontWeight: 800,
                         cursor: inviteLoading ? 'not-allowed' : 'pointer', fontSize: 15,
                         opacity: inviteLoading ? 0.7 : 1,
                       }}
@@ -270,8 +317,8 @@ export default function LoginButton() {
                   <button
                     onClick={() => setShowInvite(false)}
                     style={{
-                      marginTop: 12, background: 'none', border: 'none',
-                      color: '#6a5f55', cursor: 'pointer', fontSize: 12,
+                      marginTop: 12, minHeight: 44, background: 'none', border: 'none',
+                      color: 'var(--ink-sub)', cursor: 'pointer', fontSize: 15,
                       textDecoration: 'underline', width: '100%',
                     }}
                   >
@@ -287,6 +334,7 @@ export default function LoginButton() {
           <div
             role="dialog"
             aria-modal="true"
+            aria-labelledby="email-change-dialog-title"
             onClick={(e) => { if (e.target === e.currentTarget) setShowEmailChange(false); }}
             style={{
               position: 'fixed', inset: 0, zIndex: 1000,
@@ -294,24 +342,24 @@ export default function LoginButton() {
               background: 'rgba(0,0,0,0.72)', padding: '16px',
             }}
           >
-            <div style={{
+            <div ref={emailChangeDialogRef} style={{
               width: '100%', maxWidth: 360,
-              background: '#231f1c', borderRadius: 20, padding: '32px 24px',
-              border: '1px solid #3a3530',
+              background: 'var(--surface)', borderRadius: 20, padding: '32px 24px',
+              border: '1px solid var(--line)',
             }}>
               {emailChangeSent ? (
                 <>
-                  <h2 style={{ color: '#f5ede3', fontSize: 20, fontWeight: 800, marginBottom: 8 }}>📬 확인 메일을 보냈어요</h2>
-                  <p style={{ color: '#8a7f75', fontSize: 13, lineHeight: 1.6, marginBottom: 24 }}>
-                    <strong style={{ color: '#f5ede3' }}>{newEmail}</strong>로<br />
+                  <h2 id="email-change-dialog-title" style={{ color: 'var(--ink)', fontSize: 20, fontWeight: 800, marginBottom: 8 }}>📬 확인 메일을 보냈어요</h2>
+                  <p style={{ color: 'var(--ink-sub)', fontSize: 15, lineHeight: 1.6, marginBottom: 24 }}>
+                    <strong style={{ color: 'var(--ink)' }}>{newEmail}</strong>로<br />
                     확인 링크를 보냈어요. 클릭하면 변경이 완료돼요.
                   </p>
                   <button
                     onClick={() => setShowEmailChange(false)}
                     style={{
-                      width: '100%', padding: '13px', borderRadius: 10,
-                      border: '1px solid #3a3530', background: 'transparent',
-                      color: '#8a7f75', cursor: 'pointer', fontSize: 14, fontWeight: 700,
+                      width: '100%', minHeight: 44, padding: '13px', borderRadius: 10,
+                      border: '1px solid var(--line)', background: 'transparent',
+                      color: 'var(--ink-sub)', cursor: 'pointer', fontSize: 15, fontWeight: 700,
                     }}
                   >
                     닫기
@@ -319,8 +367,8 @@ export default function LoginButton() {
                 </>
               ) : (
                 <>
-                  <h2 style={{ color: '#f5ede3', fontSize: 20, fontWeight: 800, marginBottom: 8 }}>이메일 변경</h2>
-                  <p style={{ color: '#8a7f75', fontSize: 13, lineHeight: 1.5, marginBottom: 24 }}>
+                  <h2 id="email-change-dialog-title" style={{ color: 'var(--ink)', fontSize: 20, fontWeight: 800, marginBottom: 8 }}>이메일 변경</h2>
+                  <p style={{ color: 'var(--ink-sub)', fontSize: 15, lineHeight: 1.5, marginBottom: 24 }}>
                     새 이메일 주소를 입력하면 확인 링크를 보내드려요
                   </p>
                   <form onSubmit={handleEmailChange} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
@@ -331,16 +379,16 @@ export default function LoginButton() {
                       onChange={(e) => setNewEmail(e.target.value)}
                       required
                       style={{
-                        padding: '13px 14px', borderRadius: 10, border: '1px solid #3a3530',
-                        background: '#1a1614', color: '#f5ede3', outline: 'none', fontSize: 14,
+                        padding: '13px 14px', borderRadius: 10, border: '1px solid var(--line)',
+                        background: 'var(--surface)', color: 'var(--ink)', outline: 'none', fontSize: 15,
                       }}
                     />
                     <button
                       type="submit"
                       disabled={emailChangeLoading}
                       style={{
-                        padding: '13px', borderRadius: 10, border: 'none',
-                        background: '#00a885', color: '#fff', fontWeight: 800,
+                        minHeight: 44, padding: '13px', borderRadius: 10, border: 'none',
+                        background: 'var(--green)', color: 'var(--surface)', fontWeight: 800,
                         cursor: emailChangeLoading ? 'not-allowed' : 'pointer', fontSize: 15,
                         opacity: emailChangeLoading ? 0.7 : 1,
                       }}
@@ -351,8 +399,8 @@ export default function LoginButton() {
                   <button
                     onClick={() => setShowEmailChange(false)}
                     style={{
-                      marginTop: 12, background: 'none', border: 'none',
-                      color: '#6a5f55', cursor: 'pointer', fontSize: 12,
+                      marginTop: 12, minHeight: 44, background: 'none', border: 'none',
+                      color: 'var(--ink-sub)', cursor: 'pointer', fontSize: 15,
                       textDecoration: 'underline', width: '100%',
                     }}
                   >
@@ -372,9 +420,9 @@ export default function LoginButton() {
       <button
         onClick={() => setModalOpen(true)}
         style={{
-          background: '#00a885', border: 'none', borderRadius: 8,
-          padding: '6px 14px', color: '#fff', fontWeight: 800,
-          fontSize: 12, cursor: 'pointer',
+          background: 'var(--green)', border: 'none', borderRadius: 8,
+          minHeight: 44, padding: '8px 14px', color: 'var(--surface)', fontWeight: 800,
+          fontSize: 14, cursor: 'pointer',
         }}
       >
         로그인

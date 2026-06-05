@@ -47,209 +47,6 @@
     <script src="/share.js" defer></script>
     <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.8.1/kakao.min.js" defer></script>
     <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" crossorigin></noscript>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; word-break: keep-all; }
-        html { scroll-behavior: smooth; }
-        body {
-            font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-            background: #f7f8fa;
-            color: var(--ink);
-            line-height: 1.55;
-            overflow-x: hidden;
-        }
-        button, a { font-family: inherit; -webkit-tap-highlight-color: transparent; }
-        a { color: inherit; text-decoration: none; }
-        .hidden { display: none !important; }
-        .inner { width: min(100%, 520px); margin: 0 auto; padding: 0 20px; }
-        .nav { background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 10; }
-        .nav .inner { height: 58px; display: flex; align-items: center; justify-content: space-between; }
-        .brand { color: var(--mint-ink); font-weight: 900; font-size: 0.96rem; letter-spacing: 0; }
-        .nav-links { display: flex; gap: 14px; color: var(--ink-sub); font-size: 0.82rem; font-weight: 700; }
-
-        .landing { background: linear-gradient(180deg, #f2fbf8 0%, #fff 72%, #f7f8fa 100%); padding: 38px 0 48px; }
-        .social-proof { display: inline-flex; align-items: center; gap: 8px; background: #fff; color: var(--mint-ink); border: 1px solid #d7efe9; border-radius: 999px; padding: 8px 12px; font-size: 0.8rem; font-weight: 800; margin-bottom: 18px; box-shadow: 0 6px 18px rgba(0,168,133,0.09); }
-        .hero h1 { font-size: clamp(2.35rem, 11vw, 4rem); line-height: 1.05; letter-spacing: 0; font-weight: 950; margin-bottom: 16px; }
-        .hero-copy { color: #414852; font-size: 1.05rem; font-weight: 650; margin-bottom: 22px; }
-        .hero-panel { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 18px; margin: 22px 0; box-shadow: 0 14px 36px rgba(24, 31, 43, 0.08); }
-        .problem-list { display: grid; gap: 10px; }
-        .problem-list li { list-style: none; display: flex; gap: 10px; align-items: flex-start; color: #22262b; font-weight: 750; font-size: 0.95rem; }
-        .dot { width: 8px; height: 8px; border-radius: 999px; background: var(--mint); margin-top: 8px; flex: 0 0 auto; }
-        .primary-btn, .secondary-btn, .ghost-btn {
-            min-height: 56px; border-radius: 8px; border: 0; cursor: pointer; font-weight: 900; font-size: 1rem;
-            display: inline-flex; align-items: center; justify-content: center; width: 100%; transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
-        }
-        .primary-btn { background: var(--mint); color: #fff; box-shadow: 0 12px 26px rgba(0,168,133,0.28); }
-        .primary-btn:hover { background: var(--mint-ink); transform: translateY(-1px); }
-        .secondary-btn { background: #101418; color: #fff; }
-        .ghost-btn { background: #fff; color: var(--ink); border: 1px solid var(--line); }
-        .micro { color: var(--ink-sub); text-align: center; font-size: 0.78rem; font-weight: 700; margin-top: 10px; }
-        .landing-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 18px; }
-        .mini-card { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
-        .mini-card strong { display: block; font-size: 0.92rem; margin-bottom: 5px; }
-        .mini-card span { color: var(--ink-sub); font-size: 0.85rem; }
-
-        .ad-slot {
-            min-height: 96px; border: 1px dashed #bac1cb; background: #f2f4f7; color: #8b94a1; border-radius: 8px;
-            display: flex; align-items: center; justify-content: center; text-align: center; padding: 16px; font-size: 0.76rem; font-weight: 800; margin: 18px 0;
-        }
-        .ad-slot.large { min-height: 124px; }
-
-        #test-page { min-height: calc(100vh - 58px); background: #fff; padding: 24px 0 44px; }
-        .test-top { margin-bottom: 34px; }
-        .progress-row { display: flex; justify-content: space-between; color: var(--ink-sub); font-size: 0.82rem; font-weight: 850; margin-bottom: 9px; }
-        .progress-track { height: 9px; border-radius: 999px; background: #eef1f4; overflow: hidden; }
-        .progress-fill { width: 0; height: 100%; background: linear-gradient(90deg, var(--mint), #20caa7); border-radius: inherit; transition: width 0.35s ease; }
-        .reward { margin-top: 12px; background: var(--amber-soft); color: #9a5600; border: 1px solid #ffe0b3; border-radius: 8px; padding: 10px 12px; font-size: 0.84rem; font-weight: 850; }
-        .question-card { animation: slideIn 0.26s ease; }
-        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .q-label { color: var(--mint-ink); font-weight: 950; font-size: 0.85rem; margin-bottom: 12px; }
-        .q-text { white-space: pre-line; font-size: 1.45rem; line-height: 1.35; font-weight: 950; letter-spacing: 0; margin-bottom: 26px; }
-        .answers { display: grid; gap: 12px; }
-        .answer-btn {
-            width: 100%; min-height: 66px; background: #fff; color: var(--ink); border: 2px solid var(--line); border-radius: 8px;
-            text-align: left; padding: 16px 18px; font-size: 1rem; font-weight: 850; line-height: 1.35; cursor: pointer; transition: background 0.18s ease, border 0.18s ease, transform 0.18s ease;
-        }
-        .answer-btn:hover, .answer-btn:active { background: var(--mint-soft); border-color: var(--mint); transform: translateY(-1px); }
-
-        #result-page { padding: 18px 0 70px; }
-        .completion { display: none; background: #101418; color: #fff; border-radius: 8px; padding: 14px 16px; margin-bottom: 16px; font-weight: 900; text-align: center; animation: pop 0.5s ease; }
-        .completion.show { display: block; }
-        @keyframes pop { 0% { transform: scale(0.96); opacity: 0; } 70% { transform: scale(1.02); } 100% { transform: scale(1); opacity: 1; } }
-        .result-shell { background: #fff; border: 1px solid var(--line); border-radius: 8px; box-shadow: 0 14px 36px rgba(24, 31, 43, 0.08); overflow: hidden; }
-        .result-hero { padding: 26px 20px 22px; text-align: center; background: linear-gradient(180deg, var(--mint-soft), #fff); }
-        .result-label { color: var(--ink-sub); font-weight: 900; font-size: 0.82rem; margin-bottom: 8px; }
-        .character { width: 122px; height: 132px; display: block; margin: 0 auto 8px; overflow: visible; animation: float 3.4s ease-in-out infinite; }
-        @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-        .type-name { font-size: 1.85rem; line-height: 1.15; font-weight: 950; letter-spacing: 0; color: var(--ink); margin-bottom: 10px; }
-        .summary { color: #363d46; font-size: 1rem; font-weight: 750; }
-        .result-body { padding: 18px; }
-        .insight-grid { display: grid; gap: 10px; }
-        .insight { border: 1px solid var(--line); border-radius: 8px; padding: 16px; background: #fff; }
-        .insight h3 { font-size: 0.84rem; color: var(--ink-sub); margin-bottom: 8px; font-weight: 950; }
-        .insight p { font-size: 0.96rem; font-weight: 650; color: #252a31; }
-        .risk { background: #fff7f7; border-color: #ffd8d8; }
-        .advice { background: #f2f7ff; border-color: #d9e7ff; }
-        .locked-interpretation { position: relative; margin: 16px 0 18px; border: 1px solid #eadfce; background: #fffaf0; border-radius: 12px; overflow: hidden; box-shadow: 0 12px 26px rgba(70,45,15,.08); }
-        .locked-interpretation-text { padding: 18px; color: #3d454f; font-size: .96rem; font-weight: 800; line-height: 1.75; filter: blur(8px); pointer-events: none; user-select: none; transition: filter .45s ease, opacity .45s ease; }
-        .locked-interpretation-text p { margin: 0 0 10px; }
-        .locked-interpretation-text p:last-child { margin-bottom: 0; }
-        .locked-interpretation-overlay { position: absolute; inset: 0; width: 100%; border: 0; background: rgba(255,250,240,.74); backdrop-filter: blur(1px); display: flex; align-items: center; justify-content: center; color: #17191c; font-size: 1rem; font-weight: 950; cursor: pointer; font-family: inherit; transition: opacity .35s ease, visibility .35s ease; }
-        .locked-interpretation.unlocked .locked-interpretation-text { filter: none; pointer-events: auto; user-select: auto; animation: fadeInterpretation .45s ease both; }
-        .locked-interpretation.unlocked .locked-interpretation-overlay { opacity: 0; visibility: hidden; pointer-events: none; }
-        @keyframes fadeInterpretation { from { opacity: .25; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
-        .cta-section { margin-top: 16px; display: grid; gap: 10px; }
-        .cta-kicker { color: var(--amber-ink); font-size: 0.9rem; font-weight: 950; text-align: center; margin-top: 16px; }
-        .paid-bridge { margin-top: 16px; background: #101418; color: #fff; border-radius: 8px; padding: 20px; box-shadow: 0 16px 34px rgba(16,20,24,0.16); }
-        .paid-eyebrow { color: #7ce3cb; font-size: 0.78rem; font-weight: 950; margin-bottom: 8px; }
-        .paid-bridge h2 { font-size: 1.35rem; line-height: 1.25; letter-spacing: 0; font-weight: 950; margin-bottom: 10px; }
-        .paid-bridge p { color: #d7dde4; font-size: 0.92rem; font-weight: 700; margin-bottom: 14px; }
-        .paid-list { display: grid; gap: 8px; margin: 16px 0; }
-        .paid-item { display: flex; gap: 10px; align-items: flex-start; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 11px 12px; font-size: 0.9rem; font-weight: 850; color: #f4f8fb; }
-        .paid-check { color: #7ce3cb; font-weight: 950; flex: 0 0 auto; }
-        .paid-btn { width: 100%; min-height: 58px; border: 0; border-radius: 8px; background: var(--mint); color: #fff; font-size: 1rem; font-weight: 950; cursor: pointer; box-shadow: 0 14px 26px rgba(0,168,133,0.26); }
-        .paid-btn:hover { background: var(--mint-ink); transform: translateY(-1px); }
-        .paid-sub { display: block; color: #9faab5; text-align: center; font-size: 0.76rem; font-weight: 800; margin-top: 9px; }
-        .conversion-panel { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 18px; margin-top: 16px; box-shadow: 0 14px 36px rgba(24, 31, 43, 0.08); }
-        .conversion-grid { display: grid; gap: 10px; margin: 14px 0; }
-        .conversion-card { width: 100%; text-align: left; background: #fff; border: 2px solid var(--line); border-radius: 8px; padding: 15px; cursor: pointer; }
-        .conversion-card.best { border-color: var(--mint); background: var(--mint-soft); position: relative; }
-        .conversion-card.best:before { content: "추천"; position: absolute; right: 12px; top: -10px; background: var(--mint); color: #fff; border-radius: 999px; padding: 4px 9px; font-size: 0.68rem; font-weight: 950; }
-        .conversion-name { display: block; font-weight: 950; font-size: 0.98rem; margin-bottom: 4px; }
-        .conversion-price { display: block; color: var(--mint-ink); font-weight: 950; font-size: 1.05rem; margin-bottom: 3px; }
-        .conversion-copy { display: block; color: var(--ink-sub); font-size: 0.8rem; font-weight: 750; }
-        .free-links { display: grid; gap: 8px; margin-top: 14px; }
-        .free-link { display: flex; align-items: center; gap: 8px; padding: 12px; border: 1px solid var(--line); border-radius: 8px; background: #f7f8fa; font-size: 0.9rem; font-weight: 850; }
-        .free-badge { background: var(--mint-soft); color: var(--mint-ink); border-radius: 999px; padding: 3px 7px; font-size: 0.68rem; font-weight: 950; flex: 0 0 auto; }
-        .result-retry-btn { border: 1px solid var(--line); background: transparent; color: var(--ink-sub); border-radius: 999px; padding: 8px 13px; font-size: .8rem; font-weight: 850; font-family: inherit; cursor: pointer; min-height: 0; width: auto; justify-self: center; }
-        .result-retry-btn:hover { color: var(--ink); border-color: #cbd3dc; background: #fff; }
-        .unlock-badge { display: none; background: #e6f9f0; color: #00a885; border: 1px solid #b2e8d5; border-radius: 999px; padding: 4px 10px; font-size: .75rem; font-weight: 800; margin: 12px 18px 0; }
-        .locked-interpretation.unlocked .unlock-badge { display: inline-block; animation: fadeInBadge .45s ease .1s both; }
-        @keyframes fadeInBadge { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
-        .loop-title { margin: 26px 0 12px; font-size: 1.08rem; font-weight: 950; }
-        .related-tests { display: grid; gap: 10px; }
-        .related-card { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 16px; display: flex; gap: 14px; align-items: center; box-shadow: 0 8px 22px rgba(24,31,43,0.05); }
-        .related-icon { width: 42px; height: 42px; border-radius: 8px; display: grid; place-items: center; background: var(--mint-soft); color: var(--mint-ink); font-weight: 950; flex: 0 0 auto; }
-        .related-card strong { display: block; font-size: 0.98rem; margin-bottom: 2px; }
-        .related-card span { display: block; color: var(--ink-sub); font-size: 0.8rem; font-weight: 700; }
-        .recommend { background: #101418; color: #fff; border-radius: 8px; padding: 18px; margin-top: 12px; }
-        .recommend p { color: #cfd5dc; font-size: 0.88rem; margin: 4px 0 14px; }
-        .unlock-panel { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 18px; margin-top: 16px; box-shadow: 0 14px 36px rgba(24, 31, 43, 0.08); }
-        .unlock-top { display: flex; justify-content: space-between; gap: 12px; align-items: center; margin-bottom: 10px; }
-        .unlock-top strong { font-size: 1.05rem; font-weight: 950; }
-        .unlock-pill { background: #101418; color: #fff; border-radius: 999px; padding: 6px 9px; font-size: 0.72rem; font-weight: 900; flex: 0 0 auto; }
-        .unlock-track { height: 8px; background: #eef1f4; border-radius: 999px; overflow: hidden; margin: 10px 0 14px; }
-        .unlock-fill { width: 62%; height: 100%; background: linear-gradient(90deg, var(--mint), #20caa7); }
-        .locked-list { display: grid; gap: 8px; margin: 14px 0; }
-        .locked-item { display: flex; gap: 10px; align-items: center; background: #f7f8fa; border: 1px solid var(--line); border-radius: 8px; padding: 11px 12px; font-size: 0.9rem; font-weight: 800; color: #333a44; }
-        .blurred { filter: blur(3px); user-select: none; }
-        .choice-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 12px; }
-        .choice-card { background: #fff; border: 2px solid var(--line); border-radius: 8px; padding: 14px; text-align: left; cursor: pointer; }
-        .choice-card.best { border-color: var(--mint); background: var(--mint-soft); position: relative; }
-        .choice-card.best:before { content: "가장 많이 클릭"; position: absolute; right: 10px; top: -10px; background: var(--mint); color: #fff; border-radius: 999px; padding: 4px 8px; font-size: 0.68rem; font-weight: 950; }
-        .choice-name { display: block; font-weight: 950; margin-bottom: 3px; }
-        .choice-copy { display: block; color: var(--ink-sub); font-size: 0.8rem; font-weight: 750; }
-        .social-nudge { color: var(--ink-sub); text-align: center; font-size: 0.78rem; font-weight: 800; margin-top: 10px; }
-        .share-panel { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 18px; margin-top: 16px; }
-        .share-card {
-            position: relative; width: 100%; aspect-ratio: 1.586 / 1; min-height: 304px; border-radius: 18px;
-            background: linear-gradient(135deg, #fbfbff 0%, #f7f1ff 44%, #eaf8f5 100%);
-            border: 1px solid #d9d2ef; box-shadow: 0 22px 50px rgba(64, 44, 120, 0.18);
-            overflow: hidden; padding: 18px; margin: 12px 0; color: var(--ink);
-        }
-        .share-card:before {
-            content: ""; position: absolute; inset: -30% -16% auto auto; width: 220px; height: 220px;
-            border-radius: 999px; background: var(--card-color, #e5d8ff); opacity: .72;
-        }
-        .share-card:after {
-            content: ""; position: absolute; left: 18px; right: 18px; bottom: 14px; height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(23,25,28,.18), transparent);
-        }
-        .give-id-card-inner { position: relative; z-index: 1; height: 100%; display: grid; grid-template-rows: auto 1fr auto; gap: 12px; }
-        .give-id-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
-        .give-id-brand { display: grid; gap: 2px; }
-        .give-id-label { color: #6d28d9; font-size: .72rem; font-weight: 950; letter-spacing: .16em; }
-        .give-id-issued { color: #747b87; font-size: .68rem; font-weight: 850; }
-        .give-id-chip { border: 1px solid rgba(109,40,217,.24); background: rgba(255,255,255,.74); border-radius: 999px; padding: 6px 9px; color: #5b21b6; font-size: .68rem; font-weight: 950; white-space: nowrap; }
-        .give-id-main { display: grid; grid-template-columns: .9fr 1.1fr; gap: 14px; align-items: center; min-height: 0; }
-        .give-id-portrait { align-self: center; display: grid; place-items: center; min-width: 0; }
-        .give-id-portrait .character { width: min(34vw, 138px); height: auto; margin: 0; filter: drop-shadow(0 14px 20px rgba(23,25,28,.16)); animation: none; }
-        .give-id-info { min-width: 0; }
-        .share-card .type-name { font-size: clamp(1.18rem, 5vw, 1.72rem); line-height: 1.08; margin: 0 0 8px; word-break: keep-all; }
-        .give-id-tagline { font-weight: 850; color: #3d454f; font-size: .82rem; line-height: 1.45; margin: 0; word-break: keep-all; }
-        .give-id-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 11px; }
-        .give-id-tag { border: 1px solid rgba(23,25,28,.1); background: rgba(255,255,255,.72); border-radius: 999px; padding: 4px 8px; color: #3d454f; font-size: .68rem; font-weight: 900; }
-        .give-id-bottom { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: end; }
-        .give-id-stats { display: grid; gap: 5px; min-width: 0; }
-        .give-id-stat { display: grid; grid-template-columns: 42px 1fr 28px; gap: 7px; align-items: center; color: #4b5563; font-size: .66rem; font-weight: 950; }
-        .give-id-bar { height: 6px; border-radius: 999px; background: rgba(23,25,28,.1); overflow: hidden; }
-        .give-id-bar span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #7c3aed, #00a885); }
-        .give-id-code { text-align: right; color: #5f6874; font-size: .65rem; font-weight: 900; letter-spacing: .08em; white-space: nowrap; }
-        .result-card-download-button {
-            min-height: 44px; width: 100%; border: 1px solid #7c3aed; background: #fff; color: #6d28d9;
-            border-radius: 8px; padding: 0 16px; font-family: inherit; font-size: .88rem; font-weight: 950; cursor: pointer;
-        }
-        .result-card-download-button:hover { background: #f5f0ff; }
-        .result-card-download-button:disabled { opacity: .62; cursor: wait; }
-        .share-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .download-action { grid-column: 1 / -1; }
-        .share-retry-actions { display: flex; justify-content: center; margin-top: 12px; }
-        .toast { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); background: #101418; color: #fff; border-radius: 999px; padding: 10px 14px; font-size: 0.82rem; font-weight: 850; opacity: 0; pointer-events: none; transition: opacity 0.2s ease; z-index: 20; }
-        .toast.show { opacity: 1; }
-        footer { margin-top: 44px; padding: 30px 0; border-top: 1px solid var(--line); color: #8b94a1; text-align: center; font-size: 0.8rem; }
-        .footer-links { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; margin-bottom: 14px; color: #5b626c; font-weight: 700; }
-
-        @media (min-width: 720px) {
-            .inner { width: min(100%, 680px); }
-            .landing { padding-top: 58px; }
-            .landing-grid { grid-template-columns: repeat(3, 1fr); }
-            .hero-panel { padding: 22px; }
-            .related-tests { grid-template-columns: repeat(3, 1fr); }
-            .related-card { display: block; min-height: 164px; }
-            .related-icon { margin-bottom: 12px; }
-            .choice-grid { grid-template-columns: repeat(3, 1fr); }
-            .conversion-grid { grid-template-columns: repeat(3, 1fr); }
-            .share-actions { grid-template-columns: repeat(3, 1fr); }
-        }    </style>
     <link rel="stylesheet" href="/give-theme.css">
     <script type="application/ld+json">
     {
@@ -266,7 +63,7 @@
     }
     </script>
 </head>
-<body>
+<body class="give-test-page">
     <a class="skip" href="#main">본문 바로가기</a>
     <nav class="nav">
         <div class="inner">
@@ -283,8 +80,9 @@
             <div class="inner hero">
 
                 <div class="test-intro-image">
-                    <img src="/images/tests/give-id-illustration.png" alt="세 사람이 균형 잡힌 관계를 이야기하는 따뜻한 일러스트" loading="eager">
+                    <img src="/images/tests/give-id-illustration-v3.png" alt="도움, 경계, 회복 카드를 따라 내 관계 패턴을 살피는 따뜻한 일러스트" loading="eager">
                 </div>
+                <p class="test-intro-caption">도움, 경계, 회복이 어디서 어긋나는지 한눈에 보는 검사입니다.</p>
                 <h1>왜 항상 나만 손해 볼까?</h1>
                 <p class="hero-copy">착해서가 아니에요. 계속 선 넘는 사람을 너무 오래 봐준 거예요.</p>
                 <button class="primary-btn" onclick="startTest()">내가 당하는 이유 보기</button>
@@ -306,18 +104,22 @@
                         <button class="tab-btn" type="button" role="tab" id="give-tab-4" aria-controls="give-panel-4" aria-selected="false">무료 보상</button>
                     </div>
                     <div class="tab-panel active" role="tabpanel" id="give-panel-1" aria-labelledby="give-tab-1">
+                        <span class="tab-kicker">그림 읽기 · 세 장의 카드</span>
                         <h3>배려가 손해로 바뀌는 지점</h3>
                         <p>16문항으로 부탁, 인정 욕구, 거절 부담, 회복 속도를 함께 봅니다.</p>
                     </div>
                     <div class="tab-panel" role="tabpanel" id="give-panel-2" aria-labelledby="give-tab-2">
+                        <span class="tab-kicker">그림 읽기 · 연결된 경로</span>
                         <h3>결과는 한 장의 리포트처럼</h3>
                         <p>유형명만 보여주지 않고 강점, 위험 신호, 오늘의 조언을 이어서 읽게 구성했습니다.</p>
                     </div>
                     <div class="tab-panel" role="tabpanel" id="give-panel-3" aria-labelledby="give-tab-3">
+                        <span class="tab-kicker">그림 읽기 · 회복 카드</span>
                         <h3>바로 움직일 수 있게</h3>
                         <p>결과에 맞는 칼럼과 다음 테스트를 추천해 같은 패턴을 반복하지 않도록 돕습니다.</p>
                     </div>
                     <div class="tab-panel" role="tabpanel" id="give-panel-4" aria-labelledby="give-tab-4">
+                        <span class="tab-kicker">그림 읽기 · 닫힌 부담</span>
                         <h3>로그인 없이 시작</h3>
                         <p>검사는 바로 가능하고, 보상 버튼을 누를 때만 로그인 모달로 이어집니다.</p>
                     </div>
@@ -354,6 +156,9 @@
         <section id="result-page" class="hidden">
             <div class="inner">
                 <div class="completion" id="completion">분석 완료. 당신의 관계 패턴이 열렸습니다.</div>
+                <a href="result-sequence.html" class="primary-btn result-sequence-link">
+                  내 패턴 처음부터 보기 →
+                </a>
                 <div class="ad-slot large">AD · Top result AdSense slot<br>결과 페이지 첫 화면 상단 광고 영역</div>
 
                 <article class="result-shell">
@@ -366,7 +171,7 @@
                     <div class="result-body">
                         <section class="result-report-lead" aria-label="결과 리포트 안내">
                             <div class="result-visual">
-                                <img src="/images/tests/give-id-illustration.png" alt="관계 패턴을 함께 살피는 따뜻한 일러스트" loading="lazy">
+                                <img src="/images/tests/give-id-illustration-v3.png" alt="도움, 경계, 회복 카드를 따라 관계 패턴을 살피는 따뜻한 일러스트" loading="lazy">
                             </div>
                             <div class="result-report-copy">
                                 <strong>결과는 유형보다 다음 행동이 중요합니다</strong>
@@ -427,10 +232,10 @@
                         </div>
                     </div>
                 </article>
-                <section style="background:#f3f0ff;border:1px solid #d8ccff;border-radius:12px;padding:20px;margin-top:16px;">
-                    <p style="font-size:0.95rem;font-weight:750;color:#3d2d6e;margin:0 0 14px;line-height:1.5;">무료 검사에서 보인 신호를 실제 행동 계획으로 바꾸고 싶다면</p>
-                    <button class="primary-btn" onclick="openPaid('new_cta')" style="background:#7c3aed;box-shadow:0 12px 26px rgba(124,58,237,0.28);">GIVE ID 심화 테스트 시작하기 →</button>
-                    <p class="micro" style="margin-top:10px;color:#7c5cbf;">무료 결과는 유지됩니다.</p>
+                <section class="paid-lite-cta">
+                    <p>무료 검사에서 보인 신호를 실제 행동 계획으로 바꾸고 싶다면</p>
+                    <button class="primary-btn" onclick="openPaid('new_cta')">GIVE ID 심화 테스트 시작하기 →</button>
+                    <p class="micro">무료 결과는 유지됩니다.</p>
                 </section>
 
                 <section class="unlock-panel">
@@ -438,7 +243,7 @@
                         <strong>아직 핵심은 안 열렸어요</strong>
                         <span class="unlock-pill">남은 38%</span>
                     </div>
-                    <p style="color:var(--ink-sub);font-weight:750;font-size:.9rem">여기서 멈추면, 다음에도 똑같이 당합니다.</p>
+                    <p class="unlock-note">여기서 멈추면, 다음에도 똑같이 당합니다.</p>
                     <div class="unlock-track"><div class="unlock-fill"></div></div>
                     <div class="locked-list">
                         <div class="locked-item">🔒 내가 매번 당하는 그 장면</div>
@@ -464,7 +269,7 @@
                 </section>
 
                 <section class="share-panel">
-                    <h2 class="loop-title" style="margin:0">결과 공유하기</h2>
+                    <h2 class="loop-title flush-title">결과 공유하기</h2>
                     <div class="share-card" id="shareCard">
                         <div class="give-id-card-inner">
                             <div class="give-id-card-top">
@@ -512,8 +317,8 @@
                 <section>
                     <h2 class="loop-title">다음은 이거 보세요</h2>
                     <div class="related-tests">
-                        <div class="related-card" id="hogooCheckCard" onclick="handleHogooCheckClick()" style="cursor:pointer;opacity:0.65;">
-                            <span class="related-icon" style="background:#f3f0f8;color:#7c5cbf;">🔒</span>
+                        <div class="related-card is-locked" id="hogooCheckCard" onclick="handleHogooCheckClick()">
+                            <span class="related-icon locked">잠김</span>
                             <div>
                                 <strong>나는 호구일까?</strong>
                                 <span id="hogooCheckStatus">후기를 작성하면 열려요</span>
@@ -539,7 +344,7 @@
 
                 <div
                     id="give-test-reward-root"
-                    style="margin-top:32px"
+                    class="reward-root-spaced"
                     data-free-test-reward-root="give-test-reward-root"
                     data-test-id="give-test"
                     data-result-type="GIVE ID 결과"

@@ -26,6 +26,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" crossorigin>
     <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" crossorigin></noscript>
+    <link rel="stylesheet" href="/give-theme.css">
     <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.8.1/kakao.min.js" defer></script>
     <script src="/give-progress.js"></script>
     <script>
@@ -87,39 +88,21 @@
       }
     }
     </script>
-    <style>
-      .seo-content {
-        background: #1a1614;
-        color: #f5ede3;
-        font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-      }
-      .seo-inner { max-width: 760px; margin: 0 auto; padding: 34px 20px; }
-      .seo-content h1, .seo-content h2, .seo-content h3 { letter-spacing: 0; line-height: 1.25; }
-      .seo-content h1 { font-size: 2rem; margin: 0 0 14px; }
-      .seo-content h2 { font-size: 1.35rem; margin: 36px 0 14px; }
-      .seo-content h3 { font-size: 1rem; margin: 0 0 8px; color: #f5ede3; }
-      .seo-content p { color: #cbbfb4; line-height: 1.75; margin: 0 0 14px; }
-      .seo-content ul, .seo-content ol { padding-left: 20px; color: #cbbfb4; line-height: 1.75; }
-      .seo-content li { margin-bottom: 8px; }
-      .seo-grid { display: grid; gap: 12px; margin: 18px 0; }
-      .seo-card { border: 1px solid #3a3530; border-radius: 8px; padding: 18px; background: #231f1c; }
-      .seo-note { border-left: 4px solid #00a885; background: #20251f; padding: 18px; border-radius: 8px; }
-      @media (min-width: 680px) { .seo-grid.two { grid-template-columns: repeat(2, 1fr); } }
-    </style>
 </head>
   <body>
-    <nav style="padding: 24px 0; border-bottom: 1px solid #3a3530; background: #1a1614; font-family: 'Pretendard', sans-serif;">
-        <div style="max-width: 600px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center;">
-            <a href="index.html" style="font-size: 1.1rem; font-weight: 900; color: #00a885; text-decoration: none; letter-spacing: -0.03em;">GIVE ECOSYSTEM</a>
-            <div style="display: flex; gap: 15px;">
-                <a href="about.html" style="text-decoration: none; color: #8a7f75; font-size: 0.9rem; font-weight: 500;">브랜드 스토리</a>
-                <a href="reviews.html" style="text-decoration: none; color: #8a7f75; font-size: 0.9rem; font-weight: 500;">후기</a>
-                <a href="articles/giver-burnout.html" style="text-decoration: none; color: #8a7f75; font-size: 0.9rem; font-weight: 500;">심리 칼럼</a>
+    <a class="skip" href="#root">본문 바로가기</a>
+    <nav class="site-nav" aria-label="주요 메뉴">
+        <div class="review-shell">
+            <a href="index.html" class="logo">GIVE ECOSYSTEM</a>
+            <div class="nav-links">
+                <a href="about.html">브랜드 스토리</a>
+                <a href="reviews.html">후기</a>
+                <a href="articles/giver-burnout.html">심리 칼럼</a>
             </div>
         </div>
     </nav>
     <div id="root"></div>
-    <section class="seo-content" aria-labelledby="challenge-title">
+    <section class="challenge-seo" aria-labelledby="challenge-title">
       <div class="seo-inner">
         <h1 id="challenge-title">호구 탈출 7일 챌린지</h1>
         <p>이 페이지는 “착한 사람을 그만두라”는 메시지가 아니라, 선의를 오래 유지하기 위해 필요한 경계선을 연습하는 실천형 프로그램입니다. 부탁을 받는 순간 바로 수락하고, 거절 후 죄책감 때문에 다시 번복하고, 도움의 범위를 정하지 못해 지치는 사람을 위해 만들었습니다.</p>
@@ -155,16 +138,16 @@
         </ol>
       </div>
     </section>
-    <div class="container" style="max-width: 600px; margin: 0 auto; padding: 20px;">
-        <footer style="margin-top: 80px; padding: 60px 0 40px; border-top: 1px solid #f2f2f2; text-align: center; font-size: 0.85rem; color: #999; font-family: 'Pretendard', sans-serif;">
-            <div style="margin-bottom: 20px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
-                <a href="index.html" style="text-decoration: none; color: #666;">홈으로</a>
-                <a href="about.html" style="text-decoration: none; color: #666;">브랜드 스토리</a>
-                <a href="articles/giver-burnout.html" style="text-decoration: none; color: #666;">심리 칼럼</a>
-                <a href="reviews.html" style="text-decoration: none; color: #666;">챌린지 후기</a>
-                <a href="terms.html" style="text-decoration: none; color: #666;">이용약관</a>
-                <a href="privacy.html" style="text-decoration: none; color: #666;">개인정보처리방침</a>
-                <a href="affiliate.html" style="text-decoration: none; color: #666;">제휴 문의</a>
+    <div class="challenge-footer-shell">
+        <footer>
+            <div class="footer-links">
+                <a href="index.html">홈으로</a>
+                <a href="about.html">브랜드 스토리</a>
+                <a href="articles/giver-burnout.html">심리 칼럼</a>
+                <a href="reviews.html">챌린지 후기</a>
+                <a href="terms.html">이용약관</a>
+                <a href="privacy.html">개인정보처리방침</a>
+                <a href="affiliate.html">제휴 문의</a>
             </div>
             <p>&copy; 2026 GIVE Ecosystem. All rights reserved.</p>
         </footer>

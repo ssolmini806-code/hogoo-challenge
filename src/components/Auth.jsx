@@ -36,13 +36,13 @@ export default function Auth() {
   return (
     <div style={{
       maxWidth: 400, margin: '100px auto', padding: '40px 24px',
-      background: '#231f1c', borderRadius: 20, border: '1px solid #3a3530',
+      background: 'var(--surface)', borderRadius: 20, border: '1px solid var(--line)',
       textAlign: 'center'
     }}>
-      <h2 style={{ color: '#f5ede3', marginBottom: 8, fontSize: 24, fontWeight: 800 }}>
+      <h2 style={{ color: 'var(--ink)', marginBottom: 8, fontSize: 24, fontWeight: 800 }}>
         {isSignUp ? '챌린지 시작하기' : '다시 오셨군요!'}
       </h2>
-      <p style={{ color: '#8a7f75', marginBottom: 32, fontSize: 14 }}>
+      <p style={{ color: 'var(--ink-sub)', marginBottom: 32, fontSize: 15, lineHeight: 1.6 }}>
         {isSignUp ? '계정을 생성하고 진행 상황을 저장하세요.' : '로그인하여 진행 상황을 이어가세요.'}
       </p>
       
@@ -54,8 +54,9 @@ export default function Auth() {
           onChange={(e) => setEmail(e.target.value)}
           required
           style={{
-            padding: '14px 16px', borderRadius: 10, border: '1px solid #3a3530',
-            background: '#1a1614', color: '#f5ede3', outline: 'none'
+            padding: '14px 16px', borderRadius: 10, border: '1px solid var(--line)',
+            background: 'var(--surface)', color: 'var(--ink)', outline: 'none',
+            fontSize: 15,
           }}
         />
         <input
@@ -65,8 +66,9 @@ export default function Auth() {
           onChange={(e) => setPassword(e.target.value)}
           required
           style={{
-            padding: '14px 16px', borderRadius: 10, border: '1px solid #3a3530',
-            background: '#1a1614', color: '#f5ede3', outline: 'none'
+            padding: '14px 16px', borderRadius: 10, border: '1px solid var(--line)',
+            background: 'var(--surface)', color: 'var(--ink)', outline: 'none',
+            fontSize: 15,
           }}
         />
         <button
@@ -74,7 +76,7 @@ export default function Auth() {
           type="submit"
           style={{
             padding: '14px', borderRadius: 10, border: 'none',
-            background: '#00a885', color: '#fff', fontWeight: 800,
+            background: 'var(--green)', color: 'var(--surface)', fontWeight: 800,
             cursor: 'pointer', fontSize: 16
           }}
         >
@@ -86,7 +88,7 @@ export default function Auth() {
         onClick={() => setIsSignUp(!isSignUp)}
         style={{
           marginTop: 24, background: 'none', border: 'none',
-          color: '#8a7f75', cursor: 'pointer', fontSize: 13, textDecoration: 'underline'
+          color: 'var(--ink-sub)', cursor: 'pointer', fontSize: 15, textDecoration: 'underline'
         }}
       >
         {isSignUp ? '이미 계정이 있으신가요? 로그인하기' : '계정이 없으신가요? 가입하기'}

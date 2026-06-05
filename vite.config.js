@@ -10,6 +10,7 @@ export default defineConfig({
       input: {
         main: resolve(__dirname, 'index.html'),
         give: resolve(__dirname, 'give-test.html'),
+        'result-sequence': resolve(__dirname, 'result-sequence.html'),
         hogoo: resolve(__dirname, 'hogoo-test.html'),
         'hogoo-check': resolve(__dirname, 'hogoo-check.html'),
         'relationship-risk': resolve(__dirname, 'relationship-risk.html'),

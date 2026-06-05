@@ -13,33 +13,28 @@
     <meta name="robots" content="noindex, follow">
     <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" crossorigin>
     <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" crossorigin></noscript>
-    <style>
-        :root { --primary: #00a885; --primary-soft: #f0f9f7; --text-main: #1d1d1f; --text-sub: #6e6e73; }
-        * { box-sizing: border-box; margin: 0; padding: 0; word-break: keep-all; }
-        body { font-family: 'Pretendard', -apple-system, sans-serif; background: #ffffff; color: var(--text-main); line-height: 1.6; display: flex; align-items: center; justify-content: center; min-height: 100vh; text-align: center; padding: 24px; }
-        .container { max-width: 480px; }
-        .icon { font-size: 5rem; margin-bottom: 24px; }
-        h1 { font-size: 5rem; font-weight: 900; color: var(--primary); margin-bottom: 8px; letter-spacing: -0.05em; }
-        h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 16px; }
-        p { font-size: 1rem; color: var(--text-sub); margin-bottom: 32px; }
-        .btn { display: inline-block; padding: 14px 32px; background: var(--primary); color: #fff; text-decoration: none; border-radius: 50px; font-weight: 700; font-size: 1rem; transition: opacity 0.2s; }
-        .btn:hover { opacity: 0.85; }
-        .links { margin-top: 24px; display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
-        .links a { text-decoration: none; color: var(--primary); font-weight: 600; font-size: 0.95rem; }
-    </style>
+    <link rel="stylesheet" href="/give-theme.css">
 </head>
-<body>
-    <div class="container">
-        <div class="icon">🧭</div>
-        <h1>404</h1>
-        <h2>페이지를 찾을 수 없습니다</h2>
-        <p>요청하신 주소가 이동되었거나 삭제되었습니다.<br>아래 링크로 이동해 보세요.</p>
-        <a href="/" class="btn">홈으로 돌아가기</a>
-        <div class="links">
+<body class="error-page">
+    <a class="skip" href="#error-main">본문 바로가기</a>
+    <main id="error-main" class="error-card" aria-labelledby="error-title">
+        <div class="itile lg" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="8"></circle>
+                <path d="M12 7v5l3 2"></path>
+                <path d="M7.5 4.5 5 2"></path>
+                <path d="M16.5 4.5 19 2"></path>
+            </svg>
+        </div>
+        <span class="error-code">404</span>
+        <h1 id="error-title">페이지를 찾을 수 없습니다</h1>
+        <p>요청하신 주소가 이동되었거나 삭제되었습니다. 아래 링크로 이동해 보세요.</p>
+        <a href="/" class="btn btn-primary">홈으로 돌아가기</a>
+        <div class="link-row" aria-label="추천 이동 링크">
             <a href="/give-test.html">GIVE ID 진단</a>
             <a href="/hogoo-test.html">7일 챌린지</a>
             <a href="/about.html">브랜드 스토리</a>
         </div>
-    </div>
+    </main>
 </body>
 </html>
