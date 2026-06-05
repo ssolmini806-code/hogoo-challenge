@@ -422,7 +422,6 @@ footer{padding:54px 0 44px;border-top:1px solid var(--line);margin-top:48px;text
 .related-card.is-locked{cursor:pointer;opacity:.72;}
 .related-icon.locked{background:var(--surface-2);color:var(--green);}
 .reward-root-spaced{margin-top:32px;}
-.result-sequence-link{display:inline-flex;align-items:center;justify-content:center;margin-bottom:16px;text-decoration:none;}
 
 .refusal-page .inner{width:min(100%,480px);margin:0 auto;padding:0 22px;}
 .refusal-page .page{width:100%;}
