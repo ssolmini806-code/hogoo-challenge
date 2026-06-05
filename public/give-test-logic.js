@@ -27,7 +27,7 @@ const results = {
         advice: "오늘은 작은 부탁 하나에 “지금은 어려워”라고 답해보세요.",
         character: "/images/types/give-id/type-angel.webp",
         next: { title: "다음: 왜 거절 못할까?", copy: "“미안해서” 또 당하는 사람용.", url: "refusal-test.html" },
-        color: "#ffe7a3"
+        color: "var(--amber-soft)"
     },
     diplomat: {
         name: "분위기 지킴이",
@@ -38,7 +38,7 @@ const results = {
         advice: "부탁을 받으면 바로 답하지 말고 “확인하고 말해줄게”를 먼저 말하세요.",
         character: "/images/types/give-id/type-diplomat.webp",
         next: { title: "다음: 그 관계 괜찮아?", copy: "계속 맞춰주면 언젠가 터져요.", url: "relationship-risk.html" },
-        color: "#ffd9b8"
+        color: "var(--amber-soft)"
     },
     architect: {
         name: "계산 빠른 살림꾼",
@@ -49,7 +49,7 @@ const results = {
         advice: "오늘은 효율과 상관없이 짧은 칭찬 한마디를 건네보세요.",
         character: "/images/types/give-id/type-awakening.webp",
         next: { title: "다음: 선일까, 벽일까?", copy: "좋은 사람까지 밀어내는지 확인.", url: "relationship-risk.html" },
-        color: "#cfe3ff"
+        color: "var(--surface-2)"
     },
     guardian: {
         name: "선 잘 긋는 문지기",
@@ -60,7 +60,7 @@ const results = {
         advice: "내 선을 넘지 않는 범위에서 먼저 작은 제안을 해보세요.",
         character: "/images/types/give-id/type-gatekeeper.webp",
         next: { title: "다음: 나 진짜 안 당할까?", copy: "특정 사람 앞에서만 무너질 수 있어요.", url: "hogoo-check.html" },
-        color: "#c8f2d2"
+        color: "var(--green-soft)"
     },
     burnout: {
         name: "방전된 햄스터 🔋",
@@ -71,7 +71,7 @@ const results = {
         advice: "오늘 하루는 모든 추가 부탁을 보류하고 나를 회복시키는 시간을 확보하세요.",
         character: "/images/types/give-id/type-hamster.webp",
         next: { title: "다음: 이제 그만해도 돼요", copy: "착함 말고 멈춤이 필요해요.", url: "refusal-test.html" },
-        color: "#ffd3dc"
+        color: "var(--amber-soft)"
     },
     blocker: {
         name: "철벽 고슴도치 🦔",
@@ -82,7 +82,7 @@ const results = {
         advice: "믿을 수 있는 사람의 작은 호의 하나를 있는 그대로 받아보세요.",
         character: "/images/types/give-id/type-hedgehog.webp",
         next: { title: "다음: 방어하다 외로워짐", copy: "상처는 피했는데 사람도 사라질 수 있어요.", url: "relationship-risk.html" },
-        color: "#d8efff"
+        color: "var(--mint-soft)"
     },
     mixed: {
         name: "줄타기 균형러",
@@ -93,7 +93,7 @@ const results = {
         advice: "내가 절대 넘기지 않을 관계 원칙 하나를 적어보세요.",
         character: "/images/types/give-id/type-balancer.webp",
         next: { title: "다음: 내가 무너지는 순간", copy: "기준이 애매하면 또 반복돼요.", url: "hogoo-check.html" },
-        color: "#e5d8ff"
+        color: "var(--green-soft)"
     }
 };
 
@@ -211,13 +211,13 @@ const lockedInterpretations = {
 
 function characterSvg(fill) {
     return `<svg class="character" viewBox="0 0 120 128" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <circle cx="60" cy="64" r="44" fill="${fill}" stroke="#14181d" stroke-width="3"/>
-        <circle cx="44" cy="58" r="5" fill="#14181d"/><circle cx="76" cy="58" r="5" fill="#14181d"/>
-        <circle cx="46" cy="56" r="1.6" fill="#fff"/><circle cx="78" cy="56" r="1.6" fill="#fff"/>
-        <path d="M46 78 Q60 90 74 78" stroke="#14181d" stroke-width="4" stroke-linecap="round" fill="none"/>
-        <circle cx="34" cy="73" r="8" fill="#fff" opacity=".35"/><circle cx="86" cy="73" r="8" fill="#fff" opacity=".35"/>
-        <path d="M30 31 C34 12 51 20 60 34 C69 20 86 12 90 31" stroke="#14181d" stroke-width="3" stroke-linecap="round" fill="none"/>
-        <rect x="45" y="103" width="30" height="18" rx="8" fill="${fill}" stroke="#14181d" stroke-width="3"/>
+        <circle cx="60" cy="64" r="44" fill="${fill}" stroke="var(--ink)" stroke-width="3"/>
+        <circle cx="44" cy="58" r="5" fill="var(--ink)"/><circle cx="76" cy="58" r="5" fill="var(--ink)"/>
+        <circle cx="46" cy="56" r="1.6" fill="var(--surface)"/><circle cx="78" cy="56" r="1.6" fill="var(--surface)"/>
+        <path d="M46 78 Q60 90 74 78" stroke="var(--ink)" stroke-width="4" stroke-linecap="round" fill="none"/>
+        <circle cx="34" cy="73" r="8" fill="var(--surface)" opacity=".35"/><circle cx="86" cy="73" r="8" fill="var(--surface)" opacity=".35"/>
+        <path d="M30 31 C34 12 51 20 60 34 C69 20 86 12 90 31" stroke="var(--ink)" stroke-width="3" stroke-linecap="round" fill="none"/>
+        <rect x="45" y="103" width="30" height="18" rx="8" fill="${fill}" stroke="var(--ink)" stroke-width="3"/>
     </svg>`;
 }
 
@@ -463,14 +463,14 @@ window.addEventListener("free-test-reward-status", (event) => {
     if (hogooCheckUnlocked) {
         card.style.opacity = "1";
         icon.style.background = "var(--mint)";
-        icon.style.color = "var(--green-dark)";
+        icon.style.color = "var(--ink)";
         icon.textContent = "01";
         status.textContent = "착한 건지, 만만한 건지";
     } else {
         card.style.opacity = "0.65";
-        icon.style.background = "#f3f0f8";
-        icon.style.color = "#7c5cbf";
-        icon.textContent = "🔒";
+        icon.style.background = "var(--surface-2)";
+        icon.style.color = "var(--green)";
+        icon.textContent = "잠금";
         status.textContent = "후기를 작성하면 열려요";
     }
 });
