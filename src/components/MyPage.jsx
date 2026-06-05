@@ -10,14 +10,14 @@ const SUB_STATUS_LABEL = { active: '구독 중', cancelled: '취소됨', expired
 const styles = {
   page: {
     fontFamily: '"Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
-    background: '#f8fafc',
+    background: 'var(--bg)',
     minHeight: '100vh',
     letterSpacing: '-0.01em',
-    color: '#0f172a',
+    color: 'var(--ink)',
   },
   header: {
-    background: '#fff',
-    borderBottom: '1px solid #e2e8f0',
+    background: 'var(--surface)',
+    borderBottom: '1px solid var(--line)',
     padding: '16px 20px',
     display: 'flex',
     alignItems: 'center',
@@ -29,10 +29,11 @@ const styles = {
   backBtn: {
     background: 'none',
     border: 'none',
-    color: '#64748b',
+    color: 'var(--ink-sub)',
     cursor: 'pointer',
-    fontSize: 14,
-    padding: '6px 10px',
+    fontSize: 15,
+    minHeight: 44,
+    padding: '10px 12px',
     borderRadius: 8,
     display: 'flex',
     alignItems: 'center',
@@ -40,8 +41,8 @@ const styles = {
   },
   container: { maxWidth: 600, margin: '0 auto', padding: '20px 16px 60px' },
   section: {
-    background: '#fff',
-    border: '1px solid #e2e8f0',
+    background: 'var(--surface)',
+    border: '1px solid var(--line)',
     borderRadius: 16,
     padding: '20px',
     marginBottom: 16,
@@ -49,14 +50,14 @@ const styles = {
   sectionTitle: {
     fontSize: 13,
     fontWeight: 700,
-    color: '#64748b',
+    color: 'var(--green)',
     letterSpacing: '0.06em',
     textTransform: 'uppercase',
     marginBottom: 14,
   },
-  row: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: '1px solid #f1f5f9' },
-  label: { fontSize: 14, color: '#64748b' },
-  value: { fontSize: 14, fontWeight: 600, color: '#0f172a' },
+  row: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: '1px solid var(--line)' },
+  label: { fontSize: 15, color: 'var(--ink-sub)' },
+  value: { fontSize: 15, fontWeight: 600, color: 'var(--ink)' },
   badge: (color) => ({
     display: 'inline-flex',
     alignItems: 'center',
@@ -65,22 +66,22 @@ const styles = {
     borderRadius: 999,
     fontSize: 12,
     fontWeight: 700,
-    background: color === 'green' ? '#dcfce7' : color === 'blue' ? '#dbeafe' : '#f1f5f9',
-    color: color === 'green' ? '#166534' : color === 'blue' ? '#1e40af' : '#475569',
+    background: color === 'green' ? 'var(--green-soft)' : color === 'blue' ? 'var(--mint-soft)' : 'var(--surface-2)',
+    color: color === 'green' ? 'var(--green)' : color === 'blue' ? 'var(--mint-ink)' : 'var(--ink-sub)',
     marginRight: 6,
     marginBottom: 6,
   }),
-  emptyText: { fontSize: 13, color: '#94a3b8', textAlign: 'center', padding: '20px 0' },
+  emptyText: { fontSize: 15, color: 'var(--ink-faint)', textAlign: 'center', padding: '20px 0', lineHeight: 1.6 },
   reviewCard: {
-    background: '#f8fafc',
-    border: '1px solid #e2e8f0',
+    background: 'var(--surface-2)',
+    border: '1px solid var(--line)',
     borderRadius: 10,
     padding: '12px 14px',
     marginBottom: 10,
   },
   orderCard: {
-    background: '#f8fafc',
-    border: '1px solid #e2e8f0',
+    background: 'var(--surface-2)',
+    border: '1px solid var(--line)',
     borderRadius: 10,
     padding: '12px 14px',
     marginBottom: 10,
@@ -133,7 +134,7 @@ export default function MyPage({ session, onBack }) {
   if (loading) {
     return (
       <div style={{ ...styles.page, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <span style={{ color: '#94a3b8', fontSize: 14 }}>불러오는 중...</span>
+        <span style={{ color: 'var(--ink-faint)', fontSize: 15 }}>불러오는 중...</span>
       </div>
     );
   }
@@ -142,18 +143,18 @@ export default function MyPage({ session, onBack }) {
     <div style={styles.page}>
       <div style={styles.header}>
         <button style={styles.backBtn} onClick={onBack}>← 뒤로</button>
-        <span style={{ fontSize: 16, fontWeight: 700, color: '#0f172a' }}>마이페이지</span>
+        <span style={{ fontSize: 16, fontWeight: 700, color: 'var(--ink)' }}>마이페이지</span>
       </div>
 
       <div style={styles.container}>
         {/* 내 정보 */}
         <div style={styles.section}>
           <div style={styles.sectionTitle}>내 정보</div>
-          <div style={{ ...styles.row, borderBottom: '1px solid #f1f5f9' }}>
+          <div style={styles.row}>
             <span style={styles.label}>이메일</span>
             <span style={styles.value}>{session?.user?.email || '-'}</span>
           </div>
-          <div style={{ ...styles.row, borderBottom: '1px solid #f1f5f9' }}>
+          <div style={styles.row}>
             <span style={styles.label}>닉네임</span>
             <span style={styles.value}>{profile?.nickname || '-'}</span>
           </div>
@@ -168,7 +169,7 @@ export default function MyPage({ session, onBack }) {
           <div style={styles.sectionTitle}>보상 현황</div>
           {giveidRewards.length > 0 && (
             <div style={{ marginBottom: 12 }}>
-              <div style={{ fontSize: 12, color: '#94a3b8', marginBottom: 8 }}>GIVE ID</div>
+              <div style={{ fontSize: 12, color: 'var(--ink-faint)', marginBottom: 8 }}>GIVE ID</div>
               <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                 {giveidRewards.map((r, i) => (
                   <span key={i} style={styles.badge('blue')}>{REWARD_LABEL[r.reward_type] || r.reward_type}</span>
@@ -178,7 +179,7 @@ export default function MyPage({ session, onBack }) {
           )}
           {paid30Rewards.length > 0 && (
             <div>
-              <div style={{ fontSize: 12, color: '#94a3b8', marginBottom: 8 }}>30일 플랜</div>
+              <div style={{ fontSize: 12, color: 'var(--ink-faint)', marginBottom: 8 }}>30일 플랜</div>
               <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                 {paid30Rewards.map((r, i) => (
                   <span key={i} style={styles.badge('green')}>{REWARD_LABEL[r.reward_type] || r.reward_type}</span>
@@ -221,10 +222,10 @@ export default function MyPage({ session, onBack }) {
           <div style={styles.sectionTitle}>내 후기</div>
           {myReviews.length > 0 ? myReviews.map((r, i) => (
             <div key={i} style={styles.reviewCard}>
-              <div style={{ fontSize: 12, color: '#94a3b8', marginBottom: 6 }}>
+              <div style={{ fontSize: 12, color: 'var(--ink-faint)', marginBottom: 6 }}>
                 {CONTEXT_LABEL[r.review_context] || r.review_context} · {formatDate(r.created_at)}
               </div>
-              <p style={{ margin: 0, fontSize: 14, color: '#334155', lineHeight: 1.6 }}>{r.content}</p>
+              <p style={{ margin: 0, fontSize: 15, color: 'var(--ink-sub)', lineHeight: 1.6 }}>{r.content}</p>
             </div>
           )) : (
             <p style={styles.emptyText}>아직 작성한 후기가 없어요</p>
@@ -236,7 +237,7 @@ export default function MyPage({ session, onBack }) {
           <div style={styles.sectionTitle}>구매 및 구독</div>
           {subscriptions.length > 0 && (
             <div style={{ marginBottom: 14 }}>
-              <div style={{ fontSize: 12, color: '#94a3b8', marginBottom: 8 }}>구독</div>
+              <div style={{ fontSize: 12, color: 'var(--ink-faint)', marginBottom: 8 }}>구독</div>
               {subscriptions.map((s, i) => (
                 <div key={i} style={styles.orderCard}>
                   <span style={styles.value}>{s.product_key}</span>
@@ -249,12 +250,12 @@ export default function MyPage({ session, onBack }) {
           )}
           {orders.length > 0 ? (
             <>
-              <div style={{ fontSize: 12, color: '#94a3b8', marginBottom: 8 }}>결제 내역</div>
+              <div style={{ fontSize: 12, color: 'var(--ink-faint)', marginBottom: 8 }}>결제 내역</div>
               {orders.map((o, i) => (
                 <div key={i} style={styles.orderCard}>
                   <div>
                     <div style={styles.value}>{o.product_key}</div>
-                    <div style={{ fontSize: 12, color: '#94a3b8', marginTop: 2 }}>{formatDate(o.paid_at)}</div>
+                    <div style={{ fontSize: 12, color: 'var(--ink-faint)', marginTop: 2 }}>{formatDate(o.paid_at)}</div>
                   </div>
                   <span style={styles.badge(o.status === 'paid' ? 'green' : 'default')}>
                     {ORDER_STATUS_LABEL[o.status] || o.status}

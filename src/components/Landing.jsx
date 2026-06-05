@@ -27,8 +27,8 @@ export default function Landing({ locale: localeProp, onCtaClick }) {
     }}>
       {/* Membership pitch */}
       <section style={{
-        background: '#fff',
-        border: '1px solid #e2e8f0',
+        background: 'var(--surface)',
+        border: '1px solid var(--line)',
         borderRadius: 20,
         padding: '36px 28px',
         marginBottom: 16,
@@ -37,7 +37,7 @@ export default function Landing({ locale: localeProp, onCtaClick }) {
           margin: '0 0 14px',
           fontSize: 22,
           fontWeight: 800,
-          color: '#0f172a',
+          color: 'var(--ink)',
           lineHeight: 1.3,
           letterSpacing: '-0.03em',
           wordBreak: 'keep-all',
@@ -47,7 +47,7 @@ export default function Landing({ locale: localeProp, onCtaClick }) {
         <p style={{
           margin: '0 0 28px',
           fontSize: 15,
-          color: '#475569',
+          color: 'var(--ink-sub)',
           lineHeight: 1.7,
           wordBreak: 'keep-all',
         }}>
@@ -56,15 +56,15 @@ export default function Landing({ locale: localeProp, onCtaClick }) {
 
         {/* Challenge CTA */}
         <div style={{
-          background: 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)',
-          border: '1px solid #bbf7d0',
+          background: 'var(--green-soft)',
+          border: '1px solid var(--line)',
           borderRadius: 14,
           padding: '20px 20px 22px',
         }}>
           <div style={{
             fontSize: 13,
             fontWeight: 700,
-            color: '#16a34a',
+            color: 'var(--mint-ink)',
             letterSpacing: '0.04em',
             marginBottom: 8,
           }}>
@@ -74,7 +74,7 @@ export default function Landing({ locale: localeProp, onCtaClick }) {
             margin: '0 0 16px',
             fontSize: 18,
             fontWeight: 800,
-            color: '#14532d',
+            color: 'var(--green)',
             lineHeight: 1.3,
             letterSpacing: '-0.02em',
             wordBreak: 'keep-all',
@@ -87,8 +87,8 @@ export default function Landing({ locale: localeProp, onCtaClick }) {
               display: 'block',
               width: '100%',
               padding: '14px',
-              background: '#00a885',
-              color: '#fff',
+              background: 'var(--green)',
+              color: 'var(--surface)',
               border: 'none',
               borderRadius: 10,
               fontSize: 15,
