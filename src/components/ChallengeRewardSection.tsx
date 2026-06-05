@@ -115,8 +115,8 @@ function openKakaoShare() {
 }
 
 const card: React.CSSProperties = {
-  background: '#231f1c',
-  border: '1px solid #3a3530',
+  background: 'var(--surface)',
+  border: '1px solid var(--line)',
   borderRadius: 12,
   padding: 16,
   marginBottom: 12,
@@ -141,7 +141,8 @@ const btn = (bg: string, color: string, border?: string): React.CSSProperties =>
   padding: '12px',
   fontWeight: 800,
   cursor: 'pointer',
-  fontSize: 14,
+  fontSize: 15,
+  minHeight: 44,
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -149,6 +150,11 @@ const btn = (bg: string, color: string, border?: string): React.CSSProperties =>
   width: '100%',
   fontFamily: 'inherit',
 });
+
+function cssToken(name: string) {
+  if (typeof window === 'undefined') return '';
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
 
 export default function ChallengeRewardSection({
   userId,
@@ -206,18 +212,18 @@ export default function ChallengeRewardSection({
     canvas.height = 1600;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-    ctx.fillStyle = '#1a1614';
+    ctx.fillStyle = cssToken('--bg') || 'rgb(250, 248, 243)';
     ctx.fillRect(0, 0, 1200, 1600);
-    ctx.fillStyle = '#00a885';
+    ctx.fillStyle = cssToken('--green') || 'rgb(17, 75, 60)';
     ctx.textAlign = 'center';
     ctx.font = '700 72px sans-serif';
     ctx.fillText('7일 호구 탈출 챌린지', 600, 420);
-    ctx.fillStyle = '#f5ede3';
+    ctx.fillStyle = cssToken('--ink') || 'rgb(26, 31, 28)';
     ctx.font = '800 96px sans-serif';
     ctx.fillText('완주 인증서', 600, 560);
     ctx.font = '500 42px sans-serif';
     ctx.fillText(`${safe}/7일 동안 해냈어요`, 600, 720);
-    ctx.fillStyle = '#8a7f75';
+    ctx.fillStyle = cssToken('--ink-sub') || 'rgb(92, 99, 94)';
     ctx.font = '400 30px sans-serif';
     ctx.fillText(new Date().toLocaleDateString('ko-KR'), 600, 1220);
     const link = document.createElement('a');
@@ -228,32 +234,32 @@ export default function ChallengeRewardSection({
 
   return (
     <section style={{ marginBottom: 24 }}>
-      <h2 style={{ fontSize: 18, fontWeight: 800, color: '#f5ede3', margin: '0 0 10px' }}>
+      <h2 style={{ fontSize: 18, fontWeight: 800, color: 'var(--ink)', margin: '0 0 10px' }}>
         완료 보상 받기
       </h2>
-      <p style={{ fontSize: 13, fontWeight: 600, color: '#00a885', margin: '0 0 4px' }}>
+      <p style={{ fontSize: 15, fontWeight: 700, color: 'var(--mint-ink)', margin: '0 0 4px' }}>
         공유하면 인증서를, 후기를 남기면 7일 회고록을 드려요.
       </p>
-      <p style={{ fontSize: 13, color: '#8a7f75', lineHeight: 1.6, margin: '0 0 16px' }}>
+      <p style={{ fontSize: 15, color: 'var(--ink-sub)', lineHeight: 1.6, margin: '0 0 16px' }}>
         둘 다 완료하면 30일 챌린지가 나한테 맞는지 진단해드립니다.
       </p>
 
       {/* A: SNS 공유 */}
       <article style={card}>
         <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12, marginBottom: 12 }}>
-          <div style={iconCircle('#1e2e22')}>
-            <Share2 size={18} color="#00a885" />
+          <div style={iconCircle('var(--mint-soft)')}>
+            <Share2 size={18} color="var(--mint-ink)" />
           </div>
           <div>
-            <h2 style={{ fontSize: 15, fontWeight: 700, color: '#f5ede3', margin: '0 0 4px' }}>SNS 공유</h2>
-            <p style={{ fontSize: 13, fontWeight: 600, color: '#c5b8ac', margin: 0 }}>혜택 A: 7일 완주 인증서 이미지 + 배지</p>
+            <h2 style={{ fontSize: 16, fontWeight: 800, color: 'var(--ink)', margin: '0 0 4px' }}>SNS 공유</h2>
+            <p style={{ fontSize: 15, fontWeight: 600, color: 'var(--ink-sub)', margin: 0 }}>혜택 A: 7일 완주 인증서 이미지 + 배지</p>
           </div>
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginTop: 10 }}>
           <button
             onClick={handleOpenShare}
-            style={btn('#00a885', '#fff')}
+            style={btn('var(--green)', 'var(--surface)')}
           >
             <Share2 size={15} />
             SNS에 공유하기
@@ -262,7 +268,7 @@ export default function ChallengeRewardSection({
             onClick={handleDownload}
             disabled={!isShared}
             style={{
-              ...btn('#2a2520', isShared ? '#c5b8ac' : '#5a5048', '1px solid #3a3530'),
+              ...btn('var(--surface-2)', isShared ? 'var(--green)' : 'var(--ink-faint)', '1px solid var(--line)'),
               cursor: isShared ? 'pointer' : 'not-allowed',
               opacity: isShared ? 1 : 0.6,
             }}
@@ -278,9 +284,9 @@ export default function ChallengeRewardSection({
             disabled={isShared}
             style={{
               ...btn(
-                isShared ? '#1e2e22' : '#00a885',
-                isShared ? '#7cc88a' : '#fff',
-                isShared ? '1px solid #2d4a35' : undefined,
+                isShared ? 'var(--green-soft)' : 'var(--green)',
+                isShared ? 'var(--green)' : 'var(--surface)',
+                isShared ? '1px solid var(--line)' : undefined,
               ),
               marginTop: 8,
               cursor: isShared ? 'default' : 'pointer',
@@ -293,7 +299,7 @@ export default function ChallengeRewardSection({
         )}
 
         {isShared && (
-          <p style={{ marginTop: 10, fontSize: 12, color: '#7cc88a', display: 'flex', alignItems: 'center', gap: 5, margin: '10px 0 0' }}>
+          <p style={{ fontSize: 15, color: 'var(--green)', display: 'flex', alignItems: 'center', gap: 5, margin: '10px 0 0' }}>
             <Award size={13} /> 후기 게시판에 닉네임 옆 배지가 표시돼요 🏅
           </p>
         )}
@@ -302,21 +308,21 @@ export default function ChallengeRewardSection({
       {/* B: 후기 작성 */}
       <article style={card}>
         <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12, marginBottom: 12 }}>
-          <div style={iconCircle('#2d2a1a')}>
-            <BookOpenText size={18} color="#f59e0b" />
+          <div style={iconCircle('var(--amber-soft)')}>
+            <BookOpenText size={18} color="var(--amber)" />
           </div>
           <div>
-            <h2 style={{ fontSize: 15, fontWeight: 700, color: '#f5ede3', margin: '0 0 4px' }}>후기 작성</h2>
-            <p style={{ fontSize: 13, fontWeight: 600, color: '#c5b8ac', margin: 0 }}>혜택 B: 7일 회고록</p>
+            <h2 style={{ fontSize: 16, fontWeight: 800, color: 'var(--ink)', margin: '0 0 4px' }}>후기 작성</h2>
+            <p style={{ fontSize: 15, fontWeight: 600, color: 'var(--ink-sub)', margin: 0 }}>혜택 B: 7일 회고록</p>
           </div>
         </div>
 
         <button
           onClick={handleReview}
           style={btn(
-            isReviewed ? '#2d2a1a' : '#d97706',
-            isReviewed ? '#f59e0b' : '#fff',
-            isReviewed ? '1px solid #3a3018' : undefined,
+            isReviewed ? 'var(--amber-soft)' : 'var(--amber)',
+            isReviewed ? 'var(--amber)' : 'var(--surface)',
+            isReviewed ? '1px solid var(--line)' : undefined,
           )}
         >
           {isReviewed ? <Check size={15} /> : <MessageCircle size={15} />}
@@ -324,9 +330,9 @@ export default function ChallengeRewardSection({
         </button>
 
         {isReviewed && (
-          <div style={{ marginTop: 12, background: '#2d2a1a', border: '1px dashed #3a3018', borderRadius: 8, padding: 12 }}>
-            <p style={{ fontSize: 13, fontWeight: 700, color: '#f59e0b', margin: '0 0 4px' }}>7일 회고록</p>
-            <p style={{ fontSize: 12, color: '#b09050', lineHeight: 1.6, margin: 0 }}>
+          <div style={{ marginTop: 12, background: 'var(--amber-soft)', border: '1px dashed var(--line)', borderRadius: 8, padding: 12 }}>
+            <p style={{ fontSize: 15, fontWeight: 700, color: 'var(--amber)', margin: '0 0 4px' }}>7일 회고록</p>
+            <p style={{ fontSize: 15, color: 'var(--amber-ink)', lineHeight: 1.6, margin: 0 }}>
               7일 동안 남긴 미션 기록과 후기를 바탕으로 회고록이 생성될 예정입니다.
             </p>
           </div>
@@ -336,18 +342,18 @@ export default function ChallengeRewardSection({
       {/* A+B 보너스 */}
       <article style={{ ...card, marginBottom: 0 }}>
         <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12, marginBottom: 12 }}>
-          <div style={iconCircle('#1e1e35')}>
-            <Gift size={18} color="#818cf8" />
+          <div style={iconCircle('var(--green-soft)')}>
+            <Gift size={18} color="var(--green)" />
           </div>
           <div>
-            <h2 style={{ fontSize: 15, fontWeight: 700, color: '#f5ede3', margin: '0 0 4px' }}>A+B 보너스</h2>
-            <p style={{ fontSize: 13, fontWeight: 600, color: '#c5b8ac', margin: 0 }}>둘 다 완료하면 → 30일 적합도 진단</p>
+            <h2 style={{ fontSize: 16, fontWeight: 800, color: 'var(--ink)', margin: '0 0 4px' }}>A+B 보너스</h2>
+            <p style={{ fontSize: 15, fontWeight: 600, color: 'var(--ink-sub)', margin: 0 }}>둘 다 완료하면 → 30일 적합도 진단</p>
           </div>
         </div>
 
         {showDiagnosis ? (
-          <div style={{ background: '#1e1e35', borderRadius: 10, padding: 14 }}>
-            <p style={{ fontSize: 13, fontWeight: 700, color: '#818cf8', display: 'flex', alignItems: 'center', gap: 6, margin: '0 0 8px' }}>
+          <div style={{ background: 'var(--green-soft)', borderRadius: 10, padding: 14 }}>
+            <p style={{ fontSize: 15, fontWeight: 700, color: 'var(--green)', display: 'flex', alignItems: 'center', gap: 6, margin: '0 0 8px' }}>
               <Sparkles size={14} /> {diagnosisResult.label}
             </p>
             <a
@@ -355,16 +361,16 @@ export default function ChallengeRewardSection({
               target="_blank"
               rel="noopener noreferrer"
               style={{
-                display: 'block', textAlign: 'center', background: '#4f46e5',
-                color: '#fff', borderRadius: 10, padding: '12px',
-                fontWeight: 800, fontSize: 14, textDecoration: 'none',
+                display: 'block', textAlign: 'center', background: 'var(--green)',
+                color: 'var(--surface)', borderRadius: 10, padding: '12px',
+                minHeight: 44, fontWeight: 800, fontSize: 15, textDecoration: 'none',
               }}
             >
               30일 챌린지 시작하기 →
             </a>
           </div>
         ) : (
-          <div style={{ background: '#1a1614', borderRadius: 10, padding: 12, fontSize: 13, color: '#5a5048', lineHeight: 1.6 }}>
+          <div style={{ background: 'var(--surface-2)', borderRadius: 10, padding: 12, fontSize: 15, color: 'var(--ink-sub)', lineHeight: 1.6 }}>
             SNS 공유와 후기 작성을 모두 완료하면 진단 결과가 열립니다.
           </div>
         )}
