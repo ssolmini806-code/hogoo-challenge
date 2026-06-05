@@ -25,90 +25,9 @@
     <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css"></noscript>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8564310871125079" crossorigin="anonymous"></script>
     <meta name="google-adsense-account" content="ca-pub-8564310871125079">
-    <style>
-        :root { 
-            --primary: #00a885; 
-            --primary-soft: #f0f9f7; 
-            --primary-dark: #00866a;
-            --text-main: #1d1d1f; 
-            --text-sub: #6e6e73; 
-            --bg-gradient: linear-gradient(180deg, #fdf2f2 0%, #f9f9fb 100%);
-            --card-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; word-break: keep-all; }
-        body { font-family: 'Pretendard', -apple-system, sans-serif; background: #f9f9fb; color: var(--text-main); line-height: 1.6; }
-        .inner { max-width: 480px; margin: 0 auto; padding: 0 20px; }
-        .hidden { display: none !important; }
-
-        #intro-page { padding: 80px 0 100px; text-align: center; background: var(--bg-gradient); min-height: 100vh; display: flex; align-items: center; }
-        .test-badge { display: inline-block; background: white; color: #e53e3e; font-size: 0.75rem; font-weight: 800; padding: 8px 16px; border-radius: 100px; margin-bottom: 24px; letter-spacing: 0.05em; box-shadow: 0 4px 12px rgba(229,62,62,0.1); }
-        .test-title { font-size: 2.6rem; font-weight: 900; color: var(--text-main); margin-bottom: 16px; letter-spacing: -0.04em; line-height: 1.2; }
-        .test-subtitle { font-size: 1.1rem; color: var(--text-sub); line-height: 1.7; margin-bottom: 40px; }
-        .test-meta { font-size: 0.85rem; color: #aeaeb2; margin-bottom: 32px; font-weight: 500; }
-        .start-btn { display: block; width: 100%; background: linear-gradient(135deg, #e53e3e, #ff6b6b); color: white; font-size: 1.1rem; font-weight: 850; padding: 20px; border-radius: 20px; border: none; cursor: pointer; box-shadow: 0 10px 24px rgba(229,62,62,0.2); font-family: inherit; transition: var(--transition); }
-        .start-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(229,62,62,0.25); }
-
-        #test-page { padding: 40px 0 80px; min-height: 100vh; background: white; }
-        .progress-wrap { margin-bottom: 40px; }
-        .progress-info { display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-sub); margin-bottom: 12px; font-weight: 700; }
-        .progress-bar { background: #f2f2f7; border-radius: 100px; height: 8px; overflow: hidden; }
-        .progress-fill { background: linear-gradient(90deg, #e53e3e, #ff6b6b); height: 100%; border-radius: 100px; transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-        .q-num-label { font-size: 0.9rem; font-weight: 800; color: #e53e3e; letter-spacing: 0.05em; margin-bottom: 16px; display: block; }
-        .q-text { font-size: 1.4rem; font-weight: 900; color: var(--text-main); line-height: 1.4; margin-bottom: 40px; min-height: 80px; }
-        .answer-list { display: flex; flex-direction: column; gap: 12px; }
-        .ans-btn { background: #f9f9fb; border: 2px solid #f2f2f7; border-radius: 18px; padding: 20px 22px; font-size: 1rem; font-weight: 700; color: var(--text-main); text-align: left; cursor: pointer; transition: var(--transition); font-family: inherit; line-height: 1.4; }
-        .ans-btn:hover { border-color: #e53e3e; background: #fff5f5; transform: translateX(4px); }
-
-        #result-page { padding: 40px 0 100px; background: #f9f9fb; }
-        .result-header { text-align: center; margin-bottom: 32px; padding-top: 20px; }
-        .result-header .label { font-size: 0.9rem; font-weight: 800; color: var(--text-sub); margin-bottom: 8px; }
-        .character { width: 140px; height: 140px; display: block; margin: 16px auto; overflow: visible; animation: float 3.4s ease-in-out infinite; }
-        @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
-        .type-name { font-size: 2.2rem; font-weight: 900; color: var(--text-main); margin-top: 12px; letter-spacing: -0.04em; line-height: 1.2; }
-        
-        .type-desc-box { background: white; border-radius: 28px; padding: 32px 24px; margin-bottom: 20px; box-shadow: var(--card-shadow); border: 1px solid rgba(0,0,0,0.02); }
-        .type-tagline { font-size: 1.2rem; font-weight: 850; color: #e53e3e; text-align: center; margin-bottom: 16px; letter-spacing: -0.02em; line-height: 1.5; }
-        .type-body { font-size: 1rem; line-height: 1.8; color: var(--text-sub); text-align: center; }
-        
-        .result-card { background: white; border-radius: 24px; padding: 24px; margin-bottom: 16px; box-shadow: var(--card-shadow); border: 1px solid rgba(0,0,0,0.02); }
-        .card-title { font-size: 0.9rem; font-weight: 800; color: var(--text-main); letter-spacing: 0.02em; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-        .card-body { font-size: 0.95rem; line-height: 1.7; color: var(--text-sub); font-weight: 500; }
-        
-        /* Expert Insight Section */
-        .expert-insight { background: #1a1a1a; color: white; border-radius: 24px; padding: 28px 24px; margin-bottom: 24px; position: relative; overflow: hidden; }
-        .expert-insight::before { content: "🕵️‍♂️"; position: absolute; right: -10px; top: -10px; font-size: 5rem; opacity: 0.1; transform: rotate(15deg); }
-        .expert-title { color: #ff6b6b; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; display: block; }
-        .expert-headline { font-size: 1.15rem; font-weight: 850; margin-bottom: 12px; line-height: 1.4; color: #f2f2f7; }
-        .expert-text { font-size: 0.9rem; line-height: 1.7; color: #aeaeb2; margin-bottom: 20px; }
-        .expert-link { display: inline-flex; align-items: center; gap: 6px; color: #ff6b6b; text-decoration: none; font-size: 0.9rem; font-weight: 700; border-bottom: 1px solid #ff6b6b; padding-bottom: 2px; }
-
-        .result-cta { margin-top: 40px; background: #fff8f8; border: 1.5px solid #ffe5e5; border-radius: 28px; padding: 32px 24px; text-align: center; }
-        .result-cta h3 { font-size: 1.2rem; font-weight: 900; color: #c0392b; margin-bottom: 12px; line-height: 1.4; }
-        .result-cta p { font-size: 0.95rem; color: #636e72; line-height: 1.6; margin-bottom: 24px; }
-        .cta-btn { display: block; width: 100%; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; font-size: 1.05rem; font-weight: 800; padding: 18px; border-radius: 18px; border: none; cursor: pointer; box-shadow: 0 8px 20px rgba(0,168,133,0.15); margin-bottom: 12px; font-family: inherit; transition: var(--transition); }
-        .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 25px rgba(0,168,133,0.2); }
-        .cta-sub-text { font-size: 0.75rem; color: #aeaeb2; font-weight: 600; }
-
-        .related-tests { display: flex; gap: 12px; margin-top: 32px; }
-        .rel-card { flex: 1; background: white; border-radius: 20px; padding: 20px 12px; text-align: center; box-shadow: var(--card-shadow); border: 2px solid transparent; transition: var(--transition); text-decoration: none; display: block; }
-        .rel-card:hover { border-color: var(--primary); transform: translateY(-4px); }
-        .rel-emoji { font-size: 2rem; margin-bottom: 10px; }
-        .rel-name { font-size: 0.85rem; font-weight: 800; color: var(--text-main); line-height: 1.3; }
-        
-        .retry-wrap { text-align: center; margin-top: 40px; }
-        .retry-link { font-size: 0.9rem; color: var(--text-sub); cursor: pointer; text-decoration: underline; background: none; border: none; font-family: inherit; font-weight: 600; }
-        
-        footer { margin-top: 80px; padding: 60px 0; border-top: 1px solid #eee; text-align: center; font-size: 0.85rem; color: #aeaeb2; }
-        footer a { color: var(--text-sub); text-decoration: none; margin: 0 12px; font-weight: 600; }
-        footer .copy { margin-top: 20px; }
-
-        /* Tailwind utility replacements */
-        .font-bold{font-weight:700}.font-extrabold{font-weight:800}.inline-block{display:inline-block}.leading-relaxed{line-height:1.625}.leading-snug{line-height:1.375}.mb-1{margin-bottom:.25rem}.mb-2{margin-bottom:.5rem}.mb-5{margin-bottom:1.25rem}.mt-8{margin-top:2rem}.mx-auto{margin-left:auto;margin-right:auto}.p-6{padding:1.5rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.rounded-2xl{border-radius:1rem}.rounded-xl{border-radius:.75rem}.text-center{text-align:center}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:.875rem;line-height:1.25rem}.text-xs{font-size:.75rem;line-height:1rem}.transition-opacity{transition:opacity .15s ease-in-out}.w-full{width:100%}.active\:opacity-80:active{opacity:.8}.hover\:opacity-90:hover{opacity:.9}@media(min-width:640px){.sm\:p-8{padding:2rem}}
-    </style>
     <link rel="stylesheet" href="/give-theme.css">
 </head>
-<body>
+<body class="risk-page">
 <a class="skip" href="#intro-page">본문 바로가기</a>
 
 <div id="intro-page">
@@ -162,7 +81,7 @@
                 <span id="qNum">1 / 12</span>
                 <span id="qPct">0%</span>
             </div>
-            <div class="progress-bar"><div class="progress-fill" id="progFill" style="width:0%"></div></div>
+            <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
         </div>
         <span class="q-num-label" id="qNumLabel">Question 01</span>
         <h2 class="q-text" id="qText"></h2>
@@ -176,7 +95,7 @@
             <p class="label">인간관계 위험도 결과</p>
             <div id="character"></div>
             <h1 class="type-name" id="typeName"></h1>
-            <div id="scoreBar" style="margin-top:16px;"></div>
+            <div id="scoreBar" class="score-bar"></div>
         </div>
 
         <div class="type-desc-box">
@@ -195,7 +114,7 @@
         </section>
 
         <div class="result-card" id="cardStrength"></div>
-        <div class="result-card" style="background:#fffafa;" id="cardRisk"></div>
+        <div class="result-card is-warning" id="cardRisk"></div>
 
         <!-- Expert Insight -->
         <div id="expertInsight" class="expert-insight">
@@ -205,7 +124,7 @@
             <a href="#" class="expert-link" id="expertLink">전문 칼럼 읽어보기 →</a>
         </div>
 
-        <div class="result-card" style="background:var(--primary-soft);" id="cardAdvice"></div>
+        <div class="result-card is-action" id="cardAdvice"></div>
 
         <div class="share-wrap">
             <p class="share-incentive">결과를 공유하면 내 유형별 추가 조언 카드를 확인할 수 있어요</p>
@@ -248,22 +167,21 @@
 
         <div class="related-tests">
             <a class="rel-card" href="give-test.html">
-                <div class="rel-emoji">🎯</div>
+                <span class="itile" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"></circle><circle cx="12" cy="12" r="3"></circle><path d="M12 4V2M12 22v-2M4 12H2M22 12h-2"></path></svg></span>
                 <div class="rel-name">GIVE ID<br>유형 진단</div>
             </a>
             <a class="rel-card" href="hogoo-check.html">
-                <div class="rel-emoji">🤔</div>
+                <span class="itile" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 7.5A5 5 0 0 1 12 3a5 5 0 0 1 5 5c0 4-5 4-5 7"></path><path d="M12 20h.01"></path></svg></span>
                 <div class="rel-name">나는<br>호구일까?</div>
             </a>
         </div>
 
-        <div class="mx-auto mt-8 mb-2 rounded-2xl p-6 sm:p-8" style="background:#EEF4FF;">
-            <h3 class="text-lg font-extrabold mb-2 leading-snug" style="color:#1D4ED8;">내 결과를 더 깊게 해석하고 싶다면</h3>
-            <p class="text-sm mb-1 leading-relaxed" style="color:#374151;">심화 테스트에서 원인 패턴과 추천 행동을 확인해보세요.</p>
-            <p class="text-xs mb-5 leading-relaxed" style="color:#6B7280;">무료 검사 완료자에게는 개인화 해석 리포트가 함께 제공돼요.</p>
+        <div class="paid-deep-cta">
+            <h3>내 결과를 더 깊게 해석하고 싶다면</h3>
+            <p>심화 테스트에서 원인 패턴과 추천 행동을 확인해보세요.</p>
+            <span class="paid-deep-note">무료 검사 완료자에게는 개인화 해석 리포트가 함께 제공돼요.</span>
             <a href="https://givecosystem.com/" target="_blank" rel="noopener noreferrer"
-               class="inline-block w-full text-center rounded-xl py-3 px-6 font-bold text-sm transition-opacity hover:opacity-90 active:opacity-80"
-               style="background:#2563EB;color:#fff;text-decoration:none;">심화 테스트 하러 가기 →</a>
+               class="paid-deep-link">심화 테스트 하러 가기 →</a>
         </div>
 
         <div
@@ -279,7 +197,7 @@
         </div>
 
         <footer>
-            <div style="margin-bottom:16px">
+            <div class="footer-links">
                 <a href="index.html">홈으로</a>
                 <a href="give-test.html">GIVE ID 진단</a>
                 <a href="articles/giver-burnout.html">심리 칼럼</a>
@@ -341,13 +259,13 @@ const questions = [
 
 const results = {
     high: {
-        name: "🔴 빨간불",
+        name: "빨간불 — 지금 위험해요",
         tagline: "지금 즉각적인 변화가 필요한 상태예요. 혼자 버티지 마세요.",
         body: "지금 즉각적인 변화가 필요한 상태예요. 혼자 버티지 마세요.",
         strength: "이미 문제를 인식하고 있다는 것 자체가 변화의 시작입니다. 인식 없이는 변화도 없습니다.",
         risk: "현재 패턴이 지속되면 심각한 번아웃, 자존감 저하, 만성 피로로 이어질 수 있습니다.",
         advice: "지금 당장 가장 에너지를 빼앗는 관계 하나를 파악하고, 그 관계에서 할 수 있는 가장 작은 경계 하나를 설정해보세요.",
-        color: "#ff8a80",
+        color: "var(--amber-accent)",
         mood: "alert",
         insight: {
             headline: "에너지를 갈취하는 '테이커' 식별법",
@@ -356,13 +274,13 @@ const results = {
         }
     },
     caution: {
-        name: "🟠 노란불",
+        name: "노란불 — 슬슬 조심",
         tagline: "지금은 버틸 만하지만 패턴을 안 바꾸면 소진돼요.",
         body: "지금은 버틸 만하지만 패턴을 안 바꾸면 소진돼요.",
         strength: "아직 관계를 건강하게 만들 에너지가 남아 있습니다. 지금 시작하면 충분히 바꿀 수 있습니다.",
         risk: "현재 패턴을 방치하면 서서히 지쳐가고, 나중에는 더 큰 에너지가 필요하게 됩니다.",
         advice: "에너지를 빼앗는 관계와 주는 관계를 구분해보세요. 그리고 빼앗는 관계에 어떤 경계를 설정할 수 있는지 생각해보세요.",
-        color: "#ffd166",
+        color: "var(--amber-accent)",
         mood: "caution",
         insight: {
             headline: "착한 사람의 번아웃 주의보",
@@ -371,13 +289,13 @@ const results = {
         }
     },
     ok: {
-        name: "🟢 초록불",
+        name: "초록불 — 대체로 건강",
         tagline: "전반적으로 건강해요. 일부 관계만 조율하면 됩니다.",
         body: "전반적으로 건강해요. 일부 관계만 조율하면 됩니다.",
         strength: "관계에서 기본적인 건강함을 유지하고 있습니다. 이를 더 정교하게 다듬으면 훨씬 풍요로운 관계를 만들 수 있습니다.",
         risk: "무의식적으로 형성된 일부 패턴이 있을 수 있습니다. 이를 점검해보는 것이 좋습니다.",
         advice: "관계에서 불편했던 순간을 하나 떠올리고, 그때 다르게 할 수 있었던 것이 무엇인지 생각해보세요.",
-        color: "#9ad0f5",
+        color: "var(--green-soft)",
         mood: "steady",
         insight: {
             headline: "나를 지키는 '죄책감 없는 거절'",
@@ -386,13 +304,13 @@ const results = {
         }
     },
     healthy: {
-        name: "💚 청정 관계",
+        name: "청정 관계 — 균형 좋아요",
         tagline: "관계 근육이 단단해요. 에너지 균형이 좋습니다.",
         body: "관계 근육이 단단해요. 에너지 균형이 좋습니다.",
         strength: "건강한 관계 패턴을 가지고 있습니다. 이 능력은 주변 사람들에게도 긍정적인 영향을 미칩니다.",
         risk: "건강한 패턴이 있더라도 특정 상황이나 새로운 관계에서는 흔들릴 수 있습니다.",
         advice: "현재의 건강한 패턴을 더 의식적으로 발전시켜보세요. 더 깊은 연결과 성장이 가능합니다.",
-        color: "#68d391",
+        color: "var(--mint)",
         mood: "healthy",
         insight: {
             headline: "성공하는 기버의 3가지 비밀",
@@ -412,25 +330,25 @@ function characterSvg(fill, mood) {
         healthy: "M45 76 Q60 91 75 76"
     };
     const brows = mood === "alert"
-        ? '<path d="M36 46 Q45 40 52 48" stroke="#14181d" stroke-width="3" stroke-linecap="round" fill="none"/><path d="M68 48 Q76 40 84 46" stroke="#14181d" stroke-width="3" stroke-linecap="round" fill="none"/>'
+        ? '<path d="M36 46 Q45 40 52 48" stroke="var(--ink)" stroke-width="3" stroke-linecap="round" fill="none"/><path d="M68 48 Q76 40 84 46" stroke="var(--ink)" stroke-width="3" stroke-linecap="round" fill="none"/>'
         : mood === "caution"
-            ? '<path d="M36 46 H52" stroke="#14181d" stroke-width="3" stroke-linecap="round"/><path d="M68 46 H84" stroke="#14181d" stroke-width="3" stroke-linecap="round"/>'
+            ? '<path d="M36 46 H52" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/><path d="M68 46 H84" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/>'
             : '';
     const signal = mood === "alert"
-        ? '<path d="M96 20 L105 5 M101 31 L116 25" stroke="#e53e3e" stroke-width="4" stroke-linecap="round"/>'
+        ? '<path d="M96 20 L105 5 M101 31 L116 25" stroke="var(--amber)" stroke-width="4" stroke-linecap="round"/>'
         : mood === "healthy"
-            ? '<path d="M94 24 C100 14 112 19 111 31 C109 43 94 48 94 48 C94 48 79 43 77 31 C76 19 88 14 94 24Z" fill="#00a885" stroke="#14181d" stroke-width="3"/>'
+            ? '<path d="M94 24 C100 14 112 19 111 31 C109 43 94 48 94 48 C94 48 79 43 77 31 C76 19 88 14 94 24Z" fill="var(--mint)" stroke="var(--ink)" stroke-width="3"/>'
             : '';
     return `<svg class="character" viewBox="0 0 120 128" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         ${signal}
-        <circle cx="60" cy="64" r="44" fill="${fill}" stroke="#14181d" stroke-width="3"/>
+        <circle cx="60" cy="64" r="44" fill="${fill}" stroke="var(--ink)" stroke-width="3"/>
         ${brows}
-        <circle cx="44" cy="58" r="5" fill="#14181d"/><circle cx="76" cy="58" r="5" fill="#14181d"/>
-        <circle cx="46" cy="56" r="1.6" fill="#fff"/><circle cx="78" cy="56" r="1.6" fill="#fff"/>
-        <path d="${mouths[mood] || mouths.steady}" stroke="#14181d" stroke-width="4" stroke-linecap="round" fill="none"/>
-        <circle cx="34" cy="73" r="8" fill="#fff" opacity=".35"/><circle cx="86" cy="73" r="8" fill="#fff" opacity=".35"/>
-        <path d="M30 31 C34 12 51 20 60 34 C69 20 86 12 90 31" stroke="#14181d" stroke-width="3" stroke-linecap="round" fill="none"/>
-        <rect x="45" y="103" width="30" height="18" rx="8" fill="${fill}" stroke="#14181d" stroke-width="3"/>
+        <circle cx="44" cy="58" r="5" fill="var(--ink)"/><circle cx="76" cy="58" r="5" fill="var(--ink)"/>
+        <circle cx="46" cy="56" r="1.6" fill="var(--surface)"/><circle cx="78" cy="56" r="1.6" fill="var(--surface)"/>
+        <path d="${mouths[mood] || mouths.steady}" stroke="var(--ink)" stroke-width="4" stroke-linecap="round" fill="none"/>
+        <circle cx="34" cy="73" r="8" fill="var(--surface)" opacity=".35"/><circle cx="86" cy="73" r="8" fill="var(--surface)" opacity=".35"/>
+        <path d="M30 31 C34 12 51 20 60 34 C69 20 86 12 90 31" stroke="var(--ink)" stroke-width="3" stroke-linecap="round" fill="none"/>
+        <rect x="45" y="103" width="30" height="18" rx="8" fill="${fill}" stroke="var(--ink)" stroke-width="3"/>
     </svg>`;
 }
 
@@ -479,18 +397,18 @@ function showResult() {
     document.getElementById('typeName').textContent = d.name;
     document.getElementById('typeTagline').textContent = '"' + d.tagline + '"';
     document.getElementById('typeBody').textContent = d.body;
-    document.getElementById('cardStrength').innerHTML = '<div class="card-title">📊 현재 상태</div><p class="card-body">' + d.strength + '</p>';
-    document.getElementById('cardRisk').innerHTML = '<div class="card-title" style="color:#e53e3e">⚠️ 주의할 점</div><p class="card-body">' + d.risk + '</p>';
-    document.getElementById('cardAdvice').innerHTML = '<div class="card-title" style="color:var(--primary)">🚀 지금 할 수 있는 것</div><p class="card-body">' + d.advice + '</p>';
+    document.getElementById('cardStrength').innerHTML = '<div class="card-title">현재 상태</div><p class="card-body">' + d.strength + '</p>';
+    document.getElementById('cardRisk').innerHTML = '<div class="card-title is-warning">주의할 점</div><p class="card-body">' + d.risk + '</p>';
+    document.getElementById('cardAdvice').innerHTML = '<div class="card-title">지금 할 수 있는 것</div><p class="card-body">' + d.advice + '</p>';
 
     const maxScore = questions.length * 3;
     const pct = Math.round((score / maxScore) * 100);
-    const dangerColor = pct >= 75 ? '#ff6b6b' : pct >= 50 ? '#ffd166' : '#00a885';
     document.getElementById('scoreBar').innerHTML =
-        '<div style="font-size:0.82rem;font-weight:700;color:#aeaeb2;margin-bottom:8px">관계 위험도 ' + pct + '%</div>' +
-        '<div style="background:#f2f2f7;border-radius:100px;height:10px;overflow:hidden">' +
-        '<div style="background:linear-gradient(90deg,#00a885,#ffd166,#ff6b6b);width:' + pct + '%;height:100%;border-radius:100px;transition:width 1s cubic-bezier(.4,0,.2,1)"></div>' +
+        '<div class="score-label">관계 위험도 ' + pct + '%</div>' +
+        '<div class="score-track">' +
+        '<div class="score-fill"></div>' +
         '</div>';
+    document.querySelector('#scoreBar .score-fill').style.width = pct + '%';
 
     window.dispatchEvent(new CustomEvent('free-test-result-ready', {
         detail: { rootId: 'relationship-risk-reward-root', resultType: d.name }
