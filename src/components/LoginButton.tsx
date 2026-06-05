@@ -4,6 +4,47 @@ import { ChevronDown, LogOut, Mail, UserPlus } from 'lucide-react';
 import type { User } from '@supabase/supabase-js';
 import LoginModal from './LoginModal';
 
+function useDialogFocusTrap(isOpen: boolean, onClose: () => void) {
+  const dialogRef = useRef<HTMLDivElement | null>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    previousFocusRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const focusableSelector = 'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
+    const getFocusable = () => Array.from(dialogRef.current?.querySelectorAll<HTMLElement>(focusableSelector) ?? [])
+      .filter((element) => element.offsetParent !== null || element === document.activeElement);
+    window.setTimeout(() => getFocusable()[0]?.focus(), 0);
+
+    const handleKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClose();
+        return;
+      }
+      if (event.key !== 'Tab') return;
+      const focusable = getFocusable();
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener('keydown', handleKey);
+    return () => {
+      document.removeEventListener('keydown', handleKey);
+      previousFocusRef.current?.focus();
+    };
+  }, [isOpen, onClose]);
+
+  return dialogRef;
+}
+
 export default function LoginButton() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -18,6 +59,8 @@ export default function LoginButton() {
   const [inviteSent, setInviteSent] = useState(false);
   const [inviteLoading, setInviteLoading] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
+  const inviteDialogRef = useDialogFocusTrap(showInvite, () => setShowInvite(false));
+  const emailChangeDialogRef = useDialogFocusTrap(showEmailChange, () => setShowEmailChange(false));
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
@@ -209,6 +252,7 @@ export default function LoginButton() {
           <div
             role="dialog"
             aria-modal="true"
+            aria-labelledby="invite-dialog-title"
             onClick={(e) => { if (e.target === e.currentTarget) setShowInvite(false); }}
             style={{
               position: 'fixed', inset: 0, zIndex: 1000,
@@ -216,14 +260,14 @@ export default function LoginButton() {
               background: 'rgba(0,0,0,0.72)', padding: '16px',
             }}
           >
-            <div style={{
+            <div ref={inviteDialogRef} style={{
               width: '100%', maxWidth: 360,
               background: 'var(--surface)', borderRadius: 20, padding: '32px 24px',
               border: '1px solid var(--line)',
             }}>
               {inviteSent ? (
                 <>
-                  <h2 style={{ color: 'var(--ink)', fontSize: 20, fontWeight: 800, marginBottom: 8 }}>🎉 초대를 보냈어요!</h2>
+                  <h2 id="invite-dialog-title" style={{ color: 'var(--ink)', fontSize: 20, fontWeight: 800, marginBottom: 8 }}>🎉 초대를 보냈어요!</h2>
                   <p style={{ color: 'var(--ink-sub)', fontSize: 15, lineHeight: 1.6, marginBottom: 24 }}>
                     <strong style={{ color: 'var(--ink)' }}>{inviteEmail}</strong>로<br />
                     초대 링크를 보냈어요. 친구가 클릭하면 바로 시작할 수 있어요.
@@ -241,7 +285,7 @@ export default function LoginButton() {
                 </>
               ) : (
                 <>
-                  <h2 style={{ color: 'var(--ink)', fontSize: 20, fontWeight: 800, marginBottom: 8 }}>친구 초대하기</h2>
+                  <h2 id="invite-dialog-title" style={{ color: 'var(--ink)', fontSize: 20, fontWeight: 800, marginBottom: 8 }}>친구 초대하기</h2>
                   <p style={{ color: 'var(--ink-sub)', fontSize: 15, lineHeight: 1.5, marginBottom: 24 }}>
                     친구 이메일을 입력하면 챌린지 초대 링크를 보내드려요
                   </p>
@@ -290,6 +334,7 @@ export default function LoginButton() {
           <div
             role="dialog"
             aria-modal="true"
+            aria-labelledby="email-change-dialog-title"
             onClick={(e) => { if (e.target === e.currentTarget) setShowEmailChange(false); }}
             style={{
               position: 'fixed', inset: 0, zIndex: 1000,
@@ -297,14 +342,14 @@ export default function LoginButton() {
               background: 'rgba(0,0,0,0.72)', padding: '16px',
             }}
           >
-            <div style={{
+            <div ref={emailChangeDialogRef} style={{
               width: '100%', maxWidth: 360,
               background: 'var(--surface)', borderRadius: 20, padding: '32px 24px',
               border: '1px solid var(--line)',
             }}>
               {emailChangeSent ? (
                 <>
-                  <h2 style={{ color: 'var(--ink)', fontSize: 20, fontWeight: 800, marginBottom: 8 }}>📬 확인 메일을 보냈어요</h2>
+                  <h2 id="email-change-dialog-title" style={{ color: 'var(--ink)', fontSize: 20, fontWeight: 800, marginBottom: 8 }}>📬 확인 메일을 보냈어요</h2>
                   <p style={{ color: 'var(--ink-sub)', fontSize: 15, lineHeight: 1.6, marginBottom: 24 }}>
                     <strong style={{ color: 'var(--ink)' }}>{newEmail}</strong>로<br />
                     확인 링크를 보냈어요. 클릭하면 변경이 완료돼요.
@@ -322,7 +367,7 @@ export default function LoginButton() {
                 </>
               ) : (
                 <>
-                  <h2 style={{ color: 'var(--ink)', fontSize: 20, fontWeight: 800, marginBottom: 8 }}>이메일 변경</h2>
+                  <h2 id="email-change-dialog-title" style={{ color: 'var(--ink)', fontSize: 20, fontWeight: 800, marginBottom: 8 }}>이메일 변경</h2>
                   <p style={{ color: 'var(--ink-sub)', fontSize: 15, lineHeight: 1.5, marginBottom: 24 }}>
                     새 이메일 주소를 입력하면 확인 링크를 보내드려요
                   </p>
