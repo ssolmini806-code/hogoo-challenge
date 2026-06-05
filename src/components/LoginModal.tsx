@@ -92,17 +92,17 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: Props) {
     >
       <div style={{
         width: '100%', maxWidth: 380,
-        background: '#231f1c', borderRadius: 20, padding: '32px 24px',
-        border: '1px solid #3a3530', position: 'relative',
+        background: 'var(--surface)', borderRadius: 20, padding: '32px 24px',
+        border: '1px solid var(--line)', position: 'relative',
       }}>
         <button
           onClick={onClose}
           aria-label="닫기"
           style={{
             position: 'absolute', top: 12, right: 12,
-            background: 'none', border: 'none', color: '#5a5048',
+            background: 'none', border: 'none', color: 'var(--ink-sub)',
             cursor: 'pointer', display: 'flex', alignItems: 'center',
-            justifyContent: 'center', width: 32, height: 32, borderRadius: '50%',
+            justifyContent: 'center', width: 44, height: 44, borderRadius: '50%',
           }}
         >
           <X size={18} />
@@ -111,18 +111,18 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: Props) {
         {isForgotPassword ? (
           forgotSent ? (
             <>
-              <h2 id="login-modal-title" style={{ color: '#f5ede3', fontSize: 20, fontWeight: 800, marginBottom: 6 }}>
+              <h2 id="login-modal-title" style={{ color: 'var(--ink)', fontSize: 20, fontWeight: 800, marginBottom: 6 }}>
                 📬 메일을 확인해주세요
               </h2>
-              <p style={{ color: '#8a7f75', fontSize: 13, marginBottom: 24, lineHeight: 1.6 }}>
-                <strong style={{ color: '#f5ede3' }}>{email}</strong>로<br />
+              <p style={{ color: 'var(--ink-sub)', fontSize: 15, marginBottom: 24, lineHeight: 1.6 }}>
+                <strong style={{ color: 'var(--ink)' }}>{email}</strong>로<br />
                 재설정 링크를 보냈어요. 메일함을 확인해주세요.
               </p>
               <button
                 onClick={() => { setIsForgotPassword(false); setForgotSent(false); }}
                 style={{
-                  padding: '13px', borderRadius: 10, border: '1px solid #3a3530',
-                  background: 'transparent', color: '#8a7f75', cursor: 'pointer', fontSize: 14, fontWeight: 700,
+                  minHeight: 44, padding: '13px', borderRadius: 10, border: '1px solid var(--line)',
+                  background: 'transparent', color: 'var(--ink-sub)', cursor: 'pointer', fontSize: 15, fontWeight: 700,
                 }}
               >
                 ← 로그인으로 돌아가기
@@ -130,10 +130,10 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: Props) {
             </>
           ) : (
             <>
-              <h2 id="login-modal-title" style={{ color: '#f5ede3', fontSize: 20, fontWeight: 800, marginBottom: 6 }}>
+              <h2 id="login-modal-title" style={{ color: 'var(--ink)', fontSize: 20, fontWeight: 800, marginBottom: 6 }}>
                 비밀번호 재설정
               </h2>
-              <p style={{ color: '#8a7f75', fontSize: 13, marginBottom: 24, lineHeight: 1.5 }}>
+              <p style={{ color: 'var(--ink-sub)', fontSize: 15, marginBottom: 24, lineHeight: 1.5 }}>
                 가입한 이메일을 입력하면 재설정 링크를 보내드려요
               </p>
               <form onSubmit={handleForgotPassword} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
@@ -144,16 +144,16 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: Props) {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   style={{
-                    padding: '13px 14px', borderRadius: 10, border: '1px solid #3a3530',
-                    background: '#1a1614', color: '#f5ede3', outline: 'none', fontSize: 14,
+                    padding: '13px 14px', borderRadius: 10, border: '1px solid var(--line)',
+                    background: 'var(--surface)', color: 'var(--ink)', outline: 'none', fontSize: 15,
                   }}
                 />
                 <button
                   type="submit"
                   disabled={loading}
                   style={{
-                    padding: '13px', borderRadius: 10, border: 'none',
-                    background: '#00a885', color: '#fff', fontWeight: 800,
+                    minHeight: 44, padding: '13px', borderRadius: 10, border: 'none',
+                    background: 'var(--green)', color: 'var(--surface)', fontWeight: 800,
                     cursor: loading ? 'not-allowed' : 'pointer', fontSize: 15,
                     opacity: loading ? 0.7 : 1,
                   }}
@@ -164,8 +164,8 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: Props) {
               <button
                 onClick={() => setIsForgotPassword(false)}
                 style={{
-                  marginTop: 16, background: 'none', border: 'none',
-                  color: '#6a5f55', cursor: 'pointer', fontSize: 12,
+                  marginTop: 16, minHeight: 44, background: 'none', border: 'none',
+                  color: 'var(--ink-sub)', cursor: 'pointer', fontSize: 15,
                   textDecoration: 'underline', width: '100%',
                 }}
               >
@@ -175,10 +175,10 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: Props) {
           )
         ) : (
           <>
-            <h2 id="login-modal-title" style={{ color: '#f5ede3', fontSize: 20, fontWeight: 800, marginBottom: 6 }}>
+            <h2 id="login-modal-title" style={{ color: 'var(--ink)', fontSize: 20, fontWeight: 800, marginBottom: 6 }}>
               {isSignUp ? '챌린지 시작하기' : '보상을 받으려면 로그인이 필요해요'}
             </h2>
-            <p style={{ color: '#8a7f75', fontSize: 13, marginBottom: 24, lineHeight: 1.5 }}>
+            <p style={{ color: 'var(--ink-sub)', fontSize: 15, marginBottom: 24, lineHeight: 1.5 }}>
               {isSignUp
                 ? '계정을 만들고 진행 상황을 저장하세요'
                 : '로그인하면 내 보상이 저장되고 다음에도 확인할 수 있어요'}
@@ -192,8 +192,8 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: Props) {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 style={{
-                  padding: '13px 14px', borderRadius: 10, border: '1px solid #3a3530',
-                  background: '#1a1614', color: '#f5ede3', outline: 'none', fontSize: 14,
+                  padding: '13px 14px', borderRadius: 10, border: '1px solid var(--line)',
+                  background: 'var(--surface)', color: 'var(--ink)', outline: 'none', fontSize: 15,
                 }}
               />
               <input
@@ -203,16 +203,16 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: Props) {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 style={{
-                  padding: '13px 14px', borderRadius: 10, border: '1px solid #3a3530',
-                  background: '#1a1614', color: '#f5ede3', outline: 'none', fontSize: 14,
+                  padding: '13px 14px', borderRadius: 10, border: '1px solid var(--line)',
+                  background: 'var(--surface)', color: 'var(--ink)', outline: 'none', fontSize: 15,
                 }}
               />
               <button
                 type="submit"
                 disabled={loading}
                 style={{
-                  padding: '13px', borderRadius: 10, border: 'none',
-                  background: '#00a885', color: '#fff', fontWeight: 800,
+                  minHeight: 44, padding: '13px', borderRadius: 10, border: 'none',
+                  background: 'var(--green)', color: 'var(--surface)', fontWeight: 800,
                   cursor: loading ? 'not-allowed' : 'pointer', fontSize: 15,
                   opacity: loading ? 0.7 : 1,
                 }}
@@ -225,8 +225,8 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: Props) {
               <button
                 onClick={() => setIsForgotPassword(true)}
                 style={{
-                  marginTop: 12, background: 'none', border: 'none',
-                  color: '#6a5f55', cursor: 'pointer', fontSize: 12,
+                  marginTop: 12, minHeight: 44, background: 'none', border: 'none',
+                  color: 'var(--ink-sub)', cursor: 'pointer', fontSize: 15,
                   textDecoration: 'underline', width: '100%',
                 }}
               >
@@ -237,8 +237,8 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: Props) {
             <button
               onClick={() => setIsSignUp((v) => !v)}
               style={{
-                marginTop: 8, background: 'none', border: 'none',
-                color: '#6a5f55', cursor: 'pointer', fontSize: 12,
+                marginTop: 8, minHeight: 44, background: 'none', border: 'none',
+                color: 'var(--ink-sub)', cursor: 'pointer', fontSize: 15,
                 textDecoration: 'underline', width: '100%',
               }}
             >
