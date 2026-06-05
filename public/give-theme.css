@@ -516,6 +516,36 @@ footer{padding:54px 0 44px;border-top:1px solid var(--line);margin-top:48px;text
 .risk-page footer a{color:var(--ink-sub);text-decoration:none;margin:0 10px;font-weight:700;}
 .risk-page footer .copy{margin-top:20px;color:var(--ink-faint);}
 
+.hogoo-page{background:var(--bg);}
+.hogoo-page .inner{width:min(100%,480px);margin:0 auto;padding:0 22px;}
+.hogoo-page .hidden{display:none!important;}
+.hogoo-page #intro-page{min-height:100vh;display:flex;align-items:center;padding:72px 0 92px;text-align:center;background:var(--bg);}
+.hogoo-page #test-page{min-height:100vh;padding:40px 0 80px;background:var(--surface);}
+.hogoo-page #result-page{padding:40px 0 100px;background:var(--bg);}
+.hogoo-page #locked-page{display:none;min-height:100vh;align-items:center;justify-content:center;padding:40px 22px;background:var(--bg);text-align:center;}
+.hogoo-page .lock-card{width:100%;max-width:420px;padding:34px 26px;border:1px solid var(--line);border-radius:var(--r-lg);background:var(--surface);box-shadow:0 14px 34px rgba(17,75,60,.08);}
+.hogoo-page .lock-card .itile{margin:0 auto 18px;}
+.hogoo-page .lock-title{margin-bottom:12px;color:var(--ink);font-size:1.45rem;font-weight:800;line-height:1.35;letter-spacing:-.02em;text-wrap:balance;}
+.hogoo-page .lock-desc{margin-bottom:24px;color:var(--ink-sub);font-size:1rem;line-height:1.7;text-wrap:pretty;}
+.hogoo-page .lock-btn{min-height:54px;width:100%;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;background:var(--green);color:#fff;padding:0 18px;font-weight:800;text-decoration:none;}
+.free-test-locked .hogoo-page #intro-page,.free-test-locked .hogoo-page #test-page,.free-test-locked .hogoo-page #result-page{display:none!important;}
+.free-test-locked .hogoo-page #locked-page{display:flex;}
+.hogoo-page .test-badge{color:var(--green);}
+.hogoo-page .progress-fill{background:var(--mint);}
+.hogoo-page .q-num-label{color:var(--green);}
+.hogoo-page .ans-btn:hover{border-color:var(--mint);background:var(--green-soft);}
+.hogoo-page .type-tagline{color:var(--green);}
+.locked-advice{position:relative;overflow:hidden;}
+.locked-advice-text{filter:blur(8px);pointer-events:none;user-select:none;transition:filter .35s ease,opacity .35s ease;}
+.locked-advice-overlay{position:absolute;inset:0;min-height:44px;border:0;background:rgba(245,251,248,.82);backdrop-filter:blur(1px);display:flex;align-items:center;justify-content:center;color:var(--ink);font-family:inherit;font-size:1rem;font-weight:900;cursor:pointer;transition:opacity .25s ease,visibility .25s ease;}
+.locked-advice.unlocked .locked-advice-text{filter:none;pointer-events:auto;user-select:auto;}
+.locked-advice.unlocked .locked-advice-overlay{opacity:0;visibility:hidden;pointer-events:none;}
+.hogoo-page .result-card.is-action{position:relative;}
+.hogoo-page .result-cta{background:var(--surface);}
+.hogoo-page .result-cta h3{color:var(--green);}
+.hogoo-page footer a{color:var(--ink-sub);text-decoration:none;margin:0 10px;font-weight:700;}
+.hogoo-page footer .copy{margin-top:20px;color:var(--ink-faint);}
+
 .mt8{margin-top:8px;}
 .mb8{margin-bottom:8px;}
 .mb18{margin-bottom:18px;}
