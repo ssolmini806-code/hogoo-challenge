@@ -333,7 +333,7 @@ function showResult() {
     const key = getFinalKey();
     localStorage.setItem('give_test_result', key);
     trackEvent('give_test_completed', { give_type: key });
-    renderResult(key);
+    location.href = 'result-sequence.html?test=give&type=' + encodeURIComponent(key);
 }
 
 function showResultFromKey(key) {

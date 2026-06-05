@@ -81,8 +81,8 @@
       <p class="sequence-line">바꾸는 건 달라요.</p>
       <span class="sequence-rule" aria-hidden="true"></span>
       <p class="sequence-line is-soft">7일이면 몸에 익기 시작합니다.</p>
-      <a href="/hogoo-test.html" class="sequence-cta">7일 챌린지 시작하기</a>
-      <a href="/give-test.html#result-page" class="sequence-sub-link">결과 리포트로 돌아가기</a>
+      <a href="/give-test.html" class="sequence-cta" id="seq-cta-result">내 결과 전체 보기 →</a>
+      <a href="/hogoo-test.html" class="sequence-sub-link" id="seq-cta-next">다음 행동 보기</a>
     </section>
   </main>
 
@@ -205,6 +205,8 @@
     var testKey = params.get("test") || "give";
     var test = tests[testKey] || tests.give;
     var key = params.get("type") || (test.storage ? window.localStorage.getItem(test.storage) : "") || test.fallback;
+    var score = params.get("score");
+    if (!test.types[key]) key = test.fallback;
     var type = test.types[key] || test.types[test.fallback];
     var slides = Array.from(document.querySelectorAll(".sequence-slide"));
     var dots = document.getElementById("sequenceDots");
@@ -215,9 +217,16 @@
 
     document.querySelector(".sequence-brand").textContent = test.label;
     document.querySelector(".sequence-brand").href = test.home;
-    document.querySelector(".sequence-cta").textContent = test.cta;
-    document.querySelector(".sequence-cta").href = test.ctaUrl;
-    document.querySelector(".sequence-sub-link").href = test.home;
+    var homeParts = test.home.split("#");
+    var resultUrl = homeParts[0] + "?type=" + encodeURIComponent(key) + (homeParts[1] ? "#" + homeParts[1] : "");
+    if (score) resultUrl = homeParts[0] + "?type=" + encodeURIComponent(key) + "&score=" + encodeURIComponent(score) + (homeParts[1] ? "#" + homeParts[1] : "");
+    var ctaBtn = document.getElementById("seq-cta-result");
+    if (ctaBtn) ctaBtn.href = resultUrl;
+    var nextCta = document.getElementById("seq-cta-next");
+    if (nextCta) {
+      nextCta.textContent = test.cta;
+      nextCta.href = test.ctaUrl;
+    }
     document.getElementById("seqStrength").textContent = type.strength;
     document.getElementById("seqRisk").textContent = type.risk;
     document.getElementById("seqAdvice").textContent = type.advice;
@@ -253,7 +262,7 @@
 
     function next() {
       if (index >= slides.length - 1) {
-        window.location.href = test.home;
+        window.location.href = resultUrl;
         return;
       }
       render(index + 1);

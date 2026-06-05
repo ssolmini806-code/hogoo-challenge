@@ -40,7 +40,6 @@
                 <h1>거절력 테스트</h1>
                 <p>부탁 앞에서 내 기준을 지키는 힘이 어느 정도인지 확인하세요.</p>
                 <p class="meta">10문항 · 약 2분 · 결과 즉시 확인</p>
-                <button onclick="start()">지금 진단 시작하기</button>
                 <section class="test-tabs" aria-label="거절력 테스트 안내">
                     <div class="tab-list" role="tablist" aria-label="테스트 안내 탭">
                         <button class="tab-btn" type="button" role="tab" id="refusal-tab-1" aria-controls="refusal-panel-1" aria-selected="true">무엇을 보나요</button>
@@ -69,6 +68,7 @@
                         <p>좋은 관계를 오래 유지하기 위해 가능한 범위와 어려운 범위를 말하는 연습입니다.</p>
                     </div>
                 </section>
+                <button onclick="start()">설명 확인했어요, 진단 시작하기</button>
             </div>
         </div>
     </section>
@@ -192,7 +192,9 @@ let i=0,s=0;
 function start(){i=0;s=0;intro.classList.add("hidden");result.classList.add("hidden");test.classList.remove("hidden");render()}
 function render(){fill.style.width=Math.round(i/qs.length*100)+"%";q.textContent=qs[i][0];answers.innerHTML="";qs[i][1].forEach((a,idx)=>{const b=document.createElement("button");b.className="ans";b.textContent=a;b.onclick=()=>pick(idx+1);answers.appendChild(b)})}
 function pick(v){s+=v;i++;if(i<qs.length)render();else show()}
-function show(){test.classList.add("hidden");result.classList.remove("hidden");const r=rs.find(x=>s<=x.limit);
+function show(){const r=rs.find(x=>s<=x.limit);
+location.href='result-sequence.html?test=refusal&type='+encodeURIComponent(r.key)}
+function renderResult(key){intro.classList.add("hidden");test.classList.add("hidden");result.classList.remove("hidden");const r=rs.find(x=>x.key===key)||rs[0];
 document.getElementById('name').textContent=r.name;
 document.getElementById('character').classList.remove('is-empty');
 document.getElementById('character').innerHTML='<img src="'+r.character+'" alt="'+r.name+' 캐릭터" loading="lazy" decoding="async" onerror="this.remove();this.parentNode.classList.add(\'is-empty\')">';
@@ -205,6 +207,8 @@ if(r.insight) {
     document.getElementById('expertLink').href = r.insight.l;
 }
 scrollTo(0,0)}
+const initialType=new URLSearchParams(location.search).get('type');
+if(initialType) renderResult(initialType);
 </script>
 </body>
 </html>
