@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GIVE ID 결과 흐름 · GIVE Ecosystem</title>
+  <meta name="description" content="GIVE ID 결과를 강점, 위험 신호, 오늘의 조언, 다음 행동 순서로 차분하게 읽는 화면입니다.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,1,400;9..144,1,500&family=Hahmlet:wght@400;500;600;700;800&family=Pretendard:wght@400;450;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/give-theme.css">
+</head>
+<body class="sequence-page">
+  <a class="skip" href="#sequence-main">본문으로 바로가기</a>
+
+  <header class="sequence-header" aria-label="GIVE ID 결과 흐름">
+    <a class="sequence-brand" href="/give-test.html">GIVE ID 결과</a>
+    <div class="sequence-dots" id="sequenceDots" aria-hidden="true"></div>
+  </header>
+
+  <main class="sequence-main" id="sequence-main">
+    <section class="sequence-slide active" data-tone="plain" aria-label="패턴 확인">
+      <p class="sequence-line">관계에서</p>
+      <p class="sequence-line">자꾸 손해 보는 기분,</p>
+      <span class="sequence-rule" aria-hidden="true"></span>
+      <p class="sequence-line"><strong>이유</strong>가 있어요.</p>
+    </section>
+
+    <section class="sequence-slide" data-tone="plain" aria-label="공감">
+      <p class="sequence-line">착해서 다 받아주는 게 아니에요.</p>
+      <p class="sequence-line">그 순간 거절이 <strong>불편해서</strong> 한 거죠.</p>
+      <span class="sequence-rule" aria-hidden="true"></span>
+      <p class="sequence-line is-soft">그리고 그 불편함, 꽤 오래됐을 거예요.</p>
+    </section>
+
+    <section class="sequence-slide" data-tone="plain" aria-label="반복 패턴">
+      <p class="sequence-line">이 패턴은</p>
+      <p class="sequence-line">가장 가까운 사람 앞에서</p>
+      <p class="sequence-line"><strong>반복</strong>됩니다.</p>
+      <span class="sequence-rule" aria-hidden="true"></span>
+      <p class="sequence-line is-soft">지금도 조용히 작동하고 있어요.</p>
+    </section>
+
+    <section class="sequence-slide" data-tone="plain" aria-label="강점">
+      <span class="sequence-label">당신의 강점</span>
+      <p class="sequence-line">좋은 소식도 있어요.</p>
+      <p class="sequence-line">당신은 이미 <strong>느끼고 있었거든요</strong>.</p>
+      <p class="sequence-copy" id="seqStrength"></p>
+      <span class="sequence-rule" aria-hidden="true"></span>
+      <p class="sequence-line is-soft">그게 변화의 출발점이에요.</p>
+    </section>
+
+    <section class="sequence-slide" data-tone="plain" aria-label="위험 신호">
+      <span class="sequence-label is-amber">위험 신호</span>
+      <p class="sequence-line">이 패턴이 계속되면</p>
+      <p class="sequence-copy" id="seqRisk"></p>
+      <span class="sequence-rule" aria-hidden="true"></span>
+      <p class="sequence-line is-soft">지금 알아차린 것만으로도 이미 달라지고 있어요.</p>
+    </section>
+
+    <section class="sequence-slide" data-tone="plain" aria-label="오늘의 조언">
+      <span class="sequence-label">오늘의 조언</span>
+      <p class="sequence-line">오늘 딱 하나만 해보세요.</p>
+      <article class="sequence-action">
+        <span>ACTION</span>
+        <p id="seqAdvice"></p>
+      </article>
+    </section>
+
+    <section class="sequence-slide is-green" data-tone="green" aria-label="GIVE ID 공개">
+      <span class="sequence-label">당신의 GIVE ID</span>
+      <figure class="sequence-character">
+        <img id="seqCharacter" src="" alt="">
+      </figure>
+      <h1 class="sequence-type" id="seqTypeName"></h1>
+      <p class="sequence-tagline" id="seqTagline"></p>
+    </section>
+
+    <section class="sequence-slide" data-tone="plain" aria-label="다음 행동">
+      <p class="sequence-line">아는 것과</p>
+      <p class="sequence-line">바꾸는 건 달라요.</p>
+      <span class="sequence-rule" aria-hidden="true"></span>
+      <p class="sequence-line is-soft">7일이면 몸에 익기 시작합니다.</p>
+      <a href="/hogoo-test.html" class="sequence-cta">7일 챌린지 시작하기</a>
+      <a href="/give-test.html#result-page" class="sequence-sub-link">결과 리포트로 돌아가기</a>
+    </section>
+  </main>
+
+  <button class="sequence-back" id="sequenceBack" type="button">이전</button>
+  <button class="sequence-next" id="sequenceNext" type="button">계속</button>
+  <p class="sequence-hint" id="sequenceHint">오른쪽을 탭하거나 계속 버튼을 눌러 넘겨보세요.</p>
+
+  <script>
+  (function(){
+    var types = {
+      angel: {
+        name: "다 주고 빈 손 🐶",
+        tagline: "\"어… 그래 해줄게\"",
+        strength: "공감 능력이 뛰어나고 주변 사람에게 깊은 안정감을 줍니다.",
+        risk: "거절하지 못해 내 일정, 감정, 돈이 뒤로 밀릴 수 있습니다.",
+        advice: "작은 부탁 하나에 \"지금은 어려워\"라고 오늘 답해보세요.",
+        character: "/images/types/give-id/type-angel.webp"
+      },
+      diplomat: {
+        name: "분위기 지킴이",
+        tagline: "\"괜히 나만 불편하게 하지 말자\"",
+        strength: "상황 파악이 빠르고 갈등을 완충하는 힘이 있습니다.",
+        risk: "겉으로 웃다가 속으로 피로와 억울함이 쌓일 수 있습니다.",
+        advice: "부탁을 받으면 바로 답하지 말고 \"확인하고 말해줄게\"를 먼저 말하세요.",
+        character: "/images/types/give-id/type-diplomat.webp"
+      },
+      architect: {
+        name: "계산 빠른 살림꾼",
+        tagline: "\"이건 되고 저건 안 돼\"",
+        strength: "리소스 관리와 판단력이 뛰어나 쉽게 휘둘리지 않습니다.",
+        risk: "상대에게 거리감이 크게 느껴져 중요한 연결을 잃을 수 있습니다.",
+        advice: "오늘은 효율과 상관없이 짧은 칭찬 한마디를 건네보세요.",
+        character: "/images/types/give-id/type-awakening.webp"
+      },
+      guardian: {
+        name: "선 잘 긋는 문지기",
+        tagline: "\"여기까지만요\"",
+        strength: "자신의 한계와 원칙을 명확히 알고 있습니다.",
+        risk: "새로운 사람에게 마음을 여는 속도가 너무 늦어질 수 있습니다.",
+        advice: "내 선을 넘지 않는 범위에서 먼저 작은 제안을 해보세요.",
+        character: "/images/types/give-id/type-gatekeeper.webp"
+      },
+      burnout: {
+        name: "방전된 햄스터 🔋",
+        tagline: "\"이제 좀 쉬고 싶다…\"",
+        strength: "헌신적이고 책임감이 강해 쉽게 관계를 포기하지 않습니다.",
+        risk: "작은 부탁에도 예민해지고 사람 자체를 피하게 될 수 있습니다.",
+        advice: "오늘 하루는 추가 부탁을 모두 보류하고 회복 시간을 확보하세요.",
+        character: "/images/types/give-id/type-hamster.webp"
+      },
+      blocker: {
+        name: "철벽 고슴도치 🦔",
+        tagline: "\"일단 가시부터\"",
+        strength: "불필요한 희생과 감정 소모를 잘 피합니다.",
+        risk: "결정적인 순간 도움을 청할 사람이 부족해질 수 있습니다.",
+        advice: "믿을 수 있는 사람의 작은 호의 하나를 오늘 받아보세요.",
+        character: "/images/types/give-id/type-hedgehog.webp"
+      },
+      mixed: {
+        name: "줄타기 균형러",
+        tagline: "\"상황 봐서\"",
+        strength: "상황 적응력이 좋고 관계를 한쪽으로 몰아가지 않습니다.",
+        risk: "기준이 불명확해 반복적으로 손해 보는 관계가 생길 수 있습니다.",
+        advice: "내가 절대 넘기지 않을 관계 원칙 하나를 오늘 적어보세요.",
+        character: "/images/types/give-id/type-balancer.webp"
+      }
+    };
+
+    var params = new URLSearchParams(window.location.search);
+    var key = params.get("type") || window.localStorage.getItem("give_test_result") || "mixed";
+    var type = types[key] || types.mixed;
+    var slides = Array.from(document.querySelectorAll(".sequence-slide"));
+    var dots = document.getElementById("sequenceDots");
+    var nextButton = document.getElementById("sequenceNext");
+    var backButton = document.getElementById("sequenceBack");
+    var hint = document.getElementById("sequenceHint");
+    var index = 0;
+
+    document.getElementById("seqStrength").textContent = type.strength;
+    document.getElementById("seqRisk").textContent = type.risk;
+    document.getElementById("seqAdvice").textContent = type.advice;
+    document.getElementById("seqTypeName").textContent = type.name;
+    document.getElementById("seqTagline").textContent = type.tagline;
+    var character = document.getElementById("seqCharacter");
+    character.src = type.character;
+    character.alt = type.name + " 캐릭터";
+    character.addEventListener("error", function(){
+      character.hidden = true;
+    });
+
+    slides.forEach(function(_, dotIndex){
+      var dot = document.createElement("span");
+      dot.className = dotIndex === 0 ? "is-active" : "";
+      dots.appendChild(dot);
+    });
+    var dotItems = Array.from(dots.children);
+
+    function render(nextIndex) {
+      slides[index].classList.remove("active");
+      dotItems[index].classList.remove("is-active");
+      index = nextIndex;
+      slides[index].classList.add("active");
+      dotItems[index].classList.add("is-active");
+      document.body.classList.toggle("sequence-green-active", slides[index].dataset.tone === "green");
+      backButton.disabled = index === 0;
+      nextButton.textContent = index === slides.length - 1 ? "완료" : "계속";
+      hint.hidden = index === slides.length - 1;
+    }
+
+    function next() {
+      if (index >= slides.length - 1) {
+        window.location.href = "/give-test.html#result-page";
+        return;
+      }
+      render(index + 1);
+    }
+
+    function prev() {
+      if (index <= 0) return;
+      render(index - 1);
+    }
+
+    nextButton.addEventListener("click", next);
+    backButton.addEventListener("click", prev);
+    document.addEventListener("click", function(event){
+      if (event.target.closest("a,button")) return;
+      if (event.clientX < window.innerWidth / 2) prev();
+      else next();
+    });
+
+    var startX = 0;
+    document.addEventListener("touchstart", function(event){
+      startX = event.touches[0].clientX;
+    }, { passive: true });
+    document.addEventListener("touchend", function(event){
+      var delta = event.changedTouches[0].clientX - startX;
+      if (delta < -40) next();
+      if (delta > 40) prev();
+    }, { passive: true });
+    document.addEventListener("keydown", function(event){
+      if (event.key === "ArrowRight" || event.key === " ") {
+        event.preventDefault();
+        next();
+      }
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        prev();
+      }
+    });
+
+    render(0);
+  })();
+  </script>
+</body>
+</html>
