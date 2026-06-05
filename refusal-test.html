@@ -85,6 +85,9 @@
                 <span class="badge">나의 거절력 진단 결과</span>
                 <h1 id="name" class="result-name"></h1>
                 <p id="body" class="result-body-copy"></p>
+                <a href="result-sequence.html?test=refusal&type=sprout" class="start-btn result-sequence-link" id="sequenceLink">
+                    결과 처음부터 보기 →
+                </a>
             </div>
 
             <section class="result-report-lead" aria-label="거절력 결과 리포트 안내">
@@ -179,10 +182,10 @@ const qs=[
 ["내 거절은 나를 지키는 행동이라고 느끼나?",["전혀 아니다","잘 모르겠다","어느 정도 그렇다","매우 그렇다"]]
 ];
 const rs=[
-{limit:17,name:"Lv.1 거절 새싹",body:"아직 입이 잘 떨어지지 않습니다. 부탁 앞에서 내 기준보다 상대 감정을 먼저 봅니다. 작은 거절 문장부터 연습해야 합니다.",script:"\"지금 바로 답하기는 어려워. 내 일정 확인하고 오늘 저녁에 말해줄게.\"", insight: { h: "거절이 힘든 당신, '손실 회피' 중인가요?", t: "사람은 얻는 기쁨보다 잃는 슬픔을 2배 더 크게 느낍니다. 거절을 관계의 손실로 보지 않는 연습이 필요합니다.", l: "articles/loss-aversion-relationships.html"}},
-{limit:25,name:"Lv.2 흔들리는 배려형",body:"거절할 수는 있지만 미안함에 자주 흔들립니다. 답변을 미루는 기술이 도움이 됩니다.",script:"\"도와주고 싶은 마음은 있는데, 이번 주에는 내가 맡기 어렵다.\"", insight: { h: "착한 사람의 번아웃을 예방하는 법", t: "선의가 소진되지 않으려면 '희생'이 아닌 '지속 가능한 도움'을 주어야 합니다. 번아웃 신호를 체크해보세요.", l: "articles/giver-burnout.html"}},
-{limit:33,name:"Lv.3 기준 성장형",body:"대부분의 상황에서 선을 지킬 수 있습니다. 반복 부탁에 대한 고정 문장을 준비해보세요.",script:"\"가능한 범위는 여기까지야. 그 이상은 내 일정상 어렵다.\"", insight: { h: "성공하는 기버는 '경계'가 다릅니다", t: "이기적인 것과 자기 보호는 다릅니다. 성공하는 이타주의자들의 관계 설정 전략을 확인해보세요.", l: "articles/smart-giver-guide.html"}},
-{limit:99,name:"Lv.4 거절 마스터",body:"거절력이 좋은 편입니다. 차갑게 보이지 않도록 짧은 이유와 대안을 더하면 좋습니다.",script:"\"이번 요청은 어렵지만, 참고할 자료나 다른 방법을 같이 생각해볼 수는 있어.\"", insight: { h: "선의를 착취하는 '테이커' 감별법", t: "단단한 경계는 당신의 선의를 악용하는 사람들로부터 당신을 지켜줍니다. 테이커의 신호를 더 정교하게 읽어보세요.", l: "articles/taker-signals.html"}}
+{key:"sprout",limit:17,name:"Lv.1 거절 새싹",body:"아직 입이 잘 떨어지지 않습니다. 부탁 앞에서 내 기준보다 상대 감정을 먼저 봅니다. 작은 거절 문장부터 연습해야 합니다.",script:"\"지금 바로 답하기는 어려워. 내 일정 확인하고 오늘 저녁에 말해줄게.\"", insight: { h: "거절이 힘든 당신, '손실 회피' 중인가요?", t: "사람은 얻는 기쁨보다 잃는 슬픔을 2배 더 크게 느낍니다. 거절을 관계의 손실로 보지 않는 연습이 필요합니다.", l: "articles/loss-aversion-relationships.html"}},
+{key:"shaky",limit:25,name:"Lv.2 흔들리는 배려형",body:"거절할 수는 있지만 미안함에 자주 흔들립니다. 답변을 미루는 기술이 도움이 됩니다.",script:"\"도와주고 싶은 마음은 있는데, 이번 주에는 내가 맡기 어렵다.\"", insight: { h: "착한 사람의 번아웃을 예방하는 법", t: "선의가 소진되지 않으려면 '희생'이 아닌 '지속 가능한 도움'을 주어야 합니다. 번아웃 신호를 체크해보세요.", l: "articles/giver-burnout.html"}},
+{key:"growth",limit:33,name:"Lv.3 기준 성장형",body:"대부분의 상황에서 선을 지킬 수 있습니다. 반복 부탁에 대한 고정 문장을 준비해보세요.",script:"\"가능한 범위는 여기까지야. 그 이상은 내 일정상 어렵다.\"", insight: { h: "성공하는 기버는 '경계'가 다릅니다", t: "이기적인 것과 자기 보호는 다릅니다. 성공하는 이타주의자들의 관계 설정 전략을 확인해보세요.", l: "articles/smart-giver-guide.html"}},
+{key:"master",limit:99,name:"Lv.4 거절 마스터",body:"거절력이 좋은 편입니다. 차갑게 보이지 않도록 짧은 이유와 대안을 더하면 좋습니다.",script:"\"이번 요청은 어렵지만, 참고할 자료나 다른 방법을 같이 생각해볼 수는 있어.\"", insight: { h: "선의를 착취하는 '테이커' 감별법", t: "단단한 경계는 당신의 선의를 악용하는 사람들로부터 당신을 지켜줍니다. 테이커의 신호를 더 정교하게 읽어보세요.", l: "articles/taker-signals.html"}}
 ];
 let i=0,s=0;
 function start(){i=0;s=0;intro.classList.add("hidden");result.classList.add("hidden");test.classList.remove("hidden");render()}
@@ -192,6 +195,7 @@ function show(){test.classList.add("hidden");result.classList.remove("hidden");c
 document.getElementById('name').textContent=r.name;
 document.getElementById('body').textContent=r.body;
 document.getElementById('script').textContent=r.script;
+document.getElementById('sequenceLink').href='result-sequence.html?test=refusal&type='+encodeURIComponent(r.key);
 if(r.insight) {
     document.getElementById('expertHeadline').textContent = r.insight.h;
     document.getElementById('expertText').textContent = r.insight.t;

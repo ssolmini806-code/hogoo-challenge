@@ -110,6 +110,9 @@
             <div id="character"></div>
             <h1 class="type-name" id="typeName"></h1>
             <div id="scoreBar" class="score-bar"></div>
+            <a href="result-sequence.html?test=hogoo&type=middle" class="start-btn result-sequence-link" id="sequenceLink">
+                결과 처음부터 보기 →
+            </a>
         </div>
 
         <div class="type-desc-box">
@@ -423,6 +426,7 @@ function showResult() {
     else if (score >= 7) key = 'realist';
     else key = 'wall';
     const d = results[key];
+    document.getElementById('sequenceLink').href = 'result-sequence.html?test=hogoo&type=' + encodeURIComponent(key);
     document.getElementById('character').innerHTML = characterSvg(d.color, d.mood);
     document.getElementById('typeName').textContent = d.name;
     document.getElementById('typeTagline').textContent = '“' + d.tagline + '”';
