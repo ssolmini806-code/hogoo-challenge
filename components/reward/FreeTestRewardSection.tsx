@@ -235,7 +235,9 @@ export default function FreeTestRewardSection({
   const hasNotifiedBothComplete = useRef(false);
   const [hasOpenedShare, setHasOpenedShare] = useState(false);
   const [shareToast, setShareToast] = useState('');
+  const [confirmCountdown, setConfirmCountdown] = useState(0);
   const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const countdownRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const isBothComplete = isShared && isReviewed;
   const advice = getAdviceByType(resultType);
 
@@ -251,14 +253,32 @@ export default function FreeTestRewardSection({
 
   useEffect(() => {
     setHasOpenedShare(false);
+    setConfirmCountdown(0);
+    if (countdownRef.current) clearInterval(countdownRef.current);
     hasNotifiedBothComplete.current = false;
   }, [retryResetKey]);
 
   useEffect(() => {
     return () => {
       if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+      if (countdownRef.current) clearInterval(countdownRef.current);
     };
   }, []);
+
+  const startShareCountdown = (seconds = 5) => {
+    setHasOpenedShare(true);
+    setConfirmCountdown(seconds);
+    if (countdownRef.current) clearInterval(countdownRef.current);
+    countdownRef.current = setInterval(() => {
+      setConfirmCountdown(prev => {
+        if (prev <= 1) {
+          clearInterval(countdownRef.current!);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
 
   const showShareToast = (msg: string) => {
     setShareToast(msg);
@@ -269,7 +289,7 @@ export default function FreeTestRewardSection({
   const handleKakaoShare = () => {
     if (!userId) { onLoginRequired(); return; }
     openKakaoShare(resultType);
-    setHasOpenedShare(true);
+    startShareCountdown(5);
   };
 
   const handleInstaShare = () => {
@@ -282,7 +302,7 @@ export default function FreeTestRewardSection({
         .then(() => showShareToast('링크 복사 완료! 인스타 스토리에 붙여넣기 해주세요 📸'))
         .catch(() => { fallbackCopyLink(url); showShareToast('링크 복사 완료! 인스타 스토리에 붙여넣기 해주세요 📸'); });
     }
-    setHasOpenedShare(true);
+    startShareCountdown(5);
   };
 
   const handleXShare = () => {
@@ -294,7 +314,7 @@ export default function FreeTestRewardSection({
       '_blank',
       'noopener,noreferrer,width=600,height=400',
     );
-    setHasOpenedShare(true);
+    startShareCountdown(5);
   };
 
   const handleCopyShare = () => {
@@ -303,7 +323,7 @@ export default function FreeTestRewardSection({
     navigator.clipboard.writeText(url)
       .then(() => showShareToast('링크가 복사되었어요 🔗'))
       .catch(() => { fallbackCopyLink(url); showShareToast('링크가 복사되었어요 🔗'); });
-    setHasOpenedShare(true);
+    startShareCountdown(3);
   };
 
   const handleShareComplete = () => {
@@ -375,11 +395,13 @@ export default function FreeTestRewardSection({
                   <button
                     type="button"
                     onClick={handleShareComplete}
-                    disabled={isShared}
+                    disabled={isShared || confirmCountdown > 0}
                     style={{
                       ...(isShared
                         ? styles.btn('#1e2e22', '#7cc88a', '1px solid #2d4a35', true)
-                        : styles.btn('#2a2520', '#c5b8ac', '1px solid #3a3530')),
+                        : confirmCountdown > 0
+                          ? styles.btn('#2a2520', '#6e6460', '1px solid #3a3530', true)
+                          : styles.btn('#2a2520', '#c5b8ac', '1px solid #3a3530')),
                       marginTop: 8,
                     }}
                   >
@@ -388,7 +410,9 @@ export default function FreeTestRewardSection({
                         <Check size={14} aria-hidden="true" />
                         공유 완료
                       </>
-                    ) : '공유했어요 ✓'}
+                    ) : confirmCountdown > 0
+                      ? `공유 중... ${confirmCountdown}초 후 확인 가능`
+                      : '공유했어요 ✓'}
                   </button>
                 ) : null}
               </div>
