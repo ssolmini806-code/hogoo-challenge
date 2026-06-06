@@ -374,6 +374,9 @@ function renderResult(key) {
     document.getElementById("test-page").classList.add("hidden");
     document.getElementById("result-page").classList.remove("hidden");
     document.getElementById("completion").classList.add("show");
+    document.querySelectorAll(".result-sequence-link").forEach((link) => {
+        link.href = "result-sequence.html?test=give&type=" + encodeURIComponent(key);
+    });
     window.scrollTo(0, 0);
     trackEvent('give_result_viewed', { give_type: key });
 

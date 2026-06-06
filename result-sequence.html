@@ -20,47 +20,47 @@
 
   <main class="sequence-main" id="sequence-main">
     <section class="sequence-slide active" data-tone="plain" aria-label="패턴 확인">
-      <p class="sequence-line">관계에서</p>
-      <p class="sequence-line">자꾸 손해 보는 기분,</p>
+      <p class="sequence-line" id="seqIntro1A">관계에서</p>
+      <p class="sequence-line" id="seqIntro1B">자꾸 손해 보는 기분,</p>
       <span class="sequence-rule" aria-hidden="true"></span>
-      <p class="sequence-line"><strong>이유</strong>가 있어요.</p>
+      <p class="sequence-line" id="seqIntro1C"><strong>이유</strong>가 있어요.</p>
     </section>
 
     <section class="sequence-slide" data-tone="plain" aria-label="공감">
-      <p class="sequence-line">착해서 다 받아주는 게 아니에요.</p>
-      <p class="sequence-line">그 순간 거절이 <strong>불편해서</strong> 한 거죠.</p>
+      <p class="sequence-line" id="seqIntro2A">착해서 다 받아주는 게 아니에요.</p>
+      <p class="sequence-line" id="seqIntro2B">그 순간 거절이 <strong>불편해서</strong> 한 거죠.</p>
       <span class="sequence-rule" aria-hidden="true"></span>
-      <p class="sequence-line is-soft">그리고 그 불편함, 꽤 오래됐을 거예요.</p>
+      <p class="sequence-line is-soft" id="seqIntro2C">그리고 그 불편함, 꽤 오래됐을 거예요.</p>
     </section>
 
     <section class="sequence-slide" data-tone="plain" aria-label="반복 패턴">
-      <p class="sequence-line">이 패턴은</p>
-      <p class="sequence-line">가장 가까운 사람 앞에서</p>
-      <p class="sequence-line"><strong>반복</strong>됩니다.</p>
+      <p class="sequence-line" id="seqIntro3A">이 패턴은</p>
+      <p class="sequence-line" id="seqIntro3B">가장 가까운 사람 앞에서</p>
+      <p class="sequence-line" id="seqIntro3C"><strong>반복</strong>됩니다.</p>
       <span class="sequence-rule" aria-hidden="true"></span>
-      <p class="sequence-line is-soft">지금도 조용히 작동하고 있어요.</p>
+      <p class="sequence-line is-soft" id="seqIntro3D">지금도 조용히 작동하고 있어요.</p>
     </section>
 
     <section class="sequence-slide" data-tone="plain" aria-label="강점">
       <span class="sequence-label">당신의 강점</span>
-      <p class="sequence-line">좋은 소식도 있어요.</p>
-      <p class="sequence-line">당신은 이미 <strong>느끼고 있었거든요</strong>.</p>
+      <p class="sequence-line" id="seqStrengthLeadA">좋은 소식도 있어요.</p>
+      <p class="sequence-line" id="seqStrengthLeadB">당신은 이미 <strong>느끼고 있었거든요</strong>.</p>
       <p class="sequence-copy" id="seqStrength"></p>
       <span class="sequence-rule" aria-hidden="true"></span>
-      <p class="sequence-line is-soft">그게 변화의 출발점이에요.</p>
+      <p class="sequence-line is-soft" id="seqStrengthOutro">그게 변화의 출발점이에요.</p>
     </section>
 
     <section class="sequence-slide" data-tone="plain" aria-label="위험 신호">
       <span class="sequence-label is-amber">위험 신호</span>
-      <p class="sequence-line">이 패턴이 계속되면</p>
+      <p class="sequence-line" id="seqRiskLead">이 패턴이 계속되면</p>
       <p class="sequence-copy" id="seqRisk"></p>
       <span class="sequence-rule" aria-hidden="true"></span>
-      <p class="sequence-line is-soft">지금 알아차린 것만으로도 이미 달라지고 있어요.</p>
+      <p class="sequence-line is-soft" id="seqRiskOutro">지금 알아차린 것만으로도 이미 달라지고 있어요.</p>
     </section>
 
     <section class="sequence-slide" data-tone="plain" aria-label="오늘의 조언">
       <span class="sequence-label">오늘의 조언</span>
-      <p class="sequence-line">오늘 딱 하나만 해보세요.</p>
+      <p class="sequence-line" id="seqAdviceLead">오늘 딱 하나만 해보세요.</p>
       <article class="sequence-action">
         <span>ACTION</span>
         <p id="seqAdvice"></p>
@@ -77,10 +77,10 @@
     </section>
 
     <section class="sequence-slide" data-tone="plain" aria-label="다음 행동">
-      <p class="sequence-line">아는 것과</p>
-      <p class="sequence-line">바꾸는 건 달라요.</p>
+      <p class="sequence-line" id="seqFinalA">아는 것과</p>
+      <p class="sequence-line" id="seqFinalB">바꾸는 건 달라요.</p>
       <span class="sequence-rule" aria-hidden="true"></span>
-      <p class="sequence-line is-soft">7일이면 몸에 익기 시작합니다.</p>
+      <p class="sequence-line is-soft" id="seqFinalC">7일이면 몸에 익기 시작합니다.</p>
       <a href="/give-test.html" class="sequence-cta" id="seq-cta-result">내 결과 전체 보기 →</a>
       <a href="/hogoo-test.html" class="sequence-sub-link" id="seq-cta-next">다음 행동 보기</a>
     </section>
@@ -100,6 +100,17 @@
         ctaUrl: "/hogoo-test.html",
         fallback: "mixed",
         storage: "give_test_result",
+        sequence: {
+          intro1: ["관계에서", "자꾸 손해 보는 기분,", "<strong>이유</strong>가 있어요."],
+          intro2: ["착해서 다 받아주는 게 아니에요.", "그 순간 거절이 <strong>불편해서</strong> 한 거죠.", "그리고 그 불편함, 꽤 오래됐을 거예요."],
+          intro3: ["이 패턴은", "가장 가까운 사람 앞에서", "<strong>반복</strong>됩니다.", "지금도 조용히 작동하고 있어요."],
+          strengthLead: ["좋은 소식도 있어요.", "당신은 이미 <strong>느끼고 있었거든요</strong>."],
+          strengthOutro: "그게 변화의 출발점이에요.",
+          riskLead: "이 패턴이 계속되면",
+          riskOutro: "지금 알아차린 것만으로도 이미 달라지고 있어요.",
+          adviceLead: "오늘 딱 하나만 해보세요.",
+          final: ["아는 것과", "바꾸는 건 달라요.", "7일이면 몸에 익기 시작합니다."]
+        },
         types: {
           angel: {
         name: "다 주고 빈 손 🐶",
@@ -165,6 +176,17 @@
         cta: "거절력도 확인하기",
         ctaUrl: "/refusal-test.html",
         fallback: "middle",
+        sequence: {
+          intro1: ["부탁 앞에서", "내가 자꾸 뒤로 밀린다면,", "<strong>경계</strong>가 흐려진 거예요."],
+          intro2: ["착한 사람이라서가 아니라", "상대 기대를 먼저 읽는 데 <strong>익숙해서</strong> 그래요.", "그래서 내 기준은 늦게 도착합니다."],
+          intro3: ["이 패턴은", "급한 부탁과 미안한 표정 앞에서", "<strong>자동반응</strong>처럼 나와요.", "지금 점수는 그 순간을 보여줍니다."],
+          strengthLead: ["그래도 강점은 분명해요.", "당신은 관계의 분위기를 <strong>잘 읽는 사람</strong>이에요."],
+          strengthOutro: "이제 그 감각에 내 기준을 붙이면 됩니다.",
+          riskLead: "이 상태가 반복되면",
+          riskOutro: "손해를 줄이는 첫 단계는 부탁 앞에서 잠깐 멈추는 거예요.",
+          adviceLead: "오늘은 부탁 하나에 이렇게 반응해보세요.",
+          final: ["좋은 사람인 것과", "다 해주는 사람은 달라요.", "이제 다음은 거절 문장 연습입니다."]
+        },
         types: {
           hogoo: { name:"호구 만렙 자각형", tagline:"이제 패턴이 보이기 시작해요", strength:"강한 공감 능력과 따뜻한 마음으로 주변 사람들에게 신뢰를 받습니다.", risk:"반복적인 희생과 억눌린 감정이 쌓여 번아웃으로 이어질 수 있습니다.", advice:"오늘 딱 하나, 작은 '아니오'를 연습해보세요.", character:"/images/types/hogoo-check/type-hogoo.webp" },
           nice: { name:"부드러운 배려형", tagline:"다정하지만 기준이 흐려질 때가 있어요", strength:"배려와 현실감각을 동시에 갖추고 있습니다.", risk:"상대방의 기분을 먼저 배려하다 자신의 감정을 나중에 처리하는 패턴이 있습니다.", advice:"부탁을 받았을 때 즉각 답하지 말고, '잠깐 생각해볼게'라는 시간을 만들어 보세요.", character:"/images/types/hogoo-check/type-nice.webp" },
@@ -179,6 +201,17 @@
         cta: "GIVE ID로 패턴 보기",
         ctaUrl: "/give-test.html",
         fallback: "ok",
+        sequence: {
+          intro1: ["관계가 끝난 뒤", "유난히 기운이 빠진다면,", "<strong>신호</strong>가 켜진 거예요."],
+          intro2: ["문제는 한 번의 다툼보다", "회복되지 않는 피로가 <strong>쌓이는 것</strong>이에요.", "몸은 이미 먼저 알고 있었을 수 있어요."],
+          intro3: ["위험도는", "누가 나쁜지 정하는 점수가 아니라", "<strong>내 에너지</strong>의 경고등입니다.", "지금 단계에 맞는 거리가 필요해요."],
+          strengthLead: ["중요한 건 이미 시작됐어요.", "당신은 지금 관계를 <strong>점검하려고</strong> 멈췄습니다."],
+          strengthOutro: "그 멈춤이 더 큰 소진을 막는 첫 행동이에요.",
+          riskLead: "이 경고를 무시하면",
+          riskOutro: "관계를 끊기 전에 먼저 내 회복선을 확인해야 합니다.",
+          adviceLead: "오늘은 가장 피곤한 관계 하나만 떠올려보세요.",
+          final: ["참는 것과", "관계를 지키는 건 달라요.", "다음은 내 관계 패턴을 더 넓게 보는 단계입니다."]
+        },
         types: {
           high: { name:"빨간불 — 지금 위험해요", tagline:"지금 즉각적인 변화가 필요한 상태예요", strength:"이미 문제를 인식하고 있다는 것 자체가 변화의 시작입니다.", risk:"현재 패턴이 지속되면 심각한 번아웃, 자존감 저하, 만성 피로로 이어질 수 있습니다.", advice:"가장 에너지를 빼앗는 관계 하나를 파악하고, 가장 작은 경계 하나를 설정해보세요.", character:"/images/types/relationship-risk/type-high.webp" },
           caution: { name:"노란불 — 슬슬 조심", tagline:"패턴을 안 바꾸면 소진돼요", strength:"아직 관계를 건강하게 만들 에너지가 남아 있습니다.", risk:"현재 패턴을 방치하면 서서히 지쳐가고, 나중에는 더 큰 에너지가 필요하게 됩니다.", advice:"에너지를 빼앗는 관계와 주는 관계를 구분해보세요.", character:"/images/types/relationship-risk/type-caution.webp" },
@@ -192,6 +225,17 @@
         cta: "관계 위험도도 보기",
         ctaUrl: "/relationship-risk.html",
         fallback: "sprout",
+        sequence: {
+          intro1: ["거절이 어려운 건", "말솜씨 문제가 아니라,", "<strong>불안</strong>의 문제일 수 있어요."],
+          intro2: ["입이 안 떨어지는 순간", "머릿속은 이미 상대 반응을 <strong>계산</strong>하고 있죠.", "그래서 짧은 문장이 필요합니다."],
+          intro3: ["거절력은", "차갑게 끊는 능력이 아니라", "<strong>가능한 범위</strong>를 말하는 힘이에요.", "오늘 결과는 그 힘의 현재 위치입니다."],
+          strengthLead: ["좋은 점도 있어요.", "당신은 관계를 쉽게 버리지 않는 <strong>신중한 사람</strong>입니다."],
+          strengthOutro: "이제 그 신중함이 나를 해치지 않게 조절하면 됩니다.",
+          riskLead: "거절을 계속 미루면",
+          riskOutro: "짧고 부드러운 한 문장이 관계를 더 오래 지켜줄 수 있어요.",
+          adviceLead: "오늘은 이 문장 하나만 입 밖으로 꺼내보세요.",
+          final: ["거절은", "관계를 끝내는 말이 아니에요.", "다음은 관계 위험도를 함께 확인해보세요."]
+        },
         types: {
           sprout: { name:"Lv.1 거절 새싹", tagline:"아직 입이 잘 떨어지지 않아요", strength:"상대의 감정을 세심하게 읽는 힘이 있습니다.", risk:"부탁 앞에서 내 기준보다 상대 감정을 먼저 보며 소진될 수 있습니다.", advice:"\"지금 바로 답하기는 어려워. 내 일정 확인하고 오늘 저녁에 말해줄게.\"를 연습해보세요.", character:"/images/types/refusal-test/type-sprout.webp" },
           shaky: { name:"Lv.2 흔들리는 배려형", tagline:"거절은 하지만 미안함에 흔들려요", strength:"도와주고 싶은 마음과 내 기준을 함께 보려는 힘이 있습니다.", risk:"미안함 때문에 한 번 정한 경계를 다시 무를 수 있습니다.", advice:"\"도와주고 싶은 마음은 있는데, 이번 주에는 내가 맡기 어렵다.\"를 말해보세요.", character:"/images/types/refusal-test/type-shaky.webp" },
@@ -227,6 +271,26 @@
       nextCta.textContent = test.cta;
       nextCta.href = test.ctaUrl;
     }
+    var sequence = test.sequence || tests.give.sequence;
+    document.getElementById("seqIntro1A").innerHTML = sequence.intro1[0];
+    document.getElementById("seqIntro1B").innerHTML = sequence.intro1[1];
+    document.getElementById("seqIntro1C").innerHTML = sequence.intro1[2];
+    document.getElementById("seqIntro2A").innerHTML = sequence.intro2[0];
+    document.getElementById("seqIntro2B").innerHTML = sequence.intro2[1];
+    document.getElementById("seqIntro2C").innerHTML = sequence.intro2[2];
+    document.getElementById("seqIntro3A").innerHTML = sequence.intro3[0];
+    document.getElementById("seqIntro3B").innerHTML = sequence.intro3[1];
+    document.getElementById("seqIntro3C").innerHTML = sequence.intro3[2];
+    document.getElementById("seqIntro3D").innerHTML = sequence.intro3[3];
+    document.getElementById("seqStrengthLeadA").innerHTML = sequence.strengthLead[0];
+    document.getElementById("seqStrengthLeadB").innerHTML = sequence.strengthLead[1];
+    document.getElementById("seqStrengthOutro").textContent = sequence.strengthOutro;
+    document.getElementById("seqRiskLead").textContent = sequence.riskLead;
+    document.getElementById("seqRiskOutro").textContent = sequence.riskOutro;
+    document.getElementById("seqAdviceLead").textContent = sequence.adviceLead;
+    document.getElementById("seqFinalA").textContent = sequence.final[0];
+    document.getElementById("seqFinalB").textContent = sequence.final[1];
+    document.getElementById("seqFinalC").textContent = sequence.final[2];
     document.getElementById("seqStrength").textContent = type.strength;
     document.getElementById("seqRisk").textContent = type.risk;
     document.getElementById("seqAdvice").textContent = type.advice;
@@ -247,6 +311,13 @@
       dots.appendChild(dot);
     });
     var dotItems = Array.from(dots.children);
+
+    slides.forEach(function(slide){
+      Array.from(slide.children).forEach(function(child, childIndex){
+        child.dataset.seqReveal = "";
+        child.style.setProperty("--seq-delay", Math.min(childIndex * 140, 700) + "ms");
+      });
+    });
 
     function render(nextIndex) {
       slides[index].classList.remove("active");
