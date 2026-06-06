@@ -68,11 +68,36 @@
                     <p>검사 후 바로 시도할 수 있는 작은 행동 조언을 제공합니다.</p>
                 </div>
             </section>
-            <p class="test-meta">10,249명이 이미 진단했습니다</p>
+            <p class="test-meta">이미 많은 분들이 진단했습니다</p>
             <a href="result-sequence.html?test=hogoo&type=middle" class="result-preview-link">
                 결과 흐름 미리보기 →
             </a>
             <button class="start-btn" onclick="startTest()">무료 테스트 시작하기</button>
+
+            <section class="quality-section" aria-labelledby="hogoo-method-title">
+                <span class="section-label">Self Check Guide</span>
+                <h2 id="hogoo-method-title">호구 테스트가 보는 핵심은 “착함”이 아니라 “반복 손해”입니다</h2>
+                <p>이 테스트는 누군가를 돕는 마음 자체를 문제로 보지 않습니다. 대신 부탁을 받는 순간 내 선택권이 사라지는지, 거절 후 죄책감 때문에 결정을 번복하는지, 같은 사람이 반복해서 나의 시간을 가져가는지 살핍니다.</p>
+                <p>결과는 점수만 보여주는 방식이 아니라 강점과 위험 신호를 함께 설명합니다. 따뜻함이 관계 자산으로 작동하는 부분은 보존하고, 만만하게 보이기 쉬운 장면은 구체적인 행동 문장으로 바꾸도록 돕습니다.</p>
+            </section>
+
+            <section class="quality-section muted" aria-labelledby="hogoo-signal-title">
+                <h2 id="hogoo-signal-title">내가 점검할 수 있는 세 가지 신호</h2>
+                <div class="quality-grid">
+                    <article>
+                        <h3>즉답 습관</h3>
+                        <p>부탁을 듣자마자 “응”이라고 답하면 내 일정과 감정 상태를 확인할 시간이 사라집니다. 한 박자 멈추는 연습이 필요합니다.</p>
+                    </article>
+                    <article>
+                        <h3>반복 부탁</h3>
+                        <p>한 번의 도움은 친절이지만, 같은 부담이 반복되면 기준이 필요합니다. 빈도와 범위를 말로 정하는 것이 관계를 더 오래 지킵니다.</p>
+                    </article>
+                    <article>
+                        <h3>감사 의존</h3>
+                        <p>고맙다는 말이 없을 때 하루가 흔들린다면 내 배려가 인정 욕구와 너무 강하게 묶여 있을 수 있습니다.</p>
+                    </article>
+                </div>
+            </section>
         </div>
     </div>
 </div>
@@ -397,15 +422,18 @@ function renderResult(key) {
 
     const maxScore = questions.length * 3;
     const scoreParam = Number(new URLSearchParams(location.search).get('score'));
-    const pct = Number.isFinite(scoreParam) && scoreParam > 0
-        ? Math.round((scoreParam / maxScore) * 100)
-        : ({ hogoo: 88, nice: 72, middle: 52, realist: 30, wall: 14 }[key] || 52);
-    document.getElementById('scoreBar').innerHTML =
-        '<div class="score-label">호구 지수 ' + pct + '%</div>' +
-        '<div class="score-track">' +
-        '<div class="score-fill"></div>' +
-        '</div>';
-    document.querySelector('#scoreBar .score-fill').style.width = pct + '%';
+    const hasRealScore = Number.isFinite(scoreParam) && scoreParam > 0;
+    if (hasRealScore) {
+        const pct = Math.round((scoreParam / maxScore) * 100);
+        document.getElementById('scoreBar').innerHTML =
+            '<div class="score-label">호구 지수 ' + pct + '%</div>' +
+            '<div class="score-track">' +
+            '<div class="score-fill"></div>' +
+            '</div>';
+        document.querySelector('#scoreBar .score-fill').style.width = pct + '%';
+    } else {
+        document.getElementById('scoreBar').style.display = 'none';
+    }
 
     if (d.insight) {
         document.getElementById('expertHeadline').textContent = d.insight.headline;

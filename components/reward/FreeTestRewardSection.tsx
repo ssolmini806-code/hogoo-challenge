@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import { Check, Gift, MessageCircle, PenLine, Sparkles, Unlock } from 'lucide-react';
+
+const PAID_SITE_URL = import.meta.env.VITE_PAID_SITE_URL ?? 'https://givecosystem.com';
 import AdviceCard from '../advice/AdviceCard';
 import { getAdviceByType } from '../../lib/advice/freeTestAdvice';
 
@@ -504,7 +506,7 @@ export default function FreeTestRewardSection({
                     GIVE ID 심화 테스트에서는 왜 이 패턴이 반복되는지, 어떻게 바꿀 수 있는지를 알 수 있어요.
                   </p>
                   <a
-                    href="https://givecosystem.com"
+                    href={PAID_SITE_URL}
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{

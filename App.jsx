@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { CheckCircle, Circle, ChevronRight, ChevronLeft, Award, Flame, Copy, Check, MessageSquare, Send, Star, Trash2 } from "lucide-react";
+
+const PAID_SITE_URL = import.meta.env.VITE_PAID_SITE_URL ?? 'https://givecosystem.com/';
 import DAYS from "./days";
 import { supabase } from "./src/supabase";
 import LoginButton from "./src/components/LoginButton";
@@ -513,7 +515,7 @@ export default function App() {
 
   if (loading) {
     return (
-      <div style={{ background: "#1a1614", minHeight: "100vh", display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#8a7f75' }}>
+      <div style={{ background: "#FAF8F3", minHeight: "100vh", display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#5C635E' }}>
         불러오는 중...
       </div>
     );
@@ -535,8 +537,8 @@ export default function App() {
     if (error) {
       return (
         <div style={{
-          background: "#231f1c", border: "1px dashed #3a3530", borderRadius: 16,
-          padding: "40px 24px", color: "#8a7f75", fontSize: 14
+          background: "#FFFFFF", border: "1px dashed #E7E1D5", borderRadius: 16,
+          padding: "40px 24px", color: "#5C635E", fontSize: 14
         }}>
           수료증 이미지 준비 중입니다
         </div>
@@ -555,11 +557,11 @@ export default function App() {
   return (
     <div style={{
       fontFamily: '"Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", name, sans-serif',
-      background: "#1a1614", 
+      background: "linear-gradient(180deg, #E9F2EC 0%, #FAF8F3 42%, #FFFFFF 100%)",
       minHeight: "100vh", 
       padding: "0",
-      letterSpacing: "-0.02em",
-      color: "#f5ede3"
+      letterSpacing: 0,
+      color: "#1A1F1C"
     }}>
       <style>{`
         * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
@@ -567,39 +569,47 @@ export default function App() {
         .day-btn { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
         .day-btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
         .mission-item { transition: all 0.2s ease; }
-        .mission-item:hover { border-color: #5a5048 !important; background: #2a2522 !important; }
+        .mission-item:hover { border-color: #E7E1D5 !important; background: #E9F2EC !important; }
         .phrase-card { transition: all 0.2s ease; cursor: pointer; }
-        .phrase-card:hover { transform: translateY(-1px); border-color: #4a4540 !important; }
+        .phrase-card:hover { transform: translateY(-1px); border-color: #8C9088 !important; }
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #3a3530; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #E7E1D5; border-radius: 10px; }
         .locked { opacity: 0.4; cursor: not-allowed !important; filter: grayscale(1); }
         .a2a_kit img { max-width: none; }
         .a2a_kit_size_36 img { width: 36px; height: 36px; display: inline-block; }
       `}</style>
 
       {/* Header */}
-      <div style={{ background: "#231f1c", borderBottom: "1px solid #3a3530", padding: "20px 24px 16px" }}>
+      <div style={{ background: "linear-gradient(180deg, #E9F2EC 0%, #FFFFFF 100%)", borderBottom: "1px solid #E7E1D5", padding: "24px 24px 18px" }}>
         <div style={{ maxWidth: 680, margin: "0 auto" }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
-            <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
-                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.2em", color: "#8a7f75", textTransform: "uppercase" }}>7-Day Challenge</div>
-                <LoginButton />
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, flexWrap: "wrap", marginBottom: 16 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 14, minWidth: 0 }}>
+              <img
+                src="/images/tests/hogoo-check-illustration-v3.png"
+                alt=""
+                aria-hidden="true"
+                style={{ width: 58, height: 58, borderRadius: 14, objectFit: "cover", border: "1px solid #E7E1D5", boxShadow: "0 10px 24px rgba(17,75,60,.08)", flexShrink: 0 }}
+              />
+              <div style={{ minWidth: 0 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6, flexWrap: "wrap" }}>
+                  <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: "0.16em", color: "#114B3C", textTransform: "uppercase" }}>7-Day Challenge</div>
+                  <LoginButton />
+                </div>
+                <h1 style={{ margin: 0, fontSize: 25, fontWeight: 900, color: "#1A1F1C", letterSpacing: 0, lineHeight: 1.15 }}>
+                  호구 탈출 챌린지
+                </h1>
               </div>
-              <h1 style={{ margin: 0, fontSize: 24, fontWeight: 800, color: "#f5ede3", letterSpacing: "-0.03em" }}>
-                호구 탈출 챌린지
-              </h1>
             </div>
             <div style={{ textAlign: "right" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <div style={{ background: "#2e2925", borderRadius: 10, padding: "8px 14px", border: "1px solid #3a3530" }}>
-                  <div style={{ fontSize: 10, color: "#8a7f75", marginBottom: 2 }}>총 점수</div>
-                  <div style={{ fontSize: 22, fontWeight: "bold", color: { amber: "#f59e0b", orange: "#f97316", red: "#ef4444", green: "#10b981", teal: "#14b8a6", purple: "#a855f7", blue: "#3b82f6" }[day.color], lineHeight: 1 }}>{totalScore}</div>
+                <div style={{ background: "#F3EFE7", borderRadius: 10, padding: "8px 14px", border: "1px solid #E7E1D5" }}>
+                  <div style={{ fontSize: 10, color: "#5C635E", marginBottom: 2 }}>총 점수</div>
+                  <div style={{ fontSize: 22, fontWeight: "bold", color: { amber: "#9A6516", orange: "#9A6516", red: "#9A6516", green: "#114B3C", teal: "#00A885", purple: "#0A5F4D", blue: "#0D3B2F" }[day.color], lineHeight: 1 }}>{totalScore}</div>
                 </div>
-                <div style={{ background: "#2e2925", borderRadius: 10, padding: "8px 14px", border: "1px solid #3a3530" }}>
-                  <div style={{ fontSize: 10, color: "#8a7f75", marginBottom: 2 }}>미션 완료</div>
-                  <div style={{ fontSize: 22, fontWeight: "bold", color: "#7cc88a", lineHeight: 1 }}>{completedMissions}</div>
+                <div style={{ background: "#F3EFE7", borderRadius: 10, padding: "8px 14px", border: "1px solid #E7E1D5" }}>
+                  <div style={{ fontSize: 10, color: "#5C635E", marginBottom: 2 }}>미션 완료</div>
+                  <div style={{ fontSize: 22, fontWeight: "bold", color: "#114B3C", lineHeight: 1 }}>{completedMissions}</div>
                 </div>
               </div>
             </div>
@@ -613,7 +623,7 @@ export default function App() {
               const isDone = (missions[`${i}`] || []).length === 3;
               const unlocked = isDayUnlocked(i);
               const hexColor = {
-                amber: "#f59e0b", orange: "#f97316", red: "#ef4444", green: "#10b981", teal: "#14b8a6", purple: "#a855f7", blue: "#3b82f6"
+                amber: "#9A6516", orange: "#9A6516", red: "#9A6516", green: "#114B3C", teal: "#00A885", purple: "#0A5F4D", blue: "#0D3B2F"
               }[d.color];
 
               return (
@@ -628,11 +638,11 @@ export default function App() {
                     else alert('이전 날짜의 미션을 모두 완료해야 합니다!');
                   }}
                   style={{
-                    flex: "1 1 64px", height: isActive ? 36 : 30, border: "none", cursor: unlocked ? "pointer" : "not-allowed",
+                    flex: "1 1 64px", height: 44, border: "none", cursor: unlocked ? "pointer" : "not-allowed",
                     borderRadius: 6, display: "flex", alignItems: "center", justifyContent: "center",
                     fontSize: isActive ? 13 : 11, fontWeight: isActive ? "bold" : "normal",
-                    background: isActive ? hexColor : isDone ? "#2d4a35" : score > 0 ? "#3a3530" : "#2a2520",
-                    color: isActive ? "#1a1614" : isDone ? "#7cc88a" : score > 0 ? "#c5b8ac" : "#5a5048",
+                    background: isActive ? hexColor : isDone ? "#E9F2EC" : score > 0 ? "#E7E1D5" : "#F3EFE7",
+                    color: isActive ? "#FAF8F3" : isDone ? "#114B3C" : score > 0 ? "#1A1F1C" : "#8C9088",
                     outline: isActive ? `2px solid ${hexColor}` : "none", outlineOffset: 2
                   }}
                 >
@@ -652,15 +662,15 @@ export default function App() {
               }}
               style={{
                 flex: "1 1 112px",
-                height: activeTab === "reward" ? 36 : 30,
+                height: 44,
                 border: "none",
                 borderRadius: 6,
                 cursor: isChallengeCompleted ? "pointer" : "not-allowed",
-                background: activeTab === "reward" ? "#7cc88a" : isChallengeCompleted ? "#2d4a35" : "#2a2520",
-                color: activeTab === "reward" ? "#111814" : isChallengeCompleted ? "#7cc88a" : "#5a5048",
+                background: activeTab === "reward" ? "#114B3C" : isChallengeCompleted ? "#E9F2EC" : "#F3EFE7",
+                color: activeTab === "reward" ? "#FFFFFF" : isChallengeCompleted ? "#114B3C" : "#8C9088",
                 fontSize: activeTab === "reward" ? 13 : 11,
                 fontWeight: activeTab === "reward" ? "bold" : 700,
-                outline: activeTab === "reward" ? "2px solid #7cc88a" : "none",
+                outline: activeTab === "reward" ? "2px solid #114B3C" : "none",
                 outlineOffset: 2
               }}
             >
@@ -676,7 +686,7 @@ export default function App() {
           <div>
             <div style={{ marginBottom: 24, textAlign: "center" }}>
               <CertificateImage />
-              <p style={{ margin: "10px 0 0", fontSize: 12, color: "#8a7f75" }}>
+              <p style={{ margin: "10px 0 0", fontSize: 12, color: "#5C635E" }}>
                 저장하려면 꾹 눌러주세요 (모바일)
               </p>
             </div>
@@ -702,14 +712,14 @@ export default function App() {
           <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
             <div style={{ flex: 1 }}>
               <span style={{
-                display: "inline-block", background: { amber: "#f59e0b", orange: "#f97316", red: "#ef4444", green: "#10b981", teal: "#14b8a6", purple: "#a855f7", blue: "#3b82f6" }[day.color], color: "#1a1614",
+                display: "inline-block", background: { amber: "#9A6516", orange: "#9A6516", red: "#9A6516", green: "#114B3C", teal: "#00A885", purple: "#0A5F4D", blue: "#0D3B2F" }[day.color], color: "#FAF8F3",
                 fontSize: 12, fontWeight: 800, padding: "4px 12px", borderRadius: 6,
                 letterSpacing: "0.05em", marginBottom: 12
               }}>DAY {day.day}</span>
-              <h2 style={{ margin: "0 0 8px", fontSize: 28, color: "#f5ede3", fontWeight: 800, lineHeight: 1.2, letterSpacing: "-0.04em" }}>
+              <h2 style={{ margin: "0 0 8px", fontSize: 28, color: "#1A1F1C", fontWeight: 800, lineHeight: 1.2, letterSpacing: 0 }}>
                 {day.title}
               </h2>
-              <p style={{ margin: 0, fontSize: 15, color: "#a89f95", lineHeight: 1.6, fontWeight: 500 }}>
+              <p style={{ margin: 0, fontSize: 15, color: "#5C635E", lineHeight: 1.6, fontWeight: 650 }}>
                 목표: {day.goal}
               </p>
             </div>
@@ -718,21 +728,21 @@ export default function App() {
 
         {/* Concept Card */}
         <div style={{
-          background: "#231f1c", border: "1px solid #3a3530", borderLeft: `3px solid ${{ amber: "#f59e0b", orange: "#f97316", red: "#ef4444", green: "#10b981", teal: "#14b8a6", purple: "#a855f7", blue: "#3b82f6" }[day.color]}`,
+          background: "#FFFFFF", border: "1px solid #E7E1D5", borderLeft: `3px solid ${{ amber: "#9A6516", orange: "#9A6516", red: "#9A6516", green: "#114B3C", teal: "#00A885", purple: "#0A5F4D", blue: "#0D3B2F" }[day.color]}`,
           borderRadius: 10, padding: "14px 16px", marginBottom: 20
         }}>
-          <div style={{ fontSize: 10, color: "#8a7f75", letterSpacing: 2, marginBottom: 6 }}>TODAY'S CORE</div>
-          <p style={{ margin: 0, fontSize: 15, color: "#d4c8bc", lineHeight: 1.6, fontStyle: "italic" }}>
+          <div style={{ fontSize: 10, color: "#5C635E", letterSpacing: 2, marginBottom: 6 }}>TODAY'S CORE</div>
+          <p style={{ margin: 0, fontSize: 15, color: "#1A1F1C", lineHeight: 1.6, fontStyle: "italic" }}>
             "{day.concept}"
           </p>
         </div>
 
         {/* Missions */}
         <div style={{ marginBottom: 24 }}>
-          <div style={{ fontSize: 12, color: "#8a7f75", letterSpacing: 2, marginBottom: 12, display: "flex", alignItems: "center", gap: 6 }}>
-            <Flame size={14} color={{ amber: "#f59e0b", orange: "#f97316", red: "#ef4444", green: "#10b981", teal: "#14b8a6", purple: "#a855f7", blue: "#3b82f6" }[day.color]} />
+          <div style={{ fontSize: 12, color: "#5C635E", letterSpacing: 2, marginBottom: 12, display: "flex", alignItems: "center", gap: 6 }}>
+            <Flame size={14} color={{ amber: "#9A6516", orange: "#9A6516", red: "#9A6516", green: "#114B3C", teal: "#00A885", purple: "#0A5F4D", blue: "#0D3B2F" }[day.color]} />
             <span>오늘의 미션 ({dayMissions.length}/3)</span>
-            {allMissionsDone && <span style={{ color: "#7cc88a", fontSize: 11 }}>✓ 완료 (+6점)</span>}
+            {allMissionsDone && <span style={{ color: "#114B3C", fontSize: 11 }}>✓ 완료 (+6점)</span>}
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {day.missions.map((mission, i) => {
@@ -743,20 +753,20 @@ export default function App() {
                   className="mission-item"
                   onClick={() => toggleMission(currentDay, i)}
                   style={{
-                    background: done ? "#1e2e22" : "#231f1c",
-                    border: `1px solid ${done ? "#2d4a35" : "#3a3530"}`,
+                    background: done ? "#E9F2EC" : "#FFFFFF",
+                    border: `1px solid ${done ? "#E9F2EC" : "#E7E1D5"}`,
                     borderRadius: 10, padding: "14px 16px",
                     cursor: "pointer", display: "flex", alignItems: "flex-start", gap: 12
                   }}
                 >
                   <div style={{ marginTop: 1, flexShrink: 0 }}>
                     {done
-                      ? <CheckCircle size={20} color="#7cc88a" />
-                      : <Circle size={20} color="#4a4540" />
+                      ? <CheckCircle size={20} color="#114B3C" />
+                      : <Circle size={20} color="#8C9088" />
                     }
                   </div>
                   <span style={{
-                    fontSize: 14, color: done ? "#7cc88a" : "#c5b8ac", lineHeight: 1.5,
+                    fontSize: 14, color: done ? "#114B3C" : "#1A1F1C", lineHeight: 1.5,
                     textDecoration: done ? "line-through" : "none",
                     opacity: done ? 0.7 : 1
                   }}>
@@ -774,18 +784,18 @@ export default function App() {
             { label: "불안 점수", key: "anxiety" },
             { label: "죄책감 점수", key: "guilt" }
           ].map(({ label, key }) => (
-            <div key={label} style={{ background: "#231f1c", border: "1px solid #3a3530", borderRadius: 10, padding: "14px 16px" }}>
-              <div style={{ fontSize: 11, color: "#8a7f75", marginBottom: 10 }}>{label} (0–10)</div>
+            <div key={label} style={{ background: "#FFFFFF", border: "1px solid #E7E1D5", borderRadius: 10, padding: "14px 16px" }}>
+              <div style={{ fontSize: 11, color: "#5C635E", marginBottom: 10 }}>{label} (0–10)</div>
               <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
                 {Array.from({ length: 11 }, (_, n) => (
                   <button
                     key={n}
                     onClick={() => updateField(currentDay, key, n)}
                     style={{
-                      width: 26, height: 26, borderRadius: 6, border: "1px solid",
-                      borderColor: (key === 'anxiety' ? anxiety : guilt)[`${currentDay}`] === n ? "#f0a040" : "#3a3530",
-                      background: (key === 'anxiety' ? anxiety : guilt)[`${currentDay}`] === n ? "#f0a040" : "transparent",
-                      color: (key === 'anxiety' ? anxiety : guilt)[`${currentDay}`] === n ? "#1a1614" : "#6a6058",
+                      width: 40, height: 40, borderRadius: 8, border: "1px solid",
+                      borderColor: (key === 'anxiety' ? anxiety : guilt)[`${currentDay}`] === n ? "#9A6516" : "#E7E1D5",
+                      background: (key === 'anxiety' ? anxiety : guilt)[`${currentDay}`] === n ? "#9A6516" : "transparent",
+                      color: (key === 'anxiety' ? anxiety : guilt)[`${currentDay}`] === n ? "#FAF8F3" : "#8C9088",
                       fontSize: 11, cursor: "pointer", fontWeight: (key === 'anxiety' ? anxiety : guilt)[`${currentDay}`] === n ? "bold" : "normal"
                     }}
                   >{n}</button>
@@ -797,7 +807,7 @@ export default function App() {
 
         {/* Today's Phrases */}
         <div style={{ marginBottom: 24 }}>
-          <div style={{ fontSize: 12, color: "#8a7f75", letterSpacing: 2, marginBottom: 12 }}>
+          <div style={{ fontSize: 12, color: "#5C635E", letterSpacing: 2, marginBottom: 12 }}>
             오늘의 대사 — 하나 골라봐 (+1점)
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -809,21 +819,21 @@ export default function App() {
                   className="phrase-card"
                   onClick={() => updateField(currentDay, 'phrase', i)}
                   style={{
-                    background: selected ? "#1e2535" : "#231f1c",
-                    border: `1px solid ${selected ? "#5a8fd4" : "#3a3530"}`,
+                    background: selected ? "#E2F4EE" : "#FFFFFF",
+                    border: `1px solid ${selected ? "#0A5F4D" : "#E7E1D5"}`,
                     borderRadius: 10, padding: "14px 16px",
                     display: "flex", alignItems: "center", gap: 12
                   }}
                 >
                   <div style={{
                     width: 20, height: 20, borderRadius: "50%", flexShrink: 0,
-                    border: `2px solid ${selected ? "#5a8fd4" : "#4a4540"}`,
-                    background: selected ? "#5a8fd4" : "transparent",
+                    border: `2px solid ${selected ? "#0A5F4D" : "#8C9088"}`,
+                    background: selected ? "#0A5F4D" : "transparent",
                     display: "flex", alignItems: "center", justifyContent: "center"
                   }}>
                     {selected && <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#fff" }} />}
                   </div>
-                  <span style={{ fontSize: 14, color: selected ? "#a8c8f0" : "#9a8f85", lineHeight: 1.5, fontStyle: "italic" }}>
+                  <span style={{ fontSize: 14, color: selected ? "#0A5F4D" : "#5C635E", lineHeight: 1.5, fontStyle: "italic" }}>
                     "{phrase}"
                   </span>
                 </div>
@@ -834,7 +844,7 @@ export default function App() {
 
         {/* Personal Notes */}
         <div style={{ marginBottom: 24 }}>
-          <div style={{ fontSize: 12, color: "#8a7f75", letterSpacing: 2, marginBottom: 10 }}>
+          <div style={{ fontSize: 12, color: "#5C635E", letterSpacing: 2, marginBottom: 10 }}>
             오늘 내가 실제로 한 말 / 행동
           </div>
           <textarea
@@ -844,8 +854,8 @@ export default function App() {
             onBlur={e => updateField(currentDay, 'note', e.target.value)}
             placeholder="짧게 써도 괜찮아. 한 문장이면 충분해..."
             style={{
-              width: "100%", background: "#231f1c", border: "1px solid #3a3530",
-              borderRadius: 10, padding: "14px 16px", color: "#d4c8bc",
+              width: "100%", background: "#FFFFFF", border: "1px solid #E7E1D5",
+              borderRadius: 10, padding: "14px 16px", color: "#1A1F1C",
               fontSize: 14, lineHeight: 1.6, outline: "none"
             }}
           />
@@ -853,34 +863,34 @@ export default function App() {
 
         {/* Personal Analysis & Character (New) */}
         <div style={{ 
-          background: "linear-gradient(135deg, #2a2522 0%, #231f1c 100%)", 
+          background: "linear-gradient(135deg, #E9F2EC 0%, #FFFFFF 100%)", 
           borderRadius: "20px", padding: "32px 24px", marginBottom: "24px", 
-          textAlign: "center", border: "1px solid #3a3530", position: "relative", overflow: "hidden"
+          textAlign: "center", border: "1px solid #E7E1D5", position: "relative", overflow: "hidden"
         }}>
-          <div style={{ position: "absolute", top: "-10px", right: "-10px", fontSize: "80px", opacity: 0.1, pointerEvents: "none" }}>✨</div>
+          <div style={{ position: "absolute", top: 12, right: 12, fontSize: "56px", opacity: 0.1, pointerEvents: "none" }}>✨</div>
           
           {/* 캐릭터 이모지 및 타이틀 */}
           <div style={{ fontSize: "64px", marginBottom: "16px", filter: "drop-shadow(0 10px 20px rgba(0,0,0,0.3))" }}>
             {day.color === 'green' ? '🌿' : day.color === 'blue' ? '💎' : day.color === 'red' ? '🛡️' : day.color === 'purple' ? '🔮' : '⭐'}
           </div>
-          <h3 style={{ fontSize: "20px", fontWeight: 800, color: "#f5ede3", marginBottom: "12px" }}>
-            오늘의 당신은 <span style={{ color: { amber: "#f59e0b", orange: "#f97316", red: "#ef4444", green: "#10b981", teal: "#14b8a6", purple: "#a855f7", blue: "#3b82f6" }[day.color] }}>
+          <h3 style={{ fontSize: "20px", fontWeight: 800, color: "#1A1F1C", marginBottom: "12px", lineHeight: 1.35, wordBreak: "keep-all", overflowWrap: "break-word" }}>
+            오늘의 당신은 <span style={{ color: { amber: "#9A6516", orange: "#9A6516", red: "#9A6516", green: "#114B3C", teal: "#00A885", purple: "#0A5F4D", blue: "#0D3B2F" }[day.color] }}>
               "{day.title.split(':')[0]}"
             </span> 군요!
           </h3>
-          <p style={{ fontSize: "14px", color: "#a89f95", lineHeight: 1.6, marginBottom: "24px", wordBreak: "keep-all" }}>
+          <p style={{ fontSize: "14px", color: "#5C635E", lineHeight: 1.6, marginBottom: "24px", wordBreak: "keep-all", overflowWrap: "break-word" }}>
             "착한 게 아니라 사려 깊은 거예요. 다만, 그 다정함이 당신을 깎아먹지 않도록 오늘은 조금 더 이기적이어도 괜찮아요."
           </p>
 
           {/* 심화 분석 리포트 CTA */}
           <div 
-            onClick={() => window.open('https://givecosystem.com/', '_blank', 'noopener,noreferrer')}
+            onClick={() => window.open(PAID_SITE_URL, '_blank', 'noopener,noreferrer')}
             style={{ 
-              display: "block", background: "linear-gradient(90deg, #00a885 0%, #007a62 100%)", 
-              color: "#f5ede3", padding: "16px", borderRadius: "12px",
+              display: "block", background: "linear-gradient(90deg, #00A885 0%, #0A5F4D 100%)", 
+              color: "#FFFFFF", padding: "16px", borderRadius: "12px",
               fontWeight: 800, fontSize: "15px", cursor: "pointer",
               boxShadow: "0 10px 25px rgba(0, 168, 133, 0.24)",
-              transition: "transform 0.2s ease"
+              transition: "transform 0.2s ease", lineHeight: 1.35, wordBreak: "keep-all", overflowWrap: "break-word"
             }}
             onMouseOver={e => e.currentTarget.style.transform = "scale(1.02)"}
             onMouseOut={e => e.currentTarget.style.transform = "scale(1)"}
@@ -894,22 +904,22 @@ export default function App() {
 
         {/* Certification Box */}
         <div style={{
-          background: "#1e2219", border: "1px solid #2d4a35",
+          background: "#E9F2EC", border: "1px solid #E9F2EC",
           borderRadius: 12, padding: "18px 18px 14px", marginBottom: 24
         }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <Award size={16} color="#7cc88a" />
-              <span style={{ fontSize: 12, color: "#7cc88a", letterSpacing: 1 }}>오픈채팅 인증 복붙</span>
+              <Award size={16} color="#114B3C" />
+              <span style={{ fontSize: 12, color: "#114B3C", letterSpacing: 1 }}>오픈채팅 인증 복붙</span>
             </div>
             <button
               onClick={handleCopy}
               style={{
                 display: "flex", alignItems: "center", gap: 6,
-                background: copied ? "#2d4a35" : "#2a3525",
-                border: `1px solid ${copied ? "#7cc88a" : "#3a4a35"}`,
-                borderRadius: 8, padding: "6px 12px", cursor: "pointer",
-                color: copied ? "#7cc88a" : "#9aaa95", fontSize: 12
+                background: copied ? "#E9F2EC" : "#E2F4EE",
+                border: `1px solid ${copied ? "#114B3C" : "#E7E1D5"}`,
+                borderRadius: 8, padding: "9px 12px", minHeight: 40, cursor: "pointer",
+                color: copied ? "#114B3C" : "#5C635E", fontSize: 12
               }}
             >
               {copied ? <Check size={13} /> : <Copy size={13} />}
@@ -917,15 +927,15 @@ export default function App() {
             </button>
           </div>
           <pre style={{
-            margin: 0, fontSize: 13, color: "#9aaa95", lineHeight: 1.7,
+            margin: 0, fontSize: 13, color: "#5C635E", lineHeight: 1.7,
             whiteSpace: "pre-wrap", fontFamily: "inherit"
           }}>
             {getCertText()}
           </pre>
           
           {/* AddToAny SNS Share within Certification Box */}
-          <div style={{ marginTop: 20, borderTop: "1px solid #2d4a35", paddingTop: 16 }}>
-            <div style={{ fontSize: 11, color: "#7cc88a", marginBottom: 12, textAlign: "center", fontWeight: 600, letterSpacing: "0.05em" }}>SNS로 오늘의 변화 공유하기</div>
+          <div style={{ marginTop: 20, borderTop: "1px solid #E9F2EC", paddingTop: 16 }}>
+            <div style={{ fontSize: 11, color: "#114B3C", marginBottom: 12, textAlign: "center", fontWeight: 600, letterSpacing: "0.05em" }}>SNS로 오늘의 변화 공유하기</div>
             <div style={{ display: "flex", justifyContent: "center" }}>
               <div className="a2a_kit a2a_kit_size_36 a2a_default_style" data-a2a-url="https://hogoo-challenge.pages.dev" data-a2a-title="호구 탈출 챌린지 - 7일 만에 달라지는 관계 습관">
                 <a className="a2a_button_kakao"></a>
@@ -945,8 +955,8 @@ export default function App() {
             <button
               onClick={() => setCurrentDay(d => d - 1)}
               style={{
-                flex: 1, background: "#2a2520", border: "1px solid #3a3530",
-                borderRadius: 10, padding: "14px", color: "#8a7f75",
+                flex: 1, background: "#F3EFE7", border: "1px solid #E7E1D5",
+                borderRadius: 10, padding: "14px", color: "#5C635E",
                 cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
                 fontSize: 14
               }}
@@ -961,10 +971,10 @@ export default function App() {
                 else alert('오늘의 미션 3개를 모두 완료해야 다음 날로 넘어갈 수 있습니다!');
               }}
               style={{
-                flex: 1, background: allMissionsDone ? { amber: "#f59e0b", orange: "#f97316", red: "#ef4444", green: "#10b981", teal: "#14b8a6", purple: "#a855f7", blue: "#3b82f6" }[day.color] : "#2a2520",
-                border: `1px solid ${allMissionsDone ? { amber: "#f59e0b", orange: "#f97316", red: "#ef4444", green: "#10b981", teal: "#14b8a6", purple: "#a855f7", blue: "#3b82f6" }[day.color] : "#3a3530"}`,
+                flex: 1, background: allMissionsDone ? { amber: "#9A6516", orange: "#9A6516", red: "#9A6516", green: "#114B3C", teal: "#00A885", purple: "#0A5F4D", blue: "#0D3B2F" }[day.color] : "#F3EFE7",
+                border: `1px solid ${allMissionsDone ? { amber: "#9A6516", orange: "#9A6516", red: "#9A6516", green: "#114B3C", teal: "#00A885", purple: "#0A5F4D", blue: "#0D3B2F" }[day.color] : "#E7E1D5"}`,
                 borderRadius: 10, padding: "14px",
-                color: allMissionsDone ? "#1a1614" : "#8a7f75",
+                color: allMissionsDone ? "#FAF8F3" : "#5C635E",
                 cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
                 fontSize: 14, fontWeight: allMissionsDone ? "bold" : "normal",
                 opacity: allMissionsDone ? 1 : 0.5
@@ -977,9 +987,9 @@ export default function App() {
         </div>
         
         {/* Share Section Before Back to Portal */}
-        <div style={{ textAlign: 'center', marginBottom: 32, padding: '24px', background: '#231f1c', borderRadius: '16px', border: '1px solid #3a3530', boxShadow: '0 4px 20px rgba(0,0,0,0.2)' }}>
-            <div style={{ fontSize: '14px', color: '#f5ede3', marginBottom: '16px', fontWeight: 700 }}>당신의 건강한 선의를 응원합니다</div>
-            <div style={{ fontSize: '12px', color: '#8a7f75', marginBottom: '20px', lineHeight: 1.5 }}>이 챌린지가 필요한 친구에게 공유해보세요.<br/>함께하면 변화가 더 빨라집니다.</div>
+        <div style={{ textAlign: 'center', marginBottom: 32, padding: '24px', background: '#FFFFFF', borderRadius: '16px', border: '1px solid #E7E1D5', boxShadow: '0 14px 34px rgba(17,75,60,.06)' }}>
+            <div style={{ fontSize: '14px', color: '#1A1F1C', marginBottom: '16px', fontWeight: 700 }}>당신의 건강한 선의를 응원합니다</div>
+            <div style={{ fontSize: '12px', color: '#5C635E', marginBottom: '20px', lineHeight: 1.5 }}>이 챌린지가 필요한 친구에게 공유해보세요.<br/>함께하면 변화가 더 빨라집니다.</div>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <div className="a2a_kit a2a_kit_size_36 a2a_default_style" data-a2a-url="https://hogoo-challenge.pages.dev" data-a2a-title="GIVE Ecosystem | 똑똑한 기버를 위한 관계 진단">
                     <a className="a2a_button_kakao"></a>
@@ -993,18 +1003,18 @@ export default function App() {
         </div>
 
         {/* Reviews */}
-        <section id="review-section" style={{ marginBottom: 32, padding: 20, background: "#231f1c", border: "1px solid #3a3530", borderRadius: 16 }}>
+        <section id="review-section" style={{ marginBottom: 32, padding: 20, background: "#FFFFFF", border: "1px solid #E7E1D5", borderRadius: 16 }}>
           <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12, marginBottom: 16 }}>
             <div>
-              <div style={{ display: "flex", alignItems: "center", gap: 8, color: "#7cc88a", fontSize: 12, fontWeight: 800, letterSpacing: 1, marginBottom: 8 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, color: "#114B3C", fontSize: 12, fontWeight: 800, letterSpacing: 1, marginBottom: 8 }}>
                 <MessageSquare size={15} /> 챌린지 후기
               </div>
-              <h3 style={{ margin: 0, color: "#f5ede3", fontSize: 18, lineHeight: 1.35 }}>직접 해본 사람들의 변화</h3>
+              <h3 style={{ margin: 0, color: "#1A1F1C", fontSize: 18, lineHeight: 1.35 }}>직접 해본 사람들의 변화</h3>
             </div>
             <button
               onClick={() => setShowReviewForm(prev => !prev)}
               style={{
-                background: "#7cc88a", color: "#111814", border: 0, borderRadius: 10,
+                background: "#114B3C", color: "#FFFFFF", border: 0, borderRadius: 10,
                 padding: "10px 12px", fontSize: 13, fontWeight: 800, cursor: "pointer",
                 display: "flex", alignItems: "center", gap: 6, flexShrink: 0
               }}
@@ -1014,7 +1024,7 @@ export default function App() {
           </div>
 
           {showReviewForm && (
-            <form onSubmit={submitReview} style={{ background: "#1a1614", border: "1px solid #3a3530", borderRadius: 12, padding: 14, marginBottom: 16 }}>
+            <form onSubmit={submitReview} style={{ background: "#FAF8F3", border: "1px solid #E7E1D5", borderRadius: 12, padding: 14, marginBottom: 16 }}>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 104px", gap: 10, marginBottom: 10 }}>
                 <input
                   value={reviewForm.displayName}
@@ -1022,16 +1032,16 @@ export default function App() {
                   placeholder="표시 이름 (선택)"
                   maxLength={24}
                   style={{
-                    minWidth: 0, background: "#231f1c", border: "1px solid #3a3530", borderRadius: 8,
-                    padding: "11px 12px", color: "#f5ede3", fontSize: 13, outline: "none"
+                    minWidth: 0, background: "#FFFFFF", border: "1px solid #E7E1D5", borderRadius: 8,
+                    padding: "11px 12px", color: "#1A1F1C", fontSize: 13, outline: "none"
                   }}
                 />
                 <select
                   value={reviewForm.rating}
                   onChange={e => setReviewForm(prev => ({ ...prev, rating: e.target.value }))}
                   style={{
-                    background: "#231f1c", border: "1px solid #3a3530", borderRadius: 8,
-                    padding: "11px 8px", color: "#f5ede3", fontSize: 13, outline: "none"
+                    background: "#FFFFFF", border: "1px solid #E7E1D5", borderRadius: 8,
+                    padding: "11px 8px", color: "#1A1F1C", fontSize: 13, outline: "none"
                   }}
                 >
                   <option value="5">5점</option>
@@ -1048,15 +1058,15 @@ export default function App() {
                 placeholder="챌린지를 하면서 달라진 점, 도움이 된 미션, 아쉬웠던 점을 남겨주세요."
                 maxLength={500}
                 style={{
-                  width: "100%", background: "#231f1c", border: "1px solid #3a3530", borderRadius: 8,
-                  padding: "12px", color: "#f5ede3", fontSize: 13, lineHeight: 1.6, outline: "none", marginBottom: 10
+                  width: "100%", background: "#FFFFFF", border: "1px solid #E7E1D5", borderRadius: 8,
+                  padding: "12px", color: "#1A1F1C", fontSize: 13, lineHeight: 1.6, outline: "none", marginBottom: 10
                 }}
               />
-              {reviewError && <div style={{ color: "#ef7777", fontSize: 12, marginBottom: 10 }}>{reviewError}</div>}
+              {reviewError && <div style={{ color: "#7A4E12", fontSize: 12, marginBottom: 10 }}>{reviewError}</div>}
               <button
                 type="submit"
                 style={{
-                  width: "100%", background: "#7cc88a", color: "#111814", border: 0, borderRadius: 10,
+                  width: "100%", background: "#114B3C", color: "#FFFFFF", border: 0, borderRadius: 10,
                   padding: "12px", fontSize: 14, fontWeight: 900, cursor: "pointer",
                   display: "flex", alignItems: "center", justifyContent: "center", gap: 6
                 }}
@@ -1066,7 +1076,7 @@ export default function App() {
             </form>
           )}
 
-          {reviewStatus && <div style={{ color: "#9aaa95", fontSize: 12, lineHeight: 1.5, marginBottom: 12 }}>{reviewStatus}</div>}
+          {reviewStatus && <div style={{ color: "#5C635E", fontSize: 12, lineHeight: 1.5, marginBottom: 12 }}>{reviewStatus}</div>}
 
           <div style={{ display: "grid", gap: 10, marginBottom: 14 }}>
             {[...reviews]
@@ -1081,35 +1091,35 @@ export default function App() {
                 const isOwn = !!(session?.user?.id && review.user_id === session.user.id);
                 return (
                   <article key={review.id} style={{
-                    background: "#1a1614",
-                    border: isOwn ? "1px solid #4a7a5a" : "1px solid #3a3530",
+                    background: "#FAF8F3",
+                    border: isOwn ? "1px solid #00A885" : "1px solid #E7E1D5",
                     borderRadius: 12, padding: 14
                   }}>
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: 8 }}>
                       <div style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0 }}>
                         {isOwn && (
                           <span style={{
-                            background: "#2a4a38", color: "#7cc88a", fontSize: 10,
+                            background: "#E2F4EE", color: "#114B3C", fontSize: 10,
                             fontWeight: 800, padding: "2px 7px", borderRadius: 20, flexShrink: 0
                           }}>내 후기</span>
                         )}
-                        <strong style={{ color: "#f5ede3", fontSize: 14, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                        <strong style={{ color: "#1A1F1C", fontSize: 14, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                           {review.display_name || "익명 참가자"}
                         </strong>
                       </div>
-                      <span style={{ display: "flex", alignItems: "center", gap: 2, color: "#f0a040", fontSize: 12, flexShrink: 0 }}>
+                      <span style={{ display: "flex", alignItems: "center", gap: 2, color: "#9A6516", fontSize: 12, flexShrink: 0 }}>
                         {Array.from({ length: Number(review.rating) || 5 }, (_, i) => <Star key={i} size={12} fill="currentColor" />)}
                       </span>
                     </div>
-                    <p style={{ margin: 0, color: "#b9aea4", fontSize: 13, lineHeight: 1.6 }}>{review.content}</p>
+                    <p style={{ margin: 0, color: "#5C635E", fontSize: 13, lineHeight: 1.6 }}>{review.content}</p>
                     <div style={{ marginTop: 10, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                      <span style={{ color: "#6f665f", fontSize: 11 }}>미션 {review.completed_missions || 0}개 완료</span>
+                      <span style={{ color: "#8C9088", fontSize: 11 }}>미션 {review.completed_missions || 0}개 완료</span>
                       {isOwn && (
                         <button
                           onClick={() => setDeleteConfirm(review.id)}
                           style={{
-                            background: "transparent", border: "1px solid #5a3030", borderRadius: 8,
-                            padding: "5px 10px", color: "#c07070", fontSize: 12, cursor: "pointer",
+                            background: "transparent", border: "1px solid #9A6516", borderRadius: 8,
+                            padding: "8px 12px", color: "#9A6516", fontSize: 12, cursor: "pointer",
                             display: "flex", alignItems: "center", gap: 5, fontWeight: 700
                           }}
                         >
@@ -1125,8 +1135,8 @@ export default function App() {
           <button
             onClick={() => window.location.href = "reviews.html"}
             style={{
-              width: "100%", background: "transparent", border: "1px solid #3a3530", borderRadius: 10,
-              padding: "12px", color: "#9aaa95", cursor: "pointer", fontSize: 13, fontWeight: 700
+              width: "100%", background: "transparent", border: "1px solid #E7E1D5", borderRadius: 10,
+              padding: "12px", color: "#5C635E", cursor: "pointer", fontSize: 13, fontWeight: 700
             }}
           >
             전체 후기 보기
@@ -1139,8 +1149,8 @@ export default function App() {
         <button
           onClick={() => window.location.href = 'index.html'}
           style={{
-            width: "100%", background: "transparent", border: "1px solid #3a3530",
-            borderRadius: 10, padding: "14px", color: "#8a7f75",
+            width: "100%", background: "transparent", border: "1px solid #E7E1D5",
+            borderRadius: 10, padding: "14px", color: "#5C635E",
             cursor: "pointer", fontSize: 14, fontWeight: 500
           }}
         >
@@ -1150,18 +1160,18 @@ export default function App() {
 
       {reviewConfirm && (
         <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.75)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
-          <div style={{ background: "#231f1c", border: "1px solid #3a3530", borderRadius: 16, padding: 28, maxWidth: 340, width: "100%" }}>
-            <div style={{ color: "#7cc88a", fontSize: 12, fontWeight: 800, letterSpacing: 1, marginBottom: 10 }}>후기 등록</div>
-            <p style={{ margin: "0 0 6px", color: "#f5ede3", fontSize: 16, fontWeight: 700 }}>후기를 등록할까요?</p>
-            <p style={{ margin: "0 0 24px", color: "#8a7f75", fontSize: 13, lineHeight: 1.6 }}>등록 후에는 수정이 불가합니다.</p>
+          <div style={{ background: "#FFFFFF", border: "1px solid #E7E1D5", borderRadius: 16, padding: 28, maxWidth: 340, width: "100%" }}>
+            <div style={{ color: "#114B3C", fontSize: 12, fontWeight: 800, letterSpacing: 1, marginBottom: 10 }}>후기 등록</div>
+            <p style={{ margin: "0 0 6px", color: "#1A1F1C", fontSize: 16, fontWeight: 700 }}>후기를 등록할까요?</p>
+            <p style={{ margin: "0 0 24px", color: "#5C635E", fontSize: 13, lineHeight: 1.6 }}>등록 후에는 수정이 불가합니다.</p>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
               <button
                 onClick={() => setReviewConfirm(false)}
-                style={{ background: "transparent", border: "1px solid #3a3530", borderRadius: 10, padding: 12, color: "#8a7f75", cursor: "pointer", fontSize: 14, fontWeight: 700 }}
+                style={{ background: "transparent", border: "1px solid #E7E1D5", borderRadius: 10, padding: 12, color: "#5C635E", cursor: "pointer", fontSize: 14, fontWeight: 700 }}
               >취소</button>
               <button
                 onClick={confirmSubmitReview}
-                style={{ background: "#7cc88a", border: 0, borderRadius: 10, padding: 12, color: "#111814", cursor: "pointer", fontSize: 14, fontWeight: 900 }}
+                style={{ background: "#114B3C", border: 0, borderRadius: 10, padding: 12, color: "#FFFFFF", cursor: "pointer", fontSize: 14, fontWeight: 900 }}
               >등록하기</button>
             </div>
           </div>
@@ -1170,18 +1180,18 @@ export default function App() {
 
       {deleteConfirm && (
         <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.75)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
-          <div style={{ background: "#231f1c", border: "1px solid #3a3530", borderRadius: 16, padding: 28, maxWidth: 340, width: "100%" }}>
-            <div style={{ color: "#ef7777", fontSize: 12, fontWeight: 800, letterSpacing: 1, marginBottom: 10 }}>후기 삭제</div>
-            <p style={{ margin: "0 0 6px", color: "#f5ede3", fontSize: 16, fontWeight: 700 }}>후기를 삭제할까요?</p>
-            <p style={{ margin: "0 0 24px", color: "#8a7f75", fontSize: 13, lineHeight: 1.6 }}>삭제한 후기는 복구할 수 없습니다.</p>
+          <div style={{ background: "#FFFFFF", border: "1px solid #E7E1D5", borderRadius: 16, padding: 28, maxWidth: 340, width: "100%" }}>
+            <div style={{ color: "#7A4E12", fontSize: 12, fontWeight: 800, letterSpacing: 1, marginBottom: 10 }}>후기 삭제</div>
+            <p style={{ margin: "0 0 6px", color: "#1A1F1C", fontSize: 16, fontWeight: 700 }}>후기를 삭제할까요?</p>
+            <p style={{ margin: "0 0 24px", color: "#5C635E", fontSize: 13, lineHeight: 1.6 }}>삭제한 후기는 복구할 수 없습니다.</p>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
               <button
                 onClick={() => setDeleteConfirm(null)}
-                style={{ background: "transparent", border: "1px solid #3a3530", borderRadius: 10, padding: 12, color: "#8a7f75", cursor: "pointer", fontSize: 14, fontWeight: 700 }}
+                style={{ background: "transparent", border: "1px solid #E7E1D5", borderRadius: 10, padding: 12, color: "#5C635E", cursor: "pointer", fontSize: 14, fontWeight: 700 }}
               >취소</button>
               <button
                 onClick={() => deleteReview(deleteConfirm)}
-                style={{ background: "#c07070", border: 0, borderRadius: 10, padding: 12, color: "#fff", cursor: "pointer", fontSize: 14, fontWeight: 900 }}
+                style={{ background: "#9A6516", border: 0, borderRadius: 10, padding: 12, color: "#fff", cursor: "pointer", fontSize: 14, fontWeight: 900 }}
               >삭제하기</button>
             </div>
           </div>
@@ -1200,11 +1210,11 @@ export default function App() {
         >
           <div style={{
             width: '100%', maxWidth: 360,
-            background: '#231f1c', borderRadius: 20, padding: '32px 24px',
-            border: '1px solid #3a3530',
+            background: '#FFFFFF', borderRadius: 20, padding: '32px 24px',
+            border: '1px solid #E7E1D5',
           }}>
-            <h2 style={{ color: '#f5ede3', fontSize: 20, fontWeight: 800, marginBottom: 8 }}>새 비밀번호 설정</h2>
-            <p style={{ color: '#8a7f75', fontSize: 13, lineHeight: 1.5, marginBottom: 24 }}>
+            <h2 style={{ color: '#1A1F1C', fontSize: 20, fontWeight: 800, marginBottom: 8 }}>새 비밀번호 설정</h2>
+            <p style={{ color: '#5C635E', fontSize: 13, lineHeight: 1.5, marginBottom: 24 }}>
               새로 사용할 비밀번호를 입력해주세요
             </p>
             <form
@@ -1234,8 +1244,8 @@ export default function App() {
                 minLength={6}
                 required
                 style={{
-                  padding: '13px 14px', borderRadius: 10, border: '1px solid #3a3530',
-                  background: '#1a1614', color: '#f5ede3', outline: 'none', fontSize: 14,
+                  padding: '13px 14px', borderRadius: 10, border: '1px solid #E7E1D5',
+                  background: '#FAF8F3', color: '#1A1F1C', outline: 'none', fontSize: 14,
                 }}
               />
               <button
@@ -1243,7 +1253,7 @@ export default function App() {
                 disabled={passwordResetLoading}
                 style={{
                   padding: '13px', borderRadius: 10, border: 'none',
-                  background: '#00a885', color: '#fff', fontWeight: 800,
+                  background: '#00A885', color: '#fff', fontWeight: 800,
                   cursor: passwordResetLoading ? 'not-allowed' : 'pointer', fontSize: 15,
                   opacity: passwordResetLoading ? 0.7 : 1,
                 }}
