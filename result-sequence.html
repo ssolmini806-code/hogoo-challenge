@@ -248,6 +248,8 @@
     var params = new URLSearchParams(window.location.search);
     var testKey = params.get("test") || "give";
     var test = tests[testKey] || tests.give;
+    testKey = tests[testKey] ? testKey : "give";
+    document.body.classList.add("sequence-test-" + testKey);
     var key = params.get("type") || (test.storage ? window.localStorage.getItem(test.storage) : "") || test.fallback;
     var score = params.get("score");
     if (!test.types[key]) key = test.fallback;
