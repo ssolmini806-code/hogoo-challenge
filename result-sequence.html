@@ -315,7 +315,7 @@
     slides.forEach(function(slide){
       Array.from(slide.children).forEach(function(child, childIndex){
         child.dataset.seqReveal = "";
-        child.style.setProperty("--seq-delay", Math.min(childIndex * 140, 700) + "ms");
+        child.style.setProperty("--seq-delay", Math.min(300 + childIndex * 150, 1000) + "ms");
       });
     });
 
