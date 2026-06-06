@@ -479,7 +479,7 @@ window.addEventListener("free-test-reward-status", (event) => {
 });
 
 function paidUrl(source) {
-    const url = new URL("https://givecosystem.com/");
+    const url = new URL(window.__PAID_SITE_URL || "https://givecosystem.com/");
     url.searchParams.set("utm_source", "give_id_free_result");
     url.searchParams.set("utm_medium", "cta");
     url.searchParams.set("utm_campaign", "paid_conversion");
