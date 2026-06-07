@@ -42,30 +42,90 @@
             <p class="test-subtitle">착한 것과 호구는 한 끗 차이입니다. 12가지 질문으로 나의 관계 패턴을 확인하세요.</p>
             <section class="test-tabs" aria-label="호구 테스트 안내">
                 <div class="tab-list" role="tablist" aria-label="테스트 안내 탭">
-                    <button class="tab-btn" type="button" role="tab" id="hogoo-tab-1" aria-controls="hogoo-panel-1" aria-selected="true">무엇을 보나요</button>
-                    <button class="tab-btn" type="button" role="tab" id="hogoo-tab-2" aria-controls="hogoo-panel-2" aria-selected="false">결과 유형</button>
-                    <button class="tab-btn" type="button" role="tab" id="hogoo-tab-3" aria-controls="hogoo-panel-3" aria-selected="false">위험 신호</button>
-                    <button class="tab-btn" type="button" role="tab" id="hogoo-tab-4" aria-controls="hogoo-panel-4" aria-selected="false">맞춤 조언</button>
+                    <button class="tab-btn" type="button" role="tab" id="hogoo-tab-1" aria-controls="hogoo-panel-1" aria-selected="true">부탁</button>
+                    <button class="tab-btn" type="button" role="tab" id="hogoo-tab-2" aria-controls="hogoo-panel-2" aria-selected="false">경계</button>
+                    <button class="tab-btn" type="button" role="tab" id="hogoo-tab-3" aria-controls="hogoo-panel-3" aria-selected="false">유형</button>
+                    <button class="tab-btn" type="button" role="tab" id="hogoo-tab-4" aria-controls="hogoo-panel-4" aria-selected="false">연습</button>
                 </div>
                 <div class="tab-panel active" role="tabpanel" id="hogoo-panel-1" aria-labelledby="hogoo-tab-1">
-                    <span class="tab-kicker">그림 읽기 · 부탁 카드</span>
-                    <h3>경계 설정 능력을 봅니다</h3>
-                    <p>부탁을 받을 때, 거절 후 죄책감, 반복 부탁에 대한 반응을 함께 살핍니다.</p>
+                    <div class="prologue-visual">
+                        <svg viewBox="0 0 160 90" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                          <rect x="40" y="5" width="80" height="40" rx="8" fill="#eedcb5" stroke="#9a6516" stroke-width="1.5"/>
+                          <rect x="50" y="15" width="60" height="4" rx="2" fill="#9a6516" opacity=".4"/>
+                          <rect x="50" y="23" width="44" height="4" rx="2" fill="#9a6516" opacity=".3"/>
+                          <rect x="50" y="31" width="52" height="4" rx="2" fill="#9a6516" opacity=".2"/>
+                          <line x1="80" y1="45" x2="80" y2="57" stroke="#e9a23b" stroke-width="2.2" stroke-linecap="round"/>
+                          <path d="M74 54l6 6 6-6" fill="#e9a23b" stroke="#e9a23b" stroke-width=".5" stroke-linejoin="round"/>
+                          <circle cx="80" cy="72" r="14" fill="#f6ecd8" stroke="#7a4e12" stroke-width="1.5"/>
+                          <path d="M74 74q6-4 12 0" stroke="#7a4e12" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+                          <circle cx="76" cy="69" r="2" fill="#7a4e12"/>
+                          <circle cx="84" cy="69" r="2" fill="#7a4e12"/>
+                          <path d="M92 60q3-6 5 0t-5 8q-5-1-5-8t5-8z" fill="#e9a23b" opacity=".5"/>
+                        </svg>
+                    </div>
+                    <h3>부탁 앞에서 내 기준이 흐려지는 순간을 봅니다.</h3>
+                    <p>반복 부탁, 죄책감, 착하다는 말에 대한 반응을 확인합니다.</p>
                 </div>
                 <div class="tab-panel" role="tabpanel" id="hogoo-panel-2" aria-labelledby="hogoo-tab-2">
-                    <span class="tab-kicker">그림 읽기 · 체크리스트</span>
-                    <h3>5가지 유형으로 정리합니다</h3>
-                    <p>단순 점수보다 어떤 상황에서 손해 보기 쉬운지 유형별로 보여줍니다.</p>
+                    <div class="prologue-visual">
+                        <svg viewBox="0 0 160 90" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                          <line x1="20" y1="78" x2="140" y2="78" stroke="#ddd7cd" stroke-width="1.5"/>
+                          <rect x="96" y="13" width="8" height="65" rx="4" fill="#e9a23b" opacity=".1"/>
+                          <line x1="100" y1="13" x2="100" y2="78" stroke="#e9a23b" stroke-width="2.5" stroke-linecap="round"/>
+                          <circle cx="100" cy="13" r="5" fill="#e9a23b"/>
+                          <circle cx="57" cy="31" r="12" fill="#eedcb5" stroke="#7a4e12" stroke-width="1.5"/>
+                          <path d="M53 33q4 3 8 0" stroke="#7a4e12" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+                          <line x1="57" y1="43" x2="57" y2="63" stroke="#7a4e12" stroke-width="2" stroke-linecap="round"/>
+                          <line x1="57" y1="63" x2="47" y2="78" stroke="#7a4e12" stroke-width="2" stroke-linecap="round"/>
+                          <line x1="57" y1="63" x2="67" y2="78" stroke="#7a4e12" stroke-width="2" stroke-linecap="round"/>
+                          <line x1="57" y1="50" x2="79" y2="45" stroke="#7a4e12" stroke-width="1.5" stroke-linecap="round"/>
+                          <circle cx="84" cy="44" r="5" fill="#eedcb5" stroke="#7a4e12" stroke-width="1.5"/>
+                        </svg>
+                    </div>
+                    <h3>다정함에도 기준이 필요합니다.</h3>
+                    <p>친절이 손해로 바뀌는 지점을 찾습니다.</p>
                 </div>
                 <div class="tab-panel" role="tabpanel" id="hogoo-panel-3" aria-labelledby="hogoo-tab-3">
-                    <span class="tab-kicker">그림 읽기 · 민트 경계선</span>
-                    <h3>위험은 라벨과 설명으로 표시합니다</h3>
-                    <p>색만으로 판단하지 않도록 주의 신호와 이유를 함께 안내합니다.</p>
+                    <div class="prologue-visual">
+                        <svg viewBox="0 0 160 90" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                          <circle cx="30" cy="35" r="18" fill="#f6ecd8" stroke="#9a6516" stroke-width="1.2"/>
+                          <ellipse cx="23" cy="30" rx="6" ry="6" fill="#7a4e12" opacity=".5"/>
+                          <ellipse cx="37" cy="30" rx="6" ry="6" fill="#7a4e12" opacity=".5"/>
+                          <circle cx="23" cy="30" r="2.5" fill="white"/>
+                          <circle cx="37" cy="30" r="2.5" fill="white"/>
+                          <path d="M26 40q4 4 8 0" stroke="#7a4e12" stroke-width="1" fill="none" stroke-linecap="round"/>
+                          <circle cx="80" cy="38" r="16" fill="#f6ecd8" stroke="#9a6516" stroke-width="1.2"/>
+                          <circle cx="72" cy="25" r="9" fill="#eedcb5" stroke="#9a6516" stroke-width="1"/>
+                          <circle cx="80" cy="21" r="10" fill="#eedcb5" stroke="#9a6516" stroke-width="1"/>
+                          <circle cx="88" cy="25" r="9" fill="#eedcb5" stroke="#9a6516" stroke-width="1"/>
+                          <path d="M76 43q4 4 8 0" stroke="#9a6516" stroke-width="1" fill="none" stroke-linecap="round"/>
+                          <circle cx="130" cy="35" r="18" fill="#f6ecd8" stroke="#e9a23b" stroke-width="1.2"/>
+                          <path d="M142 32l10 3-10 4z" fill="#e9a23b"/>
+                          <circle cx="134" cy="30" r="3" fill="#7a4e12"/>
+                          <circle cx="44" cy="74" r="13" fill="#e9f2ec" stroke="#9a6516" stroke-width="1.2"/>
+                          <circle cx="44" cy="74" r="7" fill="none" stroke="#9a6516" stroke-width="1" opacity=".4"/>
+                          <circle cx="116" cy="74" r="13" fill="#f6ecd8" stroke="#9a6516" stroke-width="1.2"/>
+                          <ellipse cx="110" cy="63" rx="4" ry="8" fill="#f6ecd8" stroke="#9a6516" stroke-width="1.2"/>
+                          <ellipse cx="122" cy="63" rx="4" ry="8" fill="#f6ecd8" stroke="#9a6516" stroke-width="1.2"/>
+                        </svg>
+                    </div>
+                    <h3>5가지 호구 패턴으로 정리합니다.</h3>
+                    <p>단순 점수보다 어떤 상황에서 약해지는지 보여줍니다.</p>
                 </div>
                 <div class="tab-panel" role="tabpanel" id="hogoo-panel-4" aria-labelledby="hogoo-tab-4">
-                    <span class="tab-kicker">그림 읽기 · 선택 전 멈춤</span>
-                    <h3>오늘 할 수 있는 일을 남깁니다</h3>
-                    <p>검사 후 바로 시도할 수 있는 작은 행동 조언을 제공합니다.</p>
+                    <div class="prologue-visual">
+                        <svg viewBox="0 0 160 90" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                          <rect x="20" y="10" width="120" height="70" rx="10" fill="#f6ecd8" stroke="#9a6516" stroke-width="1.5"/>
+                          <rect x="20" y="10" width="7" height="70" rx="4" fill="#9a6516" opacity=".35"/>
+                          <rect x="36" y="24" width="88" height="5" rx="2.5" fill="#7a4e12" opacity=".3"/>
+                          <rect x="36" y="35" width="66" height="5" rx="2.5" fill="#7a4e12" opacity=".25"/>
+                          <rect x="36" y="46" width="76" height="5" rx="2.5" fill="#7a4e12" opacity=".2"/>
+                          <circle cx="118" cy="64" r="12" fill="#e9a23b"/>
+                          <path d="M112 64l5 5 8-9" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3>작은 "아니오"부터 시작합니다.</h3>
+                    <p>결과에 맞춰 오늘 바로 해볼 행동을 남깁니다.</p>
                 </div>
             </section>
             <p class="test-meta">이미 많은 분들이 진단했습니다</p>
