@@ -25,7 +25,7 @@ const results = {
         strength: "공감 능력이 뛰어나고 주변 사람에게 깊은 안정감을 줍니다.",
         risk: "거절하지 못해 내 일정, 감정, 돈이 뒤로 밀릴 수 있습니다.",
         advice: "오늘은 작은 부탁 하나에 “지금은 어려워”라고 답해보세요.",
-        character: "/images/types/give-id/type-angel.png",
+        character: "/images/types/give-id/type-angel.webp",
         next: { title: "다음: 왜 거절 못할까?", copy: "“미안해서” 또 당하는 사람용.", url: "refusal-test.html" },
         color: "var(--amber-soft)"
     },
@@ -36,7 +36,7 @@ const results = {
         strength: "상황 파악이 빠르고 갈등을 완충하는 힘이 있습니다.",
         risk: "겉으로 웃다가 속으로 피로와 억울함이 쌓일 수 있습니다.",
         advice: "부탁을 받으면 바로 답하지 말고 “확인하고 말해줄게”를 먼저 말하세요.",
-        character: "/images/types/give-id/type-diplomat.png",
+        character: "/images/types/give-id/type-diplomat.webp",
         next: { title: "다음: 그 관계 괜찮아?", copy: "계속 맞춰주면 언젠가 터져요.", url: "relationship-risk.html" },
         color: "var(--amber-soft)"
     },
@@ -47,7 +47,7 @@ const results = {
         strength: "리소스 관리와 판단력이 뛰어나 쉽게 휘둘리지 않습니다.",
         risk: "상대에게 거리감이 크게 느껴져 중요한 연결을 잃을 수 있습니다.",
         advice: "오늘은 효율과 상관없이 짧은 칭찬 한마디를 건네보세요.",
-        character: "/images/types/give-id/type-awakening.png",
+        character: "/images/types/give-id/type-awakening.webp",
         next: { title: "다음: 선일까, 벽일까?", copy: "좋은 사람까지 밀어내는지 확인.", url: "relationship-risk.html" },
         color: "var(--surface-2)"
     },
@@ -58,7 +58,7 @@ const results = {
         strength: "자신의 한계와 원칙을 명확히 알고 있습니다.",
         risk: "새로운 사람에게 마음을 여는 속도가 너무 늦어질 수 있습니다.",
         advice: "내 선을 넘지 않는 범위에서 먼저 작은 제안을 해보세요.",
-        character: "/images/types/give-id/type-gatekeeper.png",
+        character: "/images/types/give-id/type-gatekeeper.webp",
         next: { title: "다음: 나 진짜 안 당할까?", copy: "특정 사람 앞에서만 무너질 수 있어요.", url: "hogoo-check.html" },
         color: "var(--green-soft)"
     },
@@ -69,7 +69,7 @@ const results = {
         strength: "헌신적이고 책임감이 강해 쉽게 관계를 포기하지 않습니다.",
         risk: "작은 부탁에도 예민해지고 사람 자체를 피하게 될 수 있습니다.",
         advice: "오늘 하루는 모든 추가 부탁을 보류하고 나를 회복시키는 시간을 확보하세요.",
-        character: "/images/types/give-id/type-hamster.png",
+        character: "/images/types/give-id/type-hamster.webp",
         next: { title: "다음: 이제 그만해도 돼요", copy: "착함 말고 멈춤이 필요해요.", url: "refusal-test.html" },
         color: "var(--amber-soft)"
     },
@@ -80,7 +80,7 @@ const results = {
         strength: "불필요한 희생과 감정 소모를 잘 피합니다.",
         risk: "결정적인 순간 도움을 청할 사람이 부족해질 수 있습니다.",
         advice: "믿을 수 있는 사람의 작은 호의 하나를 있는 그대로 받아보세요.",
-        character: "/images/types/give-id/type-hedgehog.png",
+        character: "/images/types/give-id/type-hedgehog.webp",
         next: { title: "다음: 방어하다 외로워짐", copy: "상처는 피했는데 사람도 사라질 수 있어요.", url: "relationship-risk.html" },
         color: "var(--mint-soft)"
     },
@@ -91,7 +91,7 @@ const results = {
         strength: "상황 적응력이 좋고 관계를 한쪽으로 몰아가지 않습니다.",
         risk: "기준이 불명확해 반복적으로 손해 보는 관계가 생길 수 있습니다.",
         advice: "내가 절대 넘기지 않을 관계 원칙 하나를 적어보세요.",
-        character: "/images/types/give-id/type-balancer.png",
+        character: "/images/types/give-id/type-balancer.webp",
         next: { title: "다음: 내가 무너지는 순간", copy: "기준이 애매하면 또 반복돼요.", url: "hogoo-check.html" },
         color: "var(--green-soft)"
     }
