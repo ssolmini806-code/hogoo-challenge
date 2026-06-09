@@ -1,14 +1,15 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, lazy, Suspense } from "react";
 import { CheckCircle, Circle, ChevronRight, ChevronLeft, Award, Flame, Copy, Check, MessageSquare, Send, Star, Trash2 } from "lucide-react";
 
 const PAID_SITE_URL = import.meta.env.VITE_PAID_SITE_URL ?? 'https://givecosystem.com/';
 import DAYS from "./days";
 import { supabase } from "./src/supabase";
 import LoginButton from "./src/components/LoginButton";
-import LoginModal from "./src/components/LoginModal";
-import ChallengeRewardSection from "./components/reward/ChallengeRewardSection";
 import { initializeAdminModeFromUrl, isAdminModeEnabled } from "./src/utils/adminMode";
-import MyPage from "./src/components/MyPage";
+
+const LoginModal = lazy(() => import('./src/components/LoginModal'));
+const ChallengeRewardSection = lazy(() => import('./components/reward/ChallengeRewardSection'));
+const MyPage = lazy(() => import('./src/components/MyPage'));
 
 function getBrowserTimezone() {
   return Intl.DateTimeFormat().resolvedOptions().timeZone || 'Asia/Seoul';
@@ -524,11 +525,13 @@ export default function App() {
   const pathname = typeof window !== 'undefined' ? window.location.pathname : '/';
   if (pathname === '/mypage') {
     return (
-      <MyPage
-        session={session}
-        challenge="seven_day_challenge"
-        onBack={() => { window.location.href = '/'; }}
-      />
+      <Suspense fallback={<div style={{ background: "#FAF8F3", minHeight: "100vh", display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#5C635E' }}>불러오는 중...</div>}>
+        <MyPage
+          session={session}
+          challenge="seven_day_challenge"
+          onBack={() => { window.location.href = '/'; }}
+        />
+      </Suspense>
     );
   }
 
@@ -546,7 +549,7 @@ export default function App() {
     }
     return (
       <img
-        src="/images/certificate-7day.png"
+        src="/images/certificate-7day.webp"
         alt="7일 챌린지 수료증"
         onError={() => setError(true)}
         style={{ width: "100%", borderRadius: 16, display: "block" }}
@@ -586,7 +589,7 @@ export default function App() {
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, flexWrap: "wrap", marginBottom: 16 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 14, minWidth: 0 }}>
               <img
-                src="/images/tests/hogoo-check-illustration-v3.png"
+                src="/images/tests/hogoo-check-illustration-v3.webp"
                 alt=""
                 aria-hidden="true"
                 style={{ width: 58, height: 58, borderRadius: 14, objectFit: "cover", border: "1px solid #E7E1D5", boxShadow: "0 10px 24px rgba(17,75,60,.08)", flexShrink: 0 }}
@@ -642,7 +645,7 @@ export default function App() {
                     borderRadius: 6, display: "flex", alignItems: "center", justifyContent: "center",
                     fontSize: isActive ? 13 : 11, fontWeight: isActive ? "bold" : "normal",
                     background: isActive ? hexColor : isDone ? "#E9F2EC" : score > 0 ? "#E7E1D5" : "#F3EFE7",
-                    color: isActive ? "#FAF8F3" : isDone ? "#114B3C" : score > 0 ? "#1A1F1C" : "#8C9088",
+                    color: isActive ? "#FAF8F3" : isDone ? "#114B3C" : score > 0 ? "#1A1F1C" : "#5C635E",
                     outline: isActive ? `2px solid ${hexColor}` : "none", outlineOffset: 2
                   }}
                 >
@@ -667,7 +670,7 @@ export default function App() {
                 borderRadius: 6,
                 cursor: isChallengeCompleted ? "pointer" : "not-allowed",
                 background: activeTab === "reward" ? "#114B3C" : isChallengeCompleted ? "#E9F2EC" : "#F3EFE7",
-                color: activeTab === "reward" ? "#FFFFFF" : isChallengeCompleted ? "#114B3C" : "#8C9088",
+                color: activeTab === "reward" ? "#FFFFFF" : isChallengeCompleted ? "#114B3C" : "#5C635E",
                 fontSize: activeTab === "reward" ? 13 : 11,
                 fontWeight: activeTab === "reward" ? "bold" : 700,
                 outline: activeTab === "reward" ? "2px solid #114B3C" : "none",
@@ -683,27 +686,29 @@ export default function App() {
       {/* Main Content */}
       <div style={{ maxWidth: 680, margin: "0 auto", padding: "24px 20px 80px" }}>
         {activeTab === "reward" ? (
-          <div>
-            <div style={{ marginBottom: 24, textAlign: "center" }}>
-              <CertificateImage />
-              <p style={{ margin: "10px 0 0", fontSize: 12, color: "#5C635E" }}>
-                저장하려면 꾹 눌러주세요 (모바일)
-              </p>
-            </div>
+          <Suspense fallback={<div style={{ textAlign: "center", padding: "40px 0", color: "#5C635E" }}>불러오는 중...</div>}>
+            <div>
+              <div style={{ marginBottom: 24, textAlign: "center" }}>
+                <CertificateImage />
+                <p style={{ margin: "10px 0 0", fontSize: 12, color: "#5C635E" }}>
+                  저장하려면 꾹 눌러주세요 (모바일)
+                </p>
+              </div>
 
-            <ChallengeRewardSection
-              userId={adminMode ? 'admin' : session?.user?.id ?? null}
-              completionDays={adminMode ? DAYS.length : completedDays}
-              isShared={adminMode || isShared}
-              isReviewed={adminMode || isReviewed}
-              onLoginRequired={() => {
-                if (!adminMode) openLoginModal(setLoginModalOpen, 'challenge_reward');
-              }}
-              onShareComplete={handleShareComplete}
-              onReviewClick={handleReviewClick}
-              onBothComplete={handleBothComplete}
-            />
-          </div>
+              <ChallengeRewardSection
+                userId={adminMode ? 'admin' : session?.user?.id ?? null}
+                completionDays={adminMode ? DAYS.length : completedDays}
+                isShared={adminMode || isShared}
+                isReviewed={adminMode || isReviewed}
+                onLoginRequired={() => {
+                  if (!adminMode) openLoginModal(setLoginModalOpen, 'challenge_reward');
+                }}
+                onShareComplete={handleShareComplete}
+                onReviewClick={handleReviewClick}
+                onBothComplete={handleBothComplete}
+              />
+            </div>
+          </Suspense>
         ) : (
           <>
 
@@ -762,7 +767,7 @@ export default function App() {
                   <div style={{ marginTop: 1, flexShrink: 0 }}>
                     {done
                       ? <CheckCircle size={20} color="#114B3C" />
-                      : <Circle size={20} color="#8C9088" />
+                      : <Circle size={20} color="#5C635E" />
                     }
                   </div>
                   <span style={{
@@ -795,7 +800,7 @@ export default function App() {
                       width: 40, height: 40, borderRadius: 8, border: "1px solid",
                       borderColor: (key === 'anxiety' ? anxiety : guilt)[`${currentDay}`] === n ? "#9A6516" : "#E7E1D5",
                       background: (key === 'anxiety' ? anxiety : guilt)[`${currentDay}`] === n ? "#9A6516" : "transparent",
-                      color: (key === 'anxiety' ? anxiety : guilt)[`${currentDay}`] === n ? "#FAF8F3" : "#8C9088",
+                      color: (key === 'anxiety' ? anxiety : guilt)[`${currentDay}`] === n ? "#FAF8F3" : "#5C635E",
                       fontSize: 11, cursor: "pointer", fontWeight: (key === 'anxiety' ? anxiety : guilt)[`${currentDay}`] === n ? "bold" : "normal"
                     }}
                   >{n}</button>
@@ -1113,7 +1118,7 @@ export default function App() {
                     </div>
                     <p style={{ margin: 0, color: "#5C635E", fontSize: 13, lineHeight: 1.6 }}>{review.content}</p>
                     <div style={{ marginTop: 10, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                      <span style={{ color: "#8C9088", fontSize: 11 }}>미션 {review.completed_missions || 0}개 완료</span>
+                      <span style={{ color: "#5C635E", fontSize: 11 }}>미션 {review.completed_missions || 0}개 완료</span>
                       {isOwn && (
                         <button
                           onClick={() => setDeleteConfirm(review.id)}
@@ -1265,11 +1270,13 @@ export default function App() {
         </div>
       )}
 
-      <LoginModal
-        isOpen={loginModalOpen}
-        onClose={() => setLoginModalOpen(false)}
-        onSuccess={() => setLoginModalOpen(false)}
-      />
+      <Suspense fallback={null}>
+        <LoginModal
+          isOpen={loginModalOpen}
+          onClose={() => setLoginModalOpen(false)}
+          onSuccess={() => setLoginModalOpen(false)}
+        />
+      </Suspense>
     </div>
   );
 }

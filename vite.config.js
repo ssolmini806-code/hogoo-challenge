@@ -28,6 +28,17 @@ export default defineConfig({
         'article-loss': resolve(__dirname, 'articles/loss-aversion-relationships.html'),
         'article-curiosity': resolve(__dirname, 'articles/curiosity-gap-patterns.html'),
       },
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('@supabase')) return 'vendor-supabase';
+            if (id.includes('lucide-react')) return 'vendor-icons';
+            if (id.includes('react-dom')) return 'vendor-react';
+            if (id.includes('react')) return 'vendor-react';
+            if (id.includes('html-to-image')) return 'vendor-html-to-image';
+          }
+        },
+      },
     },
   },
 })
