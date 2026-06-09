@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GIVE ID 소개</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FAF8F3;--ink:#1A1F1C;--ink-sub:#5C635E;--ink-faint:#8C9088;
+  --green:#114B3C;--mint:#00A885;--mint-soft:#E2F4EE;--line:#E7E1D5;
+  --sans:'Hahmlet','Noto Serif KR',serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;word-break:keep-all;}
+html,body{height:100%;overflow:hidden;background:var(--bg);}
+body{font-family:var(--sans);color:var(--ink);-webkit-font-smoothing:antialiased;}
+
+/* ── header ── */
+.hd{
+  position:fixed;top:0;left:0;right:0;z-index:30;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 24px 12px;
+}
+.hd-brand{font-size:.72rem;font-weight:700;letter-spacing:.14em;color:var(--mint);}
+.skip-btn{
+  font-family:inherit;font-size:.75rem;font-weight:500;
+  color:var(--ink-faint);background:none;border:0;cursor:pointer;
+  padding:4px 0;letter-spacing:.02em;
+}
+.skip-btn:active{color:var(--ink);}
+
+/* ── progress dots ── */
+.dots{
+  position:fixed;top:56px;left:0;right:0;
+  display:flex;justify-content:center;gap:8px;z-index:30;
+}
+.dot{
+  width:6px;height:6px;border-radius:999px;
+  background:var(--line);transition:background .4s,width .4s;
+}
+.dot.on{background:var(--green);width:20px;}
+
+/* ── deck ── */
+.deck{position:fixed;inset:0;top:80px;bottom:90px;}
+.slide{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:24px 32px;text-align:center;
+  opacity:0;pointer-events:none;transition:opacity .3s ease;
+}
+.slide.active{opacity:1;pointer-events:auto;}
+
+/* ── slide content ── */
+.slide-num{
+  font-size:.68rem;font-weight:700;letter-spacing:.18em;
+  color:var(--mint);margin-bottom:32px;
+  opacity:0;transform:translateY(10px);
+}
+.slide-illus{
+  width:min(180px,44vw);height:min(180px,44vw);
+  margin:0 auto 32px;
+  opacity:0;transform:scale(.9);
+}
+.slide-msg{
+  font-size:clamp(1.4rem,6.5vw,2rem);font-weight:700;
+  line-height:1.55;color:var(--ink);
+  margin-bottom:16px;
+  opacity:0;transform:translateY(12px);
+}
+.slide-msg b{color:var(--green);}
+.slide-desc{
+  font-size:clamp(.9rem,4vw,1.05rem);font-weight:300;
+  color:var(--ink-sub);line-height:1.8;max-width:22em;
+  opacity:0;transform:translateY(10px);
+}
+
+/* ── animations ── */
+.slide.active .slide-num{animation:up .5s .05s ease forwards;}
+.slide.active .slide-illus{animation:pop .6s .15s cubic-bezier(.2,.9,.3,1.1) forwards;}
+.slide.active .slide-msg{animation:up .6s .3s ease forwards;}
+.slide.active .slide-desc{animation:up .5s .5s ease forwards;}
+@keyframes up{to{opacity:1;transform:none;}}
+@keyframes pop{to{opacity:1;transform:scale(1);}}
+@media(prefers-reduced-motion:reduce){
+  .slide.active .slide-num,.slide.active .slide-illus,
+  .slide.active .slide-msg,.slide.active .slide-desc{animation:none;opacity:1;transform:none;}
+}
+
+/* ── footer CTA ── */
+.foot{
+  position:fixed;bottom:0;left:0;right:0;
+  padding:16px 24px 28px;
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+}
+.tap-hint{
+  font-size:.75rem;font-weight:400;color:var(--ink-faint);
+  letter-spacing:.02em;opacity:1;transition:opacity .3s;
+}
+.start-btn{
+  width:100%;max-width:340px;min-height:54px;
+  border-radius:14px;border:0;
+  background:var(--green);color:#fff;
+  font-family:inherit;font-size:1rem;font-weight:700;
+  cursor:pointer;letter-spacing:.02em;
+  display:none;/* shown only on slide 4 */
+  align-items:center;justify-content:center;
+  text-decoration:none;
+  box-shadow:0 12px 28px rgba(17,75,60,.22);
+}
+.start-btn.show{display:flex;}
+
+/* slide-specific tints */
+.s2 .slide-num{color:#9A6516;}
+.s2 .slide-msg b{color:#9A6516;}
+.s3 .slide-num{color:var(--mint);}
+.s4 .slide-num{color:var(--green);}
+</style>
+</head>
+<body>
+
+<header class="hd">
+  <span class="hd-brand">GIVE ID</span>
+  <button class="skip-btn" id="skipBtn">건너뛰기</button>
+</header>
+
+<div class="dots" id="dots"></div>
+
+<div class="deck" id="deck">
+
+  <!-- S1 패턴 -->
+  <section class="slide s1">
+    <div class="slide-num">01 · 패턴</div>
+    <div class="slide-illus" aria-hidden="true">
+      <svg viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- repeating loop / pattern visual -->
+        <circle cx="90" cy="90" r="80" fill="#E2F4EE"/>
+        <!-- three cards stacked -->
+        <rect x="44" y="58" width="52" height="66" rx="10" fill="#fff" stroke="#D0E8DF" stroke-width="2"/>
+        <rect x="54" y="50" width="52" height="66" rx="10" fill="#fff" stroke="#B8DCCC" stroke-width="2"/>
+        <rect x="64" y="42" width="52" height="66" rx="10" fill="#fff" stroke="#114B3C" stroke-width="1.5"/>
+        <!-- icon on top card -->
+        <circle cx="90" cy="68" r="10" fill="#E2F4EE"/>
+        <path d="M90 63 v10 M85 68 h10" stroke="#114B3C" stroke-width="2.2" stroke-linecap="round"/>
+        <rect x="74" y="82" width="32" height="4" rx="2" fill="#D0E8DF"/>
+        <rect x="74" y="90" width="24" height="4" rx="2" fill="#E7E1D5"/>
+        <!-- repeat arrow -->
+        <path d="M130 90 Q140 70 120 58 Q100 46 80 60" stroke="#00A885" stroke-width="2.5" stroke-linecap="round" fill="none" stroke-dasharray="4 3"/>
+        <path d="M78 54 L80 60 L86 58" stroke="#00A885" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+    </div>
+    <h2 class="slide-msg">손해 보는 순간은<br>우연이 <b>아니에요</b></h2>
+    <p class="slide-desc">부탁, 인정 욕구, 거절 부담, 회복 속도.<br>16문항으로 반복되는 패턴을 봅니다.</p>
+  </section>
+
+  <!-- S2 경계 -->
+  <section class="slide s2">
+    <div class="slide-num">02 · 경계</div>
+    <div class="slide-illus" aria-hidden="true">
+      <svg viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="90" cy="90" r="80" fill="#FFF5E8"/>
+        <!-- person on left (giver) -->
+        <circle cx="60" cy="72" r="16" fill="#E9A23B" opacity=".8"/>
+        <path d="M48 108 Q60 96 72 108 L72 140 L48 140 Z" fill="#E9A23B" opacity=".5"/>
+        <!-- boundary line -->
+        <line x1="90" y1="40" x2="90" y2="148" stroke="#9A6516" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="6 4"/>
+        <!-- person on right (requester) -->
+        <circle cx="122" cy="72" r="16" fill="#D4C0A0" opacity=".7"/>
+        <path d="M110 108 Q122 96 134 108 L134 140 L110 140 Z" fill="#D4C0A0" opacity=".5"/>
+        <!-- hand reaching and stopped at line -->
+        <path d="M110 90 L96 90" stroke="#9A6516" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="96" cy="90" r="5" fill="#9A6516"/>
+        <!-- small stop hand on line -->
+        <rect x="87" y="84" width="6" height="12" rx="3" fill="#FAF8F3" stroke="#9A6516" stroke-width="1.5"/>
+        <!-- label left -->
+        <rect x="38" y="148" width="44" height="16" rx="6" fill="#F6ECD8"/>
+        <text x="60" y="159" text-anchor="middle" font-family="serif" font-size="9" fill="#9A6516" font-weight="700">나의 영역</text>
+      </svg>
+    </div>
+    <h2 class="slide-msg">착한 것과<br><b>무리하는 것</b>은 달라요</h2>
+    <p class="slide-desc">어디까지 괜찮고<br>어디서부터 소진되는지 확인합니다.</p>
+  </section>
+
+  <!-- S3 결과 -->
+  <section class="slide s3">
+    <div class="slide-num">03 · 결과</div>
+    <div class="slide-illus" aria-hidden="true">
+      <svg viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="90" cy="90" r="80" fill="#E2F4EE"/>
+        <!-- GIVE ID card opening -->
+        <rect x="30" y="50" width="120" height="80" rx="14" fill="#fff" stroke="#D0E8DF" stroke-width="1.5"/>
+        <!-- card header -->
+        <rect x="30" y="50" width="120" height="28" rx="14" fill="#114B3C"/>
+        <rect x="30" y="64" width="120" height="14" rx="0" fill="#114B3C"/>
+        <text x="90" y="67" text-anchor="middle" font-family="serif" font-size="9" fill="#A9D8C8" letter-spacing="2">GIVE  ID</text>
+        <!-- animal silhouette -->
+        <circle cx="68" cy="102" r="18" fill="#E2F4EE"/>
+        <ellipse cx="62" cy="96" rx="6" ry="8" fill="#00A885" opacity=".5"/>
+        <ellipse cx="74" cy="96" rx="6" ry="8" fill="#00A885" opacity=".5"/>
+        <circle cx="68" cy="102" r="10" fill="#00A885" opacity=".7"/>
+        <!-- text lines -->
+        <rect x="94" y="92" width="44" height="5" rx="2.5" fill="#D0E8DF"/>
+        <rect x="94" y="101" width="36" height="4" rx="2" fill="#E7E1D5"/>
+        <rect x="94" y="109" width="40" height="4" rx="2" fill="#E7E1D5"/>
+        <!-- open/reveal sparkle -->
+        <path d="M148 44 L152 36 L156 44 L164 48 L156 52 L152 60 L148 52 L140 48 Z" fill="#E9A23B" opacity=".8"/>
+      </svg>
+    </div>
+    <h2 class="slide-msg">유형보다<br><b>다음 행동</b>이 중요해요</h2>
+    <p class="slide-desc">강점, 위험 신호, 오늘의 조언을<br>한 흐름으로 보여줍니다.</p>
+  </section>
+
+  <!-- S4 다음 -->
+  <section class="slide s4">
+    <div class="slide-num">04 · 다음</div>
+    <div class="slide-illus" aria-hidden="true">
+      <svg viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="90" cy="90" r="80" fill="#E2F4EE"/>
+        <!-- checklist path -->
+        <rect x="46" y="46" width="88" height="88" rx="16" fill="#fff" stroke="#D0E8DF" stroke-width="1.5"/>
+        <!-- day items -->
+        <circle cx="68" cy="72" r="9" fill="#114B3C"/>
+        <path d="M64 72 l3 3 l5 -5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <rect x="82" y="68" width="38" height="4" rx="2" fill="#E2F4EE"/>
+        <rect x="82" y="75" width="28" height="3" rx="1.5" fill="#E7E1D5"/>
+
+        <circle cx="68" cy="96" r="9" fill="#114B3C"/>
+        <path d="M64 96 l3 3 l5 -5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <rect x="82" y="92" width="42" height="4" rx="2" fill="#E2F4EE"/>
+        <rect x="82" y="99" width="32" height="3" rx="1.5" fill="#E7E1D5"/>
+
+        <circle cx="68" cy="120" r="9" fill="#E2F4EE" stroke="#114B3C" stroke-width="1.5"/>
+        <rect x="82" y="116" width="36" height="4" rx="2" fill="#F0F0EE"/>
+        <rect x="82" y="123" width="24" height="3" rx="1.5" fill="#F0F0EE"/>
+        <!-- arrow right -->
+        <path d="M118 134 L126 134 M122 130 L126 134 L122 138" stroke="#00A885" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+    </div>
+    <h2 class="slide-msg">알아차린 뒤<br><b>바로</b> 움직여요</h2>
+    <p class="slide-desc">결과에 맞는 다음 테스트와<br>오늘의 행동을 바로 시작할 수 있어요.</p>
+  </section>
+
+</div><!-- /deck -->
+
+<div class="foot" id="foot">
+  <span class="tap-hint" id="tapHint">화면을 탭해서 넘어가기</span>
+  <a href="give-test.html?start=1" class="start-btn" id="startBtn">시작하기 →</a>
+</div>
+
+<script>
+(function(){
+  var slides = Array.from(document.querySelectorAll('.slide'));
+  var dotsEl = document.getElementById('dots');
+  var tapHint = document.getElementById('tapHint');
+  var startBtn = document.getElementById('startBtn');
+  var skipBtn = document.getElementById('skipBtn');
+  var cur = 0, busy = false, LAST = slides.length - 1;
+
+  /* dots */
+  slides.forEach(function(_,i){
+    var d = document.createElement('span');
+    d.className = 'dot'+(i===0?' on':'');
+    dotsEl.appendChild(d);
+  });
+  var dotEls = Array.from(dotsEl.children);
+
+  function activate(n){
+    slides[cur].classList.remove('active');
+    dotEls[cur].classList.remove('on');
+    /* reset animations */
+    slides[cur].querySelectorAll('.slide-num,.slide-illus,.slide-msg,.slide-desc')
+      .forEach(function(el){ el.style.animation='none'; el.style.opacity='0'; });
+
+    cur = n;
+    slides[cur].classList.add('active');
+    dotEls[cur].classList.add('on');
+    /* re-trigger animations */
+    slides[cur].querySelectorAll('.slide-num,.slide-illus,.slide-msg,.slide-desc')
+      .forEach(function(el){ el.style.animation=''; });
+
+    /* footer state */
+    if(cur === LAST){
+      tapHint.style.opacity = '0';
+      startBtn.classList.add('show');
+    } else {
+      tapHint.style.opacity = '1';
+      startBtn.classList.remove('show');
+    }
+    busy = false;
+  }
+
+  function next(){
+    if(busy) return;
+    if(cur >= LAST){ return; }
+    busy = true;
+    slides[cur].style.opacity = '0';
+    setTimeout(function(){ activate(cur+1); },200);
+  }
+
+  activate(0);
+
+  /* tap: anywhere except buttons/links */
+  document.addEventListener('click', function(e){
+    if(e.target.closest('a,button')) return;
+    next();
+  });
+
+  /* swipe */
+  var tx = 0;
+  document.addEventListener('touchstart', function(e){ tx = e.touches[0].clientX; },{passive:true});
+  document.addEventListener('touchend', function(e){
+    if(e.changedTouches[0].clientX - tx < -40) next();
+  },{passive:true});
+
+  /* keyboard */
+  document.addEventListener('keydown', function(e){
+    if(e.key==='ArrowRight'||e.key===' ') next();
+  });
+
+  /* skip → go straight to test */
+  skipBtn.addEventListener('click', function(){
+    location.href = 'give-test.html?start=1';
+  });
+})();
+</script>
+</body>
+</html>
