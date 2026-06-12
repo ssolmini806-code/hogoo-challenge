@@ -1,32 +1,34 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-P6PM6JBJH1"></script>
+    <meta charset="UTF-8">
     <script>
+      // GA + Clarity: load after page is interactive to avoid blocking main thread
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-P6PM6JBJH1');
-    </script>
-    <script type="text/javascript">
-        (function(c,l,a,r,i,t,y){
+      window.addEventListener('load', function() {
+        setTimeout(function() {
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=G-P6PM6JBJH1';
+          document.head.appendChild(s);
+          (function(c,l,a,r,i,t,y){
             c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
             t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
             y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-        })(window, document, "clarity", "script", "wh9qtg72q5");
+          })(window, document, "clarity", "script", "wh9qtg72q5");
+        }, 3000);
+      });
     </script>
-    <meta charset="UTF-8">
-    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-    <link rel="preconnect" href="https://www.googletagmanager.com">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="shortcut icon" href="/favicon.svg">
     <link rel="apple-touch-icon" href="/favicon.svg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="naver-site-verification" content="08476bfd29f50eddf611509cda1adb4c440f3331" />
-    <title>GIVE Ecosystem | 기버 심리진단 & 호구탈출 챌린지</title>
-    <meta name="description" content="애덤 그랜트의 기버/테이커 이론을 바탕으로 나의 관계 유형을 진단하고, 건강한 이타주의자로 거듭나는 7일 챌린지를 경험하세요.">
+    <title>GIVE Ecosystem | 기버 관계 자가점검 & 호구탈출 챌린지</title>
+    <meta name="description" content="선의 심리학 프레임과 기버/테이커 이론을 바탕으로 나의 관계 패턴을 점검하고, 경계 설정의 첫 실행을 연습하세요.">
     <link rel="canonical" href="https://hogoo-challenge.pages.dev/">
     <link rel="alternate" hreflang="ko" href="https://hogoo-challenge.pages.dev/">
     <link rel="alternate" hreflang="x-default" href="https://hogoo-challenge.pages.dev/">
@@ -37,7 +39,7 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://hogoo-challenge.pages.dev">
-    <meta property="og:title" content="GIVE Ecosystem - 똑똑한 기버를 위한 관계 진단">
+    <meta property="og:title" content="GIVE Ecosystem - 똑똑한 기버를 위한 관계 자가점검">
     <meta property="og:description" content="당신은 기버인가요, 테이커인가요? 이용당하지 않는 선의, 스마트 기버로 가는 길.">
     <meta property="og:locale" content="ko_KR">
     <meta property="og:site_name" content="GIVE Ecosystem">
@@ -46,7 +48,7 @@
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://hogoo-challenge.pages.dev">
-    <meta property="twitter:title" content="GIVE Ecosystem - 똑똑한 기버를 위한 관계 진단">
+    <meta property="twitter:title" content="GIVE Ecosystem - 똑똑한 기버를 위한 관계 자가점검">
     <meta property="twitter:description" content="당신은 기버인가요, 테이커인가요? 이용당하지 않는 선의, 스마트 기버로 가는 길.">
     <meta property="twitter:image" content="https://hogoo-challenge.pages.dev/og-image.jpg">
 
@@ -57,7 +59,7 @@
       "@type": "WebSite",
       "name": "GIVE Ecosystem",
       "url": "https://hogoo-challenge.pages.dev",
-      "description": "애덤 그랜트의 기버/테이커 이론 기반 관계 유형 진단 및 7일 챌린지 플랫폼",
+      "description": "선의 심리학과 기버/테이커 이론 기반 관계 패턴 자가점검 및 7일 챌린지 플랫폼",
       "inLanguage": "ko",
       "keywords": "기버, 테이커, 매처, 애덤 그랜트, 기브앤테이크, 호구탈출, 심리테스트, 관계심리학, 스마트 기버",
       "potentialAction": {
@@ -87,10 +89,10 @@
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "호구 탈출 챌린지는 정말 효과가 있나요?",
+          "name": "호구 탈출 챌린지는 어떤 도움을 주나요?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "네, 심리학적 기반의 '거절 연습'과 '경계선 설정' 미션을 통해 7일간 실습하며 몸에 익히는 과정이므로 실질적인 행동 변화를 이끌어냅니다."
+            "text": "7일 챌린지는 습관을 완성한다고 약속하기보다, 부탁 앞에서 멈추고 경계를 말하는 첫 실행을 돕는 스타터 프로그램입니다."
           }
         },
         {
@@ -98,7 +100,7 @@
           "name": "테스트 결과는 익명인가요?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "네, 모든 진단 결과는 개인정보 보호정책에 따라 안전하게 관리되며, 서비스 개선을 위한 통계 자료로만 활용됩니다."
+            "text": "네, 모든 자가점검 결과는 개인정보 보호정책에 따라 안전하게 관리되며, 서비스 개선을 위한 통계 자료로만 활용됩니다."
           }
         },
         {
@@ -117,7 +119,8 @@
     <meta name="google-adsense-account" content="ca-pub-8564310871125079">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,1,400;9..144,1,500&display=swap" rel="stylesheet">
+    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,1,400;9..144,1,500&display=swap">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,1,400;9..144,1,500&display=swap"></noscript>
     <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" crossorigin>
     <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" crossorigin></noscript>
     <link rel="stylesheet" href="/give-theme.css">
@@ -131,7 +134,8 @@
             <a href="./index.html" class="logo">GIVE Ecosystem</a>
             <div class="nav-links">
                 <a href="./about.html">소개</a>
-                <a href="./give-test.html">진단</a>
+                <a href="./white-psychology.html">선의 심리학</a>
+                <a href="./give-test.html">자가점검</a>
                 <a href="./reviews.html">후기</a>
                 <a href="./articles/index.html">심리 칼럼</a>
             </div>
@@ -144,7 +148,7 @@
             <h1>당신의 선의가 이용당하지 않도록</h1>
             <p>기버가 지치지 않는 건강한 관계 생태계. GIVE Ecosystem은 심리적 경계를 세우는 지혜를 나눕니다.</p>
             <div class="hero-actions">
-                <a href="give-test.html" class="btn btn-primary">무료 진단 시작하기</a>
+                <a href="give-test.html" class="btn btn-primary">무료 자가점검 시작하기</a>
                 <a href="hogoo-test.html" class="btn btn-ghost">7일 챌린지 보기</a>
             </div>
             <div class="hero-note">로그인 없이 테스트 가능 · 결과 확인 후 보상 해금</div>
@@ -156,16 +160,16 @@
                     <img src="/images/tests/give-id-illustration-v3.webp" alt="세 사람이 균형 잡힌 관계를 이야기하는 따뜻한 일러스트" loading="eager" fetchpriority="high">
                 </div>
                 <span class="pill">가장 먼저 추천</span>
-                <h2>GIVE ID 진단</h2>
-                <p class="card-desc">나의 배려 패턴을 분석하고 관계에서 나를 지키는 솔루션을 확인하세요.</p>
-                <span class="go">지금 무료 진단하기</span>
+                <h2>GIVE ID 자가점검</h2>
+                <p class="card-desc">나의 배려, 경계, 회복 패턴을 살피고 관계에서 나를 지키는 첫 기준을 확인하세요.</p>
+                <span class="go">지금 무료 점검하기</span>
             </a>
 
             <a href="hogoo-test.html" class="choice-card featured">
                 <span class="pill">실천 루틴</span>
                 <span class="itile lg" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3.5V20.5"/><path class="fa" d="M6 5H17L14 8.5L17 12H6Z"/></svg></span>
                 <h2>7일 챌린지</h2>
-                <p class="card-desc">아는 것을 넘어 실천으로. 7일간의 미션을 통해 건강한 관계 습관을 만듭니다.</p>
+                <p class="card-desc">아는 것을 넘어 첫 실행으로. 7일간의 작은 미션으로 경계 문장을 연습합니다.</p>
                 <span class="go">챌린지 참여하기</span>
             </a>
 
@@ -186,6 +190,16 @@
                 <h2>인간관계 위험도</h2>
                 <p class="card-desc">지금 내 관계가 나를 지치게 하고 있나요? 12가지 질문으로 위험 신호를 확인하세요.</p>
                 <span class="go">무료 테스트하기</span>
+            </a>
+
+            <a href="selfless-otherish-test.html" class="choice-card test-card">
+                <div class="test-card-image">
+                    <img src="/images/tests/give-id-illustration-v3.webp" alt="도움과 회복의 균형을 살피는 따뜻한 일러스트" loading="lazy">
+                </div>
+                <span class="tag">선의 스펙트럼</span>
+                <h2>Selfless vs Otherish</h2>
+                <p class="card-desc">내 선의가 나를 비우는 방식인지, 나까지 지키는 방식인지 20문항으로 확인하세요.</p>
+                <span class="go">무료 점검하기</span>
             </a>
 
             <a href="reviews.html" class="choice-card row-card">
@@ -229,7 +243,7 @@
                     <span class="section-label">Knowledge Hub</span>
                     <h2>지식 허브</h2>
                 </div>
-                <a class="more" href="articles/index.html">전체 보기</a>
+                <a class="more" href="articles/index.html">심리 칼럼 전체 보기</a>
             </div>
             <p class="lead">스마트 기버로 거듭나기 위한 심리학 전문 리포트</p>
 
@@ -307,26 +321,28 @@
                     <p>주고받음의 균형을 추구하는 사람. 상대가 베풀면 베풀고, 상대가 착취하면 방어한다. 전체 인구의 다수를 차지한다.</p>
                 </div>
             </div>
-            <p class="section-text">GIVE Ecosystem은 기버들이 <strong>똑똑한 기버(Smart Giver)</strong>가 될 수 있도록 돕습니다. 과학적인 심리 진단과 구체적인 행동 가이드를 통해, 당신의 선의가 더 가치 있게 쓰일 수 있도록 지원합니다.</p>
+            <p class="section-text">GIVE Ecosystem은 기버들이 <strong>똑똑한 기버(Smart Giver)</strong>가 될 수 있도록 돕습니다. 선의 심리학은 학술 분과명이 아니라, 자기연민·번아웃·상호성·자기주장 연구를 선한 사람의 지속가능성이라는 렌즈로 엮은 근거 기반 실천 프레임입니다.</p>
+            <p class="section-text"><a href="./white-psychology.html" style="color:var(--green);font-weight:800;">선의 심리학 프레임 자세히 보기 →</a></p>
         </section>
 
         <section class="block">
             <h2>우리가 제공하는 가치</h2>
-            <p class="section-text">1. <strong>객관적 자아 성찰</strong>: 전문적인 문항을 통해 현재 나의 관계 맺기 패턴을 분석합니다.</p>
+            <p class="section-text">1. <strong>객관적 자아 성찰</strong>: 자가점검 문항을 통해 현재 나의 관계 맺기 패턴을 분석합니다.</p>
             <p class="section-text">2. <strong>맞춤형 가이드라인</strong>: 각 유형에 맞는 실질적인 관계 대처법을 제안합니다.</p>
-            <p class="section-text">3. <strong>실천 중심의 훈련</strong>: 7일간의 소소한 미션을 통해 심리적 경계선을 세우는 연습을 합니다.</p>
+            <p class="section-text">3. <strong>실천 중심의 훈련</strong>: 7일간의 소소한 미션을 통해 심리적 경계선을 말로 꺼내는 첫 실행을 연습합니다.</p>
+            <p class="section-text"><strong>안내</strong>: 이 테스트와 챌린지는 의학적 진단이나 전문 상담을 대체하지 않는 자기 점검 도구입니다. 심각한 불안, 우울, 폭력, 금전 착취가 의심되는 상황에서는 신뢰할 수 있는 사람이나 전문기관의 도움을 함께 받으세요.</p>
         </section>
 
         <section class="block">
             <h2 class="mb18">자주 묻는 질문</h2>
             <div class="faq">
                 <details>
-                    <summary>호구 탈출 챌린지는 정말 효과가 있나요?</summary>
-                    <p>네, 심리학적 기반의 거절 연습과 경계선 설정 미션을 통해 7일간 실습하며 몸에 익히는 과정이므로 실질적인 행동 변화를 이끌어냅니다.</p>
+                    <summary>호구 탈출 챌린지는 어떤 도움을 주나요?</summary>
+                    <p>7일 챌린지는 습관을 완성한다고 약속하기보다, 부탁 앞에서 멈추고 경계를 말하는 첫 실행을 돕는 스타터 프로그램입니다. 이후 30일 루틴과 부스터로 이어질 때 더 안정적으로 남습니다.</p>
                 </details>
                 <details>
                     <summary>테스트 결과는 익명인가요?</summary>
-                    <p>네, 모든 진단 결과는 개인정보 보호정책에 따라 안전하게 관리되며, 서비스 개선을 위한 통계 자료로만 활용됩니다.</p>
+                    <p>네, 모든 자가점검 결과는 개인정보 보호정책에 따라 안전하게 관리되며, 서비스 개선을 위한 통계 자료로만 활용됩니다.</p>
                 </details>
                 <details>
                     <summary>사기 예방에 도움이 되나요?</summary>
