@@ -35,6 +35,18 @@
         <div><strong>5단계</strong><span>스펙트럼</span></div>
       </div>
 
+      <section class="prologue-start-card" aria-label="시작 전 안내">
+        <div class="prologue-start-head">
+          <span>Start Check</span>
+          <strong>많이 주는 마음이 나를 비우는지, 나까지 지키는지 봅니다.</strong>
+        </div>
+        <div class="prologue-signals">
+          <div><strong>선의</strong><span>내 상태를 함께 보는지</span></div>
+          <div><strong>상호성</strong><span>역할 분담을 말하는지</span></div>
+          <div><strong>회복</strong><span>도운 뒤 다시 차는지</span></div>
+        </div>
+      </section>
+
       <section class="quality-section" aria-labelledby="spectrum-guide-title">
         <span class="section-label">Selfless to Otherish</span>
         <h2 id="spectrum-guide-title">이 테스트가 보는 네 가지 축</h2>
@@ -46,7 +58,7 @@
         </div>
       </section>
 
-      <button class="start-btn" onclick="startTest()">무료 점검 시작하기</button>
+      <button class="start-btn" id="startTestBtn">무료 점검 시작하기</button>
     </div>
   </div>
 
@@ -101,7 +113,7 @@
       </div>
 
       <div class="retry-wrap">
-        <button class="retry-link" onclick="retryTest()">테스트 다시 하기</button>
+        <button class="retry-link" id="retryTestBtn">테스트 다시 하기</button>
       </div>
     </div>
   </div>
@@ -159,7 +171,7 @@ function renderQuestion() {
   document.getElementById("progFill").style.width = Math.round(current / questions.length * 100) + "%";
   document.getElementById("qText").textContent = item[0];
   const list = document.getElementById("answerList");
-  list.innerHTML = "";
+  list.replaceChildren();
   item[1].forEach(function(answer, index) {
     const btn = document.createElement("button");
     btn.className = "ans-btn";
@@ -174,6 +186,24 @@ function renderQuestion() {
   });
 }
 
+function renderResultCard(id, title, body, options) {
+  const card = document.getElementById(id);
+  const titleEl = document.createElement("div");
+  titleEl.className = options && options.warning ? "card-title is-warning" : "card-title";
+  titleEl.textContent = title;
+  const bodyEl = document.createElement("p");
+  bodyEl.className = "card-body";
+  bodyEl.textContent = body;
+  const children = [titleEl, bodyEl];
+  if (options && options.note) {
+    const note = document.createElement("small");
+    note.className = "lace-note";
+    note.textContent = options.note;
+    children.push(note);
+  }
+  card.replaceChildren(...children);
+}
+
 function showResult() {
   const result = results.find(function(item) { return score <= item.max; }) || results[results.length - 1];
   document.getElementById("test-page").classList.add("hidden");
@@ -182,9 +212,9 @@ function showResult() {
   document.getElementById("spectrumDot").style.setProperty("--spectrum-pos", result.pos + "%");
   document.getElementById("spectrumCopy").textContent = "Selfless ← 현재 위치 → Otherish";
   document.getElementById("resultSummary").textContent = result.summary;
-  document.getElementById("cardStrength").innerHTML = '<div class="card-title">강점</div><p class="card-body">' + result.strength + '</p>';
-  document.getElementById("cardRisk").innerHTML = '<div class="card-title is-warning">주의할 점</div><p class="card-body">' + result.risk + '</p>';
-  document.getElementById("cardAdvice").innerHTML = '<div class="card-title">오늘의 조언</div><p class="card-body">' + result.advice + '</p><small class="lace-note">상황 인정 → 마음 표현 → 내 기준 → 가능한 범위 순서로 말해보세요.</small>';
+  renderResultCard("cardStrength", "강점", result.strength);
+  renderResultCard("cardRisk", "주의할 점", result.risk, { warning: true });
+  renderResultCard("cardAdvice", "오늘의 조언", result.advice, { note: "상황 인정 → 마음 표현 → 내 기준 → 가능한 범위 순서로 말해보세요." });
   window.scrollTo(0, 0);
 }
 
@@ -193,6 +223,9 @@ function retryTest() {
   document.getElementById("intro-page").classList.remove("hidden");
   window.scrollTo(0, 0);
 }
+
+document.getElementById("startTestBtn")?.addEventListener("click", startTest);
+document.getElementById("retryTestBtn")?.addEventListener("click", retryTest);
 </script>
 </body>
 </html>

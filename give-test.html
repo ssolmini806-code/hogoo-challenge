@@ -44,7 +44,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,1,400;9..144,1,500&display=swap" rel="stylesheet">
-    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" crossorigin>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" crossorigin>
     <script src="/share.js" defer></script>
     <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.8.1/kakao.min.js" defer></script>
     <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" crossorigin></noscript>
@@ -78,7 +78,7 @@
     </nav>
 
     <main id="main">
-        <section id="landing-page" class="landing" style="cursor: pointer;" onclick="location.href='give-prologue.html'">
+        <section id="landing-page" class="landing">
             <div class="inner hero">
 
                 <div class="prologue-lab-bar" aria-label="GIVE Pattern Lab">
@@ -90,18 +90,30 @@
                 </div>
                 <p class="test-intro-caption">도움, 경계, 회복이 어디서 어긋나는지 한눈에 보는 검사입니다.</p>
                 <h1>왜 항상 나만 손해 볼까?</h1>
-                <p class="hero-copy">착해서가 아니에요. 계속 선 넘는 사람을 너무 오래 봐준 거예요.</p>
+                <p class="hero-copy">프롤로그에서 본 패턴을 16문항으로 확인합니다.</p>
                 <div class="prologue-metrics" aria-label="테스트 정보">
                     <div><strong>16</strong><span>문항</span></div>
                     <div><strong>3분</strong><span>예상 시간</span></div>
                     <div><strong>무료</strong><span>로그인 없이</span></div>
                 </div>
 
-                <a href="result-sequence.html?test=give&type=mixed" class="result-preview-link" onclick="event.stopPropagation()">
+                <section class="prologue-start-card" aria-label="시작 전 안내">
+                    <div class="prologue-start-head">
+                        <span>Start Check</span>
+                        <strong>최근 내 실제 반응에 가깝게 고르세요.</strong>
+                    </div>
+                    <div class="prologue-signals">
+                        <div><strong>부탁</strong><span>거절 전 떠오르는 생각</span></div>
+                        <div><strong>경계</strong><span>어디까지 괜찮은지</span></div>
+                        <div><strong>회복</strong><span>도운 뒤 남는 감정</span></div>
+                    </div>
+                </section>
+
+                <a href="result-sequence.html?test=give&type=mixed" class="result-preview-link">
                     결과 흐름 미리보기 →
                 </a>
-                <button class="primary-btn" onclick="event.stopPropagation(); location.href='give-prologue.html'">내가 당하는 이유 보기</button>
-                <p class="micro">3분 뒤, 제일 찔리는 결과가 나옵니다</p>
+                <button class="primary-btn" id="startTestBtn">테스트 시작하기</button>
+                <p class="micro">로그인 없이 결과까지 바로 확인할 수 있어요</p>
 
                 <div class="hero-panel">
                     <ul class="problem-list">
@@ -220,19 +232,19 @@
                             <p class="share-incentive">결과를 공유하면 내 유형별 추가 조언 카드를 확인할 수 있어요</p>
                             <div class="sh-title">결과 공유하기</div>
                             <div class="share-row">
-                                <button class="s-btn sb-kakao" onclick="snsKakao()" aria-label="카카오톡에 공유">
+                                <button class="s-btn sb-kakao" data-share-action="kakao" aria-label="카카오톡에 공유">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3C6.48 3 2 6.72 2 11.25c0 2.9 1.67 5.47 4.22 7.06l-1.1 4.03 4.52-2.14c.76.14 1.55.21 2.36.21 5.52 0 10-3.72 10-8.25S17.52 3 12 3z"/></svg>
                                     <span>카카오톡</span>
                                 </button>
-                                <button class="s-btn sb-copy" onclick="snsCopy(this)" aria-label="링크 복사">
+                                <button class="s-btn sb-copy" data-share-action="copy" aria-label="링크 복사">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
                                     <span>링크 복사</span>
                                 </button>
-                                <button class="s-btn sb-x" onclick="snsX()" aria-label="X에 공유">
+                                <button class="s-btn sb-x" data-share-action="x" aria-label="X에 공유">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.259 5.63L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                                     <span>X</span>
                                 </button>
-                                <button class="s-btn sb-insta" onclick="snsInsta()" aria-label="인스타그램에 공유">
+                                <button class="s-btn sb-insta" data-share-action="insta" aria-label="인스타그램에 공유">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
                                     <span>인스타그램</span>
                                 </button>
@@ -241,8 +253,8 @@
                         <div class="share-toast" id="snst"></div>
                         <p class="cta-kicker">여기서 멈추면 또 같은 사람에게 당해요.</p>
                         <div class="cta-section">
-                            <button class="secondary-btn" onclick="trackEvent('article_clicked', { article_slug: 'setting-boundaries' }); location.href='articles/setting-boundaries.html'">내 약점 까보기</button>
-                            <button class="primary-btn" onclick="trackEvent('article_clicked', { article_slug: 'smart-giver-guide' }); location.href='articles/smart-giver-guide.html'">다시는 손해 안 보기</button>
+                            <button class="secondary-btn" data-article-slug="setting-boundaries" data-href="articles/setting-boundaries.html">내 약점 까보기</button>
+                            <button class="primary-btn" data-article-slug="smart-giver-guide" data-href="articles/smart-giver-guide.html">다시는 손해 안 보기</button>
                         </div>
                         <div class="paid-bridge">
                         <div class="paid-eyebrow">FREE CHECK → PAID DEEP DIVE</div>
@@ -260,14 +272,14 @@
                                 <div class="paid-item"><span class="paid-check">✓</span><span id="paidPoint2">관계 위계에 맞춘 완곡한 경계 문장 제공</span></div>
                                 <div class="paid-item"><span class="paid-check">✓</span><span id="paidPoint3">가족, 연인, 친구, 직장 관계별 대응 가이드</span></div>
                             </div>
-                            <button class="paid-btn" onclick="openPaid('result_bridge')">GIVE ID 심화 리포트 받기 →</button>
+                            <button class="paid-btn" data-paid-source="result_bridge">GIVE ID 심화 리포트 받기 →</button>
                             <span class="paid-sub">givecosystem.com · 유료 심화 리포트로 이동</span>
                         </div>
                     </div>
                 </article>
                 <section class="paid-lite-cta">
                     <p>무료 자가점검에서 보인 신호를 실제 행동 계획으로 바꾸고 싶다면</p>
-                    <button class="primary-btn" onclick="openPaid('new_cta')">GIVE ID 심화 리포트 시작하기 →</button>
+                    <button class="primary-btn" data-paid-source="new_cta">GIVE ID 심화 리포트 시작하기 →</button>
                     <p class="micro">무료 결과는 유지됩니다. 이 도구는 의학적 진단이나 상담을 대체하지 않습니다.</p>
                 </section>
 
@@ -302,17 +314,17 @@
                         <div class="locked-item">🔒 사람들이 나를 쉽게 보는 <span class="blurred">이유</span></div>
                         <div class="locked-item">🔒 관계별 완곡 경계 문장 <span class="blurred">3개</span></div>
                     </div>
-                    <button class="secondary-btn" onclick="openPaid('locked_panel')">잠긴 분석 열기 →</button>
+                    <button class="secondary-btn" data-paid-source="locked_panel">잠긴 분석 열기 →</button>
                     <div class="choice-grid">
-                        <button class="choice-card" onclick="location.href='articles/setting-boundaries.html'">
+                        <button class="choice-card" data-href="articles/setting-boundaries.html">
                             <span class="choice-name">약점만 보기</span>
                             <span class="choice-copy">팩폭만 빠르게</span>
                         </button>
-                        <button class="choice-card best" onclick="location.href='refusal-test.html'">
+                        <button class="choice-card best" data-href="refusal-test.html">
                             <span class="choice-name">거절력까지 보기</span>
                             <span class="choice-copy">제일 많이 눌러요</span>
                         </button>
-                        <button class="choice-card" onclick="location.href='articles/smart-giver-guide.html'">
+                        <button class="choice-card" data-href="articles/smart-giver-guide.html">
                             <span class="choice-name">해결법 보기</span>
                             <span class="choice-copy">오늘부터 덜 당하기</span>
                         </button>
@@ -351,8 +363,8 @@
                         </div>
                     </div>
                     <div class="share-actions">
-                        <button class="ghost-btn" onclick="shareResult()">공유하기</button>
-                        <button class="ghost-btn" onclick="copyLink()">링크 복사</button>
+                        <button class="ghost-btn" id="shareResultBtn">공유하기</button>
+                        <button class="ghost-btn" id="copyLinkBtn">링크 복사</button>
                         <div
                             class="download-action"
                             data-result-card-download-root
@@ -361,14 +373,14 @@
                         ></div>
                     </div>
                     <div class="share-retry-actions">
-                        <button class="result-retry-btn" type="button" onclick="requestRetryTest()">다시 시도해보기</button>
+                        <button class="result-retry-btn" type="button" id="retryTestBtn">다시 시도해보기</button>
                     </div>
                 </section>
 
                 <section>
                     <h2 class="loop-title">다음은 이거 보세요</h2>
                     <div class="related-tests">
-                        <div class="related-card is-locked" id="hogooCheckCard" onclick="handleHogooCheckClick()">
+                        <div class="related-card is-locked" id="hogooCheckCard" role="button" tabindex="0">
                             <span class="related-icon locked">잠김</span>
                             <div>
                                 <strong>나는 호구일까?</strong>
@@ -419,6 +431,36 @@
 <script>
 window.addEventListener('DOMContentLoaded', function() {
     var params = new URLSearchParams(location.search);
+    if (!params.get('intro') && params.get('start') !== '1') {
+        location.replace('give-prologue.html');
+        return;
+    }
+    document.getElementById('startTestBtn')?.addEventListener('click', startTest);
+    document.querySelectorAll('[data-article-slug][data-href]').forEach(function(button) {
+        button.addEventListener('click', function() {
+            trackEvent('article_clicked', { article_slug: button.dataset.articleSlug });
+            location.href = button.dataset.href;
+        });
+    });
+    document.querySelectorAll('[data-href]:not([data-article-slug])').forEach(function(button) {
+        button.addEventListener('click', function() {
+            location.href = button.dataset.href;
+        });
+    });
+    document.querySelectorAll('[data-paid-source]').forEach(function(button) {
+        button.addEventListener('click', function() {
+            openPaid(button.dataset.paidSource);
+        });
+    });
+    document.getElementById('shareResultBtn')?.addEventListener('click', shareResult);
+    document.getElementById('copyLinkBtn')?.addEventListener('click', copyLink);
+    document.getElementById('retryTestBtn')?.addEventListener('click', requestRetryTest);
+    document.getElementById('hogooCheckCard')?.addEventListener('click', handleHogooCheckClick);
+    document.getElementById('hogooCheckCard')?.addEventListener('keydown', function(event) {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        event.preventDefault();
+        handleHogooCheckClick();
+    });
     if (params.get('start') === '1') startTest();
 });
 </script>

@@ -589,8 +589,8 @@ export default function App() {
     }
     return (
       <img
-        src="/images/certificate-7day.webp"
-        alt="7일 챌린지 수료증"
+        src="/images/tests/hogoo-check-illustration-v3.webp"
+        alt="7일 챌린지 완료 이미지"
         onError={() => setError(true)}
         style={{ width: "100%", borderRadius: 16, display: "block" }}
       />

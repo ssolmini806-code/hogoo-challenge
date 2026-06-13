@@ -24,6 +24,7 @@ export default defineConfig({
         terms: resolve(__dirname, 'terms.html'),
         affiliate: resolve(__dirname, 'affiliate.html'),
         // Articles
+        'articles-index': resolve(__dirname, 'articles/index.html'),
         'article-burnout': resolve(__dirname, 'articles/giver-burnout.html'),
         'article-boundaries': resolve(__dirname, 'articles/setting-boundaries.html'),
         'article-signals': resolve(__dirname, 'articles/taker-signals.html'),

@@ -20,7 +20,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,1,400;9..144,1,500&display=swap" rel="stylesheet">
-    <link rel="preload" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
     <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css"></noscript>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8564310871125079" crossorigin="anonymous"></script>
     <meta name="google-adsense-account" content="ca-pub-8564310871125079">
@@ -48,6 +48,17 @@
                     <div><strong>2분</strong><span>예상 시간</span></div>
                     <div><strong>즉시</strong><span>결과 확인</span></div>
                 </div>
+                <section class="prologue-start-card" aria-label="시작 전 안내">
+                    <div class="prologue-start-head">
+                        <span>Start Check</span>
+                        <strong>거절을 잘하는지가 아니라, 부탁 앞에서 흔들리는 지점을 봅니다.</strong>
+                    </div>
+                    <div class="prologue-signals">
+                        <div><strong>멈춤</strong><span>즉답 전에 생기는 불안</span></div>
+                        <div><strong>문장</strong><span>짧게 말할 수 있는지</span></div>
+                        <div><strong>유지</strong><span>미안함 뒤 번복 여부</span></div>
+                    </div>
+                </section>
                 <section class="test-tabs" aria-label="거절력 테스트 안내">
                     <div class="tab-list" role="tablist" aria-label="테스트 안내 탭">
                         <button class="tab-btn" type="button" role="tab" id="refusal-tab-1" aria-controls="refusal-panel-1" aria-selected="true">멈춤</button>
@@ -134,7 +145,7 @@
                 <a href="result-sequence.html?test=refusal&type=sprout" class="result-preview-link">
                     결과 흐름 미리보기 →
                 </a>
-                <button onclick="start()">설명 확인했어요, 점검 시작하기</button>
+                <button id="startTestBtn">설명 확인했어요, 점검 시작하기</button>
                 <section class="quality-section" aria-labelledby="refusal-method-title">
                     <span class="section-label">Boundary Practice</span>
                     <h2 id="refusal-method-title">거절력 테스트는 “매정함”이 아니라 “조절력”을 확인합니다</h2>
@@ -287,14 +298,21 @@ const rs=[
 ];
 let i=0,s=0;
 function start(){i=0;s=0;intro.classList.add("hidden");result.classList.add("hidden");test.classList.remove("hidden");render()}
-function render(){fill.style.width=Math.round(i/qs.length*100)+"%";q.textContent=qs[i][0];answers.innerHTML="";qs[i][1].forEach((a,idx)=>{const b=document.createElement("button");b.className="ans";b.textContent=a;b.onclick=()=>pick(idx+1);answers.appendChild(b)})}
+function render(){fill.style.width=Math.round(i/qs.length*100)+"%";q.textContent=qs[i][0];answers.replaceChildren();qs[i][1].forEach((a,idx)=>{const b=document.createElement("button");b.className="ans";b.textContent=a;b.onclick=()=>pick(idx+1);answers.appendChild(b)})}
 function pick(v){s+=v;i++;if(i<qs.length)render();else show()}
 function show(){const r=rs.find(x=>s<=x.limit);
 location.href='result-sequence.html?test=refusal&type='+encodeURIComponent(r.key)}
 function renderResult(key){intro.classList.add("hidden");test.classList.add("hidden");result.classList.remove("hidden");const r=rs.find(x=>x.key===key)||rs[0];
 document.getElementById('name').textContent=r.name;
-document.getElementById('character').classList.remove('is-empty');
-document.getElementById('character').innerHTML='<img src="'+r.character+'" alt="'+r.name+' 캐릭터" loading="lazy" decoding="async" onerror="this.remove();this.parentNode.classList.add(\'is-empty\')">';
+const character=document.getElementById('character');
+character.classList.remove('is-empty');
+const img=document.createElement('img');
+img.src=r.character;
+img.alt=r.name+' 캐릭터';
+img.loading='lazy';
+img.decoding='async';
+img.addEventListener('error',function(){img.remove();character.classList.add('is-empty')});
+character.replaceChildren(img);
 document.getElementById('body').textContent=r.body;
 document.getElementById('script').textContent=r.script;
 document.getElementById('sequenceLink').href='result-sequence.html?test=refusal&type='+encodeURIComponent(r.key);
@@ -306,6 +324,7 @@ if(r.insight) {
 scrollTo(0,0)}
 const initialType=new URLSearchParams(location.search).get('type');
 if(initialType) renderResult(initialType);
+document.getElementById('startTestBtn')?.addEventListener('click', start);
 </script>
 </body>
 </html>

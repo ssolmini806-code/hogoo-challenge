@@ -264,34 +264,56 @@ const lockedInterpretations = {
     ]
 };
 
+function createSvgNode(tag, attrs) {
+    const node = document.createElementNS("http://www.w3.org/2000/svg", tag);
+    Object.entries(attrs).forEach(([key, value]) => node.setAttribute(key, value));
+    return node;
+}
+
 function characterSvg(fill) {
-    return `<svg class="character" viewBox="0 0 120 128" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <circle cx="60" cy="64" r="44" fill="${fill}" stroke="var(--ink)" stroke-width="3"/>
-        <circle cx="44" cy="58" r="5" fill="var(--ink)"/><circle cx="76" cy="58" r="5" fill="var(--ink)"/>
-        <circle cx="46" cy="56" r="1.6" fill="var(--surface)"/><circle cx="78" cy="56" r="1.6" fill="var(--surface)"/>
-        <path d="M46 78 Q60 90 74 78" stroke="var(--ink)" stroke-width="4" stroke-linecap="round" fill="none"/>
-        <circle cx="34" cy="73" r="8" fill="var(--surface)" opacity=".35"/><circle cx="86" cy="73" r="8" fill="var(--surface)" opacity=".35"/>
-        <path d="M30 31 C34 12 51 20 60 34 C69 20 86 12 90 31" stroke="var(--ink)" stroke-width="3" stroke-linecap="round" fill="none"/>
-        <rect x="45" y="103" width="30" height="18" rx="8" fill="${fill}" stroke="var(--ink)" stroke-width="3"/>
-    </svg>`;
+    const svg = createSvgNode("svg", {
+        class: "character",
+        viewBox: "0 0 120 128",
+        fill: "none",
+        "aria-hidden": "true"
+    });
+    [
+        createSvgNode("circle", { cx: "60", cy: "64", r: "44", fill, stroke: "var(--ink)", "stroke-width": "3" }),
+        createSvgNode("circle", { cx: "44", cy: "58", r: "5", fill: "var(--ink)" }),
+        createSvgNode("circle", { cx: "76", cy: "58", r: "5", fill: "var(--ink)" }),
+        createSvgNode("circle", { cx: "46", cy: "56", r: "1.6", fill: "var(--surface)" }),
+        createSvgNode("circle", { cx: "78", cy: "56", r: "1.6", fill: "var(--surface)" }),
+        createSvgNode("path", { d: "M46 78 Q60 90 74 78", stroke: "var(--ink)", "stroke-width": "4", "stroke-linecap": "round", fill: "none" }),
+        createSvgNode("circle", { cx: "34", cy: "73", r: "8", fill: "var(--surface)", opacity: ".35" }),
+        createSvgNode("circle", { cx: "86", cy: "73", r: "8", fill: "var(--surface)", opacity: ".35" }),
+        createSvgNode("path", { d: "M30 31 C34 12 51 20 60 34 C69 20 86 12 90 31", stroke: "var(--ink)", "stroke-width": "3", "stroke-linecap": "round", fill: "none" }),
+        createSvgNode("rect", { x: "45", y: "103", width: "30", height: "18", rx: "8", fill, stroke: "var(--ink)", "stroke-width": "3" })
+    ].forEach((node) => svg.appendChild(node));
+    return svg;
 }
 
 function characterImage(result) {
     if (!result.character) return characterSvg(result.color);
-    return `<img class="character type-char" src="${result.character}" alt="${result.name} 캐릭터" loading="lazy" decoding="async">`;
+    const img = document.createElement("img");
+    img.className = "character type-char";
+    img.src = result.character;
+    img.alt = `${result.name} 캐릭터`;
+    img.loading = "lazy";
+    img.decoding = "async";
+    return img;
 }
 
 function renderShareIdCard(key, result) {
     const meta = shareCardMeta[key] || shareCardMeta.mixed;
     const card = document.getElementById("shareCard");
     card.style.setProperty("--card-color", result.color);
-    document.getElementById("shareCharacter").innerHTML = characterImage(result);
+    document.getElementById("shareCharacter").replaceChildren(characterImage(result));
     document.getElementById("shareType").textContent = result.name;
     document.getElementById("shareTagline").textContent = result.tagline;
     document.getElementById("shareCode").textContent = meta.code;
 
     const tags = document.getElementById("shareTags");
-    tags.innerHTML = "";
+    tags.replaceChildren();
     meta.tags.forEach((tag) => {
         const item = document.createElement("span");
         item.className = "give-id-tag";
@@ -340,7 +362,7 @@ function renderQuestion() {
     document.getElementById("rewardText").textContent = getRewardText(current);
 
     const list = document.getElementById("answerList");
-    list.innerHTML = "";
+    list.replaceChildren();
     q.a.forEach((answer, index) => {
         const btn = document.createElement("button");
         btn.className = "answer-btn";
@@ -485,21 +507,34 @@ function renderAxisSnapshot(key) {
         lead.textContent = `이번 결과에서 가장 먼저 볼 축은 ${strongest.def.title}입니다. 무료 결과는 신호를 보여주고, 심화 리포트는 이 신호를 실제 문장과 루틴으로 바꿉니다.`;
     }
 
-    grid.innerHTML = "";
+    grid.replaceChildren();
     entries.forEach(({ axis, def, score }) => {
         const percent = Math.round(((score - 4) / 12) * 100);
         const clamped = Math.max(0, Math.min(100, percent));
         const card = document.createElement("article");
         card.className = "axis-card axis-" + axisLevel(score);
-        card.innerHTML = `
-            <div class="axis-card-top">
-                <strong>${def.title}</strong>
-                <span>${score}/16</span>
-            </div>
-            <div class="axis-bar" aria-hidden="true"><span style="width:${clamped}%"></span></div>
-            <p class="axis-card-label">${axisLabel(axis, score)}</p>
-            <p class="axis-card-action">${def.action}</p>
-        `;
+        const top = document.createElement("div");
+        top.className = "axis-card-top";
+        const title = document.createElement("strong");
+        title.textContent = def.title;
+        const scoreText = document.createElement("span");
+        scoreText.textContent = `${score}/16`;
+        top.append(title, scoreText);
+
+        const bar = document.createElement("div");
+        bar.className = "axis-bar";
+        bar.setAttribute("aria-hidden", "true");
+        const fill = document.createElement("span");
+        fill.style.width = `${clamped}%`;
+        bar.appendChild(fill);
+
+        const label = document.createElement("p");
+        label.className = "axis-card-label";
+        label.textContent = axisLabel(axis, score);
+        const action = document.createElement("p");
+        action.className = "axis-card-action";
+        action.textContent = def.action;
+        card.append(top, bar, label, action);
         grid.appendChild(card);
     });
 }
@@ -518,11 +553,17 @@ function renderPaidPreview(key, paid) {
         { label: "2단계", title: "한국형 문장", copy: paid.points[1] || "상대 체면을 해치지 않는 완곡 경계 문장을 제공합니다." },
         { label: "3단계", title: "30일 유지", copy: "7일 스타터 이후에도 기준이 무너지지 않도록 회복 루틴을 연결합니다." }
     ];
-    grid.innerHTML = "";
+    grid.replaceChildren();
     cards.forEach((item) => {
         const card = document.createElement("div");
         card.className = "paid-preview-card";
-        card.innerHTML = `<span>${item.label}</span><strong>${item.title}</strong><p>${item.copy}</p>`;
+        const label = document.createElement("span");
+        label.textContent = item.label;
+        const title = document.createElement("strong");
+        title.textContent = item.title;
+        const copy = document.createElement("p");
+        copy.textContent = item.copy;
+        card.append(label, title, copy);
         grid.appendChild(card);
     });
 }
@@ -542,7 +583,7 @@ function renderResult(key) {
     window.scrollTo(0, 0);
     trackEvent('give_result_viewed', { give_type: key });
 
-    document.getElementById("character").innerHTML = characterImage(finalResult);
+    document.getElementById("character").replaceChildren(characterImage(finalResult));
     document.getElementById("typeName").textContent = finalResult.name;
     document.getElementById("typeSummary").textContent = finalResult.summary;
     document.getElementById("strength").textContent = finalResult.strength;
@@ -575,7 +616,7 @@ function renderLockedInterpretation(key, unlocked) {
     const box = document.getElementById("lockedInterpretation");
     const text = document.getElementById("lockedInterpretationText");
     const paragraphs = lockedInterpretations[key] || lockedInterpretations.mixed;
-    text.innerHTML = "";
+    text.replaceChildren();
     paragraphs.forEach((paragraph) => {
         const p = document.createElement("p");
         p.textContent = paragraph;

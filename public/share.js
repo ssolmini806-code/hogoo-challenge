@@ -54,4 +54,15 @@
     copy(location.href,'링크가 복사되었어요 🔗');
     if(span){span.textContent='복사 완료!';setTimeout(function(){span.textContent=orig;},1500);}
   };
+  document.addEventListener('click', function(event){
+    var btn = event.target && event.target.closest ? event.target.closest('[data-share-action]') : null;
+    if(!btn) return;
+    var action = btn.getAttribute('data-share-action');
+    if(action === 'x') window.snsX();
+    else if(action === 'threads') window.snsThreads();
+    else if(action === 'kakao') window.snsKakao();
+    else if(action === 'insta') window.snsInsta();
+    else if(action === 'tiktok') window.snsTiktok();
+    else if(action === 'copy') window.snsCopy(btn);
+  });
 })();

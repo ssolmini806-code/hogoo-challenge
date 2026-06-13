@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,1,400;9..144,1,500&display=swap" rel="stylesheet">
-<link rel="preload" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
 <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css"></noscript>
 <style>
 :root{
@@ -218,7 +218,7 @@ button,a{font:inherit;-webkit-tap-highlight-color:transparent;}
 
   <div class="foot" id="foot">
     <span class="tap-hint" id="tapHint">화면을 탭하거나 넘겨서 계속 보기</span>
-    <a href="give-test.html?start=1" class="start-btn" id="startBtn">GIVE ID 시작하기</a>
+    <a href="give-test.html?intro=1" class="start-btn" id="startBtn">GIVE ID 시작하기</a>
   </div>
 </main>
 
@@ -277,7 +277,7 @@ button,a{font:inherit;-webkit-tap-highlight-color:transparent;}
     if(e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') next();
   });
   skipBtn.addEventListener('click', function(){
-    location.href = 'give-test.html?start=1';
+    location.href = 'give-test.html?intro=1';
   });
 })();
 </script>
