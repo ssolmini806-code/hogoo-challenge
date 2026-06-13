@@ -170,6 +170,18 @@
             }).join("");
         }
 
+        function getSafeReturnUrl(value) {
+            if (!value) return "";
+            try {
+                const url = new URL(value, window.location.origin);
+                if (url.origin !== window.location.origin) return "";
+                if (!["http:", "https:"].includes(url.protocol)) return "";
+                return `${url.pathname}${url.search}${url.hash}`;
+            } catch {
+                return "";
+            }
+        }
+
         async function loadReviews() {
             try {
                 const { data, error } = await supabase
@@ -192,7 +204,7 @@
         (async () => {
             const params = new URLSearchParams(window.location.search);
             const reviewContext = params.get('context');
-            const returnUrl = params.get('return');
+            const returnUrl = getSafeReturnUrl(params.get('return'));
             const resultId = params.get('rid');
 
             if (!reviewContext) return;

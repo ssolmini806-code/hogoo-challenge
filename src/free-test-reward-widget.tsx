@@ -80,6 +80,22 @@ async function saveReward(userId: string, resultId: string, rewardType: RewardTy
   if (error) throw error;
 }
 
+async function canUnlockBothReward(userId: string) {
+  const { data, error } = await supabase
+    .from('user_rewards')
+    .select('reward_type, unlocked')
+    .eq('user_id', userId)
+    .eq('reward_context', 'free_test');
+
+  if (error) throw error;
+
+  const rewards = data ?? [];
+  const hasExistingBoth = rewards.some(reward => reward.reward_type === 'both' && reward.unlocked);
+  const hasShare = rewards.some(reward => reward.reward_type === 'sns' && reward.unlocked);
+  const hasReview = rewards.some(reward => reward.reward_type === 'review' && reward.unlocked);
+  return hasExistingBoth || (hasShare && hasReview);
+}
+
 function FreeTestRewardWidget({ rootId, testId, initialResultType }: FreeTestRewardWidgetProps) {
   const [session, setSession] = useState<Session | null>(null);
   const [adminMode, setAdminMode] = useState(() => isAdminModeEnabled());
@@ -311,8 +327,14 @@ function FreeTestRewardWidget({ rootId, testId, initialResultType }: FreeTestRew
     setBothError('');
 
     try {
+      const canUnlock = await canUnlockBothReward(userId);
+      if (!canUnlock) {
+        setBothError('공유와 후기 완료 상태를 확인한 뒤 다시 시도해주세요.');
+        return;
+      }
+
       const content = {
-        summary: `[${resultType} 유형 종합 리포트]\n\nSNS 공유와 후기 작성을 모두 완료하셨습니다. ${resultType} 성향은 관계에서 상대를 먼저 배려하는 강점이 있는 반면, 자신의 필요를 뒤로 미루는 경향이 있을 수 있어요.\n\n작은 거절 연습부터 시작해보세요. 건강한 관계는 나를 지키는 것에서 출발합니다.`,
+        summary: `[${resultType} 유형 선의 심리학 미니 리포트]\n\nSNS 공유와 후기 작성을 모두 완료하셨습니다. ${resultType} 성향은 관계에서 상대를 먼저 배려하는 강점이 있는 반면, 자신의 필요를 뒤로 미루는 경향이 있을 수 있어요.\n\n오늘은 부탁을 받자마자 답하지 말고 "확인하고 다시 말해줄게"라는 한 문장으로 시작해보세요.\n\n심화 리포트에서는 반복 패턴 해석, 관계별 완곡 경계 문장, 30일 회복 루틴까지 이어서 정리합니다. 이 리포트는 의학적 진단이 아니라, 선의를 오래 유지하기 위한 자기 점검 가이드입니다.`,
       };
       await saveReward(userId, resultId, 'both', content);
       setBothContent(getReadableContent(content));

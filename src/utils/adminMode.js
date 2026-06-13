@@ -1,10 +1,38 @@
 const ADMIN_MODE_STORAGE_KEY = 'admin_mode';
 const ADMIN_TOKEN_PARAM = 'admin_token';
 const ADMIN_VERIFY_ENDPOINT = 'https://givecosystem.com/api/admin/verify-token';
+const ADMIN_MODE_TTL_MS = 60 * 60 * 1000;
+
+function getStoredAdminMode() {
+  const stored = window.localStorage.getItem(ADMIN_MODE_STORAGE_KEY);
+  if (!stored) return false;
+
+  if (stored === 'true') {
+    storeAdminMode();
+    return true;
+  }
+
+  try {
+    const parsed = JSON.parse(stored);
+    if (parsed?.enabled === true && Number(parsed.expiresAt) > Date.now()) {
+      return true;
+    }
+  } catch {}
+
+  window.localStorage.removeItem(ADMIN_MODE_STORAGE_KEY);
+  return false;
+}
+
+function storeAdminMode() {
+  window.localStorage.setItem(ADMIN_MODE_STORAGE_KEY, JSON.stringify({
+    enabled: true,
+    expiresAt: Date.now() + ADMIN_MODE_TTL_MS,
+  }));
+}
 
 export function isAdminModeEnabled() {
   if (typeof window === 'undefined') return false;
-  return window.localStorage.getItem(ADMIN_MODE_STORAGE_KEY) === 'true';
+  return getStoredAdminMode();
 }
 
 function removeAdminTokenFromUrl(url) {
@@ -30,7 +58,7 @@ export async function initializeAdminModeFromUrl() {
     const data = await response.json().catch(() => null);
 
     if (data?.valid === true) {
-      window.localStorage.setItem(ADMIN_MODE_STORAGE_KEY, 'true');
+      storeAdminMode();
     }
   } catch (error) {
     console.warn('Admin token verification failed:', error);

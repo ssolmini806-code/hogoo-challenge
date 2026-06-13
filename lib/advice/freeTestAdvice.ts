@@ -89,12 +89,17 @@ const typeAliases: Record<string, keyof typeof adviceByType> = {
   "과부하 기버": "giver_overloaded",
   "과부하형 기버": "giver_overloaded",
   "퍼주다 지친 기버": "giver_overloaded",
+  "다 주고 빈 손 🐶": "giver_overloaded",
+  "다 주고 빈 손": "giver_overloaded",
 
   "emotional-helper": "emotional_helper",
   "emotional helper": "emotional_helper",
   "감정 도우미": "emotional_helper",
   "감정 케어형": "emotional_helper",
   "감정 노동형": "emotional_helper",
+  "분위기 지킴이": "people_pleaser",
+  "방전된 햄스터 🔋": "relationship_exhausted",
+  "방전된 햄스터": "relationship_exhausted",
 
   "people-pleaser": "people_pleaser",
   "people pleaser": "people_pleaser",
@@ -107,12 +112,17 @@ const typeAliases: Record<string, keyof typeof adviceByType> = {
   "관계 소진형": "relationship_exhausted",
   "관계 번아웃": "relationship_exhausted",
   "지친 관계형": "relationship_exhausted",
+  "계산 빠른 살림꾼": "boundary_missing",
+  "철벽 고슴도치 🦔": "boundary_missing",
+  "철벽 고슴도치": "boundary_missing",
 
   "boundary-missing": "boundary_missing",
   "boundary missing": "boundary_missing",
   "경계 부족형": "boundary_missing",
   "선 긋기 약한 유형": "boundary_missing",
   "경계 실종형": "boundary_missing",
+  "선 잘 긋는 문지기": "boundary_missing",
+  "줄타기 균형러": "giver_overloaded",
 };
 
 const defaultAdvice: FreeTestAdvice = {

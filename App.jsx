@@ -143,15 +143,34 @@ export default function App() {
 
   const fetchReviews = async () => {
     try {
-      const { data, error } = await supabase
+      const { data: publicReviews, error } = await supabase
         .from('challenge_reviews')
-        .select('id, user_id, display_name, rating, content, completed_missions, created_at')
+        .select('id, display_name, rating, content, completed_missions, created_at')
         .eq('is_public', true)
         .order('created_at', { ascending: false })
         .limit(6);
 
       if (error) throw error;
-      setReviews(data && data.length ? data : fallbackReviews);
+
+      let nextReviews = (publicReviews ?? []).map(review => ({ ...review, is_own: false }));
+      if (session?.user?.id) {
+        const { data: ownReviews, error: ownError } = await supabase
+          .from('challenge_reviews')
+          .select('id, display_name, rating, content, completed_missions, created_at')
+          .eq('user_id', session.user.id)
+          .order('created_at', { ascending: false })
+          .limit(6);
+
+        if (ownError) throw ownError;
+
+        const reviewById = new Map(nextReviews.map(review => [review.id, review]));
+        (ownReviews ?? []).forEach(review => {
+          reviewById.set(review.id, { ...review, is_own: true });
+        });
+        nextReviews = Array.from(reviewById.values());
+      }
+
+      setReviews(nextReviews.length ? nextReviews : fallbackReviews);
     } catch (error) {
       console.warn('Using fallback reviews:', error);
       setReviews(fallbackReviews);
@@ -255,6 +274,24 @@ export default function App() {
     trackEvent('challenge_reward_unlocked', { reward_type: rewardType });
   };
 
+  const canUnlockBothReward = async () => {
+    if (!session?.user?.id) return false;
+
+    const { data, error } = await supabase
+      .from('user_rewards')
+      .select('reward_type, unlocked')
+      .eq('user_id', session.user.id)
+      .eq('reward_context', 'seven_day_challenge');
+
+    if (error) throw error;
+
+    const rewards = data ?? [];
+    const hasExistingBoth = rewards.some(reward => reward.unlocked && reward.reward_type === 'both');
+    const hasShare = rewards.some(reward => reward.unlocked && reward.reward_type === 'sns');
+    const hasReview = rewards.some(reward => reward.unlocked && reward.reward_type === 'review');
+    return hasExistingBoth || (hasShare && hasReview);
+  };
+
   const handleShareComplete = async () => {
     if (adminMode) {
       setIsShared(true);
@@ -285,6 +322,9 @@ export default function App() {
     if (adminMode) return;
     if (!session) return;
     try {
+      const canUnlock = await canUnlockBothReward();
+      if (!canUnlock) return;
+
       const content = {
         completionRate,
         completedMissions,
@@ -464,10 +504,10 @@ export default function App() {
       const { data, error } = await supabase
         .from('challenge_reviews')
         .insert(payload)
-        .select('id, user_id, display_name, rating, content, completed_missions, created_at')
+        .select('id, display_name, rating, content, completed_missions, created_at')
         .single();
       if (error) throw error;
-      setReviews(prev => [data, ...prev].slice(0, 6));
+      setReviews(prev => [{ ...data, is_own: true }, ...prev].slice(0, 6));
       setReviewStatus("후기가 등록됐습니다.");
       setReviewForm({ displayName: "", rating: 5, content: "" });
       setShowReviewForm(false);
@@ -887,7 +927,7 @@ export default function App() {
             "착한 게 아니라 사려 깊은 거예요. 다만, 그 다정함이 당신을 깎아먹지 않도록 오늘은 조금 더 이기적이어도 괜찮아요."
           </p>
 
-          {/* 심화 분석 리포트 CTA */}
+          {/* 심화 리포트 CTA */}
           <div 
             onClick={() => window.open(PAID_SITE_URL, '_blank', 'noopener,noreferrer')}
             style={{ 
@@ -900,9 +940,9 @@ export default function App() {
             onMouseOver={e => e.currentTarget.style.transform = "scale(1.02)"}
             onMouseOut={e => e.currentTarget.style.transform = "scale(1)"}
           >
-            📊 GIVE ID 심화 분석 바로 받기
+            GIVE ID 심화 리포트 바로 받기
             <div style={{ fontSize: "11px", marginTop: "4px", opacity: 0.8, fontWeight: 500 }}>
-              givecosystem.com · 유료 정밀 진단으로 이동
+              givecosystem.com · 유료 심화 리포트로 이동
             </div>
           </div>
         </div>
@@ -942,7 +982,7 @@ export default function App() {
           <div style={{ marginTop: 20, borderTop: "1px solid #E9F2EC", paddingTop: 16 }}>
             <div style={{ fontSize: 11, color: "#114B3C", marginBottom: 12, textAlign: "center", fontWeight: 600, letterSpacing: "0.05em" }}>SNS로 오늘의 변화 공유하기</div>
             <div style={{ display: "flex", justifyContent: "center" }}>
-              <div className="a2a_kit a2a_kit_size_36 a2a_default_style" data-a2a-url="https://hogoo-challenge.pages.dev" data-a2a-title="호구 탈출 챌린지 - 7일 만에 달라지는 관계 습관">
+              <div className="a2a_kit a2a_kit_size_36 a2a_default_style" data-a2a-url="https://hogoo-challenge.pages.dev" data-a2a-title="호구 탈출 챌린지 - 7일 동안 시작하는 관계 경계 연습">
                 <a className="a2a_button_kakao"></a>
                 <a className="a2a_button_instagram"></a>
                 <a className="a2a_button_threads"></a>
@@ -996,7 +1036,7 @@ export default function App() {
             <div style={{ fontSize: '14px', color: '#1A1F1C', marginBottom: '16px', fontWeight: 700 }}>당신의 건강한 선의를 응원합니다</div>
             <div style={{ fontSize: '12px', color: '#5C635E', marginBottom: '20px', lineHeight: 1.5 }}>이 챌린지가 필요한 친구에게 공유해보세요.<br/>함께하면 변화가 더 빨라집니다.</div>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <div className="a2a_kit a2a_kit_size_36 a2a_default_style" data-a2a-url="https://hogoo-challenge.pages.dev" data-a2a-title="GIVE Ecosystem | 똑똑한 기버를 위한 관계 진단">
+                <div className="a2a_kit a2a_kit_size_36 a2a_default_style" data-a2a-url="https://hogoo-challenge.pages.dev" data-a2a-title="GIVE Ecosystem | 똑똑한 기버를 위한 관계 자가점검">
                     <a className="a2a_button_kakao"></a>
                     <a className="a2a_button_instagram"></a>
                     <a className="a2a_button_threads"></a>
@@ -1086,14 +1126,12 @@ export default function App() {
           <div style={{ display: "grid", gap: 10, marginBottom: 14 }}>
             {[...reviews]
               .sort((a, b) => {
-                const uid = session?.user?.id;
-                if (!uid) return 0;
-                if (a.user_id === uid) return -1;
-                if (b.user_id === uid) return 1;
+                if (a.is_own) return -1;
+                if (b.is_own) return 1;
                 return 0;
               })
               .map(review => {
-                const isOwn = !!(session?.user?.id && review.user_id === session.user.id);
+                const isOwn = !!review.is_own || !!(session?.user?.id && review.user_id === session.user.id);
                 return (
                   <article key={review.id} style={{
                     background: "#FAF8F3",

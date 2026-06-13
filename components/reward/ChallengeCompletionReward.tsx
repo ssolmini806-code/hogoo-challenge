@@ -671,7 +671,7 @@ export default function ChallengeCompletionReward({
               </p>
               <p className="mt-2 flex items-start gap-2 text-sm leading-6 text-gray-600">
                 <ShieldAlert className="mt-0.5 h-4 w-4 shrink-0 text-gray-400" aria-hidden="true" />
-                SNS 공유와 후기 작성을 모두 완료하면 30일 적합도 진단 카드가 열립니다.
+                SNS 공유와 후기 작성을 모두 완료하면 30일 확장 적합도 카드가 열립니다.
               </p>
             </div>
           )}

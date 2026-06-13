@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    <script type="module">window.__PAID_SITE_URL = import.meta.env.VITE_PAID_SITE_URL || '';</script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-P6PM6JBJH1"></script>
     <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-P6PM6JBJH1');</script>
     <meta charset="UTF-8">
@@ -9,7 +10,7 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>나는 호구일까? 테스트 | GIVE Ecosystem</title>
-    <meta name="description" content="12가지 질문으로 알아보는 나의 호구 지수. 착한 것과 호구는 다릅니다. 지금 바로 무료 진단해보세요.">
+    <meta name="description" content="12가지 질문으로 알아보는 나의 호구 신호. 착한 것과 반복 손해는 다릅니다. 지금 바로 무료로 점검해보세요.">
     <link rel="canonical" href="https://hogoo-challenge.pages.dev/hogoo-check.html">
     <meta property="og:title" content="나는 호구일까? 테스트 | GIVE Ecosystem">
     <meta property="og:description" content="12가지 질문으로 알아보는 나의 호구 지수. 착한 것과 호구는 다릅니다.">
@@ -33,13 +34,22 @@
 <div id="intro-page">
     <div class="inner">
         <div>
-            <span class="test-badge">심리학 기반 정밀 진단</span>
+            <div class="prologue-lab-bar" aria-label="GIVE Pattern Lab">
+                <span>GIVE Pattern Lab</span>
+                <strong>무료 자가점검</strong>
+            </div>
+            <span class="test-badge">심리학 기반 자가점검</span>
             <div class="test-intro-image">
                 <img src="/images/tests/hogoo-check-illustration-v3.webp" alt="두 부탁 카드 앞에서 내 경계선을 확인하는 사람의 따뜻한 일러스트" loading="eager">
             </div>
             <p class="test-intro-caption">또 바로 “괜찮아”라고 말하기 전에, 내 경계선을 먼저 확인합니다.</p>
             <h1 class="test-title">나는 호구일까?</h1>
             <p class="test-subtitle">착한 것과 호구는 한 끗 차이입니다. 12가지 질문으로 나의 관계 패턴을 확인하세요.</p>
+            <div class="prologue-metrics" aria-label="테스트 정보">
+                <div><strong>12</strong><span>문항</span></div>
+                <div><strong>2분</strong><span>예상 시간</span></div>
+                <div><strong>즉시</strong><span>결과 확인</span></div>
+            </div>
             <section class="test-tabs" aria-label="호구 테스트 안내">
                 <div class="tab-list" role="tablist" aria-label="테스트 안내 탭">
                     <button class="tab-btn" type="button" role="tab" id="hogoo-tab-1" aria-controls="hogoo-panel-1" aria-selected="true">부탁</button>
@@ -128,7 +138,7 @@
                     <p>결과에 맞춰 오늘 바로 해볼 행동을 남깁니다.</p>
                 </div>
             </section>
-            <p class="test-meta">이미 많은 분들이 진단했습니다</p>
+            <p class="test-meta">이미 많은 분들이 점검했습니다</p>
             <a href="result-sequence.html?test=hogoo&type=middle" class="result-preview-link">
                 결과 흐름 미리보기 →
             </a>
@@ -218,19 +228,27 @@
         <div class="result-card is-action" id="cardAdvice">
             <div class="card-title">지금 할 수 있는 것</div>
             <p class="card-body" id="cardAdviceText"></p>
+            <small class="lace-note">상황 인정 → 마음 표현 → 내 기준 → 가능한 범위 순서로 말해보세요.</small>
         </div>
+
+        <section class="white-psychology-bridge" aria-label="선의 심리학 안내">
+            <span class="bridge-label">White Psychology</span>
+            <h2>호구냐 아니냐보다 중요한 건 반복 패턴입니다</h2>
+            <p>착한 마음 자체가 문제가 아니라, 부탁 앞에서 내 기준이 늦게 도착하는 순간이 반복될 때 지치기 쉽습니다. 선의 심리학은 그 기준을 다시 세우는 방법을 다룹니다.</p>
+            <a href="white-psychology.html">왜 착한 마음이 손해가 되는지 보기 →</a>
+        </section>
 
         <div class="result-cta">
             <h3>"이 패턴이 왜 생겼는지,<br>어떻게 바꾸는지 더 알고 싶다면"</h3>
-            <p>GIVE ID 심화 분석에서 당신의 관계 패턴을<br>근본부터 해석해드립니다.</p>
-            <button class="cta-btn" onclick="window.open('https://givecosystem.com','_blank')">GIVE ID 심화 분석 받기 →</button>
-            <span class="cta-sub-text">무료 결과는 저장되지 않으니 지금 확인하세요.</span>
+            <p>GIVE ID 심화 리포트에서 당신의 관계 패턴을<br>선의 심리학 프레임으로 정리해드립니다.</p>
+            <button class="cta-btn" onclick="openPaidSite()">GIVE ID 심화 리포트 받기 →</button>
+            <span class="cta-sub-text">이 결과는 의학적 진단이나 전문 상담을 대체하지 않습니다.</span>
         </div>
 
         <div class="related-tests">
             <a class="rel-card" href="give-test.html">
                 <span class="itile" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"></circle><circle cx="12" cy="12" r="3"></circle><path d="M12 4V2M12 22v-2M4 12H2M22 12h-2"></path></svg></span>
-                <div class="rel-name">GIVE ID<br>유형 진단</div>
+                <div class="rel-name">GIVE ID<br>자가점검</div>
             </a>
             <a class="rel-card" href="relationship-risk.html">
                 <span class="itile" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 22 20H2L12 3Z"></path><path d="M12 9v5"></path><path d="M12 17h.01"></path></svg></span>
@@ -240,10 +258,10 @@
 
         <div class="paid-deep-cta">
             <h3>내 결과를 더 깊게 해석하고 싶다면</h3>
-            <p>심화 테스트에서 원인 패턴과 추천 행동을 확인해보세요.</p>
+            <p>심화 리포트에서 원인 패턴과 추천 행동을 확인해보세요.</p>
             <span class="paid-deep-note">무료 검사 완료자에게는 개인화 해석 리포트가 함께 제공돼요.</span>
-            <a href="https://givecosystem.com/" target="_blank" rel="noopener noreferrer"
-               class="paid-deep-link">심화 테스트 하러 가기 →</a>
+            <a href="https://givecosystem.com/" target="_blank" rel="noopener noreferrer" id="paidDeepLink"
+               class="paid-deep-link">심화 리포트 보러 가기 →</a>
         </div>
 
         <div class="retry-wrap">
@@ -253,7 +271,7 @@
         <footer>
             <div class="footer-links">
                 <a href="index.html">홈으로</a>
-                <a href="give-test.html">GIVE ID 진단</a>
+                <a href="give-test.html">GIVE ID 자가점검</a>
                 <a href="articles/giver-burnout.html">심리 칼럼</a>
             </div>
             <div class="copy">&copy; 2026 GIVE Ecosystem. All rights reserved.</div>
@@ -262,6 +280,19 @@
 </div>
 
 <script>
+function getPaidSiteUrl() {
+    const configuredUrl = window.__PAID_SITE_URL && !String(window.__PAID_SITE_URL).includes('%VITE_')
+        ? window.__PAID_SITE_URL
+        : 'https://givecosystem.com/';
+    return configuredUrl;
+}
+function openPaidSite() {
+    window.open(getPaidSiteUrl(), '_blank', 'noopener,noreferrer');
+}
+document.addEventListener('DOMContentLoaded', function() {
+    const link = document.getElementById('paidDeepLink');
+    if (link) link.href = getPaidSiteUrl();
+});
 document.querySelectorAll('.test-tabs').forEach(function(tabs) {
     const tabButtons = Array.from(tabs.querySelectorAll('[role="tab"]'));
     const panels = Array.from(tabs.querySelectorAll('[role="tabpanel"]'));
@@ -316,7 +347,7 @@ const results = {
         body: "지금 이걸 보고 있다는 것 자체가 변화의 시작이에요.",
         strength: "강한 공감 능력과 따뜻한 마음으로 주변 사람들에게 신뢰를 받습니다. 이 에너지를 자신을 위해서도 쓸 수 있다면 훨씬 더 건강해집니다.",
         risk: "반복적인 희생과 억눌린 감정이 쌓여 번아웃으로 이어질 수 있습니다. 상대방이 당신의 친절을 당연하게 여길 가능성이 높습니다.",
-        advice: "오늘 딱 하나, 작은 '아니오'를 연습해보세요. 죄책감 없이 거절하는 근육은 훈련으로 키울 수 있습니다.",
+        advice: "마음은 도와주고 싶은데, 오늘은 제가 감당하기 어려워요. 작은 '아니오'부터 연습해보세요.",
         color: "var(--amber-accent)",
         mood: "sad",
         character: "/images/types/hogoo-check/type-hogoo.webp",
@@ -332,7 +363,7 @@ const results = {
         body: "다정한데 경계가 모호해요. 착한 것과 만만한 것은 달라요.",
         strength: "배려와 현실감각을 동시에 갖추고 있습니다. 조금만 경계를 더 명확히 하면 관계가 훨씬 건강해집니다.",
         risk: "무의식적으로 상대방의 기분을 먼저 배려하다 자신의 감정을 나중에 처리하는 패턴이 있습니다.",
-        advice: "부탁을 받았을 때 즉각 답하지 말고, '잠깐 생각해볼게'라는 시간을 만들어 보세요.",
+        advice: "잠깐 생각해보고, 가능한 범위만 다시 말해줄게요. 즉답하지 않는 시간을 만들어 보세요.",
         color: "var(--amber-accent)",
         mood: "soft",
         character: "/images/types/hogoo-check/type-nice.webp",
@@ -348,7 +379,7 @@ const results = {
         body: "특정 사람한테만 유독 약해지는 패턴이 있어요.",
         strength: "유연하게 상황을 판단할 줄 압니다. 어떤 상황에서 경계가 무너지는지 파악하면 훨씬 안정적인 관계를 만들 수 있습니다.",
         risk: "일관성 없는 반응이 상대방에게 혼란을 줄 수 있고, 특정 조건에서는 여전히 손해를 볼 수 있습니다.",
-        advice: "어떤 상황에서 경계가 무너지는지 패턴을 기록해보세요. 인식이 변화의 첫걸음입니다.",
+        advice: "이번엔 여기까지만 가능해요. 어떤 사람 앞에서 이 말이 어려운지 기록해보세요.",
         color: "var(--green-soft)",
         mood: "neutral",
         character: "/images/types/hogoo-check/type-middle.webp",

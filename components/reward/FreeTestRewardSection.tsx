@@ -121,6 +121,16 @@ function fallbackCopyLink(url: string) {
   document.body.removeChild(el);
 }
 
+function paidRewardUrl(resultType: string) {
+  const url = new URL(PAID_SITE_URL);
+  url.searchParams.set('utm_source', 'give_id_free_reward');
+  url.searchParams.set('utm_medium', 'reward_cta');
+  url.searchParams.set('utm_campaign', 'paid_conversion');
+  url.searchParams.set('utm_content', 'a_plus_b_bonus');
+  url.searchParams.set('result_type', resultType);
+  return url.toString();
+}
+
 const styles = {
   section: {
     width: '100%',
@@ -366,7 +376,7 @@ export default function FreeTestRewardSection({
               <MessageCircle size={16} aria-hidden="true" />
             </span>
             <div style={{ flex: 1 }}>
-              <p style={styles.label}>혜택 A: 유형별 추가 조언 공개</p>
+              <p style={styles.label}>혜택 A: 선의 심리학 무료 조언 카드</p>
               <div style={{ marginTop: 12 }}>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
                   <button type="button" onClick={handleKakaoShare} style={styles.smallBtn('#FEE500', '#191919')}>
@@ -439,7 +449,7 @@ export default function FreeTestRewardSection({
               <PenLine size={16} aria-hidden="true" />
             </span>
             <div style={{ flex: 1 }}>
-              <p style={styles.label}>혜택 B: 나는 호구인가? 테스트 unlock</p>
+              <p style={styles.label}>혜택 B: 나는 호구인가? 자가점검 unlock</p>
               <button
                 type="button"
                 onClick={handleReviewClick}
@@ -453,14 +463,14 @@ export default function FreeTestRewardSection({
                 <div style={{ marginTop: 12, borderRadius: 10, background: '#1e1e35', padding: 12 }}>
                   <p style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 800, color: '#a5b4fc', margin: '0 0 10px' }}>
                     <Unlock size={14} aria-hidden="true" />
-                    🔓 호구인가? 테스트가 열렸어요!
+                    🔓 호구인가? 자가점검이 열렸어요!
                   </p>
                   <button
                     type="button"
                     onClick={openHogooCheck}
                     style={styles.btn('#818cf8', '#111827')}
                   >
-                    테스트 하러 가기
+                    자가점검 하러 가기
                   </button>
                 </div>
               ) : null}
@@ -489,11 +499,11 @@ export default function FreeTestRewardSection({
                 </p>
               ) : null}
               <p style={{ ...styles.label, color: isBothComplete ? 'rgba(255,255,255,0.9)' : '#8a7f75', fontSize: 13 }}>
-                둘 다 완료하면 → 개인화 요약 리포트
+                둘 다 완료하면 → 선의 심리학 미니 리포트
               </p>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 6 }}>
                 <span style={{ fontSize: 12, fontWeight: 700, color: isBothComplete ? 'rgba(255,255,255,0.6)' : '#6a6060' }}>
-                  심화 테스트 준비 리포트
+                  심화 리포트 준비 카드
                 </span>
                 <span style={{
                   background: isBothComplete ? 'rgba(255,255,255,0.18)' : '#2a2520',
@@ -527,10 +537,10 @@ export default function FreeTestRewardSection({
                     무료 검사는 패턴을 보여줬어요
                   </p>
                   <p style={{ fontSize: 13, fontWeight: 600, color: 'rgba(255,255,255,0.78)', margin: '0 0 12px', lineHeight: 1.65 }}>
-                    GIVE ID 심화 테스트에서는 왜 이 패턴이 반복되는지, 어떻게 바꿀 수 있는지를 알 수 있어요.
+                    GIVE ID 심화 리포트에서는 이 결과가 어떤 관계에서 반복되는지, 관계별로 어떤 경계 문장을 써야 하는지 확인할 수 있어요.
                   </p>
                   <a
-                    href={PAID_SITE_URL}
+                    href={paidRewardUrl(resultType)}
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{
@@ -547,7 +557,7 @@ export default function FreeTestRewardSection({
                       border: '1px solid rgba(255,255,255,0.2)',
                     }}
                   >
-                    GIVE ID 심화 테스트 →
+                    GIVE ID 심화 리포트 →
                   </a>
                   <p style={{ fontSize: 12, fontWeight: 700, color: 'rgba(255,255,255,0.66)', margin: '10px 0 0' }}>
                     무료 결과는 유지됩니다.

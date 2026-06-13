@@ -347,7 +347,7 @@ export default function ChallengeRewardSection({
           </div>
           <div>
             <h2 style={{ fontSize: 16, fontWeight: 800, color: 'var(--ink)', margin: '0 0 4px' }}>A+B 보너스</h2>
-            <p style={{ fontSize: 15, fontWeight: 600, color: 'var(--ink-sub)', margin: 0 }}>둘 다 완료하면 → 30일 적합도 진단</p>
+            <p style={{ fontSize: 15, fontWeight: 600, color: 'var(--ink-sub)', margin: 0 }}>둘 다 완료하면 → 30일 확장 적합도 카드</p>
           </div>
         </div>
 
@@ -371,7 +371,7 @@ export default function ChallengeRewardSection({
           </div>
         ) : (
           <div style={{ background: 'var(--surface-2)', borderRadius: 10, padding: 12, fontSize: 15, color: 'var(--ink-sub)', lineHeight: 1.6 }}>
-            SNS 공유와 후기 작성을 모두 완료하면 진단 결과가 열립니다.
+            SNS 공유와 후기 작성을 모두 완료하면 30일 확장 적합도 카드가 열립니다.
           </div>
         )}
       </article>

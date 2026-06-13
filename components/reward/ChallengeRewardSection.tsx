@@ -239,7 +239,7 @@ export default function ChallengeRewardSection({
               <div className="min-w-0 flex-1">
                 <h2 className="text-base font-bold">A+B 보너스</h2>
                 <p className="mt-1 text-sm font-semibold text-gray-800">
-                  둘 다 완료하면 → 30일 적합도 진단
+                  둘 다 완료하면 → 30일 확장 적합도 카드
                 </p>
               </div>
             </div>
@@ -263,7 +263,7 @@ export default function ChallengeRewardSection({
               </div>
             ) : (
               <div className="mt-4 rounded-lg bg-gray-50 p-4 text-sm leading-6 text-gray-600">
-                SNS 공유와 후기 작성을 모두 완료하면 진단 결과가 열립니다.
+                SNS 공유와 후기 작성을 모두 완료하면 30일 확장 적합도 카드가 열립니다.
               </div>
             )}
           </article>

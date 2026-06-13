@@ -1,20 +1,23 @@
 const questions = [
-    { q: "친구가 밤 11시에 갑자기 연락한다.\n“나 지금 너무 힘든데 나와줄 수 있어?”", a: ["고민 없이 바로 나간다", "일단 통화부터 한다", "내일 보자고 한다", "지금은 어렵다고 말한다"] },
-    { q: "오늘 쉬고 싶었는데 부탁 카톡이 왔다. 첫 생각은?", a: ["그래도 도와줘야지", "상황을 봐야지", "왜 나한테만 이러지?", "이번엔 안 한다"] },
-    { q: "도와준 일이 잘 됐지만 감사 인사가 없다. 내 기분은?", a: ["그냥 뿌듯하다", "살짝 아쉽다", "꽤 서운하다", "다음부터 기준을 둔다"] },
-    { q: "이번 달만 세 번째 부탁이 왔다. 나는?", a: ["또 해준다", "이번만 마지막으로 한다", "고민하다 해준다", "거절한다"] },
-    { q: "처음 제대로 얘기한 사람이 벌써 두 번째 부탁을 한다.", a: ["좋은 사람 같아 받아준다", "일단 지켜본다", "살짝 쎄하다", "바로 거리 둔다"] },
-    { q: "상대가 “너밖에 없어”라고 말한다.", a: ["감동받는다", "고마우면서 부담된다", "약간 의심된다", "부담스러워 거리 둔다"] },
-    { q: "고마워 다음 날 또 부탁. 이 패턴이 반복된다.", a: ["그래도 나쁜 사람은 아니겠지", "이상하지만 말하기 애매하다", "이용당하는 느낌이다", "이미 선을 그었다"] },
-    { q: "“부탁 하나만 해도 돼?”라는 말에 첫 반응은?", a: ["도와줘야지", "왜 나지?", "괜찮은 부탁인가?", "선 넘는 거 아냐?"] },
-    { q: "눈앞에서 부탁을 받았는데 솔직히 해주기 싫다. 내 입에서 먼저 나온 말은?", a: ["그래, 해줄게", "이번만 해주는 거야", "미안한데 어렵다", "지금은 힘들다"] },
-    { q: "싫다고 했는데 또 같은 부탁을 한다.", a: ["그냥 참는다", "찜찜하지만 한다", "돌려서 어렵다고 말한다", "다시 분명히 거절한다"] },
-    { q: "거절하기 직전, 머릿속에 뭐가 먼저 떠올라?", a: ["상대가 실망할 것 같은 표정", "어떻게 말하면 덜 상처줄까", "이게 내가 해줄 일인가", "이건 아니지 싶은 느낌"] },
-    { q: "같은 사람에게서 반복 부탁이 왔다.", a: ["계속 들어준다", "점점 피한다", "한번 말해본다", "기준을 명확히 한다"] },
-    { q: "두 시간 도와줬는데 상대는 “오케이~” 하고 끝낸다.", a: ["괜찮다", "살짝 서운하다", "다음부터 거리 둔다", "다음엔 기준을 정한다"] },
-    { q: "나한테만 유독 자주 부탁하는 사람이 있다.", a: ["계속 해준다", "부담되지만 말 못 한다", "왜 나한테만 하냐고 묻는다", "가능한 범위를 정한다"] },
-    { q: "이미 여러 번 해준 비슷한 부탁이 또 왔다. 먼저 꺼낸 말은?", a: ["이번엔 어려울 것 같아", "이번이 마지막이야", "네가 먼저 해보고 봐줄게", "앞으로 이건 네가 맡자"] },
-    { q: "내가 처음 부탁했는데 상대가 “바빠서…”라고 한다.", a: ["괜찮다고 넘긴다", "서운하지만 이해한다", "나는 항상 도와줬다고 말한다", "그때부터 기준을 둔다"] }
+    { q: "[소진 신호] 누군가를 돕고 난 뒤 내 상태는?", a: ["가볍고 뿌듯하다", "조금 피곤하지만 괜찮다", "한동안 멍하고 지친다", "사람을 피하고 싶을 만큼 방전된다"] },
+    { q: "[소진 신호] 부탁을 받기 전부터 몸이 먼저 반응할 때가 있나요?", a: ["거의 없다", "가끔 부담을 느낀다", "자주 가슴이 답답하다", "연락 알림만 봐도 긴장된다"] },
+    { q: "[소진 신호] 내 일정이 있는데도 남의 급한 일을 맡게 되면?", a: ["내 일정부터 확인한다", "조율해서 일부만 돕는다", "내 일을 미루고 돕는다", "내가 망가져도 끝까지 떠안는다"] },
+    { q: "[소진 신호] 최근 한 달 동안 '나만 왜 이렇게 지치지?'라는 생각이 든 빈도는?", a: ["거의 없다", "가끔 있다", "자주 있다", "거의 매주 반복된다"] },
+
+    { q: "[거절 곤란] 부탁을 거절하기 직전 가장 먼저 떠오르는 건?", a: ["내가 가능한 범위", "상대에게 덜 미안한 표현", "상대가 실망할 표정", "관계가 깨질지도 모른다는 불안"] },
+    { q: "[거절 곤란] 눈앞에서 갑작스러운 부탁을 받으면?", a: ["생각해보고 답한다고 말한다", "가능한 범위를 먼저 묻는다", "망설이다가 수락한다", "싫어도 거의 바로 수락한다"] },
+    { q: "[거절 곤란] 거절한 뒤 내 마음은?", a: ["금방 괜찮아진다", "조금 찜찜하지만 넘긴다", "하루 종일 신경 쓰인다", "결국 다시 연락해서 해주게 된다"] },
+    { q: "[거절 곤란] 윗사람이나 가족의 부탁 앞에서는?", a: ["관계와 별개로 범위를 말한다", "조심스럽게 조율한다", "대부분 맞춰준다", "거절은 거의 불가능하다고 느낀다"] },
+
+    { q: "[상호성 결핍] 같은 사람이 반복해서 부탁하면 나는?", a: ["반복 여부를 말하고 기준을 세운다", "이번 범위까지만 돕는다", "불편하지만 또 돕는다", "관계상 어쩔 수 없다고 계속 떠안는다"] },
+    { q: "[상호성 결핍] 도움을 줬는데 감사나 피드백이 없으면?", a: ["다음 조건을 조정한다", "아쉽지만 넘긴다", "서운함이 오래 간다", "내 가치가 무시된 것처럼 느낀다"] },
+    { q: "[상호성 결핍] 내가 힘들 때 상대에게 도움을 요청하는 편인가요?", a: ["필요하면 요청한다", "가까운 사람에게는 한다", "대부분 혼자 해결한다", "도움을 요청하면 민폐라고 느낀다"] },
+    { q: "[상호성 결핍] 도움을 줄 때 보답이나 역할 분담을 말하는 것은?", a: ["건강한 조율이라고 본다", "필요하면 말할 수 있다", "말하면 계산적으로 보일까 걱정된다", "아예 말하지 못한다"] },
+
+    { q: "[회복력] 도운 뒤 회복 시간을 따로 확보하나요?", a: ["대체로 확보한다", "필요할 때는 쉰다", "알면서도 자주 못 쉰다", "쉬는 걸 미안하게 느낀다"] },
+    { q: "[회복력] 도움 뒤 억울함이나 피로를 점검하는 습관은?", a: ["기록하거나 바로 알아차린다", "가끔 돌아본다", "쌓인 뒤에야 안다", "터질 때까지 모른 척한다"] },
+    { q: "[회복력] 내 에너지가 5/10 이하일 때 부탁이 오면?", a: ["다음으로 미룬다", "짧게 가능한 범위만 돕는다", "무리해서라도 한다", "내 상태와 상관없이 해줘야 한다고 느낀다"] },
+    { q: "[회복력] 나를 돌보는 시간을 지키는 감각은?", a: ["중요한 약속처럼 지킨다", "가끔 흔들리지만 회복한다", "남의 일에 자주 밀린다", "내 시간은 항상 마지막이다"] }
 ];
 
 const results = {
@@ -24,7 +27,8 @@ const results = {
         summary: "거절이라는 단어가 사전에 없어요. 착한 게 아니라 불편함을 피하는 거예요. 결과적으로 내가 비어갑니다.",
         strength: "공감 능력이 뛰어나고 주변 사람에게 깊은 안정감을 줍니다.",
         risk: "거절하지 못해 내 일정, 감정, 돈이 뒤로 밀릴 수 있습니다.",
-        advice: "오늘은 작은 부탁 하나에 “지금은 어려워”라고 답해보세요.",
+        advice: "도와주고 싶은 마음은 있지만, 지금은 제가 감당할 수 있는 범위를 넘어서 어려워요.",
+        spectrum: { pos: 18, label: "Selfless 쪽에 가까워요. 마음은 크지만 내 회복 시간이 자주 뒤로 밀릴 수 있습니다." },
         character: "/images/types/give-id/type-angel.webp",
         next: { title: "다음: 왜 거절 못할까?", copy: "“미안해서” 또 당하는 사람용.", url: "refusal-test.html" },
         color: "var(--amber-soft)"
@@ -35,7 +39,8 @@ const results = {
         summary: "갈등을 피하려고 내 기준을 살짝 내려놓는 습관이 생겼어요. 분위기는 좋아지는데 내 마음은 찜찜합니다.",
         strength: "상황 파악이 빠르고 갈등을 완충하는 힘이 있습니다.",
         risk: "겉으로 웃다가 속으로 피로와 억울함이 쌓일 수 있습니다.",
-        advice: "부탁을 받으면 바로 답하지 말고 “확인하고 말해줄게”를 먼저 말하세요.",
+        advice: "지금 바로 답하기는 어려워요. 일정 확인하고 가능한 범위만 다시 말해줄게요.",
+        spectrum: { pos: 34, label: "Selfless와 Otherish 사이에서 눈치를 많이 보는 구간입니다. 즉답을 늦추면 균형이 생깁니다." },
         character: "/images/types/give-id/type-diplomat.webp",
         next: { title: "다음: 그 관계 괜찮아?", copy: "계속 맞춰주면 언젠가 터져요.", url: "relationship-risk.html" },
         color: "var(--amber-soft)"
@@ -46,7 +51,8 @@ const results = {
         summary: "시간과 에너지를 합리적으로 씁니다. 가끔 차갑다는 말을 듣지만, 사실 자기 보호가 잘 되는 편이에요.",
         strength: "리소스 관리와 판단력이 뛰어나 쉽게 휘둘리지 않습니다.",
         risk: "상대에게 거리감이 크게 느껴져 중요한 연결을 잃을 수 있습니다.",
-        advice: "오늘은 효율과 상관없이 짧은 칭찬 한마디를 건네보세요.",
+        advice: "이번 요청은 제가 맡기는 어렵지만, 참고할 방법은 같이 생각해볼 수 있어요.",
+        spectrum: { pos: 72, label: "Otherish 쪽에 가깝습니다. 기준은 좋고, 여기에 따뜻한 설명을 조금 더하면 관계 비용이 줄어듭니다." },
         character: "/images/types/give-id/type-awakening.webp",
         next: { title: "다음: 선일까, 벽일까?", copy: "좋은 사람까지 밀어내는지 확인.", url: "relationship-risk.html" },
         color: "var(--surface-2)"
@@ -57,7 +63,8 @@ const results = {
         summary: "기준이 명확합니다. 다만 유연성이 조금 더 생기면 관계가 더 따뜻해질 수 있어요.",
         strength: "자신의 한계와 원칙을 명확히 알고 있습니다.",
         risk: "새로운 사람에게 마음을 여는 속도가 너무 늦어질 수 있습니다.",
-        advice: "내 선을 넘지 않는 범위에서 먼저 작은 제안을 해보세요.",
+        advice: "여기까지는 가능하지만, 그 이상은 제 일정상 어렵습니다.",
+        spectrum: { pos: 82, label: "Otherish 기버에 가깝습니다. 선을 지키는 힘이 강하고, 유연한 제안이 더해지면 더 단단해집니다." },
         character: "/images/types/give-id/type-gatekeeper.webp",
         next: { title: "다음: 나 진짜 안 당할까?", copy: "특정 사람 앞에서만 무너질 수 있어요.", url: "hogoo-check.html" },
         color: "var(--green-soft)"
@@ -68,7 +75,8 @@ const results = {
         summary: "오래 달렸어요. 지금은 멈춤이 필요한 시점입니다. 쉬는 것도 능력이에요.",
         strength: "헌신적이고 책임감이 강해 쉽게 관계를 포기하지 않습니다.",
         risk: "작은 부탁에도 예민해지고 사람 자체를 피하게 될 수 있습니다.",
-        advice: "오늘 하루는 모든 추가 부탁을 보류하고 나를 회복시키는 시간을 확보하세요.",
+        advice: "미안하지만 오늘은 추가로 맡기 어렵습니다. 먼저 회복 시간이 필요해요.",
+        spectrum: { pos: 10, label: "방전된 Selfless 구간입니다. 더 잘 돕기보다 먼저 멈추고 회복하는 게 필요합니다." },
         character: "/images/types/give-id/type-hamster.webp",
         next: { title: "다음: 이제 그만해도 돼요", copy: "착함 말고 멈춤이 필요해요.", url: "refusal-test.html" },
         color: "var(--amber-soft)"
@@ -79,7 +87,8 @@ const results = {
         summary: "이용당하지 않으려고 가시를 세웠어요. 안전하지만 좋은 연결도 막힐 수 있어요.",
         strength: "불필요한 희생과 감정 소모를 잘 피합니다.",
         risk: "결정적인 순간 도움을 청할 사람이 부족해질 수 있습니다.",
-        advice: "믿을 수 있는 사람의 작은 호의 하나를 있는 그대로 받아보세요.",
+        advice: "그 방식은 어렵지만, 부담 없는 작은 도움이라면 받아볼게요.",
+        spectrum: { pos: 88, label: "방어적 Otherish 구간입니다. 손해는 잘 막지만, 안전한 호의를 받아들이는 연습이 도움이 됩니다." },
         character: "/images/types/give-id/type-hedgehog.webp",
         next: { title: "다음: 방어하다 외로워짐", copy: "상처는 피했는데 사람도 사라질 수 있어요.", url: "relationship-risk.html" },
         color: "var(--mint-soft)"
@@ -90,7 +99,8 @@ const results = {
         summary: "상황에 따라 유연하게 움직입니다. 일관된 기준이 생기면 더 단단해질 수 있어요.",
         strength: "상황 적응력이 좋고 관계를 한쪽으로 몰아가지 않습니다.",
         risk: "기준이 불명확해 반복적으로 손해 보는 관계가 생길 수 있습니다.",
-        advice: "내가 절대 넘기지 않을 관계 원칙 하나를 적어보세요.",
+        advice: "가능한 범위는 여기까지예요. 그 밖의 부분은 다시 정해봐야 합니다.",
+        spectrum: { pos: 56, label: "균형을 찾아가는 중간 구간입니다. 반복해서 지킬 최소 기준 하나가 핵심입니다." },
         character: "/images/types/give-id/type-balancer.webp",
         next: { title: "다음: 내가 무너지는 순간", copy: "기준이 애매하면 또 반복돼요.", url: "hogoo-check.html" },
         color: "var(--green-soft)"
@@ -135,20 +145,65 @@ const shareCardMeta = {
     }
 };
 
+const axisDefinitions = {
+    burnout: {
+        title: "소진 신호",
+        short: "도움 뒤 방전",
+        low: "회복 가능한 수준",
+        mid: "피로 누적 구간",
+        high: "멈춤이 필요한 구간",
+        action: "오늘은 추가 부탁을 받기 전, 먼저 내 에너지 잔량을 확인하세요."
+    },
+    refusal: {
+        title: "거절 곤란",
+        short: "미안함과 체면",
+        low: "기준 표현 가능",
+        mid: "즉답 주의 구간",
+        high: "죄책감 자동수락 구간",
+        action: "바로 답하지 말고 '확인하고 다시 말할게요'로 시간을 버세요."
+    },
+    reciprocity: {
+        title: "상호성 누수",
+        short: "감사·분담 결핍",
+        low: "교환 균형 양호",
+        mid: "역할 조율 필요",
+        high: "일방적 제공 위험",
+        action: "도움을 줄 때 다음 역할 분담이나 피드백을 함께 요청하세요."
+    },
+    recovery: {
+        title: "회복력 저하",
+        short: "쉬는 힘 부족",
+        low: "회복 루틴 유지",
+        mid: "회복 예약 필요",
+        high: "회복 시간 고갈",
+        action: "도운 뒤 30분이라도 연락을 끄고 몸을 되돌리는 시간을 확보하세요."
+    }
+};
+
+const typeAxisProfiles = {
+    angel: { burnout: 12, refusal: 14, reciprocity: 10, recovery: 11 },
+    diplomat: { burnout: 10, refusal: 14, reciprocity: 9, recovery: 10 },
+    architect: { burnout: 6, refusal: 6, reciprocity: 7, recovery: 8 },
+    guardian: { burnout: 6, refusal: 5, reciprocity: 6, recovery: 6 },
+    burnout: { burnout: 15, refusal: 11, reciprocity: 12, recovery: 15 },
+    blocker: { burnout: 7, refusal: 5, reciprocity: 13, recovery: 8 },
+    mixed: { burnout: 10, refusal: 10, reciprocity: 12, recovery: 10 }
+};
+
 let current = 0;
-let scores = { G: 0, I: 0, V: 0, E: 0 };
+let scores = { burnout: 0, refusal: 0, reciprocity: 0, recovery: 0 };
 let finalResult = null;
 let finalKey = null;
 
 const paidDetails = {
     angel: {
         headline: "당신에게 필요한 건 더 베푸는 법이 아니라, 손해를 멈추는 기준입니다.",
-        copy: "아낌없이 주는 패턴이 어떤 사람 앞에서 무너지는지, 부탁을 끊는 첫 문장을 심화 분석에서 확인하세요.",
-        points: ["반복 부탁을 허용하게 되는 심리 트리거", "상대 기분을 해치지 않는 거절 문장", "도움과 희생을 구분하는 개인 기준표"]
+        copy: "아낌없이 주는 패턴이 어떤 사람 앞에서 무너지는지, 부탁을 잠시 멈추는 첫 문장을 심화 리포트에서 확인하세요.",
+        points: ["반복 부탁을 허용하게 되는 심리 트리거", "상대 체면을 해치지 않는 완곡 경계 문장", "도움과 희생을 구분하는 개인 기준표"]
     },
     diplomat: {
         headline: "분위기를 지키느라 내 기준이 사라지는 순간을 잡아야 합니다.",
-        copy: "눈치와 배려가 장점으로 남도록, 관계별로 어디까지 맞춰야 하는지 선을 정리해드립니다.",
+        copy: "눈치와 배려가 장점으로 남도록, 관계별로 어디까지 맞춰야 하는지 선의 심리학 프레임으로 정리해드립니다.",
         points: ["갈등 회피가 손해로 바뀌는 장면", "바로 답하지 않고 시간을 버는 문장", "가족, 친구, 직장별 거리 조절 가이드"]
     },
     architect: {
@@ -158,17 +213,17 @@ const paidDetails = {
     },
     guardian: {
         headline: "선을 잘 지키는 사람도 특정 관계 앞에서는 기준이 흔들릴 수 있습니다.",
-        copy: "이미 단단한 경계를 더 유연하고 설득력 있게 쓰는 방법을 심화 분석에서 확인하세요.",
+        copy: "이미 단단한 경계를 더 유연하고 설득력 있게 쓰는 방법을 심화 리포트에서 확인하세요.",
         points: ["내 경계가 벽처럼 보이는 지점", "호의를 받아도 휘둘리지 않는 방법", "믿을 만한 사람을 구분하는 기준"]
     },
     burnout: {
-        headline: "지친 기버에게 지금 필요한 건 회복을 먼저 확보하는 계획입니다.",
-        copy: "또 버티기 전에 멈춰야 할 부탁, 줄여야 할 관계, 오늘 당장 쓸 문장을 정리해드립니다.",
-        points: ["번아웃을 키우는 반복 관계 신호", "추가 부탁을 보류하는 문장", "회복 시간을 지키는 7일 행동 플랜"]
+        headline: "지금은 더 잘 돕는 법보다, 회복을 먼저 확보하는 계획이 필요합니다.",
+        copy: "심화 리포트에서는 멈춰야 할 부탁, 줄여야 할 관계, 회복 시간을 지키는 문장을 정리합니다.",
+        points: ["번아웃을 키우는 반복 관계 신호", "추가 부탁을 보류하는 문장", "회복 시간을 지키는 7일 스타터 플랜"]
     },
     blocker: {
         headline: "상처를 피하는 감각은 강하지만, 좋은 연결까지 막고 있을 수 있습니다.",
-        copy: "위험한 부탁과 받아도 되는 호의를 구분해 방어 비용을 낮추는 기준을 제공합니다.",
+        copy: "심화 리포트에서는 위험한 부탁과 받아도 되는 호의를 구분해 방어 비용을 낮추는 기준을 제공합니다.",
         points: ["방어가 과해지는 관계 패턴", "부담 없이 호의를 받아들이는 문장", "안전한 연결을 남기는 판단표"]
     },
     mixed: {
@@ -249,6 +304,14 @@ function renderShareIdCard(key, result) {
     setShareCardStat("shareRecovery", meta.stats.recovery);
 }
 
+function renderGiverSpectrum(result) {
+    const spectrum = result.spectrum || { pos: 50, label: "선의가 손해로 바뀌는 지점과 오래 지속되는 균형점을 함께 확인합니다." };
+    const dot = document.getElementById("giverSpectrumDot");
+    const copy = document.getElementById("giverSpectrumCopy");
+    if (dot) dot.style.setProperty("--spectrum-pos", Math.max(0, Math.min(100, spectrum.pos)) + "%");
+    if (copy) copy.textContent = spectrum.label;
+}
+
 function setShareCardStat(prefix, value) {
     document.getElementById(`${prefix}Stat`).style.width = `${value}%`;
     document.getElementById(`${prefix}Value`).textContent = value;
@@ -256,7 +319,7 @@ function setShareCardStat(prefix, value) {
 
 function startTest() {
     current = 0;
-    scores = { G: 0, I: 0, V: 0, E: 0 };
+    scores = { burnout: 0, refusal: 0, reciprocity: 0, recovery: 0 };
     finalResult = null;
     finalKey = null;
     document.getElementById("landing-page").classList.add("hidden");
@@ -293,10 +356,10 @@ function renderQuestion() {
 }
 
 function getRewardText(idx) {
-    if (idx >= 12) return "거의 끝. 제일 찔리는 부분만 남았어요.";
-    if (idx >= 8) return "절반 넘음. 당하는 장면이 보이기 시작해요.";
-    if (idx >= 4) return "이미 패턴 하나 잡혔어요.";
-    return "첫 답부터 티가 납니다.";
+    if (idx >= 12) return "마지막 축: 도운 뒤 내가 회복되는 속도를 봅니다.";
+    if (idx >= 8) return "세 번째 축: 도움의 상호성이 새고 있는지 봅니다.";
+    if (idx >= 4) return "두 번째 축: 거절 직전의 불안과 죄책감을 봅니다.";
+    return "첫 번째 축: 선의가 소진으로 바뀌는 신호를 봅니다.";
 }
 
 function selectAnswer(score) {
@@ -304,10 +367,10 @@ function selectAnswer(score) {
     if (current === 4) trackEvent('give_test_progress', { checkpoint: 5 });
     if (current === 9) trackEvent('give_test_progress', { checkpoint: 10 });
 
-    if (4 > current) scores.G += score;
-    else if (8 > current) scores.I += score;
-    else if (12 > current) scores.V += score;
-    else scores.E += score;
+    if (4 > current) scores.burnout += score;
+    else if (8 > current) scores.refusal += score;
+    else if (12 > current) scores.reciprocity += score;
+    else scores.recovery += score;
 
     current += 1;
     if (questions.length > current) {
@@ -319,19 +382,30 @@ function selectAnswer(score) {
 }
 
 function getFinalKey() {
-    const { G, I, V, E } = scores;
-    if (G >= 13 && 8 >= V) return "burnout";
-    if (G >= 12 && 8 >= V && 9 >= E) return "angel";
-    if (G >= 11 && I >= 12 && 9 >= V) return "diplomat";
-    if (8 >= G && V >= 12 && I >= 11) return "blocker";
-    if (G >= 10 && I >= 10 && V >= 11 && E >= 11) return "guardian";
-    if (E >= 12 && 4 >= Math.abs(G - V)) return "architect";
-    return "mixed";
+    const { burnout, refusal, reciprocity, recovery } = scores;
+    const totalRisk = burnout + refusal + reciprocity + recovery;
+    const axis = [
+        ["burnout", burnout],
+        ["refusal", refusal],
+        ["reciprocity", reciprocity],
+        ["recovery", recovery]
+    ].sort((a, b) => b[1] - a[1])[0][0];
+
+    if (totalRisk <= 29) return "guardian";
+    if (refusal <= 7 && reciprocity <= 8 && recovery <= 8) return "architect";
+    if (refusal <= 7 && burnout <= 8 && reciprocity >= 11) return "blocker";
+    if (burnout + recovery >= 25) return "burnout";
+    if (burnout >= 12 && refusal >= 11) return "angel";
+    if (refusal >= 12) return "diplomat";
+    if (axis === "reciprocity") return "mixed";
+    if (axis === "recovery") return "burnout";
+    return "angel";
 }
 
 function showResult() {
     const key = getFinalKey();
     localStorage.setItem('give_test_result', key);
+    localStorage.setItem('give_test_scores', JSON.stringify(scores));
     trackEvent('give_test_completed', { give_type: key });
     location.href = 'result-sequence.html?test=give&type=' + encodeURIComponent(key);
 }
@@ -343,13 +417,14 @@ function showResultFromKey(key) {
 
 function resetFreeTestResult() {
     localStorage.removeItem('give_test_result');
+    localStorage.removeItem('give_test_scores');
     const url = new URL(location.href);
     url.searchParams.delete("type");
     url.searchParams.delete("reviewed");
     history.replaceState(null, "", url.toString());
 
     current = 0;
-    scores = { G: 0, I: 0, V: 0, E: 0 };
+    scores = { burnout: 0, refusal: 0, reciprocity: 0, recovery: 0 };
     finalResult = null;
     finalKey = null;
     document.getElementById("completion").classList.remove("show");
@@ -363,6 +438,93 @@ function requestRetryTest() {
     window.dispatchEvent(new CustomEvent('free-test-retry-requested', {
         detail: { rootId: 'give-test-reward-root' }
     }));
+}
+
+function getScoreSnapshot(key) {
+    const fallback = typeAxisProfiles[key] || typeAxisProfiles.mixed;
+    try {
+        const savedKey = localStorage.getItem('give_test_result');
+        const raw = JSON.parse(localStorage.getItem('give_test_scores') || "{}");
+        const valid = Object.keys(axisDefinitions).every((axis) => Number.isFinite(Number(raw[axis])));
+        if (savedKey === key && valid) {
+            return {
+                burnout: Number(raw.burnout),
+                refusal: Number(raw.refusal),
+                reciprocity: Number(raw.reciprocity),
+                recovery: Number(raw.recovery)
+            };
+        }
+    } catch {}
+    return fallback;
+}
+
+function axisLevel(score) {
+    if (score >= 13) return "high";
+    if (score >= 9) return "mid";
+    return "low";
+}
+
+function axisLabel(axis, score) {
+    const def = axisDefinitions[axis];
+    const level = axisLevel(score);
+    return def[level];
+}
+
+function renderAxisSnapshot(key) {
+    const grid = document.getElementById("axisGrid");
+    if (!grid) return;
+    const snapshot = getScoreSnapshot(key);
+    const entries = Object.entries(axisDefinitions).map(([axis, def]) => ({
+        axis,
+        def,
+        score: snapshot[axis] || 4
+    }));
+    const strongest = entries.slice().sort((a, b) => b.score - a.score)[0];
+    const lead = document.getElementById("axisSnapshotLead");
+    if (lead) {
+        lead.textContent = `이번 결과에서 가장 먼저 볼 축은 ${strongest.def.title}입니다. 무료 결과는 신호를 보여주고, 심화 리포트는 이 신호를 실제 문장과 루틴으로 바꿉니다.`;
+    }
+
+    grid.innerHTML = "";
+    entries.forEach(({ axis, def, score }) => {
+        const percent = Math.round(((score - 4) / 12) * 100);
+        const clamped = Math.max(0, Math.min(100, percent));
+        const card = document.createElement("article");
+        card.className = "axis-card axis-" + axisLevel(score);
+        card.innerHTML = `
+            <div class="axis-card-top">
+                <strong>${def.title}</strong>
+                <span>${score}/16</span>
+            </div>
+            <div class="axis-bar" aria-hidden="true"><span style="width:${clamped}%"></span></div>
+            <p class="axis-card-label">${axisLabel(axis, score)}</p>
+            <p class="axis-card-action">${def.action}</p>
+        `;
+        grid.appendChild(card);
+    });
+}
+
+function renderPaidPreview(key, paid) {
+    const snapshot = getScoreSnapshot(key);
+    const strongestAxis = Object.keys(axisDefinitions).sort((a, b) => snapshot[b] - snapshot[a])[0];
+    const focus = document.getElementById("paidPreviewFocus");
+    const grid = document.getElementById("paidPreviewGrid");
+    if (focus) {
+        focus.textContent = `${axisDefinitions[strongestAxis].title} 신호를 관계별 대응 문장으로 바꿉니다.`;
+    }
+    if (!grid) return;
+    const cards = [
+        { label: "1단계", title: axisDefinitions[strongestAxis].short, copy: "가장 높은 위험 축이 실제 관계에서 어떤 장면으로 반복되는지 해석합니다." },
+        { label: "2단계", title: "한국형 문장", copy: paid.points[1] || "상대 체면을 해치지 않는 완곡 경계 문장을 제공합니다." },
+        { label: "3단계", title: "30일 유지", copy: "7일 스타터 이후에도 기준이 무너지지 않도록 회복 루틴을 연결합니다." }
+    ];
+    grid.innerHTML = "";
+    cards.forEach((item) => {
+        const card = document.createElement("div");
+        card.className = "paid-preview-card";
+        card.innerHTML = `<span>${item.label}</span><strong>${item.title}</strong><p>${item.copy}</p>`;
+        grid.appendChild(card);
+    });
 }
 
 function renderResult(key) {
@@ -386,6 +548,8 @@ function renderResult(key) {
     document.getElementById("strength").textContent = finalResult.strength;
     document.getElementById("risk").textContent = finalResult.risk;
     document.getElementById("advice").textContent = finalResult.advice;
+    renderGiverSpectrum(finalResult);
+    renderAxisSnapshot(key);
     renderLockedInterpretation(key, false);
     renderShareIdCard(key, finalResult);
     document.getElementById("nextTestTitle").textContent = finalResult.next.title;
@@ -396,6 +560,7 @@ function renderResult(key) {
     document.getElementById("paidPoint1").textContent = paid.points[0];
     document.getElementById("paidPoint2").textContent = paid.points[1];
     document.getElementById("paidPoint3").textContent = paid.points[2];
+    renderPaidPreview(key, paid);
 
     const url = new URL(location.href);
     url.searchParams.set("type", key);
@@ -479,7 +644,10 @@ window.addEventListener("free-test-reward-status", (event) => {
 });
 
 function paidUrl(source) {
-    const url = new URL(window.__PAID_SITE_URL || "https://givecosystem.com/");
+    const configuredUrl = window.__PAID_SITE_URL && !String(window.__PAID_SITE_URL).includes("%VITE_")
+        ? window.__PAID_SITE_URL
+        : "https://givecosystem.com/";
+    const url = new URL(configuredUrl);
     url.searchParams.set("utm_source", "give_id_free_result");
     url.searchParams.set("utm_medium", "cta");
     url.searchParams.set("utm_campaign", "paid_conversion");
@@ -495,7 +663,7 @@ function openPaid(source) {
 
 function shareText() {
     const type = finalResult ? finalResult.name : "GIVE ID";
-    return `내 GIVE ID는 ${type}. 결과 좀 소름임.`;
+    return `내 GIVE ID는 ${type}. 선의 심리학 자가점검으로 내 관계 패턴을 봤어요.`;
 }
 
 async function shareResult() {

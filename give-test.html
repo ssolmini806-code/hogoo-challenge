@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <script>window.__PAID_SITE_URL = 'https://givecosystem.com/';</script>
+    <script type="module">window.__PAID_SITE_URL = import.meta.env.VITE_PAID_SITE_URL || '';</script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-P6PM6JBJH1"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -53,9 +53,9 @@
     {
       "@context": "https://schema.org",
       "@type": "WebApplication",
-      "name": "GIVE ID 진단 테스트",
+      "name": "GIVE ID 관계 자가점검",
       "url": "https://hogoo-challenge.pages.dev/give-test.html",
-      "description": "나의 관계 성향과 손해 보는 패턴을 분석하는 16문항 GIVE ID 테스트",
+      "description": "나의 관계 성향과 손해 보는 패턴을 살피는 16문항 GIVE ID 자가점검",
       "applicationCategory": "HealthAndLifeStyleApplication",
       "operatingSystem": "All",
       "inLanguage": "ko",
@@ -70,6 +70,7 @@
         <div class="inner">
             <a class="brand" href="index.html">GIVE ECOSYSTEM</a>
             <div class="nav-links">
+                <a href="white-psychology.html">선의 심리학</a>
                 <a href="hogoo-check.html">호구 테스트</a>
                 <a href="articles/giver-burnout.html">칼럼</a>
             </div>
@@ -80,12 +81,21 @@
         <section id="landing-page" class="landing" style="cursor: pointer;" onclick="location.href='give-prologue.html'">
             <div class="inner hero">
 
+                <div class="prologue-lab-bar" aria-label="GIVE Pattern Lab">
+                    <span>GIVE Pattern Lab</span>
+                    <strong>무료 자가점검</strong>
+                </div>
                 <div class="test-intro-image">
                     <img src="/images/tests/give-id-illustration-v3.webp" alt="도움, 경계, 회복 카드를 따라 내 관계 패턴을 살피는 따뜻한 일러스트" loading="eager">
                 </div>
                 <p class="test-intro-caption">도움, 경계, 회복이 어디서 어긋나는지 한눈에 보는 검사입니다.</p>
                 <h1>왜 항상 나만 손해 볼까?</h1>
                 <p class="hero-copy">착해서가 아니에요. 계속 선 넘는 사람을 너무 오래 봐준 거예요.</p>
+                <div class="prologue-metrics" aria-label="테스트 정보">
+                    <div><strong>16</strong><span>문항</span></div>
+                    <div><strong>3분</strong><span>예상 시간</span></div>
+                    <div><strong>무료</strong><span>로그인 없이</span></div>
+                </div>
 
                 <a href="result-sequence.html?test=give&type=mixed" class="result-preview-link" onclick="event.stopPropagation()">
                     결과 흐름 미리보기 →
@@ -103,8 +113,8 @@
 
                 <section class="quality-section" aria-labelledby="give-method-title">
                     <span class="section-label">Original Method</span>
-                    <h2 id="give-method-title">GIVE ID는 단순 성격 테스트가 아닙니다</h2>
-                    <p>GIVE ID는 관계에서 반복되는 손해 패턴을 네 가지 축으로 읽습니다. 내가 먼저 도와주는 빈도, 거절 직전의 죄책감, 인정 욕구가 흔들리는 장면, 그리고 도움을 준 뒤 회복하는 속도를 함께 봅니다.</p>
+                    <h2 id="give-method-title">GIVE ID는 진단이 아닌 관계 자가점검입니다</h2>
+                    <p>GIVE ID는 관계에서 반복되는 손해 패턴을 네 가지 축으로 읽는 자기 점검 도구입니다. 소진 신호, 거절 곤란, 상호성 결핍, 회복력 저하를 함께 봅니다.</p>
                     <p>그래서 결과는 “착하다/이기적이다” 같은 딱지를 붙이지 않습니다. 대신 어떤 상황에서 선의가 강점이 되고, 어떤 순간에 기준이 흐려져 손해로 바뀌는지 설명합니다. 사용자는 결과 화면에서 강점, 위험 신호, 오늘 바로 해볼 행동, 관련 칼럼을 순서대로 확인할 수 있습니다.</p>
                 </section>
 
@@ -112,16 +122,16 @@
                     <h2 id="give-use-title">검사 전 알아두면 좋은 기준</h2>
                     <div class="quality-grid">
                         <article>
-                            <h3>좋은 기버</h3>
-                            <p>상대를 돕되 내 시간과 에너지를 함께 계산합니다. 도움을 거절해야 하는 순간에도 관계 전체를 망친다고 단정하지 않습니다.</p>
+                            <h3>소진 신호</h3>
+                            <p>도움 뒤 멍함, 피로, 예민함이 오래 남는지 봅니다. 선의가 회복 없이 반복되면 번아웃 신호가 먼저 켜집니다.</p>
                         </article>
                         <article>
-                            <h3>소진된 기버</h3>
-                            <p>거절 후 죄책감이 오래 남고, 상대의 반응을 예측하느라 자기 기준을 뒤로 미룹니다. 도움을 준 뒤 공허함이 반복될 수 있습니다.</p>
+                            <h3>거절 곤란</h3>
+                            <p>부탁 앞에서 불안, 죄책감, 체면 걱정 때문에 내 기준이 늦게 도착하는지 봅니다.</p>
                         </article>
                         <article>
-                            <h3>스마트 기버</h3>
-                            <p>무조건 많이 주는 사람이 아니라 오래 줄 수 있게 구조를 만드는 사람입니다. 부탁의 범위, 시간, 반복 여부를 확인한 뒤 선택합니다.</p>
+                            <h3>상호성·회복</h3>
+                            <p>감사, 역할 분담, 피드백이 빠진 관계가 반복되는지와 도운 뒤 나를 되돌리는 힘을 함께 점검합니다.</p>
                         </article>
                     </div>
                 </section>
@@ -169,11 +179,36 @@
                                 <p>아래 리포트는 당신의 배려가 강점으로 작동하는 부분과, 손해로 바뀌기 쉬운 신호를 한 흐름으로 보여줍니다.</p>
                             </div>
                         </section>
+                        <section class="giver-spectrum" aria-label="GIVE ID 선의 스펙트럼">
+                            <div class="giver-spectrum-top">
+                                <span>Selfless</span>
+                                <span>Otherish</span>
+                            </div>
+                            <div class="giver-spectrum-track">
+                                <span class="giver-spectrum-dot" id="giverSpectrumDot"></span>
+                            </div>
+                            <p class="giver-spectrum-copy" id="giverSpectrumCopy">내 선의가 어디에서 소진되고 어디에서 균형을 찾는지 확인합니다.</p>
+                        </section>
+                        <section class="axis-snapshot" aria-labelledby="axisSnapshotTitle">
+                            <div class="axis-snapshot-head">
+                                <span class="axis-kicker">4-Axis Self Check</span>
+                                <h2 id="axisSnapshotTitle">왜 이 결과가 나왔을까?</h2>
+                                <p id="axisSnapshotLead">소진, 거절 곤란, 상호성, 회복 축을 함께 보면 반복되는 손해 패턴이 더 선명해집니다.</p>
+                            </div>
+                            <div class="axis-grid" id="axisGrid"></div>
+                            <p class="axis-note">이 점수는 의학적 진단이 아니라, 답변 경향을 바탕으로 한 자기 점검 신호입니다.</p>
+                        </section>
                         <div class="insight-grid">
                             <div class="insight"><h3>강점</h3><p id="strength"></p></div>
                             <div class="insight risk"><h3>위험 신호</h3><p id="risk"></p></div>
-                            <div class="insight advice"><h3>오늘의 조언</h3><p id="advice"></p></div>
+                            <div class="insight advice"><h3>오늘의 조언</h3><p id="advice"></p><small class="lace-note">상황 인정 → 마음 표현 → 내 기준 → 가능한 범위 순서로 말해보세요.</small></div>
                         </div>
+                        <section class="white-psychology-bridge" aria-label="선의 심리학 안내">
+                            <span class="bridge-label">White Psychology</span>
+                            <h2>선한 마음을 오래 쓰려면 기준이 필요합니다</h2>
+                            <p>GIVE ID는 착한 사람을 평가하는 검사가 아니라, 선의가 손해로 바뀌는 순간을 찾는 자기 점검입니다. 더 깊은 배경은 선의 심리학 프레임에서 볼 수 있어요.</p>
+                            <a href="white-psychology.html">왜 착한 마음이 손해가 되는지 보기 →</a>
+                        </section>
                         <div class="locked-interpretation" id="lockedInterpretation">
                             <span class="unlock-badge">🔓 SNS 공유 완료</span>
                             <div class="locked-interpretation-text" id="lockedInterpretationText"></div>
@@ -210,23 +245,49 @@
                             <button class="primary-btn" onclick="trackEvent('article_clicked', { article_slug: 'smart-giver-guide' }); location.href='articles/smart-giver-guide.html'">다시는 손해 안 보기</button>
                         </div>
                         <div class="paid-bridge">
-                            <div class="paid-eyebrow">FREE RESULT → PAID DEEP DIVE</div>
-                            <h2 id="paidHeadline">무료 결과는 유형까지, 심화 분석은 반복 패턴까지 봅니다.</h2>
-                            <p id="paidCopy">지금 결과에서 가장 위험한 장면, 거절 멘트, 관계별 대응 순서를 한 번에 확인하세요.</p>
+                        <div class="paid-eyebrow">FREE CHECK → PAID DEEP DIVE</div>
+                            <h2 id="paidHeadline">무료 결과는 현재 신호까지, 심화 리포트는 반복 패턴까지 봅니다.</h2>
+                            <p id="paidCopy">선의 심리학 프레임으로 위험 장면, 경계 문장, 관계별 대응 순서를 한 번에 정리하세요.</p>
+                            <div class="paid-preview" aria-label="심화 리포트 미리보기">
+                                <div class="paid-preview-head">
+                                    <strong>무료 결과에서 유료로 이어지는 부분</strong>
+                                    <span id="paidPreviewFocus">가장 높은 위험 축부터 행동 문장으로 바꿉니다.</span>
+                                </div>
+                                <div class="paid-preview-grid" id="paidPreviewGrid"></div>
+                            </div>
                             <div class="paid-list">
                                 <div class="paid-item"><span class="paid-check">✓</span><span id="paidPoint1">내가 매번 손해 보는 상황을 유형별로 해석</span></div>
-                                <div class="paid-item"><span class="paid-check">✓</span><span id="paidPoint2">바로 복사해서 쓸 수 있는 거절 문장 제공</span></div>
+                                <div class="paid-item"><span class="paid-check">✓</span><span id="paidPoint2">관계 위계에 맞춘 완곡한 경계 문장 제공</span></div>
                                 <div class="paid-item"><span class="paid-check">✓</span><span id="paidPoint3">가족, 연인, 친구, 직장 관계별 대응 가이드</span></div>
                             </div>
-                            <button class="paid-btn" onclick="openPaid('result_bridge')">GIVE ID 심화 분석 받기 →</button>
-                            <span class="paid-sub">givecosystem.com · 유료 정밀 진단으로 이동</span>
+                            <button class="paid-btn" onclick="openPaid('result_bridge')">GIVE ID 심화 리포트 받기 →</button>
+                            <span class="paid-sub">givecosystem.com · 유료 심화 리포트로 이동</span>
                         </div>
                     </div>
                 </article>
                 <section class="paid-lite-cta">
-                    <p>무료 검사에서 보인 신호를 실제 행동 계획으로 바꾸고 싶다면</p>
-                    <button class="primary-btn" onclick="openPaid('new_cta')">GIVE ID 심화 테스트 시작하기 →</button>
-                    <p class="micro">무료 결과는 유지됩니다.</p>
+                    <p>무료 자가점검에서 보인 신호를 실제 행동 계획으로 바꾸고 싶다면</p>
+                    <button class="primary-btn" onclick="openPaid('new_cta')">GIVE ID 심화 리포트 시작하기 →</button>
+                    <p class="micro">무료 결과는 유지됩니다. 이 도구는 의학적 진단이나 상담을 대체하지 않습니다.</p>
+                </section>
+
+                <section class="quality-section muted" aria-labelledby="paid-report-outline-title">
+                    <span class="section-label">Paid Deep Dive</span>
+                    <h2 id="paid-report-outline-title">심화 리포트에서 열리는 것</h2>
+                    <div class="quality-grid">
+                        <article>
+                            <h3>반복 패턴 해석</h3>
+                            <p>소진 신호, 거절 곤란, 상호성 결핍, 회복력 저하 중 어디서 관계 손해가 시작되는지 유형별로 정리합니다.</p>
+                        </article>
+                        <article>
+                            <h3>관계별 경계 문장</h3>
+                            <p>상사, 가족, 연인, 친구, 동료에게 바로 쓸 수 있는 한국형 완곡 거절 문장과 조건부 도움 문장을 제공합니다.</p>
+                        </article>
+                        <article>
+                            <h3>30일 회복 루틴</h3>
+                            <p>7일 스타터 이후에도 기준이 사라지지 않도록 주간 점검표, 부탁 판단표, 회복 루틴을 연결합니다.</p>
+                        </article>
+                    </div>
                 </section>
 
                 <section class="unlock-panel">
@@ -239,7 +300,7 @@
                     <div class="locked-list">
                         <div class="locked-item">🔒 내가 매번 당하는 그 장면</div>
                         <div class="locked-item">🔒 사람들이 나를 쉽게 보는 <span class="blurred">이유</span></div>
-                        <div class="locked-item">🔒 바로 써먹는 거절 멘트 <span class="blurred">3개</span></div>
+                        <div class="locked-item">🔒 관계별 완곡 경계 문장 <span class="blurred">3개</span></div>
                     </div>
                     <button class="secondary-btn" onclick="openPaid('locked_panel')">잠긴 분석 열기 →</button>
                     <div class="choice-grid">
