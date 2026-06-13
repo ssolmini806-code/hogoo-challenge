@@ -54,7 +54,7 @@ nav,.site-nav{display:flex;align-items:center;justify-content:space-between;gap:
 .hero-actions{display:grid;gap:9px;max-width:380px;margin:0 auto;}
 .hero-note{margin-top:12px;color:var(--ink-faint);font-size:.8rem;font-weight:700;}
 
-.btn{min-height:54px;border:1px solid transparent;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:0 18px;background:var(--surface);color:var(--green);font-weight:800;font-size:.98rem;text-decoration:none;cursor:pointer;transition:transform .15s ease,background .2s ease,border-color .2s ease,box-shadow .2s ease;}
+.btn{min-height:54px;border:1px solid transparent;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:0 18px;background:var(--surface);color:var(--green);font-weight:800;font-size:.98rem;text-decoration:none;cursor:pointer;will-change:transform;transition:transform .15s ease,background .2s ease,border-color .2s ease,box-shadow .2s ease;}
 .btn:active{transform:scale(.985);}
 .btn-primary{background:var(--green);color:var(--surface);box-shadow:0 12px 26px rgba(17,75,60,.16);}
 .btn-primary:hover{background:var(--green-deep);}
@@ -64,7 +64,7 @@ nav,.site-nav{display:flex;align-items:center;justify-content:space-between;gap:
 .btn-line{background:transparent;color:var(--surface);border-color:rgba(255,255,255,.34);}
 
 .choice-grid{display:grid;gap:12px;}
-.choice-card{display:block;width:100%;padding:22px;border:1px solid var(--line);border-radius:var(--r-lg);background:var(--surface);color:inherit;text-align:left;text-decoration:none;transition:transform .18s cubic-bezier(.16,1,.3,1),border-color .2s,box-shadow .2s;}
+.choice-card{display:block;width:100%;padding:22px;border:1px solid var(--line);border-radius:var(--r-lg);background:var(--surface);color:inherit;text-align:left;text-decoration:none;will-change:transform;transition:transform .18s cubic-bezier(.16,1,.3,1),border-color .2s,box-shadow .2s;}
 .choice-card:hover{transform:translateY(-4px);border-color:var(--mint);box-shadow:0 18px 38px rgba(17,75,60,.08);}
 .choice-card.featured{border-color:var(--mint);box-shadow:0 14px 34px rgba(17,75,60,.07);}
 .choice-card h2,.choice-card h3{margin:14px 0 7px;font-size:1.18rem;font-weight:800;line-height:1.35;letter-spacing:-.01em;text-wrap:balance;}
@@ -205,6 +205,14 @@ footer{padding:54px 0 44px;border-top:1px solid var(--line);margin-top:48px;text
 .prologue-metrics div{min-width:0;min-height:62px;border:1px solid var(--line);border-radius:8px;background:rgba(255,255,255,.82);padding:10px 8px;text-align:center;box-shadow:0 10px 24px rgba(17,75,60,.05);}
 .prologue-metrics strong{display:block;color:var(--test-accent-ink,var(--green));font-size:1rem;font-weight:950;line-height:1.1;}
 .prologue-metrics span{display:block;margin-top:5px;color:var(--ink-sub);font-size:.72rem;font-weight:850;line-height:1.25;}
+.prologue-start-card{width:min(100%,390px);margin:16px auto 18px;border:1px solid var(--line);border-radius:8px;background:rgba(255,255,255,.9);padding:16px;box-shadow:0 16px 36px rgba(17,75,60,.08);text-align:left;}
+.prologue-start-head{display:grid;gap:6px;margin-bottom:14px;}
+.prologue-start-head span{color:var(--test-accent-ink,var(--green));font-size:.72rem;font-weight:950;letter-spacing:.08em;text-transform:uppercase;}
+.prologue-start-head strong{color:var(--ink);font-size:1.02rem;font-weight:900;line-height:1.45;text-wrap:balance;}
+.prologue-signals{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.prologue-signals div{min-width:0;min-height:74px;border:1px solid var(--line);border-radius:8px;background:var(--surface-2);padding:10px 8px;}
+.prologue-signals strong{display:block;color:var(--test-accent-ink,var(--green));font-size:.84rem;font-weight:950;line-height:1.2;}
+.prologue-signals span{display:block;margin-top:5px;color:var(--ink-sub);font-size:.72rem;font-weight:780;line-height:1.35;}
 .test-tabs{counter-reset:test-tab;margin-top:20px;border:1px solid var(--line);border-radius:8px;background:rgba(255,255,255,.92);box-shadow:0 18px 42px rgba(17,75,60,.08);overflow:hidden;text-align:left;}
 .test-tabs::before{content:"REPORT MAP";display:block;border-bottom:1px solid var(--line);background:linear-gradient(90deg,var(--green-soft),var(--surface));color:var(--green);padding:11px 14px 9px;font-size:.72rem;font-weight:950;letter-spacing:.08em;}
 .tab-list{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;padding:8px;background:var(--surface);}
@@ -540,6 +548,7 @@ footer{padding:54px 0 44px;border-top:1px solid var(--line);margin-top:48px;text
 .risk-page #intro-page{position:relative;min-height:100vh;display:flex;align-items:center;padding:72px 0 92px;text-align:center;background:linear-gradient(180deg,var(--amber-soft) 0%,var(--bg) 48%,var(--surface) 100%);overflow:hidden;}
 .risk-page #intro-page::before{content:"";position:absolute;inset:36px calc(50% - 260px) 64px;border:1px solid rgba(122,78,18,.08);border-radius:8px;background:linear-gradient(90deg,rgba(122,78,18,.05) 1px,transparent 1px),linear-gradient(180deg,rgba(122,78,18,.04) 1px,transparent 1px);background-size:30px 30px;pointer-events:none;}
 .risk-page #intro-page > .inner{position:relative;z-index:1;}
+.hogoo-page #intro-page .test-tabs,.risk-page #intro-page .test-tabs,.refusal-page #intro .test-tabs,.hogoo-page #intro-page .quality-section,.risk-page #intro-page .quality-section,.refusal-page #intro .quality-section,.hogoo-page #intro-page .test-meta,.risk-page #intro-page .test-meta{display:none;}
 .risk-page #test-page{min-height:100vh;padding:40px 0 80px;background:var(--surface);}
 .risk-page #result-page{padding:40px 0 100px;background:var(--bg);}
 .test-badge{display:inline-flex;margin-bottom:22px;padding:7px 12px;border:1px solid var(--line);border-radius:var(--r-pill);background:var(--surface);color:var(--amber);font-size:.78rem;font-weight:900;letter-spacing:.03em;}
@@ -699,6 +708,7 @@ html { scroll-behavior: smooth; }
 .give-test-page .hero h1 { max-width:12em;font-size: clamp(2rem, 9.4vw, 3.35rem); line-height: 1.12; letter-spacing: -.018em; font-weight: 950; margin-bottom: 12px; }
 .give-test-page .hero-copy { max-width:24em;color: var(--ink-sub); font-size: 1rem; font-weight: 650; line-height:1.68; margin-bottom: 14px; }
 .give-test-page .hero-panel { background: rgba(255,255,255,.88); border: 1px solid var(--line); border-radius: 8px; padding: 16px; margin: 18px 0 0; box-shadow: 0 14px 36px rgba(24, 31, 43, 0.08); }
+.give-test-page .landing .hero-panel,.give-test-page .landing .quality-section{display:none;}
 .give-test-page .problem-list { display: grid; gap: 10px; }
 .give-test-page .problem-list li { list-style: none; display: flex; gap: 10px; align-items: flex-start; color: var(--ink); font-weight: 750; font-size: 0.95rem; }
 .give-test-page .dot { width: 8px; height: 8px; border-radius: 999px; background: var(--mint); margin-top: 8px; flex: 0 0 auto; }
@@ -942,6 +952,22 @@ html { scroll-behavior: smooth; }
 }
 
 @media (max-width:520px){
+  .hogoo-page #intro-page,.risk-page #intro-page{padding:38px 0 58px;}
+  .refusal-page .page{padding:38px 0 58px;}
+  .hogoo-page #intro-page::before,.risk-page #intro-page::before{inset:22px calc(50% - 244px) 36px;}
+  .hogoo-page #intro-page .prologue-lab-bar,.risk-page #intro-page .prologue-lab-bar,.refusal-page #intro .prologue-lab-bar{margin-bottom:12px;}
+  .hogoo-page #intro-page .test-badge,.risk-page #intro-page .test-badge,.refusal-page #intro .badge{margin-bottom:12px;padding:6px 10px;font-size:.74rem;}
+  .hogoo-page #intro-page .test-intro-image,.risk-page #intro-page .test-intro-image,.refusal-page #intro .test-intro-image{width:min(100%,206px);margin-bottom:12px;}
+  .hogoo-page #intro-page .test-intro-caption,.risk-page #intro-page .test-intro-caption,.refusal-page #intro .test-intro-caption,.hogoo-page #intro-page .test-subtitle,.risk-page #intro-page .test-subtitle,.refusal-page #intro h1 + p{display:none;}
+  .hogoo-page #intro-page .test-title,.risk-page #intro-page .test-title,.refusal-page #intro h1{margin-bottom:12px;font-size:clamp(1.82rem,8vw,2.18rem);line-height:1.13;}
+  .hogoo-page #intro-page .prologue-metrics,.risk-page #intro-page .prologue-metrics,.refusal-page #intro .prologue-metrics{margin:12px auto;}
+  .hogoo-page #intro-page .prologue-metrics div,.risk-page #intro-page .prologue-metrics div,.refusal-page #intro .prologue-metrics div{min-height:56px;padding:8px 6px;}
+  .hogoo-page #intro-page .prologue-start-card,.risk-page #intro-page .prologue-start-card,.refusal-page #intro .prologue-start-card{margin:12px auto 14px;padding:13px;}
+  .hogoo-page #intro-page .prologue-start-head,.risk-page #intro-page .prologue-start-head,.refusal-page #intro .prologue-start-head{margin-bottom:10px;}
+  .hogoo-page #intro-page .prologue-start-head strong,.risk-page #intro-page .prologue-start-head strong,.refusal-page #intro .prologue-start-head strong{font-size:.96rem;line-height:1.38;}
+  .hogoo-page #intro-page .prologue-signals div,.risk-page #intro-page .prologue-signals div,.refusal-page #intro .prologue-signals div{min-height:62px;padding:8px 7px;}
+  .hogoo-page #intro-page .result-preview-link,.risk-page #intro-page .result-preview-link,.refusal-page #intro .result-preview-link{min-height:42px;margin-bottom:8px;}
+  .hogoo-page #intro-page .start-btn,.risk-page #intro-page .start-btn,.refusal-page #intro button:not(.tab-btn){min-height:50px;}
   .wrap{padding:0 20px;}
   .site-nav,nav{align-items:flex-start;}
   .choice-card{padding:20px;}

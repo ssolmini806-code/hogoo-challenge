@@ -119,9 +119,9 @@
     <meta name="google-adsense-account" content="ca-pub-8564310871125079">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,1,400;9..144,1,500&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,1,400;9..144,1,500&display=swap">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,1,400;9..144,1,500&display=swap"></noscript>
-    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" crossorigin>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" crossorigin>
     <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" crossorigin></noscript>
     <style>:root{--bg:#FAF8F3;--surface:#FFFFFF;--surface-2:#F3EFE7;--ink:#1A1F1C;--ink-sub:#5C635E;--ink-faint:#666B66;--line:#E7E1D5;--green:#114B3C;--green-deep:#0D3B2F;--green-soft:#E9F2EC;--mint:#00A885;--mint-soft:#E2F4EE;--mint-ink:#0A5F4D;--amber:#9A6516;--amber-accent:#E9A23B;--amber-soft:#F6ECD8;--amber-ink:#7A4E12;--r:14px;--r-lg:20px;--r-pill:999px;--sans:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,sans-serif;--serif:'Fraunces',Georgia,serif;}
 *{box-sizing:border-box;margin:0;padding:0;word-break:keep-all;}
@@ -145,14 +145,14 @@ nav,.site-nav{display:flex;align-items:center;justify-content:space-between;gap:
 .hero p{max-width:25em;margin:0 auto 26px;color:var(--ink-sub);font-size:1rem;font-weight:450;line-height:1.75;text-wrap:pretty;}
 .hero-actions{display:grid;gap:9px;max-width:380px;margin:0 auto;}
 .hero-note{margin-top:12px;color:var(--ink-faint);font-size:.8rem;font-weight:700;}
-.btn{min-height:54px;border:1px solid transparent;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:0 18px;background:var(--surface);color:var(--green);font-weight:800;font-size:.98rem;text-decoration:none;cursor:pointer;transition:transform .15s ease,background .2s ease,border-color .2s ease,box-shadow .2s ease;}
+.btn{min-height:54px;border:1px solid transparent;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:0 18px;background:var(--surface);color:var(--green);font-weight:800;font-size:.98rem;text-decoration:none;cursor:pointer;will-change:transform;transition:transform .15s ease,background .2s ease,border-color .2s ease,box-shadow .2s ease;}
 .btn:active{transform:scale(.985);}
 .btn-primary{background:var(--green);color:var(--surface);box-shadow:0 12px 26px rgba(17,75,60,.16);}
 .btn-primary:hover{background:var(--green-deep);}
 .btn-ghost{background:var(--surface);color:var(--green);border-color:var(--line);}
 .btn-ghost:hover{background:var(--green-soft);}
 .choice-grid{display:grid;gap:12px;}
-.choice-card{display:block;width:100%;padding:22px;border:1px solid var(--line);border-radius:var(--r-lg);background:var(--surface);color:inherit;text-align:left;text-decoration:none;transition:transform .18s cubic-bezier(.16,1,.3,1),border-color .2s,box-shadow .2s;}
+.choice-card{display:block;width:100%;padding:22px;border:1px solid var(--line);border-radius:var(--r-lg);background:var(--surface);color:inherit;text-align:left;text-decoration:none;will-change:transform;transition:transform .18s cubic-bezier(.16,1,.3,1),border-color .2s,box-shadow .2s;}
 .choice-card:hover{transform:translateY(-4px);border-color:var(--mint);box-shadow:0 18px 38px rgba(17,75,60,.08);}
 .choice-card.featured{border-color:var(--mint);box-shadow:0 14px 34px rgba(17,75,60,.07);}
 .choice-card h2,.choice-card h3{margin:14px 0 7px;font-size:1.18rem;font-weight:800;line-height:1.35;letter-spacing:-.01em;text-wrap:balance;}
@@ -168,8 +168,10 @@ nav,.site-nav{display:flex;align-items:center;justify-content:space-between;gap:
 .test-card-image{margin:-22px -22px 2px;aspect-ratio:1/1;background:var(--green-soft);overflow:hidden;}
 .test-card-image img{width:100%;height:100%;object-fit:cover;}
 .row-card{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;padding:17px 18px;}</style>
-    <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/give-theme.css">
-    <noscript><link rel="stylesheet" href="/give-theme.css"></noscript>
+    <link rel="stylesheet" href="/give-theme.css">
+    <link rel="preload" as="image" href="/images/tests/give-id-illustration-v3-400w.webp"
+          imagesrcset="/images/tests/give-id-illustration-v3-400w.webp 400w, /images/tests/give-id-illustration-v3-800w.webp 800w"
+          imagesizes="(max-width: 600px) 400px, 560px" fetchpriority="high">
     <script src="/share.js" defer></script>
 </head>
 <body>
@@ -183,7 +185,7 @@ nav,.site-nav{display:flex;align-items:center;justify-content:space-between;gap:
                 <a href="./white-psychology.html">선의 심리학</a>
                 <a href="./give-test.html">자가점검</a>
                 <a href="./reviews.html">후기</a>
-                <a href="./articles/index.html">심리 칼럼</a>
+                <a href="./articles/">심리 칼럼</a>
             </div>
         </nav>
     </header>
@@ -203,7 +205,10 @@ nav,.site-nav{display:flex;align-items:center;justify-content:space-between;gap:
         <section class="choice-grid" aria-label="무료 검사와 챌린지">
             <a href="give-test.html" class="choice-card featured test-card">
                 <div class="test-card-image">
-                    <img src="/images/tests/give-id-illustration-v3.webp" alt="세 사람이 균형 잡힌 관계를 이야기하는 따뜻한 일러스트" loading="eager" fetchpriority="high">
+                    <img src="/images/tests/give-id-illustration-v3-400w.webp"
+                         srcset="/images/tests/give-id-illustration-v3-400w.webp 400w, /images/tests/give-id-illustration-v3-800w.webp 800w"
+                         sizes="(max-width: 600px) 400px, 560px"
+                         alt="세 사람이 균형 잡힌 관계를 이야기하는 따뜻한 일러스트" loading="eager" fetchpriority="high" width="560" height="560">
                 </div>
                 <span class="pill">가장 먼저 추천</span>
                 <h2>GIVE ID 자가점검</h2>
@@ -221,7 +226,10 @@ nav,.site-nav{display:flex;align-items:center;justify-content:space-between;gap:
 
             <a href="hogoo-check.html" class="choice-card test-card">
                 <div class="test-card-image">
-                    <img src="/images/tests/hogoo-check-illustration-v3.webp" alt="부탁 앞에서 자신의 경계를 고민하는 사람의 따뜻한 일러스트" loading="lazy">
+                    <img src="/images/tests/hogoo-check-illustration-v3-400w.webp"
+                         srcset="/images/tests/hogoo-check-illustration-v3-400w.webp 400w, /images/tests/hogoo-check-illustration-v3-800w.webp 800w"
+                         sizes="(max-width: 600px) 400px, 560px"
+                         alt="부탁 앞에서 자신의 경계를 고민하는 사람의 따뜻한 일러스트" loading="lazy" width="560" height="560">
                 </div>
                 <h2>나는 호구일까?</h2>
                 <p class="card-desc">착한 것과 호구는 다릅니다. 12가지 질문으로 내 호구 지수를 지금 확인해보세요.</p>
@@ -230,7 +238,10 @@ nav,.site-nav{display:flex;align-items:center;justify-content:space-between;gap:
 
             <a href="relationship-risk.html" class="choice-card test-card">
                 <div class="test-card-image">
-                    <img src="/images/tests/relationship-risk-illustration-v3.webp" alt="관계의 피로 신호를 차분히 살피는 상담 장면 일러스트" loading="lazy">
+                    <img src="/images/tests/relationship-risk-illustration-v3-400w.webp"
+                         srcset="/images/tests/relationship-risk-illustration-v3-400w.webp 400w, /images/tests/relationship-risk-illustration-v3-800w.webp 800w"
+                         sizes="(max-width: 600px) 400px, 560px"
+                         alt="관계의 피로 신호를 차분히 살피는 상담 장면 일러스트" loading="lazy" width="560" height="560">
                 </div>
                 <span class="tag tag-amber">위험 신호 점검</span>
                 <h2>인간관계 위험도</h2>
@@ -240,7 +251,10 @@ nav,.site-nav{display:flex;align-items:center;justify-content:space-between;gap:
 
             <a href="selfless-otherish-test.html" class="choice-card test-card">
                 <div class="test-card-image">
-                    <img src="/images/tests/give-id-illustration-v3.webp" alt="도움과 회복의 균형을 살피는 따뜻한 일러스트" loading="lazy">
+                    <img src="/images/tests/give-id-illustration-v3-400w.webp"
+                         srcset="/images/tests/give-id-illustration-v3-400w.webp 400w, /images/tests/give-id-illustration-v3-800w.webp 800w"
+                         sizes="(max-width: 600px) 400px, 560px"
+                         alt="도움과 회복의 균형을 살피는 따뜻한 일러스트" loading="lazy" width="560" height="560">
                 </div>
                 <span class="tag">선의 스펙트럼</span>
                 <h2>Selfless vs Otherish</h2>
@@ -259,23 +273,23 @@ nav,.site-nav{display:flex;align-items:center;justify-content:space-between;gap:
         <section class="share-wrap" aria-label="공유하기">
             <div class="sh-title">친구에게 공유하기</div>
             <div class="share-row">
-                <button class="s-btn sb-x" type="button" onclick="snsX()" aria-label="X에 공유">
+                <button class="s-btn sb-x" type="button" data-share-action="x" aria-label="X에 공유">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.261 5.636 5.903-5.636zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                     X
                 </button>
-                <button class="s-btn sb-threads" type="button" onclick="snsThreads()" aria-label="Threads에 공유">
+                <button class="s-btn sb-threads" type="button" data-share-action="threads" aria-label="Threads에 공유">
                     <img src="/images/threads-icon.webp" width="24" height="24" alt="" aria-hidden="true">
                     Threads
                 </button>
-                <button class="s-btn sb-kakao" type="button" onclick="snsKakao()" aria-label="카카오톡에 공유">
+                <button class="s-btn sb-kakao" type="button" data-share-action="kakao" aria-label="카카오톡에 공유">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3C6.477 3 2 6.477 2 10.857c0 2.67 1.516 5.025 3.838 6.512l-.98 3.648a.25.25 0 0 0 .375.272l4.23-2.795C9.791 18.776 10.887 18.857 12 18.857c5.523 0 10-3.477 10-7.857S17.523 3 12 3"/></svg>
                     카카오톡
                 </button>
-                <button class="s-btn sb-insta" type="button" onclick="snsInsta()" aria-label="인스타그램에 공유">
+                <button class="s-btn sb-insta" type="button" data-share-action="insta" aria-label="인스타그램에 공유">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
                     인스타
                 </button>
-                <button class="s-btn sb-tiktok" type="button" onclick="snsTiktok()" aria-label="틱톡 공유 안내">
+                <button class="s-btn sb-tiktok" type="button" data-share-action="tiktok" aria-label="틱톡 공유 안내">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.3 6.3 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg>
                     틱톡
                 </button>
@@ -289,7 +303,7 @@ nav,.site-nav{display:flex;align-items:center;justify-content:space-between;gap:
                     <span class="section-label">Knowledge Hub</span>
                     <h2>지식 허브</h2>
                 </div>
-                <a class="more" href="articles/index.html">심리 칼럼 전체 보기</a>
+                <a class="more" href="articles/">심리 칼럼 전체 보기</a>
             </div>
             <p class="lead">스마트 기버로 거듭나기 위한 심리학 전문 리포트</p>
 
@@ -418,9 +432,12 @@ nav,.site-nav{display:flex;align-items:center;justify-content:space-between;gap:
           (function(d) {
             var s = d.createElement('script');s.async = true;s.src = 'https://static.userback.io/widget/v1.js';(d.head || d.body).appendChild(s);
           })(document);
+          var a2a = document.createElement('script');
+          a2a.async = true;
+          a2a.src = 'https://static.addtoany.com/menu/page.js';
+          document.body.appendChild(a2a);
         }, 3000);
       });
     </script>
-    <script async src="https://static.addtoany.com/menu/page.js"></script>
 </body>
 </html>
