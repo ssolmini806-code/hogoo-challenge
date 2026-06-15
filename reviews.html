@@ -137,18 +137,30 @@
             }
         ];
 
+        let currentSession = null;
+
         function createReviewCard(review) {
             const rating = Math.max(1, Math.min(5, Number(review.rating) || 5));
             const date = review.created_at ? new Date(review.created_at).toLocaleDateString("ko-KR") : "";
             const card = document.createElement("article");
             card.className = "review-card";
+            if (review.is_own) card.classList.add("own-review");
 
             const top = document.createElement("div");
             top.className = "review-top";
 
             const name = document.createElement("div");
             name.className = "name";
-            name.textContent = review.display_name || "익명 참가자";
+            if (review.is_own) {
+                const badge = document.createElement("span");
+                badge.className = "own-review-badge";
+                badge.textContent = "내 후기";
+                name.append(badge);
+            }
+
+            const nameText = document.createElement("span");
+            nameText.textContent = review.display_name || "익명 참가자";
+            name.append(nameText);
 
             const stars = document.createElement("div");
             stars.className = "stars";
@@ -162,7 +174,18 @@
 
             const meta = document.createElement("div");
             meta.className = "meta";
-            meta.textContent = `미션 ${Number(review.completed_missions) || 0}개 완료${date ? ` · ${date}` : ""}`;
+            const metaText = document.createElement("span");
+            metaText.textContent = `미션 ${Number(review.completed_missions) || 0}개 완료${date ? ` · ${date}` : ""}`;
+            meta.append(metaText);
+
+            if (review.is_own) {
+                const deleteButton = document.createElement("button");
+                deleteButton.type = "button";
+                deleteButton.className = "review-delete-btn";
+                deleteButton.dataset.reviewId = review.id;
+                deleteButton.textContent = "삭제";
+                meta.append(deleteButton);
+            }
 
             card.append(top, content, meta);
             return card;
@@ -190,26 +213,182 @@
             }
         }
 
+        async function disableReviewReward(reviewContext) {
+            if (!currentSession?.user?.id) return;
+
+            const rewardContext = reviewContext || "seven_day_challenge";
+            await supabase
+                .from('user_rewards')
+                .update({ unlocked: false })
+                .eq('user_id', currentSession.user.id)
+                .eq('reward_context', rewardContext)
+                .eq('reward_type', 'review');
+
+            await supabase
+                .from('user_rewards')
+                .update({ reward_type: 'sns' })
+                .eq('user_id', currentSession.user.id)
+                .eq('reward_context', rewardContext)
+                .eq('reward_type', 'both');
+
+            if (rewardContext === 'free_test') {
+                localStorage.removeItem('free_test_reviewed');
+            }
+        }
+
+        async function deleteOwnReview(reviewId) {
+            if (!currentSession?.user?.id) return;
+
+            const review = currentReviews.find(item => item.id === reviewId);
+            const confirmed = window.confirm("후기를 삭제할까요?\n삭제한 후기는 복구할 수 없습니다.");
+            if (!confirmed) return;
+
+            try {
+                const { error } = await supabase
+                    .from('challenge_reviews')
+                    .delete()
+                    .eq('id', reviewId)
+                    .eq('user_id', currentSession.user.id);
+                if (error) throw error;
+
+                await disableReviewReward(review?.review_context);
+                await loadReviews();
+            } catch (error) {
+                console.error("Delete review failed:", error);
+                alert("삭제에 실패했습니다. 잠시 후 다시 시도해주세요.");
+            }
+        }
+
+        let currentReviews = [];
+
         async function loadReviews() {
             try {
-                const { data, error } = await supabase
+                const publicColumns = 'id, display_name, rating, content, completed_missions, review_context, created_at';
+                const ownColumns = `${publicColumns}, user_id`;
+                const { data: publicReviews, error } = await supabase
                     .from('challenge_reviews')
-                    .select('id, display_name, rating, content, completed_missions, created_at')
+                    .select(currentSession ? ownColumns : publicColumns)
                     .eq('is_public', true)
                     .order('created_at', { ascending: false })
                     .limit(60);
                 if (error) throw error;
-                renderReviews(data || []);
+
+                let reviews = (publicReviews || []).map(review => ({
+                    ...review,
+                    is_own: !!(currentSession?.user?.id && review.user_id === currentSession.user.id),
+                }));
+
+                if (currentSession?.user?.id) {
+                    const { data: ownReviews, error: ownError } = await supabase
+                        .from('challenge_reviews')
+                        .select(ownColumns)
+                        .eq('user_id', currentSession.user.id)
+                        .order('created_at', { ascending: false })
+                        .limit(60);
+                    if (ownError) throw ownError;
+
+                    const reviewById = new Map(reviews.map(review => [review.id, review]));
+                    (ownReviews || []).forEach(review => {
+                        reviewById.set(review.id, { ...review, is_own: true });
+                    });
+                    reviews = Array.from(reviewById.values()).sort((a, b) => {
+                        if (a.is_own !== b.is_own) return a.is_own ? -1 : 1;
+                        return new Date(b.created_at || 0) - new Date(a.created_at || 0);
+                    });
+                }
+
+                currentReviews = reviews;
+                renderReviews(reviews);
             } catch (error) {
                 console.warn("Using fallback reviews:", error);
+                currentReviews = fallbackReviews;
                 renderReviews(fallbackReviews);
             }
         }
 
-        loadReviews();
+        document.getElementById("reviewGrid").addEventListener("click", (event) => {
+            const button = event.target.closest(".review-delete-btn");
+            if (!button) return;
+            deleteOwnReview(button.dataset.reviewId);
+        });
+
+        function renderAuthNotice(container) {
+            const notice = document.createElement("div");
+            notice.className = "auth-notice";
+            const title = document.createElement("strong");
+            title.textContent = "후기를 작성하려면 로그인이 필요합니다.";
+            const link = document.createElement("a");
+            link.href = "hogoo-test.html";
+            link.textContent = "챌린지 앱에서 로그인 후 다시 시도해주세요";
+            notice.append(title, link);
+            container.replaceChildren(notice);
+        }
+
+        function createField(labelText, control) {
+            const field = document.createElement("div");
+            field.className = "field";
+            const label = document.createElement("label");
+            label.textContent = labelText;
+            field.append(label, control);
+            return field;
+        }
+
+        function renderWriteForm(container) {
+            const card = document.createElement("div");
+            card.className = "write-card";
+            const title = document.createElement("h2");
+            title.textContent = "후기 작성";
+
+            const nameInput = document.createElement("input");
+            nameInput.type = "text";
+            nameInput.id = "formName";
+            nameInput.placeholder = "익명 참가자";
+            nameInput.maxLength = 24;
+
+            const starRow = document.createElement("div");
+            starRow.className = "star-row";
+            starRow.id = "starRow";
+            for (let value = 1; value <= 5; value += 1) {
+                const button = document.createElement("button");
+                button.type = "button";
+                button.className = "star-btn on";
+                button.dataset.val = String(value);
+                button.textContent = "★";
+                starRow.appendChild(button);
+            }
+
+            const textarea = document.createElement("textarea");
+            textarea.id = "formContent";
+            textarea.placeholder = "변화, 느낀 점을 자유롭게 남겨주세요.";
+
+            const submit = document.createElement("button");
+            submit.className = "submit-btn";
+            submit.id = "formSubmit";
+            submit.textContent = "후기 등록하기";
+
+            const message = document.createElement("p");
+            message.className = "form-msg";
+            message.id = "formMsg";
+
+            card.append(
+                title,
+                createField("닉네임 (선택)", nameInput),
+                createField("평점", starRow),
+                createField("후기 내용 (10자 이상)", textarea),
+                submit,
+                message
+            );
+            container.replaceChildren(card);
+        }
+
+        initializeReviewsPage();
 
         // context/return parameter handling
-        (async () => {
+        async function initializeReviewsPage() {
+            const { data: { session } } = await supabase.auth.getSession();
+            currentSession = session;
+            await loadReviews();
+
             const params = new URLSearchParams(window.location.search);
             const reviewContext = params.get('context');
             const returnUrl = getSafeReturnUrl(params.get('return'));
@@ -220,41 +399,12 @@
             const container = document.getElementById('writeSection');
             container.hidden = false;
 
-            const { data: { session } } = await supabase.auth.getSession();
-
-            if (!session) {
-                container.innerHTML = `
-                    <div class="auth-notice">
-                        <strong>후기를 작성하려면 로그인이 필요합니다.</strong>
-                        <a href="hogoo-test.html">챌린지 앱에서 로그인 후 다시 시도해주세요</a>
-                    </div>`;
+            if (!currentSession) {
+                renderAuthNotice(container);
                 return;
             }
 
-            container.innerHTML = `
-                <div class="write-card">
-                    <h2>후기 작성</h2>
-                    <div class="field">
-                        <label>닉네임 (선택)</label>
-                        <input type="text" id="formName" placeholder="익명 참가자" maxlength="24">
-                    </div>
-                    <div class="field">
-                        <label>평점</label>
-                        <div class="star-row" id="starRow">
-                            <button type="button" class="star-btn on" data-val="1">★</button>
-                            <button type="button" class="star-btn on" data-val="2">★</button>
-                            <button type="button" class="star-btn on" data-val="3">★</button>
-                            <button type="button" class="star-btn on" data-val="4">★</button>
-                            <button type="button" class="star-btn on" data-val="5">★</button>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label>후기 내용 (10자 이상)</label>
-                        <textarea id="formContent" placeholder="변화, 느낀 점을 자유롭게 남겨주세요."></textarea>
-                    </div>
-                    <button class="submit-btn" id="formSubmit">후기 등록하기</button>
-                    <p class="form-msg" id="formMsg"></p>
-                </div>`;
+            renderWriteForm(container);
 
             let rating = 5;
             document.querySelectorAll('.star-btn').forEach(btn => {
@@ -284,7 +434,7 @@
 
                 try {
                     const { error: reviewErr } = await supabase.from('challenge_reviews').insert({
-                        user_id: session.user.id,
+                        user_id: currentSession.user.id,
                         display_name: displayName,
                         rating,
                         content: content.slice(0, 500),
@@ -297,14 +447,14 @@
                     }
 
                     const rewardPayload = {
-                        user_id: session.user.id,
+                        user_id: currentSession.user.id,
                         reward_context: reviewContext,
                         reward_type: 'review',
                         unlocked: true,
                         ...(resultId ? { result_id: resultId } : {}),
                     };
                     const { data: existing } = await supabase.from('user_rewards').select('id')
-                        .eq('user_id', session.user.id)
+                        .eq('user_id', currentSession.user.id)
                         .eq('reward_context', reviewContext)
                         .eq('reward_type', 'review')
                         .limit(1);
@@ -328,7 +478,7 @@
                     msg.textContent = '등록에 실패했습니다. 잠시 후 다시 시도해주세요.';
                 }
             });
-        })();
+        }
     </script>
 </body>
 </html>
