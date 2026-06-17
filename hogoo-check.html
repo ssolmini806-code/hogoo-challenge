@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <script type="module">window.__PAID_SITE_URL = import.meta.env.VITE_PAID_SITE_URL || '';</script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-P6PM6JBJH1"></script>
-    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-P6PM6JBJH1');</script>
+    <script type="module" src="/src/site-env.js"></script>
+    <script src="/site-bootstrap.js" data-third-party="ga,ads" defer></script>
+    <script src="/third-party-loader.js" defer></script>
     <meta charset="UTF-8">
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link rel="preconnect" href="https://www.googletagmanager.com">
@@ -12,6 +12,7 @@
     <title>나는 호구일까? 테스트 | GIVE Ecosystem</title>
     <meta name="description" content="12가지 질문으로 알아보는 나의 호구 신호. 착한 것과 반복 손해는 다릅니다. 지금 바로 무료로 점검해보세요.">
     <link rel="canonical" href="https://hogoo-challenge.pages.dev/hogoo-check.html">
+    <meta name="robots" content="index, follow">
     <meta property="og:title" content="나는 호구일까? 테스트 | GIVE Ecosystem">
     <meta property="og:description" content="12가지 질문으로 알아보는 나의 호구 지수. 착한 것과 호구는 다릅니다.">
     <meta property="og:image" content="https://hogoo-challenge.pages.dev/og-image.jpg">
@@ -21,10 +22,10 @@
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,1,400;9..144,1,500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,1,400;9..144,1,500&display=swap" data-defer-style>
+    <link rel="preload" as="style" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" data-defer-style>
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,1,400;9..144,1,500&display=swap"></noscript>
     <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css"></noscript>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8564310871125079" crossorigin="anonymous"></script>
     <meta name="google-adsense-account" content="ca-pub-8564310871125079">
     <link rel="stylesheet" href="/give-theme.css">
 </head>
@@ -465,8 +466,17 @@ function characterSvg(fill, mood) {
 }
 
 function characterVisual(result) {
-    const img = '<img src="' + result.character + '" alt="' + result.name + ' 캐릭터" loading="lazy" decoding="async">';
-    return '<div class="result-character-frame">' + img + characterSvg(result.color, result.mood) + '</div>';
+    const frame = document.createElement('div');
+    frame.className = 'result-character-frame';
+    const img = document.createElement('img');
+    img.src = result.character;
+    img.alt = result.name + ' 캐릭터';
+    img.loading = 'lazy';
+    img.decoding = 'async';
+    img.addEventListener('error', function() { this.remove(); });
+    const svg = new DOMParser().parseFromString(characterSvg(result.color, result.mood), 'image/svg+xml').documentElement;
+    frame.append(img, svg);
+    return frame;
 }
 
 function startTest() {
@@ -543,8 +553,7 @@ function renderResult(key) {
     const d = results[key] || results.middle;
     document.getElementById('sequenceLink').href = 'result-sequence.html?test=hogoo&type=' + encodeURIComponent(key);
     const character = document.getElementById('character');
-    character.innerHTML = characterVisual(d);
-    character.querySelector('img')?.addEventListener('error', function() { this.remove(); });
+    character.replaceChildren(characterVisual(d));
     document.getElementById('typeName').textContent = d.name;
     document.getElementById('typeTagline').textContent = '“' + d.tagline + '”';
     document.getElementById('typeBody').textContent = d.body;

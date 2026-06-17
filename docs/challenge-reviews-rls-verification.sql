@@ -3,6 +3,13 @@
 --
 -- Replace the two UUID values below with real auth.users IDs from your project.
 -- The transaction rolls back at the end, so test rows are not kept.
+--
+-- To find a real user ID in Supabase SQL Editor, run this first:
+-- select id, email, created_at from auth.users order by created_at desc limit 5;
+--
+-- If the insert fails with challenge_reviews_user_id_fkey, the UUID is not in
+-- auth.users for this Supabase project. Create/login a test user, then copy
+-- that user's Auth UID into every placeholder below.
 
 begin;
 
@@ -41,7 +48,14 @@ from public.challenge_reviews
 where is_public = true
 limit 3;
 
--- This should fail for anon after the migration:
+-- This should fail for anon after the migration.
+-- Expected error:
+--   permission denied for table challenge_reviews
+-- or:
+--   permission denied for column user_id
+--
+-- Run this failing check separately after the main rollback test if you do not
+-- want the expected error to abort the transaction.
 -- select user_id from public.challenge_reviews limit 1;
 
 reset role;
@@ -73,6 +87,7 @@ insert into public.challenge_reviews (
 returning id, display_name, rating, content, completed_missions, created_at;
 
 -- This should fail because user A cannot insert as user B.
+-- Run it separately in a fresh transaction after the main success test.
 -- Replace user B value before uncommenting.
 -- insert into public.challenge_reviews (
 --   user_id,
@@ -87,6 +102,7 @@ returning id, display_name, rating, content, completed_missions, created_at;
 -- );
 
 -- 5) Invalid content should fail.
+-- Run it separately in a fresh transaction after the main success test.
 -- insert into public.challenge_reviews (
 --   user_id,
 --   display_name,

@@ -97,59 +97,7 @@
 
 </main>
 
-<script>
-(function(){
-  /* 상태 확인 */
-  var s = giveProgress.get();
-  var startDate = s.started ? s.started.split('-') : null;
-
-  /* 시작일 표시 */
-  if(startDate && startDate.length === 3){
-    document.getElementById('statStart').textContent = startDate[1]+'/'+ startDate[2];
-  }
-  document.getElementById('dayNum').textContent = s.day || 7;
-  document.getElementById('statDay').textContent = s.day || 7;
-
-  /* 링 애니메이션 */
-  var circle = document.querySelector('.badge-ring circle:last-child');
-  var pct = s.isComplete ? 100 : s.percent;
-  var r = 54, circ = 2*Math.PI*r;
-  setTimeout(function(){
-    circle.style.strokeDashoffset = String(circ*(1 - pct/100));
-  }, 200);
-
-  /* Threads 공유 */
-  var shareText = encodeURIComponent(
-    '7일 GIVE 챌린지를 완주했습니다 🌿\n거절 연습, 경계 긋기, 나를 지키는 7일.\n\nhogoo-challenge.pages.dev #GIVEChallenge #스마트기버'
-  );
-  document.getElementById('threadsBtn').addEventListener('click', function(){
-    window.open('https://www.threads.net/intent/post?text='+shareText,'_blank');
-    if(typeof gtag==='function') gtag('event','challenge_shared',{platform:'threads'});
-  });
-
-  /* 기타 공유 */
-  document.getElementById('shareMoreBtn').addEventListener('click', function(){
-    var plain = decodeURIComponent(shareText);
-    if(navigator.share){
-      navigator.share({title:'GIVE 7일 챌린지 완주', text:plain, url:'https://hogoo-challenge.pages.dev'})
-        .catch(function(){});
-    } else if(navigator.clipboard){
-      navigator.clipboard.writeText(plain).then(function(){
-        alert('문구가 복사됐어요. SNS에 붙여넣기 해주세요!');
-      });
-    }
-    if(typeof gtag==='function') gtag('event','challenge_shared',{platform:'other'});
-  });
-
-  /* 리셋 */
-  document.getElementById('resetBtn').addEventListener('click', function(){
-    if(confirm('정말 처음부터 다시 시작할까요? 지금까지의 진행 기록이 사라집니다.')){
-      giveProgress.reset();
-      location.href = 'hogoo-test.html';
-    }
-  });
-})();
-</script>
+<script src="/challenge-done.js" defer></script>
 
 </body>
 </html>

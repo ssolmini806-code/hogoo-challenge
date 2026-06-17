@@ -2,35 +2,8 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <script>
-      // GA stub: queues events until real GA script loads
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-P6PM6JBJH1');
-      window.addEventListener('load', function() {
-        // AdSense: 1s delay to free up main thread for LCP/TBT
-        setTimeout(function() {
-          var ads = document.createElement('script');
-          ads.async = true;
-          ads.crossOrigin = 'anonymous';
-          ads.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8564310871125079';
-          document.head.appendChild(ads);
-        }, 1000);
-        // GA + Clarity + Userback + AddToAny: 3s delay
-        setTimeout(function() {
-          var s = document.createElement('script');
-          s.async = true;
-          s.src = 'https://www.googletagmanager.com/gtag/js?id=G-P6PM6JBJH1';
-          document.head.appendChild(s);
-          (function(c,l,a,r,i,t,y){
-            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-          })(window, document, "clarity", "script", "wh9qtg72q5");
-        }, 3000);
-      });
-    </script>
+    <script src="/site-bootstrap.js" data-third-party="ga,ads,clarity,userback,addToAny" defer></script>
+    <script src="/third-party-loader.js" defer></script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="shortcut icon" href="/favicon.svg">
     <link rel="apple-touch-icon" href="/favicon.svg">
@@ -126,8 +99,10 @@
     <meta name="google-adsense-account" content="ca-pub-8564310871125079">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,1,400;9..144,1,500&display=swap">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,1,400;9..144,1,500&display=swap" data-defer-style>
+    <link rel="preload" as="style" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" crossorigin data-defer-style>
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,1,400;9..144,1,500&display=swap"></noscript>
+    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" crossorigin></noscript>
     <link rel="stylesheet" href="/give-theme.css">
     <link rel="preload" as="image" href="/images/tests/give-id-illustration-v3-400w.webp"
           imagesrcset="/images/tests/give-id-illustration-v3-400w.webp 400w, /images/tests/give-id-illustration-v3-800w.webp 800w"
@@ -384,20 +359,5 @@
             <p>&copy; 2026 GIVE Ecosystem. All rights reserved.</p>
         </footer>
 
-    <script>
-      window.addEventListener('load', function() {
-        setTimeout(function() {
-          window.Userback = window.Userback || {};
-          Userback.access_token = "A-5n1vSEp2urCeuAdUdVofAoB0M";
-          (function(d) {
-            var s = d.createElement('script');s.async = true;s.src = 'https://static.userback.io/widget/v1.js';(d.head || d.body).appendChild(s);
-          })(document);
-          var a2a = document.createElement('script');
-          a2a.async = true;
-          a2a.src = 'https://static.addtoany.com/menu/page.js';
-          document.body.appendChild(a2a);
-        }, 3000);
-      });
-    </script>
 </body>
 </html>
