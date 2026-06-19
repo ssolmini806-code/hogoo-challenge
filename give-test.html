@@ -68,35 +68,21 @@
                     <span>GIVE Pattern Lab</span>
                     <strong>무료 자가점검</strong>
                 </div>
+                <h1>왜 항상 나만 손해 볼까?</h1>
+                <p class="hero-copy">16문항으로 확인합니다. 최근 내 실제 반응에 가장 가까운 선택지를 고르면 됩니다.</p>
                 <div class="test-intro-image">
                     <img src="/images/tests/give-id-illustration-v3.webp" alt="도움, 경계, 회복 카드를 따라 내 관계 패턴을 살피는 따뜻한 일러스트" loading="eager">
                 </div>
-                <p class="test-intro-caption">도움, 경계, 회복이 어디서 어긋나는지 한눈에 보는 검사입니다.</p>
-                <h1>왜 항상 나만 손해 볼까?</h1>
-                <p class="hero-copy">프롤로그에서 본 패턴을 16문항으로 확인합니다.</p>
                 <div class="prologue-metrics" aria-label="테스트 정보">
                     <div><strong>16</strong><span>문항</span></div>
                     <div><strong>3분</strong><span>예상 시간</span></div>
                     <div><strong>무료</strong><span>로그인 없이</span></div>
                 </div>
-
-                <section class="prologue-start-card" aria-label="시작 전 안내">
-                    <div class="prologue-start-head">
-                        <span>Start Check</span>
-                        <strong>최근 내 실제 반응에 가깝게 고르세요.</strong>
-                    </div>
-                    <div class="prologue-signals">
-                        <div><strong>부탁</strong><span>거절 전 떠오르는 생각</span></div>
-                        <div><strong>경계</strong><span>어디까지 괜찮은지</span></div>
-                        <div><strong>회복</strong><span>도운 뒤 남는 감정</span></div>
-                    </div>
-                </section>
-
+                <button class="primary-btn" id="startTestBtn">테스트 시작하기</button>
+                <p class="micro">로그인 없이 결과까지 바로 확인할 수 있어요</p>
                 <a href="result-sequence.html?test=give&type=mixed" class="result-preview-link">
                     결과 흐름 미리보기 →
                 </a>
-                <button class="primary-btn" id="startTestBtn">테스트 시작하기</button>
-                <p class="micro">로그인 없이 결과까지 바로 확인할 수 있어요</p>
 
                 <div class="hero-panel">
                     <ul class="problem-list">
@@ -414,7 +400,9 @@
 <script>
 window.addEventListener('DOMContentLoaded', function() {
     var params = new URLSearchParams(location.search);
-    if (!params.get('intro') && params.get('start') !== '1') {
+    var prologueSeen = false;
+    try { prologueSeen = localStorage.getItem('givePrologueSeen') === '1'; } catch (e) {}
+    if (!params.get('intro') && params.get('start') !== '1' && !prologueSeen) {
         location.replace('give-prologue.html');
         return;
     }

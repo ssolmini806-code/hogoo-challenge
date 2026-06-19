@@ -218,12 +218,13 @@ button,a{font:inherit;-webkit-tap-highlight-color:transparent;}
 
   <div class="foot" id="foot">
     <span class="tap-hint" id="tapHint">화면을 탭하거나 넘겨서 계속 보기</span>
-    <a href="give-test.html?intro=1" class="start-btn" id="startBtn">GIVE ID 시작하기</a>
+    <a href="give-test.html?start=1" class="start-btn" id="startBtn">GIVE ID 시작하기</a>
   </div>
 </main>
 
 <script>
 (function(){
+  try { localStorage.setItem('givePrologueSeen', '1'); } catch (e) {}
   var slides = Array.from(document.querySelectorAll('.slide'));
   var dotsEl = document.getElementById('dots');
   var tapHint = document.getElementById('tapHint');
@@ -277,7 +278,7 @@ button,a{font:inherit;-webkit-tap-highlight-color:transparent;}
     if(e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') next();
   });
   skipBtn.addEventListener('click', function(){
-    location.href = 'give-test.html?intro=1';
+    location.href = 'give-test.html?start=1';
   });
 })();
 </script>
