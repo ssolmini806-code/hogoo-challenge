@@ -200,15 +200,20 @@
                     <p>아래 결과는 내 기준을 지키는 힘과, 오늘 바로 연습할 수 있는 한 문장을 함께 보여줍니다.</p>
                 </div>
             </section>
+
+            <div class="result-retry-top">
+                <button class="retry-link" id="retryTestBtnTop" type="button">다시 검사하기</button>
+            </div>
             
-            <div class="card practice-card">
+            <div class="card practice-card result-card action">
+                <div class="card-marker action"><span class="card-label">TODAY'S ACTION</span><div class="card-dotted-line" aria-hidden="true"></div></div>
                 <h2>오늘 바로 연습할 한 문장</h2>
                 <p id="script" class="practice-script"></p>
                 <small class="lace-note">상황 인정 → 마음 표현 → 내 기준 → 가능한 범위 순서로 말하면 덜 차갑고 더 분명해집니다.</small>
             </div>
 
-            <section class="white-psychology-bridge" aria-label="선의 심리학 안내">
-                <span class="bridge-label">White Psychology</span>
+            <section class="white-psychology-bridge result-card" aria-label="선의 심리학 안내">
+                <div class="card-marker why"><span class="card-label">WHY</span><div class="card-dotted-line" aria-hidden="true"></div></div>
                 <h2>거절은 관계를 포기하는 말이 아닙니다</h2>
                 <p>좋은 관계일수록 가능한 범위가 필요합니다. 선의 심리학은 공감은 남기고, 내 시간과 회복을 지키는 문장을 연습합니다.</p>
                 <a href="white-psychology.html">왜 착한 마음이 손해가 되는지 보기 →</a>
@@ -241,6 +246,9 @@
 
             <div class="home-return">
                 <a href="index.html">홈으로 돌아가기</a>
+            </div>
+            <div class="retry-wrap">
+                <button class="retry-link" id="retryTestBtn" type="button">테스트 다시 하기</button>
             </div>
         </div>
     </section>
@@ -325,6 +333,8 @@ scrollTo(0,0)}
 const initialType=new URLSearchParams(location.search).get('type');
 if(initialType) renderResult(initialType);
 document.getElementById('startTestBtn')?.addEventListener('click', start);
+document.getElementById('retryTestBtn')?.addEventListener('click', start);
+document.getElementById('retryTestBtnTop')?.addEventListener('click', start);
 </script>
 </body>
 </html>

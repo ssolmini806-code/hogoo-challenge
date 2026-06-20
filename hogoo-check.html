@@ -228,7 +228,7 @@
         </section>
 
         <div class="result-card" id="cardStrength"></div>
-        <div class="result-card is-warning" id="cardRisk"></div>
+        <div class="result-card risk" id="cardRisk"></div>
         
         <!-- Expert Insight -->
         <div id="expertInsight" class="expert-insight">
@@ -238,14 +238,15 @@
             <a href="#" class="expert-link" id="expertLink">전문 칼럼 읽어보기 →</a>
         </div>
 
-        <div class="result-card is-action" id="cardAdvice">
+        <div class="result-card action" id="cardAdvice">
+            <div class="card-marker action"><span class="card-label">TODAY'S ACTION</span><div class="card-dotted-line" aria-hidden="true"></div></div>
             <div class="card-title">지금 할 수 있는 것</div>
             <p class="card-body" id="cardAdviceText"></p>
             <small class="lace-note">상황 인정 → 마음 표현 → 내 기준 → 가능한 범위 순서로 말해보세요.</small>
         </div>
 
-        <section class="white-psychology-bridge" aria-label="선의 심리학 안내">
-            <span class="bridge-label">White Psychology</span>
+        <section class="white-psychology-bridge result-card" aria-label="선의 심리학 안내">
+            <div class="card-marker why"><span class="card-label">WHY</span><div class="card-dotted-line" aria-hidden="true"></div></div>
             <h2>호구냐 아니냐보다 중요한 건 반복 패턴입니다</h2>
             <p>착한 마음 자체가 문제가 아니라, 부탁 앞에서 내 기준이 늦게 도착하는 순간이 반복될 때 지치기 쉽습니다. 선의 심리학은 그 기준을 다시 세우는 방법을 다룹니다.</p>
             <a href="white-psychology.html">왜 착한 마음이 손해가 되는지 보기 →</a>
@@ -514,13 +515,22 @@ function renderQ() {
 
 function renderResultCard(id, title, body, options = {}) {
     const card = document.getElementById(id);
+    const marker = document.createElement('div');
+    marker.className = options.warning ? 'card-marker risk' : 'card-marker';
+    const label = document.createElement('span');
+    label.className = 'card-label';
+    label.textContent = options.warning ? 'RISK SIGNAL' : 'STRENGTH';
+    const dottedLine = document.createElement('div');
+    dottedLine.className = 'card-dotted-line';
+    dottedLine.setAttribute('aria-hidden', 'true');
+    marker.append(label, dottedLine);
     const titleEl = document.createElement('div');
     titleEl.className = options.warning ? 'card-title is-warning' : 'card-title';
     titleEl.textContent = title;
     const bodyEl = document.createElement('p');
     bodyEl.className = 'card-body';
     bodyEl.textContent = body;
-    card.replaceChildren(titleEl, bodyEl);
+    card.replaceChildren(marker, titleEl, bodyEl);
 }
 
 function renderScoreBar(percent) {

@@ -181,12 +181,21 @@
                             <p class="axis-note">이 점수는 의학적 진단이 아니라, 답변 경향을 바탕으로 한 자기 점검 신호입니다.</p>
                         </section>
                         <div class="insight-grid">
-                            <div class="insight"><h3>강점</h3><p id="strength"></p></div>
-                            <div class="insight risk"><h3>위험 신호</h3><p id="risk"></p></div>
-                            <div class="insight advice"><h3>오늘의 조언</h3><p id="advice"></p><small class="lace-note">상황 인정 → 마음 표현 → 내 기준 → 가능한 범위 순서로 말해보세요.</small></div>
+                            <div class="insight result-card">
+                                <div class="card-marker"><span class="card-label">STRENGTH</span><div class="card-dotted-line" aria-hidden="true"></div></div>
+                                <h3>강점</h3><p id="strength"></p>
+                            </div>
+                            <div class="insight result-card risk">
+                                <div class="card-marker risk"><span class="card-label">RISK SIGNAL</span><div class="card-dotted-line" aria-hidden="true"></div></div>
+                                <h3>위험 신호</h3><p id="risk"></p>
+                            </div>
+                            <div class="insight result-card action">
+                                <div class="card-marker action"><span class="card-label">TODAY'S ACTION</span><div class="card-dotted-line" aria-hidden="true"></div></div>
+                                <h3>오늘의 조언</h3><p id="advice"></p><small class="lace-note">상황 인정 → 마음 표현 → 내 기준 → 가능한 범위 순서로 말해보세요.</small>
+                            </div>
                         </div>
-                        <section class="white-psychology-bridge" aria-label="선의 심리학 안내">
-                            <span class="bridge-label">White Psychology</span>
+                        <section class="white-psychology-bridge result-card" aria-label="선의 심리학 안내">
+                            <div class="card-marker why"><span class="card-label">WHY</span><div class="card-dotted-line" aria-hidden="true"></div></div>
                             <h2>선한 마음을 오래 쓰려면 기준이 필요합니다</h2>
                             <p>GIVE ID는 착한 사람을 평가하는 검사가 아니라, 선의가 손해로 바뀌는 순간을 찾는 자기 점검입니다. 더 깊은 배경은 선의 심리학 프레임에서 볼 수 있어요.</p>
                             <a href="white-psychology.html">왜 착한 마음이 손해가 되는지 보기 →</a>

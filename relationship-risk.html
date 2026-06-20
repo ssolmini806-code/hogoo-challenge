@@ -215,8 +215,12 @@
             </div>
         </section>
 
+        <div class="result-retry-top">
+            <button class="retry-link" id="retryTestBtnTop">다시 검사하기</button>
+        </div>
+
         <div class="result-card" id="cardStrength"></div>
-        <div class="result-card is-warning" id="cardRisk"></div>
+        <div class="result-card risk" id="cardRisk"></div>
 
         <!-- Expert Insight -->
         <div id="expertInsight" class="expert-insight">
@@ -226,10 +230,10 @@
             <a href="#" class="expert-link" id="expertLink">전문 칼럼 읽어보기 →</a>
         </div>
 
-        <div class="result-card is-action" id="cardAdvice"></div>
+        <div class="result-card action" id="cardAdvice"></div>
 
-        <section class="white-psychology-bridge" aria-label="선의 심리학 안내">
-            <span class="bridge-label">White Psychology</span>
+        <section class="white-psychology-bridge result-card" aria-label="선의 심리학 안내">
+            <div class="card-marker why"><span class="card-label">WHY</span><div class="card-dotted-line" aria-hidden="true"></div></div>
             <h2>위험 신호는 관계를 끊으라는 판정이 아닙니다</h2>
             <p>관계가 나를 소진시키기 전에 몸과 마음의 신호를 읽고, 거리·경계·회복 순서를 정하는 자기 점검입니다. 선의 심리학은 선한 사람이 무너지지 않는 관계 설계를 다룹니다.</p>
             <a href="white-psychology.html">왜 착한 마음이 지치게 되는지 보기 →</a>
@@ -292,6 +296,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('startTestBtn')?.addEventListener('click', startTest);
     document.getElementById('paidCtaBtn')?.addEventListener('click', openPaidSite);
     document.getElementById('retryTestBtn')?.addEventListener('click', retryTest);
+    document.getElementById('retryTestBtnTop')?.addEventListener('click', retryTest);
 });
 document.querySelectorAll('.test-tabs').forEach(function(tabs) {
     const tabButtons = Array.from(tabs.querySelectorAll('[role="tab"]'));
@@ -486,13 +491,23 @@ function renderQ() {
 
 function renderResultCard(id, title, body, options = {}) {
     const card = document.getElementById(id);
+    const marker = document.createElement('div');
+    const markerType = options.warning ? 'risk' : (options.note ? 'action' : '');
+    marker.className = 'card-marker' + (markerType ? ' ' + markerType : '');
+    const label = document.createElement('span');
+    label.className = 'card-label';
+    label.textContent = options.warning ? 'RISK SIGNAL' : (options.note ? "TODAY'S ACTION" : 'STRENGTH');
+    const dottedLine = document.createElement('div');
+    dottedLine.className = 'card-dotted-line';
+    dottedLine.setAttribute('aria-hidden', 'true');
+    marker.append(label, dottedLine);
     const titleEl = document.createElement('div');
     titleEl.className = options.warning ? 'card-title is-warning' : 'card-title';
     titleEl.textContent = title;
     const bodyEl = document.createElement('p');
     bodyEl.className = 'card-body';
     bodyEl.textContent = body;
-    const children = [titleEl, bodyEl];
+    const children = [marker, titleEl, bodyEl];
     if (options.note) {
         const note = document.createElement('small');
         note.className = 'lace-note';

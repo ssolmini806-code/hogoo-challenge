@@ -98,12 +98,16 @@
         </div>
       </section>
 
-      <div class="result-card" id="cardStrength"></div>
-      <div class="result-card is-warning" id="cardRisk"></div>
-      <div class="result-card is-action" id="cardAdvice"></div>
+      <div class="result-retry-top">
+        <button class="retry-link" id="retryTestBtnTop">다시 검사하기</button>
+      </div>
 
-      <section class="white-psychology-bridge" aria-label="선의 심리학 안내">
-        <span class="bridge-label">White Psychology</span>
+      <div class="result-card" id="cardStrength"></div>
+      <div class="result-card risk" id="cardRisk"></div>
+      <div class="result-card action" id="cardAdvice"></div>
+
+      <section class="white-psychology-bridge result-card" aria-label="선의 심리학 안내">
+        <div class="card-marker why"><span class="card-label">WHY</span><div class="card-dotted-line" aria-hidden="true"></div></div>
         <h2>선의를 오래 쓰는 방식은 훈련할 수 있습니다</h2>
         <p>7일 스타터에서는 즉답 금지, 경계 문장, 상호성 조건, 회복 루틴을 작게 연습합니다.</p>
         <a href="hogoo-test.html">7일 스타터 챌린지 보기 →</a>
@@ -190,13 +194,23 @@ function renderQuestion() {
 
 function renderResultCard(id, title, body, options) {
   const card = document.getElementById(id);
+  const marker = document.createElement("div");
+  const markerType = options && options.warning ? "risk" : (options && options.note ? "action" : "");
+  marker.className = "card-marker" + (markerType ? " " + markerType : "");
+  const label = document.createElement("span");
+  label.className = "card-label";
+  label.textContent = options && options.warning ? "RISK SIGNAL" : (options && options.note ? "TODAY'S ACTION" : "STRENGTH");
+  const dottedLine = document.createElement("div");
+  dottedLine.className = "card-dotted-line";
+  dottedLine.setAttribute("aria-hidden", "true");
+  marker.append(label, dottedLine);
   const titleEl = document.createElement("div");
   titleEl.className = options && options.warning ? "card-title is-warning" : "card-title";
   titleEl.textContent = title;
   const bodyEl = document.createElement("p");
   bodyEl.className = "card-body";
   bodyEl.textContent = body;
-  const children = [titleEl, bodyEl];
+  const children = [marker, titleEl, bodyEl];
   if (options && options.note) {
     const note = document.createElement("small");
     note.className = "lace-note";
@@ -228,6 +242,7 @@ function retryTest() {
 
 document.getElementById("startTestBtn")?.addEventListener("click", startTest);
 document.getElementById("retryTestBtn")?.addEventListener("click", retryTest);
+document.getElementById("retryTestBtnTop")?.addEventListener("click", retryTest);
 </script>
 </body>
 </html>
