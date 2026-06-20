@@ -209,6 +209,7 @@
             <a href="result-sequence.html?test=hogoo&type=middle" class="start-btn result-sequence-link" id="sequenceLink">
                 결과 처음부터 보기 →
             </a>
+            <button class="retry-link" id="retryTestBtnTop">다시 검사하기</button>
         </div>
 
         <div class="type-desc-box">
@@ -307,6 +308,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('startTestBtn')?.addEventListener('click', startTest);
     document.getElementById('paidCtaBtn')?.addEventListener('click', openPaidSite);
     document.getElementById('retryTestBtn')?.addEventListener('click', retryTest);
+    document.getElementById('retryTestBtnTop')?.addEventListener('click', retryTest);
 });
 document.querySelectorAll('.test-tabs').forEach(function(tabs) {
     const tabButtons = Array.from(tabs.querySelectorAll('[role="tab"]'));

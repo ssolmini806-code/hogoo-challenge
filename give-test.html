@@ -149,6 +149,7 @@
                         <div id="character"></div>
                         <h1 class="type-name" id="typeName"></h1>
                         <p class="summary" id="typeSummary"></p>
+                        <button class="result-retry-btn" type="button" id="retryTestBtnTop">다시 검사하기</button>
                     </div>
                     <div class="result-body">
                         <section class="result-report-lead" aria-label="결과 리포트 안내">
@@ -426,6 +427,7 @@ window.addEventListener('DOMContentLoaded', function() {
     document.getElementById('shareResultBtn')?.addEventListener('click', shareResult);
     document.getElementById('copyLinkBtn')?.addEventListener('click', copyLink);
     document.getElementById('retryTestBtn')?.addEventListener('click', requestRetryTest);
+    document.getElementById('retryTestBtnTop')?.addEventListener('click', requestRetryTest);
     document.getElementById('hogooCheckCard')?.addEventListener('click', handleHogooCheckClick);
     document.getElementById('hogooCheckCard')?.addEventListener('keydown', function(event) {
         if (event.key !== 'Enter' && event.key !== ' ') return;
