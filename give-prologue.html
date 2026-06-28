@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,1,400;9..144,1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@500;600;700;800;900&display=swap">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
 <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css"></noscript>
 <style>
@@ -90,6 +91,86 @@ button,a{font:inherit;-webkit-tap-highlight-color:transparent;}
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important;}
 }
+
+/* Editorial prologue: preserve the four-step curiosity flow, replace the card-template look. */
+.prologue-page{background:#F8F5EE;}
+.prologue-page::before{content:none;}
+.hd{padding:20px clamp(20px,4vw,48px) 10px;}
+.hd-brand{display:flex;align-items:baseline;gap:9px;color:#114B3C;font-size:.74rem;letter-spacing:.16em;}
+.hd-brand span{padding-left:9px;border-left:1px solid #D9D4C9;color:#657069;font-family:var(--sans);font-style:normal;font-size:.67rem;font-weight:750;letter-spacing:.1em;text-transform:uppercase;}
+.skip-btn{border:0;border-bottom:1px solid #BFC7C1;border-radius:0;background:transparent;color:#4F5B54;padding:0 2px;}
+.dots{top:64px;width:min(calc(100% - 40px),1050px);gap:9px;}
+.dot{height:2px;border-radius:0;background:#D9D4C9;}
+.dot::before{border-radius:0;background:#114B3C;}
+.deck{inset:80px 0 82px;}
+.slide{padding:clamp(20px,4vw,48px);}
+.lab-card{
+  width:min(100%,1050px);
+  display:grid;
+  grid-template-columns:minmax(0,.88fr) minmax(360px,1.12fr);
+  grid-template-rows:auto auto auto;
+  column-gap:clamp(44px,7vw,96px);
+  row-gap:20px;
+  align-items:center;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  padding:0;
+  box-shadow:none;
+  backdrop-filter:none;
+}
+.lab-top{grid-column:1;grid-row:1;justify-content:flex-start;gap:14px;}
+.slide-num{min-height:0;border-radius:0;background:transparent;color:#114B3C;padding:0 0 8px;border-bottom:2px solid #114B3C;font-size:.68rem;font-weight:850;letter-spacing:.13em;}
+.lab-chip{color:#778079;font-size:.67rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;}
+.slide-illus{grid-column:2;grid-row:1 / 4;min-height:0;aspect-ratio:1/1;border:0;border-radius:96px 96px 14px 96px;background:#E4ECE7;box-shadow:18px 18px 0 #DCE8E1;}
+.slide-illus::before{content:none;}
+.slide-illus svg{width:min(64%,260px);}
+.slide-illus img{width:100%;height:100%;object-fit:cover;filter:saturate(.88) contrast(.98);}
+.slide-copy{grid-column:1;grid-row:2;}
+.slide-msg{font-family:'Hahmlet','Noto Serif KR',Georgia,serif;font-size:clamp(2.5rem,5vw,4.5rem);font-weight:800;line-height:1.12;letter-spacing:-.055em;}
+.slide-msg b{color:#0A5F4D;}
+.slide-desc{max-width:31em;margin-top:18px;color:#566159;font-size:1.02rem;font-weight:520;line-height:1.78;}
+.signal-grid{grid-column:1;grid-row:3;gap:0;border-top:1px solid #D9D4C9;border-bottom:1px solid #D9D4C9;}
+.signal{min-height:82px;border:0;border-right:1px solid #D9D4C9;border-radius:0;background:transparent;padding:16px 14px;}
+.signal:first-child{padding-left:0;}
+.signal:last-child{border-right:0;}
+.signal strong{color:#114B3C;font-family:'Hahmlet','Noto Serif KR',Georgia,serif;font-size:.82rem;font-weight:750;}
+.signal span{margin-top:4px;color:#707A73;font-size:.68rem;font-weight:650;}
+.s2 .slide-num,.s2 .slide-msg b,.s2 .signal strong,
+.s3 .slide-num,.s3 .slide-msg b,.s3 .signal strong{color:#0A5F4D;}
+.s2 .slide-num,.s3 .slide-num{background:transparent;}
+.s2 .slide-illus,.s3 .slide-illus{background:#E4ECE7;}
+.s4 .lab-card{border:0;border-radius:0;background:#114B3C;padding:clamp(24px,4vw,44px);color:#fff;}
+.s4 .slide-illus{box-shadow:18px 18px 0 rgba(0,0,0,.14);}
+.s4 .signal-grid{border-color:rgba(255,255,255,.18);}
+.s4 .signal{border-color:rgba(255,255,255,.18);background:transparent;}
+.s4 .slide-num{border-color:#8ED0BA;}
+.foot{padding:10px 22px 22px;}
+.tap-hint{color:#717A74;font-size:.72rem;font-weight:700;}
+.start-btn{min-height:58px;border-radius:0;background:#114B3C;font-size:.94rem;font-weight:800;box-shadow:none;transition:background .18s ease,transform .18s ease;}
+.start-btn::after{content:"\2192";margin-left:14px;font-size:1.2em;}
+.start-btn:hover{background:#0D3B2F;transform:translateY(-2px);}
+
+@media (max-width:719px){
+  .hd{padding:16px 18px 8px;}
+  .hd-brand{display:grid;gap:2px;}
+  .hd-brand span{padding:0;border:0;font-size:.61rem;}
+  .dots{top:60px;width:calc(100% - 36px);}
+  .deck{inset:70px 0 78px;}
+  .slide{place-items:start center;padding:18px;overflow-y:auto;}
+  .lab-card{width:min(100%,430px);display:flex;flex-direction:column;gap:13px;align-items:stretch;padding:0;}
+  .lab-top{order:1;}
+  .slide-illus{order:2;width:min(100% - 22px,280px);min-height:0;margin:0 auto 5px;border-radius:56px 56px 9px 56px;box-shadow:9px 9px 0 #DCE8E1;}
+  .slide-copy{order:3;}
+  .slide-msg{font-size:clamp(1.85rem,8.7vw,2.5rem);line-height:1.14;}
+  .slide-desc{margin-top:9px;font-size:.88rem;line-height:1.62;}
+  .signal-grid{order:4;}
+  .signal{min-height:61px;padding:10px 8px;}
+  .signal strong{font-size:.72rem;}
+  .signal span{font-size:.61rem;}
+  .s4 .lab-card{padding:20px;}
+  .s4 .slide-illus{width:min(100% - 18px,250px);box-shadow:8px 8px 0 rgba(0,0,0,.14);}
+}
 </style>
 </head>
 <body>
@@ -109,15 +190,7 @@ button,a{font:inherit;-webkit-tap-highlight-color:transparent;}
           <div class="lab-chip">16 questions</div>
         </div>
         <div class="slide-illus" aria-hidden="true">
-          <svg viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="42" y="54" width="136" height="112" rx="14" fill="#fff" stroke="#114B3C" stroke-width="2"/>
-            <path d="M42 86h136" stroke="#E7E1D5" stroke-width="2"/>
-            <circle cx="67" cy="71" r="6" fill="#00A885"/>
-            <circle cx="88" cy="71" r="6" fill="#E9A23B"/>
-            <path d="M72 120h76M72 140h54" stroke="#114B3C" stroke-width="7" stroke-linecap="round" opacity=".22"/>
-            <path d="M156 116c18 10 19 31 2 43-20 14-50 1-52-25" stroke="#00A885" stroke-width="4" stroke-linecap="round" stroke-dasharray="7 7"/>
-            <path d="M106 134l-8 4 4-9" stroke="#00A885" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
+          <img src="/images/tests/give-id-illustration-v3.webp" alt="" loading="eager">
         </div>
         <div class="slide-copy">
           <h1 class="slide-msg">손해 보는 순간은<br><b>반복 패턴</b>으로 남아요</h1>
