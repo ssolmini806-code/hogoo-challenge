@@ -190,57 +190,9 @@
     </div>
 </div>
 
-<div id="result-page" class="hidden">
-    <div class="inner">
-        <div class="result-header">
-            <p class="label">인간관계 위험도 결과</p>
-            <div id="character"></div>
-            <h1 class="type-name" id="typeName"></h1>
-            <div id="scoreBar" class="score-bar"></div>
-            <a href="result-sequence.html?test=relationship&type=ok" class="start-btn result-sequence-link" id="sequenceLink">
-                결과 처음부터 보기 →
-            </a>
-        </div>
-
-        <div class="type-desc-box">
-            <p class="type-tagline" id="typeTagline"></p>
-            <p class="type-body" id="typeBody"></p>
-        </div>
-
-        <div class="result-slide-return">
-            <p>강점, 위험 신호, 오늘의 조언, 선의 심리학 연결은 탭 슬라이드에서 이어서 확인할 수 있습니다.</p>
-            <a href="result-sequence.html?test=relationship&type=ok" class="start-btn result-sequence-link" id="sequenceLinkBottom">전체 슬라이드 다시 보기 →</a>
-            <button class="retry-link" id="retryTestBtn">테스트 다시 하기</button>
-        </div>
-
-        <footer>
-            <div class="footer-links">
-                <a href="index.html">홈으로</a>
-                <a href="give-test.html">GIVE ID 자가점검</a>
-                <a href="articles/giver-burnout.html">심리 칼럼</a>
-            </div>
-            <div class="copy">&copy; 2026 GIVE Ecosystem. All rights reserved.</div>
-        </footer>
-    </div>
-</div>
-
 <script>
-function getPaidSiteUrl() {
-    const configuredUrl = window.__PAID_SITE_URL && !String(window.__PAID_SITE_URL).includes('%VITE_')
-        ? window.__PAID_SITE_URL
-        : 'https://givecosystem.com/';
-    return configuredUrl;
-}
-function openPaidSite() {
-    window.open(getPaidSiteUrl(), '_blank', 'noopener,noreferrer');
-}
 document.addEventListener('DOMContentLoaded', function() {
-    const link = document.getElementById('paidDeepLink');
-    if (link) link.href = getPaidSiteUrl();
     document.getElementById('startTestBtn')?.addEventListener('click', startTest);
-    document.getElementById('paidCtaBtn')?.addEventListener('click', openPaidSite);
-    document.getElementById('retryTestBtn')?.addEventListener('click', retryTest);
-    document.getElementById('retryTestBtnTop')?.addEventListener('click', retryTest);
 });
 document.querySelectorAll('.test-tabs').forEach(function(tabs) {
     const tabButtons = Array.from(tabs.querySelectorAll('[role="tab"]'));
@@ -289,118 +241,7 @@ const questions = [
     { q: "지금 이 관계를 계속 유지해야 한다고 생각하는 이유가 뭔가요?", a: ["진심으로 소중하니까", "정이 들어서", "끊기가 무서워서", "뭔지 모르겠다"] }
 ];
 
-const results = {
-    high: {
-        name: "빨간불 — 지금 위험해요",
-        tagline: "지금 즉각적인 변화가 필요한 상태예요. 혼자 버티지 마세요.",
-        body: "지금 즉각적인 변화가 필요한 상태예요. 혼자 버티지 마세요.",
-        strength: "이미 문제를 인식하고 있다는 것 자체가 변화의 시작입니다. 인식 없이는 변화도 없습니다.",
-        risk: "현재 패턴이 지속되면 심각한 번아웃, 자존감 저하, 만성 피로로 이어질 수 있습니다.",
-        advice: "지금 당장 가장 에너지를 빼앗는 관계 하나를 파악하고, 그 관계에서 할 수 있는 가장 작은 경계 하나를 설정해보세요.",
-        color: "var(--amber-accent)",
-        mood: "alert",
-        character: "/images/types/relationship-risk/type-high.webp",
-        insight: {
-            headline: "에너지를 갈취하는 '테이커' 식별법",
-            text: "당신의 호의를 당연하게 여기고, 필요할 때만 찾는 사람들을 경계해야 합니다. 테이커들의 5가지 주요 특징과 대응 방안을 확인하세요.",
-            link: "articles/taker-signals.html"
-        }
-    },
-    caution: {
-        name: "노란불 — 슬슬 조심",
-        tagline: "지금은 버틸 만하지만 패턴을 안 바꾸면 소진돼요.",
-        body: "지금은 버틸 만하지만 패턴을 안 바꾸면 소진돼요.",
-        strength: "아직 관계를 건강하게 만들 에너지가 남아 있습니다. 지금 시작하면 충분히 바꿀 수 있습니다.",
-        risk: "현재 패턴을 방치하면 서서히 지쳐가고, 나중에는 더 큰 에너지가 필요하게 됩니다.",
-        advice: "에너지를 빼앗는 관계와 주는 관계를 구분해보세요. 그리고 빼앗는 관계에 어떤 경계를 설정할 수 있는지 생각해보세요.",
-        color: "var(--amber-accent)",
-        mood: "caution",
-        character: "/images/types/relationship-risk/type-caution.webp",
-        insight: {
-            headline: "착한 사람의 번아웃 주의보",
-            text: "베풀수록 공허해진다면 '병적 이타주의'에 빠진 것은 아닌지 점검해야 합니다. 지속 가능한 선의를 위한 심리학적 분석을 만나보세요.",
-            link: "articles/giver-burnout.html"
-        }
-    },
-    ok: {
-        name: "초록불 — 대체로 건강",
-        tagline: "전반적으로 건강해요. 일부 관계만 조율하면 됩니다.",
-        body: "전반적으로 건강해요. 일부 관계만 조율하면 됩니다.",
-        strength: "관계에서 기본적인 건강함을 유지하고 있습니다. 이를 더 정교하게 다듬으면 훨씬 풍요로운 관계를 만들 수 있습니다.",
-        risk: "무의식적으로 형성된 일부 패턴이 있을 수 있습니다. 이를 점검해보는 것이 좋습니다.",
-        advice: "관계에서 불편했던 순간을 하나 떠올리고, 그때 다르게 할 수 있었던 것이 무엇인지 생각해보세요.",
-        color: "var(--green-soft)",
-        mood: "steady",
-        character: "/images/types/relationship-risk/type-ok.webp",
-        insight: {
-            headline: "나를 지키는 '죄책감 없는 거절'",
-            text: "관계를 망치지 않으면서도 나의 에너지를 지키는 법. 전문가들이 제안하는 3단계 거절 전략으로 더 단단한 관계를 만드세요.",
-            link: "articles/setting-boundaries.html"
-        }
-    },
-    healthy: {
-        name: "청정 관계 — 균형 좋아요",
-        tagline: "관계 근육이 단단해요. 에너지 균형이 좋습니다.",
-        body: "관계 근육이 단단해요. 에너지 균형이 좋습니다.",
-        strength: "건강한 관계 패턴을 가지고 있습니다. 이 능력은 주변 사람들에게도 긍정적인 영향을 미칩니다.",
-        risk: "건강한 패턴이 있더라도 특정 상황이나 새로운 관계에서는 흔들릴 수 있습니다.",
-        advice: "현재의 건강한 패턴을 더 의식적으로 발전시켜보세요. 더 깊은 연결과 성장이 가능합니다.",
-        color: "var(--mint)",
-        mood: "healthy",
-        character: "/images/types/relationship-risk/type-healthy.webp",
-        insight: {
-            headline: "성공하는 기버의 3가지 비밀",
-            text: "가장 높은 성과를 내는 사람들은 '똑똑한 기버(Smart Giver)'들입니다. 당신의 건강한 관계를 더 가치 있게 만드는 데이터 분석 리포트.",
-            link: "articles/smart-giver-guide.html"
-        }
-    }
-};
-
 let score = 0, current = 0;
-
-function characterSvg(fill, mood) {
-    const mouths = {
-        alert: "M46 82 Q60 72 74 82",
-        caution: "M47 80 H73",
-        steady: "M46 78 Q60 88 74 78",
-        healthy: "M45 76 Q60 91 75 76"
-    };
-    const brows = mood === "alert"
-        ? '<path d="M36 46 Q45 40 52 48" stroke="var(--ink)" stroke-width="3" stroke-linecap="round" fill="none"/><path d="M68 48 Q76 40 84 46" stroke="var(--ink)" stroke-width="3" stroke-linecap="round" fill="none"/>'
-        : mood === "caution"
-            ? '<path d="M36 46 H52" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/><path d="M68 46 H84" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/>'
-            : '';
-    const signal = mood === "alert"
-        ? '<path d="M96 20 L105 5 M101 31 L116 25" stroke="var(--amber)" stroke-width="4" stroke-linecap="round"/>'
-        : mood === "healthy"
-            ? '<path d="M94 24 C100 14 112 19 111 31 C109 43 94 48 94 48 C94 48 79 43 77 31 C76 19 88 14 94 24Z" fill="var(--mint)" stroke="var(--ink)" stroke-width="3"/>'
-            : '';
-    return `<svg class="character" viewBox="0 0 120 128" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        ${signal}
-        <circle cx="60" cy="64" r="44" fill="${fill}" stroke="var(--ink)" stroke-width="3"/>
-        ${brows}
-        <circle cx="44" cy="58" r="5" fill="var(--ink)"/><circle cx="76" cy="58" r="5" fill="var(--ink)"/>
-        <circle cx="46" cy="56" r="1.6" fill="var(--surface)"/><circle cx="78" cy="56" r="1.6" fill="var(--surface)"/>
-        <path d="${mouths[mood] || mouths.steady}" stroke="var(--ink)" stroke-width="4" stroke-linecap="round" fill="none"/>
-        <circle cx="34" cy="73" r="8" fill="var(--surface)" opacity=".35"/><circle cx="86" cy="73" r="8" fill="var(--surface)" opacity=".35"/>
-        <path d="M30 31 C34 12 51 20 60 34 C69 20 86 12 90 31" stroke="var(--ink)" stroke-width="3" stroke-linecap="round" fill="none"/>
-        <rect x="45" y="103" width="30" height="18" rx="8" fill="${fill}" stroke="var(--ink)" stroke-width="3"/>
-    </svg>`;
-}
-
-function characterVisual(result) {
-    const frame = document.createElement('div');
-    frame.className = 'result-character-frame';
-    const img = document.createElement('img');
-    img.src = result.character;
-    img.alt = result.name + ' 캐릭터';
-    img.loading = 'lazy';
-    img.decoding = 'async';
-    img.addEventListener('error', function() { this.remove(); });
-    const svg = new DOMParser().parseFromString(characterSvg(result.color, result.mood), 'image/svg+xml').documentElement;
-    frame.append(img, svg);
-    return frame;
-}
 
 function startTest() {
     document.getElementById('intro-page').classList.add('hidden');
@@ -433,48 +274,6 @@ function renderQ() {
     });
 }
 
-function renderResultCard(id, title, body, options = {}) {
-    const card = document.getElementById(id);
-    const marker = document.createElement('div');
-    const markerType = options.warning ? 'risk' : (options.note ? 'action' : '');
-    marker.className = 'card-marker' + (markerType ? ' ' + markerType : '');
-    const label = document.createElement('span');
-    label.className = 'card-label';
-    label.textContent = options.warning ? 'RISK SIGNAL' : (options.note ? "TODAY'S ACTION" : 'STRENGTH');
-    const dottedLine = document.createElement('div');
-    dottedLine.className = 'card-dotted-line';
-    dottedLine.setAttribute('aria-hidden', 'true');
-    marker.append(label, dottedLine);
-    const titleEl = document.createElement('div');
-    titleEl.className = options.warning ? 'card-title is-warning' : 'card-title';
-    titleEl.textContent = title;
-    const bodyEl = document.createElement('p');
-    bodyEl.className = 'card-body';
-    bodyEl.textContent = body;
-    const children = [marker, titleEl, bodyEl];
-    if (options.note) {
-        const note = document.createElement('small');
-        note.className = 'lace-note';
-        note.textContent = options.note;
-        children.push(note);
-    }
-    card.replaceChildren(...children);
-}
-
-function renderScoreBar(percent) {
-    const scoreBar = document.getElementById('scoreBar');
-    const label = document.createElement('div');
-    label.className = 'score-label';
-    label.textContent = '관계 위험도 ' + percent + '%';
-    const track = document.createElement('div');
-    track.className = 'score-track';
-    const fill = document.createElement('div');
-    fill.className = 'score-fill';
-    fill.style.width = percent + '%';
-    track.appendChild(fill);
-    scoreBar.replaceChildren(label, track);
-}
-
 function showResult() {
     let key;
     if (score >= 27) key = 'high';
@@ -483,43 +282,6 @@ function showResult() {
     else key = 'healthy';
     location.href = 'result-sequence.html?test=relationship&type=' + encodeURIComponent(key) + '&score=' + encodeURIComponent(score);
 }
-
-function renderResult(key) {
-    document.getElementById('intro-page').classList.add('hidden');
-    document.getElementById('test-page').classList.add('hidden');
-    document.getElementById('result-page').classList.remove('hidden');
-    window.scrollTo(0, 0);
-    const d = results[key] || results.ok;
-    const sequenceHref = 'result-sequence.html?test=relationship&type=' + encodeURIComponent(key);
-    document.getElementById('sequenceLink').href = sequenceHref;
-    document.getElementById('sequenceLinkBottom').href = sequenceHref;
-    const character = document.getElementById('character');
-    character.replaceChildren(characterVisual(d));
-    document.getElementById('typeName').textContent = d.name;
-    document.getElementById('typeTagline').textContent = '"' + d.tagline + '"';
-    document.getElementById('typeBody').innerHTML = d.body;
-
-    const maxScore = questions.length * 3;
-    const scoreParam = Number(new URLSearchParams(location.search).get('score'));
-    const hasRealScore = Number.isFinite(scoreParam) && scoreParam > 0;
-    if (hasRealScore) {
-        const pct = Math.round((scoreParam / maxScore) * 100);
-        renderScoreBar(pct);
-    } else {
-        document.getElementById('scoreBar').style.display = 'none';
-    }
-
-}
-
-function retryTest() {
-    score = 0; current = 0;
-    document.getElementById('result-page').classList.add('hidden');
-    document.getElementById('intro-page').classList.remove('hidden');
-    window.scrollTo(0, 0);
-}
-
-const initialType = new URLSearchParams(location.search).get('type');
-if (initialType && results[initialType]) renderResult(initialType);
 </script>
 </body>
 </html>

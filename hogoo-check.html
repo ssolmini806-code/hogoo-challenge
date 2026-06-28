@@ -23,9 +23,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,1,400;9..144,1,500&display=swap" data-defer-style>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@500;600;700;800;900&display=swap">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@500;600;700;800;900&display=swap" data-defer-style>
     <link rel="preload" as="style" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" data-defer-style>
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,1,400;9..144,1,500&display=swap"></noscript>
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@500;600;700;800;900&display=swap"></noscript>
     <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css"></noscript>
     <meta name="google-adsense-account" content="ca-pub-8564310871125079">
     <link rel="stylesheet" href="/give-theme.css">
@@ -43,7 +44,7 @@
             </div>
             <span class="test-badge">심리학 기반 자가점검</span>
             <div class="test-intro-image">
-                <img src="/images/tests/hogoo-check-illustration-v3.webp" alt="두 부탁 카드 앞에서 내 경계선을 확인하는 사람의 따뜻한 일러스트" loading="eager">
+                <img src="/images/tests/hogoo-check-illustration-v3-800w.webp" srcset="/images/tests/hogoo-check-illustration-v3-400w.webp 400w, /images/tests/hogoo-check-illustration-v3-800w.webp 800w, /images/tests/hogoo-check-illustration-v3.webp 1200w" sizes="(max-width: 480px) 400px, 800px" alt="두 부탁 카드 앞에서 내 경계선을 확인하는 사람의 따뜻한 일러스트" loading="eager">
             </div>
             <p class="test-intro-caption">또 바로 “괜찮아”라고 말하기 전에, 내 경계선을 먼저 확인합니다.</p>
             <h1 class="test-title">나는 호구일까?</h1>
@@ -201,58 +202,9 @@
     </div>
 </div>
 
-<div id="result-page" class="hidden">
-    <div class="inner">
-        <div class="result-header">
-            <p class="label">나의 호구 유형 결과</p>
-            <div id="character"></div>
-            <h1 class="type-name" id="typeName"></h1>
-            <div id="scoreBar" class="score-bar"></div>
-            <a href="result-sequence.html?test=hogoo&type=middle" class="start-btn result-sequence-link" id="sequenceLink">
-                결과 처음부터 보기 →
-            </a>
-            <button class="retry-link" id="retryTestBtnTop">다시 검사하기</button>
-        </div>
-
-        <div class="type-desc-box">
-            <p class="type-tagline" id="typeTagline"></p>
-            <p class="type-body" id="typeBody"></p>
-        </div>
-
-        <div class="result-slide-return">
-            <p>강점, 위험 신호, 오늘의 조언, 선의 심리학 연결은 탭 슬라이드에서 이어서 확인할 수 있습니다.</p>
-            <a href="result-sequence.html?test=hogoo&type=middle" class="start-btn result-sequence-link" id="sequenceLinkBottom">전체 슬라이드 다시 보기 →</a>
-            <button class="retry-link" id="retryTestBtn">테스트 다시 하기</button>
-        </div>
-
-        <footer>
-            <div class="footer-links">
-                <a href="index.html">홈으로</a>
-                <a href="give-test.html">GIVE ID 자가점검</a>
-                <a href="articles/giver-burnout.html">심리 칼럼</a>
-            </div>
-            <div class="copy">&copy; 2026 GIVE Ecosystem. All rights reserved.</div>
-        </footer>
-    </div>
-</div>
-
 <script>
-function getPaidSiteUrl() {
-    const configuredUrl = window.__PAID_SITE_URL && !String(window.__PAID_SITE_URL).includes('%VITE_')
-        ? window.__PAID_SITE_URL
-        : 'https://givecosystem.com/';
-    return configuredUrl;
-}
-function openPaidSite() {
-    window.open(getPaidSiteUrl(), '_blank', 'noopener,noreferrer');
-}
 document.addEventListener('DOMContentLoaded', function() {
-    const link = document.getElementById('paidDeepLink');
-    if (link) link.href = getPaidSiteUrl();
     document.getElementById('startTestBtn')?.addEventListener('click', startTest);
-    document.getElementById('paidCtaBtn')?.addEventListener('click', openPaidSite);
-    document.getElementById('retryTestBtn')?.addEventListener('click', retryTest);
-    document.getElementById('retryTestBtnTop')?.addEventListener('click', retryTest);
 });
 document.querySelectorAll('.test-tabs').forEach(function(tabs) {
     const tabButtons = Array.from(tabs.querySelectorAll('[role="tab"]'));
@@ -301,129 +253,7 @@ const questions = [
     { q: "내 인간관계에서 나는...", a: ["항상 더 많이 주는 쪽이다", "대체로 더 많이 주는 것 같다", "주고받는 것이 비슷하다", "받는 편이다"] }
 ];
 
-const results = {
-    hogoo: {
-        name: "호구 만렙 자각형",
-        tagline: "이제 패턴이 보이기 시작해요",
-        body: "지금 이걸 보고 있다는 것 자체가 변화의 시작이에요.",
-        strength: "강한 공감 능력과 따뜻한 마음으로 주변 사람들에게 신뢰를 받습니다. 이 에너지를 자신을 위해서도 쓸 수 있다면 훨씬 더 건강해집니다.",
-        risk: "반복적인 희생과 억눌린 감정이 쌓여 번아웃으로 이어질 수 있습니다. 상대방이 당신의 친절을 당연하게 여길 가능성이 높습니다.",
-        advice: "마음은 도와주고 싶은데, 오늘은 제가 감당하기 어려워요. 작은 '아니오'부터 연습해보세요.",
-        color: "var(--amber-accent)",
-        mood: "sad",
-        character: "/images/types/hogoo-check/type-hogoo.webp",
-        insight: {
-            headline: "거절이 유독 힘든 이유: 손실 회피 심리",
-            text: "심리학적으로 사람은 얻는 기쁨보다 잃는 고통을 2배 더 크게 느낍니다. 당신에게 거절은 '관계의 손실'로 인식되어 남들보다 더 큰 죄책감을 유발할 수 있습니다.",
-            link: "articles/loss-aversion-relationships.html"
-        }
-    },
-    nice: {
-        name: "부드러운 배려형",
-        tagline: "다정하지만 기준이 흐려질 때가 있어요",
-        body: "다정한데 경계가 모호해요. 착한 것과 만만한 것은 달라요.",
-        strength: "배려와 현실감각을 동시에 갖추고 있습니다. 조금만 경계를 더 명확히 하면 관계가 훨씬 건강해집니다.",
-        risk: "무의식적으로 상대방의 기분을 먼저 배려하다 자신의 감정을 나중에 처리하는 패턴이 있습니다.",
-        advice: "잠깐 생각해보고, 가능한 범위만 다시 말해줄게요. 즉답하지 않는 시간을 만들어 보세요.",
-        color: "var(--amber-accent)",
-        mood: "soft",
-        character: "/images/types/hogoo-check/type-nice.webp",
-        insight: {
-            headline: "관계를 살리는 '경계선'의 과학",
-            text: "경계선은 상대를 밀어내는 벽이 아니라, 나를 지켜서 더 오래 베풀 수 있게 하는 울타리입니다. 죄책감 없는 거절의 기술을 익혀보세요.",
-            link: "articles/setting-boundaries.html"
-        }
-    },
-    middle: {
-        name: "선택적 양보형",
-        tagline: "특정 사람 앞에서 기준이 흔들려요",
-        body: "특정 사람한테만 유독 약해지는 패턴이 있어요.",
-        strength: "유연하게 상황을 판단할 줄 압니다. 어떤 상황에서 경계가 무너지는지 파악하면 훨씬 안정적인 관계를 만들 수 있습니다.",
-        risk: "일관성 없는 반응이 상대방에게 혼란을 줄 수 있고, 특정 조건에서는 여전히 손해를 볼 수 있습니다.",
-        advice: "이번엔 여기까지만 가능해요. 어떤 사람 앞에서 이 말이 어려운지 기록해보세요.",
-        color: "var(--green-soft)",
-        mood: "neutral",
-        character: "/images/types/hogoo-check/type-middle.webp",
-        insight: {
-            headline: "나도 모르는 관계의 '호기심의 틈'",
-            text: "왜 어떤 사람에게는 강하고 어떤 사람에게는 약할까요? 자신도 몰랐던 무의식적인 관계 패턴을 인식하는 것이 중요합니다.",
-            link: "articles/curiosity-gap-patterns.html"
-        }
-    },
-    realist: {
-        name: "눈치 빠른 현실형",
-        tagline: "이상한 낌새를 비교적 잘 알아차려요",
-        body: "이미 이상한 낌새를 잘 잡아냅니다. 선 긋는 것도 자연스러워요.",
-        strength: "자기 인식이 높고 불필요한 희생을 잘 피합니다. 건강한 관계를 만들어 나가는 기초가 탄탄합니다.",
-        risk: "너무 현실적으로 계산하다 관계에서 감정적 연결이 약해질 수 있습니다.",
-        advice: "경계는 잘 지키고 있으니, 이제는 관계의 '따뜻함'을 조금 더 표현해보는 것도 좋습니다.",
-        color: "var(--mint)",
-        mood: "confident",
-        character: "/images/types/hogoo-check/type-realist.webp",
-        insight: {
-            headline: "성공하는 이타주의자, '스마트 기버'의 전략",
-            text: "자신의 이익과 타인의 이익을 동시에 고려하는 기버들이 가장 높은 성과를 냅니다. 당신의 현실 감각에 따뜻함을 한 스푼 더해보세요.",
-            link: "articles/smart-giver-guide.html"
-        }
-    },
-    wall: {
-        name: "단단한 철벽형",
-        tagline: "나를 지키는 힘이 강한 편이에요",
-        body: "경계가 강해서 에너지 낭비는 없지만 좋은 관계도 막힐 수 있어요.",
-        strength: "자기 보호 능력이 탁월합니다. 불필요한 에너지 낭비가 거의 없습니다.",
-        risk: "경계가 너무 높아 친밀한 관계를 형성하기 어려울 수 있습니다. 좋은 사람을 밀어낼 위험도 있습니다.",
-        advice: "신뢰할 수 있는 사람에게 작은 것 하나씩 솔직하게 나눠보세요. 경계와 온기는 공존할 수 있습니다.",
-        color: "var(--surface-2)",
-        mood: "guarded",
-        character: "/images/types/hogoo-check/type-wall.webp",
-        insight: {
-            headline: "테이커를 감별하는 단호함의 지혜",
-            text: "강한 경계는 테이커(Taker)들로부터 나를 완벽히 보호합니다. 이제는 안전한 사람들에게 마음을 여는 연습이 필요할지도 모릅니다.",
-            link: "articles/taker-signals.html"
-        }
-    }
-};
-
 let score = 0, current = 0;
-
-function characterSvg(fill, mood) {
-    const mouths = {
-        sad: "M46 82 Q60 72 74 82",
-        soft: "M46 78 Q60 88 74 78",
-        neutral: "M47 80 H73",
-        confident: "M45 76 Q60 91 75 76",
-        guarded: "M48 80 H72"
-    };
-    const brows = mood === "sad"
-        ? '<path d="M36 47 Q45 42 52 48" stroke="var(--ink)" stroke-width="3" stroke-linecap="round" fill="none"/><path d="M68 48 Q76 42 84 47" stroke="var(--ink)" stroke-width="3" stroke-linecap="round" fill="none"/>'
-        : mood === "guarded"
-            ? '<path d="M36 45 H52" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/><path d="M68 45 H84" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/>'
-            : '';
-    return `<svg class="character" viewBox="0 0 120 128" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <circle cx="60" cy="64" r="44" fill="${fill}" stroke="var(--ink)" stroke-width="3"/>
-        ${brows}
-        <circle cx="44" cy="58" r="5" fill="var(--ink)"/><circle cx="76" cy="58" r="5" fill="var(--ink)"/>
-        <circle cx="46" cy="56" r="1.6" fill="var(--surface)"/><circle cx="78" cy="56" r="1.6" fill="var(--surface)"/>
-        <path d="${mouths[mood] || mouths.soft}" stroke="var(--ink)" stroke-width="4" stroke-linecap="round" fill="none"/>
-        <circle cx="34" cy="73" r="8" fill="var(--surface)" opacity=".35"/><circle cx="86" cy="73" r="8" fill="var(--surface)" opacity=".35"/>
-        <path d="M30 31 C34 12 51 20 60 34 C69 20 86 12 90 31" stroke="var(--ink)" stroke-width="3" stroke-linecap="round" fill="none"/>
-        <rect x="45" y="103" width="30" height="18" rx="8" fill="${fill}" stroke="var(--ink)" stroke-width="3"/>
-    </svg>`;
-}
-
-function characterVisual(result) {
-    const frame = document.createElement('div');
-    frame.className = 'result-character-frame';
-    const img = document.createElement('img');
-    img.src = result.character;
-    img.alt = result.name + ' 캐릭터';
-    img.loading = 'lazy';
-    img.decoding = 'async';
-    img.addEventListener('error', function() { this.remove(); });
-    const svg = new DOMParser().parseFromString(characterSvg(result.color, result.mood), 'image/svg+xml').documentElement;
-    frame.append(img, svg);
-    return frame;
-}
 
 function startTest() {
     document.getElementById('intro-page').classList.add('hidden');
@@ -456,40 +286,6 @@ function renderQ() {
     });
 }
 
-function renderResultCard(id, title, body, options = {}) {
-    const card = document.getElementById(id);
-    const marker = document.createElement('div');
-    marker.className = options.warning ? 'card-marker risk' : 'card-marker';
-    const label = document.createElement('span');
-    label.className = 'card-label';
-    label.textContent = options.warning ? 'RISK SIGNAL' : 'STRENGTH';
-    const dottedLine = document.createElement('div');
-    dottedLine.className = 'card-dotted-line';
-    dottedLine.setAttribute('aria-hidden', 'true');
-    marker.append(label, dottedLine);
-    const titleEl = document.createElement('div');
-    titleEl.className = options.warning ? 'card-title is-warning' : 'card-title';
-    titleEl.textContent = title;
-    const bodyEl = document.createElement('p');
-    bodyEl.className = 'card-body';
-    bodyEl.textContent = body;
-    card.replaceChildren(marker, titleEl, bodyEl);
-}
-
-function renderScoreBar(percent) {
-    const scoreBar = document.getElementById('scoreBar');
-    const label = document.createElement('div');
-    label.className = 'score-label';
-    label.textContent = '호구 지수 ' + percent + '%';
-    const track = document.createElement('div');
-    track.className = 'score-track';
-    const fill = document.createElement('div');
-    fill.className = 'score-fill';
-    fill.style.width = percent + '%';
-    track.appendChild(fill);
-    scoreBar.replaceChildren(label, track);
-}
-
 function showResult() {
     let key;
     if (score >= 30) key = 'hogoo';
@@ -499,43 +295,6 @@ function showResult() {
     else key = 'wall';
     location.href = 'result-sequence.html?test=hogoo&type=' + encodeURIComponent(key) + '&score=' + encodeURIComponent(score);
 }
-
-function renderResult(key) {
-    document.getElementById('intro-page').classList.add('hidden');
-    document.getElementById('test-page').classList.add('hidden');
-    document.getElementById('result-page').classList.remove('hidden');
-    window.scrollTo(0, 0);
-    const d = results[key] || results.middle;
-    const sequenceHref = 'result-sequence.html?test=hogoo&type=' + encodeURIComponent(key);
-    document.getElementById('sequenceLink').href = sequenceHref;
-    document.getElementById('sequenceLinkBottom').href = sequenceHref;
-    const character = document.getElementById('character');
-    character.replaceChildren(characterVisual(d));
-    document.getElementById('typeName').textContent = d.name;
-    document.getElementById('typeTagline').textContent = '“' + d.tagline + '”';
-    document.getElementById('typeBody').innerHTML = d.body;
-
-    const maxScore = questions.length * 3;
-    const scoreParam = Number(new URLSearchParams(location.search).get('score'));
-    const hasRealScore = Number.isFinite(scoreParam) && scoreParam > 0;
-    if (hasRealScore) {
-        const pct = Math.round((scoreParam / maxScore) * 100);
-        renderScoreBar(pct);
-    } else {
-        document.getElementById('scoreBar').style.display = 'none';
-    }
-
-}
-
-function retryTest() {
-    score = 0; current = 0;
-    document.getElementById('result-page').classList.add('hidden');
-    document.getElementById('intro-page').classList.remove('hidden');
-    window.scrollTo(0, 0);
-}
-
-const initialType = new URLSearchParams(location.search).get('type');
-if (initialType && results[initialType]) renderResult(initialType);
 </script>
 </body>
 </html>
