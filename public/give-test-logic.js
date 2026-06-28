@@ -22,7 +22,7 @@ const questions = [
 
 const results = {
     angel: {
-        name: "다 주고 빈 손 🐶",
+        name: "다 퍼주는 강아지 🐶",
         tagline: "\"어… 그래 해줄게\"",
         summary: "거절이라는 단어가 사전에 없어요. 착한 게 아니라 불편함을 피하는 거예요. 결과적으로 내가 비어갑니다.",
         strength: "공감 능력이 뛰어나고 주변 사람에게 깊은 안정감을 줍니다.",
@@ -34,7 +34,7 @@ const results = {
         color: "var(--amber-soft)"
     },
     diplomat: {
-        name: "분위기 지킴이",
+        name: "눈치 보는 고양이 🐱",
         tagline: "\"괜히 나만 불편하게 하지 말자\"",
         summary: "갈등을 피하려고 내 기준을 살짝 내려놓는 습관이 생겼어요. 분위기는 좋아지는데 내 마음은 찜찜합니다.",
         strength: "상황 파악이 빠르고 갈등을 완충하는 힘이 있습니다.",
@@ -46,7 +46,7 @@ const results = {
         color: "var(--amber-soft)"
     },
     architect: {
-        name: "계산 빠른 살림꾼",
+        name: "야무진 여우 🦊",
         tagline: "\"이건 되고 저건 안 돼\"",
         summary: "시간과 에너지를 합리적으로 씁니다. 가끔 차갑다는 말을 듣지만, 사실 자기 보호가 잘 되는 편이에요.",
         strength: "리소스 관리와 판단력이 뛰어나 쉽게 휘둘리지 않습니다.",
@@ -58,7 +58,7 @@ const results = {
         color: "var(--surface-2)"
     },
     guardian: {
-        name: "선 잘 긋는 문지기",
+        name: "현명한 올빼미 🦉",
         tagline: "\"여기까지만요\"",
         summary: "기준이 명확합니다. 다만 유연성이 조금 더 생기면 관계가 더 따뜻해질 수 있어요.",
         strength: "자신의 한계와 원칙을 명확히 알고 있습니다.",
@@ -94,7 +94,7 @@ const results = {
         color: "var(--mint-soft)"
     },
     mixed: {
-        name: "줄타기 균형러",
+        name: "영리한 너구리 🦝",
         tagline: "\"상황 봐서\"",
         summary: "상황에 따라 유연하게 움직입니다. 일관된 기준이 생기면 더 단단해질 수 있어요.",
         strength: "상황 적응력이 좋고 관계를 한쪽으로 몰아가지 않습니다.",
