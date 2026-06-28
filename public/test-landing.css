@@ -1,0 +1,567 @@
+/* Test landing editorial system — presentation only; test/result flows stay in give-theme.css. */
+:root {
+  --landing-bg: #f8f5ee;
+  --landing-ink: #16211c;
+  --landing-green: #114b3c;
+  --landing-green-deep: #0d3b2f;
+  --landing-mint: #dcefe8;
+  --landing-line: #d9d4c9;
+  --landing-serif: 'Hahmlet', 'Noto Serif KR', Georgia, serif;
+}
+
+.hogoo-page #intro-page,
+.risk-page #intro-page,
+.refusal-page #intro {
+  min-height: 100vh;
+  align-items: stretch;
+  padding: clamp(38px, 6vw, 76px) 0 64px;
+  background: var(--landing-bg);
+  color: var(--landing-ink);
+  overflow: visible;
+}
+
+.hogoo-page #intro-page,
+.risk-page #intro-page,
+.refusal-page #intro {
+  background: #FAF8F3;
+}
+
+.hogoo-page #intro-page > .inner,
+.risk-page #intro-page > .inner,
+.refusal-page #intro > .inner {
+  width: min(100%, 1120px);
+  padding-inline: clamp(20px, 4vw, 44px);
+}
+
+.hogoo-page #intro-page > .inner > div,
+.risk-page #intro-page > .inner > div,
+.refusal-page #intro > .inner > div {
+  display: grid;
+  grid-template-columns: minmax(0, .9fr) minmax(340px, 1.1fr);
+  grid-template-rows: auto auto auto auto auto auto;
+  column-gap: clamp(44px, 7vw, 96px);
+  align-items: center;
+  padding: 0;
+  text-align: left;
+}
+
+/* Labels become an editorial folio, not a stack of pills. */
+.hogoo-page #intro-page .prologue-lab-bar,
+.risk-page #intro-page .prologue-lab-bar,
+.refusal-page #intro .prologue-lab-bar {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: start;
+  min-height: 0;
+  margin: 0 0 18px;
+  padding: 0 0 9px;
+  border: 0;
+  border-bottom: 2px solid var(--landing-green);
+  border-radius: 0;
+  background: transparent;
+  gap: 10px;
+}
+
+.hogoo-page #intro-page .prologue-lab-bar,
+.risk-page #intro-page .prologue-lab-bar,
+.refusal-page #intro .prologue-lab-bar {
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 14px;
+  border: 0;
+  border-radius: 999px;
+  background: #E2F4EE;
+}
+
+.prologue-lab-bar span,
+.prologue-lab-bar strong {
+  color: var(--landing-green);
+  font-size: .72rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.prologue-lab-bar strong::before { content: '/'; margin-right: 10px; opacity: .45; }
+
+.hogoo-page #intro-page .prologue-lab-bar span,
+.hogoo-page #intro-page .prologue-lab-bar strong,
+.risk-page #intro-page .prologue-lab-bar span,
+.risk-page #intro-page .prologue-lab-bar strong,
+.refusal-page #intro .prologue-lab-bar span,
+.refusal-page #intro .prologue-lab-bar strong {
+  color: #0A5F4D;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .02em;
+  text-transform: none;
+}
+
+.hogoo-page #intro-page .prologue-lab-bar strong::before,
+.risk-page #intro-page .prologue-lab-bar strong::before,
+.refusal-page #intro .prologue-lab-bar strong::before {
+  content: none;
+}
+
+.hogoo-page #intro-page .test-badge,
+.risk-page #intro-page .test-badge,
+.refusal-page #intro .badge {
+  grid-column: 1;
+  grid-row: 2;
+  justify-self: start;
+  margin: 0 0 16px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: #637068;
+  font-size: .75rem;
+  font-weight: 750;
+  letter-spacing: .04em;
+}
+
+.hogoo-page #intro-page .test-badge,
+.risk-page #intro-page .test-badge,
+.refusal-page #intro .badge {
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 14px;
+  border-radius: 999px;
+  background: #E2F4EE;
+  color: #0A5F4D;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .02em;
+}
+
+.hogoo-page #intro-page .test-title,
+.risk-page #intro-page .test-title,
+.refusal-page #intro h1 {
+  grid-column: 1;
+  grid-row: 3;
+  max-width: 9.5em;
+  margin: 0 0 18px;
+  color: var(--landing-ink);
+  font-family: var(--landing-serif);
+  font-size: clamp(2.75rem, 5.2vw, 4.8rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -.055em;
+  text-align: left;
+  text-wrap: balance;
+}
+
+.hogoo-page #intro-page .test-subtitle,
+.risk-page #intro-page .test-subtitle,
+.refusal-page #intro h1 + p {
+  grid-column: 1;
+  grid-row: 4;
+  max-width: 31em;
+  margin: 0 0 28px;
+  color: #566159;
+  font-size: clamp(.98rem, 1.5vw, 1.08rem);
+  font-weight: 520;
+  line-height: 1.78;
+  text-align: left;
+  text-wrap: pretty;
+}
+
+.hogoo-page #intro-page .test-intro-caption,
+.risk-page #intro-page .test-intro-caption,
+.refusal-page #intro .test-intro-caption {
+  grid-column: 2;
+  grid-row: 6;
+  max-width: 32em;
+  margin: 13px 0 0;
+  color: #6b746e;
+  font-family: var(--landing-serif);
+  font-size: .9rem;
+  font-weight: 600;
+  line-height: 1.65;
+  text-align: right;
+}
+
+.hogoo-page #intro-page .test-intro-image,
+.risk-page #intro-page .test-intro-image,
+.refusal-page #intro .test-intro-image {
+  position: relative;
+  grid-column: 2;
+  grid-row: 1 / 6;
+  width: min(100%, 470px);
+  margin: 0 0 0 auto;
+  border: 0;
+  border-radius: 96px 96px 14px 96px;
+  background: #e6ede7;
+  box-shadow: 18px 18px 0 #dce8e1;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.hogoo-page #intro-page .test-intro-image::before,
+.risk-page #intro-page .test-intro-image::before,
+.refusal-page #intro .test-intro-image::before {
+  content: 'GIVE / FIELD NOTE';
+  left: 22px;
+  top: 22px;
+  z-index: 2;
+  border: 0;
+  border-radius: 0;
+  background: rgba(248,245,238,.88);
+  color: var(--landing-green);
+  padding: 7px 10px;
+  font-size: .62rem;
+  font-weight: 850;
+  letter-spacing: .12em;
+  backdrop-filter: blur(8px);
+}
+
+.test-intro-image img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  filter: saturate(.88) contrast(.98);
+}
+
+.hogoo-page #intro-page .prologue-metrics,
+.risk-page #intro-page .prologue-metrics,
+.refusal-page #intro .prologue-metrics {
+  grid-column: 1;
+  grid-row: 5;
+  width: 100%;
+  max-width: 430px;
+  margin: 0;
+  padding: 18px 0 17px;
+  border-top: 1px solid var(--landing-line);
+  border-bottom: 1px solid var(--landing-line);
+  gap: 0;
+}
+
+.prologue-metrics div { border-right-color: var(--landing-line); }
+.prologue-metrics div:first-child { text-align: left; }
+.prologue-metrics div:last-child { text-align: right; }
+.prologue-metrics strong {
+  color: var(--landing-green);
+  font-family: var(--landing-serif);
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -.04em;
+}
+.prologue-metrics span {
+  margin-top: 7px;
+  color: #747b76;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .05em;
+}
+
+.hogoo-page #intro-page .prologue-metrics,
+.risk-page #intro-page .prologue-metrics,
+.refusal-page #intro .prologue-metrics {
+  padding: 12px 0;
+  border: 0;
+}
+
+.hogoo-page #intro-page .prologue-metrics div,
+.risk-page #intro-page .prologue-metrics div,
+.refusal-page #intro .prologue-metrics div {
+  border: 0;
+  border-right: 1px solid #E7E1D5;
+  text-align: center;
+}
+
+.hogoo-page #intro-page .prologue-metrics div:last-child,
+.risk-page #intro-page .prologue-metrics div:last-child,
+.refusal-page #intro .prologue-metrics div:last-child {
+  border-right: 0;
+}
+
+.hogoo-page #intro-page .prologue-metrics strong,
+.risk-page #intro-page .prologue-metrics strong,
+.refusal-page #intro .prologue-metrics strong {
+  color: #114B3C;
+  font-family: inherit;
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.hogoo-page #intro-page .prologue-metrics span,
+.risk-page #intro-page .prologue-metrics span,
+.refusal-page #intro .prologue-metrics span {
+  margin-top: 4px;
+  color: #5C635E;
+  font-size: 12px;
+  letter-spacing: 0;
+}
+
+.hogoo-page #intro-page .prologue-start-card,
+.risk-page #intro-page .prologue-start-card,
+.refusal-page #intro .prologue-start-card {
+  grid-column: 1 / -1;
+  grid-row: 7;
+  width: 100%;
+  margin: clamp(46px, 7vw, 76px) 0 24px;
+  padding: 0;
+  border: 0;
+  border-top: 1px solid rgba(255,255,255,.18);
+  border-radius: 0;
+  background: var(--landing-green);
+  color: #fff;
+  box-shadow: none;
+  text-align: left;
+}
+
+.hogoo-page #intro-page .prologue-start-card,
+.risk-page #intro-page .prologue-start-card,
+.refusal-page #intro .prologue-start-card {
+  border: 0;
+  background: transparent;
+  color: #114B3C;
+}
+
+.hogoo-page #intro-page .prologue-start-card,
+.risk-page #intro-page .prologue-start-card,
+.refusal-page #intro .prologue-start-card {
+  display: grid;
+  grid-template-columns: minmax(240px, .8fr) 1.2fr;
+  align-items: stretch;
+}
+
+.prologue-start-head {
+  align-content: center;
+  margin: 0;
+  padding: 28px 30px;
+  border-right: 1px solid rgba(255,255,255,.16);
+  gap: 8px;
+}
+
+.hogoo-page #intro-page .prologue-start-head,
+.risk-page #intro-page .prologue-start-head,
+.refusal-page #intro .prologue-start-head {
+  border-right: 1px solid #E7E1D5;
+}
+
+.hogoo-page #intro-page .prologue-start-head span,
+.risk-page #intro-page .prologue-start-head span,
+.refusal-page #intro .prologue-start-head span {
+  color: #0A5F4D;
+}
+
+.hogoo-page #intro-page .prologue-start-head strong,
+.risk-page #intro-page .prologue-start-head strong,
+.refusal-page #intro .prologue-start-head strong {
+  color: #114B3C;
+}
+.prologue-start-head span {
+  color: #99d3c0;
+  font-size: .67rem;
+  letter-spacing: .16em;
+}
+.prologue-start-head strong {
+  color: #fff;
+  font-family: var(--landing-serif);
+  font-size: clamp(1.1rem, 2vw, 1.42rem);
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.prologue-signals {
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+}
+.prologue-signals div {
+  min-height: 118px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 24px;
+  border: 0;
+  border-right: 1px solid rgba(255,255,255,.16);
+  border-radius: 0;
+  background: transparent;
+}
+.prologue-signals div:last-child { border-right: 0; }
+.prologue-signals strong {
+  color: #fff;
+  font-family: var(--landing-serif);
+  font-size: 1.05rem;
+  font-weight: 750;
+}
+.prologue-signals span {
+  margin-top: 7px;
+  color: #bfd8cf;
+  font-size: .76rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.hogoo-page #intro-page .prologue-signals div,
+.risk-page #intro-page .prologue-signals div,
+.refusal-page #intro .prologue-signals div {
+  background: #F0F9F6;
+  border-right: 1px solid #E7E1D5;
+}
+
+.hogoo-page #intro-page .prologue-signals div:last-child,
+.risk-page #intro-page .prologue-signals div:last-child,
+.refusal-page #intro .prologue-signals div:last-child {
+  border-right: 0;
+}
+
+.hogoo-page #intro-page .prologue-signals strong,
+.risk-page #intro-page .prologue-signals strong,
+.refusal-page #intro .prologue-signals strong {
+  color: #114B3C;
+}
+
+.hogoo-page #intro-page .prologue-signals span,
+.risk-page #intro-page .prologue-signals span,
+.refusal-page #intro .prologue-signals span {
+  color: #5C635E;
+}
+
+.hogoo-page #intro-page .result-preview-link,
+.risk-page #intro-page .result-preview-link,
+.refusal-page #intro .result-preview-link {
+  grid-column: 1;
+  grid-row: 8;
+  width: auto;
+  min-height: 56px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  color: #5e6962;
+  padding: 0 4px;
+  font-size: .85rem;
+  font-weight: 750;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+
+.hogoo-page #intro-page .start-btn,
+.risk-page #intro-page .start-btn,
+.refusal-page #intro #startTestBtn {
+  grid-column: 2;
+  grid-row: 8;
+  width: min(100%, 360px);
+  min-height: 62px;
+  justify-self: end;
+  border: 0;
+  border-radius: 0;
+  background: var(--landing-green);
+  color: #fff;
+  box-shadow: none;
+  font-size: .96rem;
+  font-weight: 800;
+  letter-spacing: -.01em;
+  transition: background .18s ease, transform .18s ease;
+}
+
+.hogoo-page #intro-page .start-btn,
+.risk-page #intro-page .start-btn,
+.refusal-page #intro #startTestBtn {
+  background: #114B3C;
+  color: #fff;
+}
+
+.hogoo-page #intro-page .start-btn::after,
+.risk-page #intro-page .start-btn::after,
+.refusal-page #intro #startTestBtn::after { content: '\2192'; margin-left: 14px; font-size: 1.2em; }
+.hogoo-page #intro-page .start-btn:hover,
+.risk-page #intro-page .start-btn:hover,
+.refusal-page #intro #startTestBtn:hover { background: var(--landing-green-deep); transform: translateY(-2px); }
+
+.hogoo-page #intro-page .start-btn:hover,
+.risk-page #intro-page .start-btn:hover,
+.refusal-page #intro #startTestBtn:hover {
+  background: #0D3B2F;
+}
+
+@media (max-width: 760px) {
+  .hogoo-page #intro-page,
+  .risk-page #intro-page,
+  .refusal-page #intro { padding: 30px 0 46px; }
+
+  .hogoo-page #intro-page > .inner > div,
+  .risk-page #intro-page > .inner > div,
+  .refusal-page #intro > .inner > div { display: flex; flex-direction: column; align-items: stretch; }
+
+  .hogoo-page #intro-page .prologue-lab-bar,
+  .risk-page #intro-page .prologue-lab-bar,
+  .refusal-page #intro .prologue-lab-bar { order: 1; align-self: flex-start; margin-bottom: 12px; padding: 0 0 7px; }
+
+  .hogoo-page #intro-page .prologue-lab-bar,
+  .risk-page #intro-page .prologue-lab-bar,
+  .refusal-page #intro .prologue-lab-bar { padding: 4px 14px; }
+
+  .hogoo-page #intro-page .test-badge,
+  .risk-page #intro-page .test-badge,
+  .refusal-page #intro .badge { order: 2; align-self: flex-start; margin-bottom: 13px; }
+
+  .hogoo-page #intro-page .test-title,
+  .risk-page #intro-page .test-title,
+  .refusal-page #intro h1 {
+    order: 3;
+    max-width: 9em;
+    margin-bottom: 13px;
+    font-size: clamp(2.35rem, 11.8vw, 3.35rem);
+    line-height: 1.09;
+  }
+
+  .hogoo-page #intro-page .test-subtitle,
+  .risk-page #intro-page .test-subtitle,
+  .refusal-page #intro h1 + p { order: 4; display: block; margin-bottom: 22px; font-size: .96rem; line-height: 1.68; }
+
+  .hogoo-page #intro-page .test-intro-image,
+  .risk-page #intro-page .test-intro-image,
+  .refusal-page #intro .test-intro-image {
+    order: 5;
+    width: min(100% - 10px, 330px);
+    margin: 0 auto 8px;
+    border-radius: 62px 62px 10px 62px;
+    box-shadow: 10px 10px 0 #dce8e1;
+  }
+
+  .hogoo-page #intro-page .test-intro-caption,
+  .risk-page #intro-page .test-intro-caption,
+  .refusal-page #intro .test-intro-caption { order: 6; display: block; margin: 9px 0 20px; font-size: .8rem; text-align: left; }
+
+  .hogoo-page #intro-page .prologue-metrics,
+  .risk-page #intro-page .prologue-metrics,
+  .refusal-page #intro .prologue-metrics { order: 7; max-width: none; margin: 21px 0 0; }
+
+  .prologue-metrics div:first-child,
+  .prologue-metrics div:last-child { text-align: center; }
+  .prologue-metrics strong { font-size: 1.75rem; }
+
+  .hogoo-page #intro-page .prologue-start-card,
+  .risk-page #intro-page .prologue-start-card,
+  .refusal-page #intro .prologue-start-card {
+    order: 8;
+    display: block;
+    margin: 28px 0 18px;
+  }
+
+  .prologue-start-head { padding: 22px 20px; border-right: 0; border-bottom: 1px solid rgba(255,255,255,.16); }
+  .hogoo-page #intro-page .prologue-start-head,
+  .risk-page #intro-page .prologue-start-head,
+  .refusal-page #intro .prologue-start-head { border-right: 0; border-bottom: 1px solid #E7E1D5; }
+  .prologue-signals div { min-height: 96px; padding: 17px 12px; }
+  .prologue-signals strong { font-size: .92rem; }
+  .prologue-signals span { font-size: .68rem; }
+
+  .hogoo-page #intro-page .start-btn,
+  .risk-page #intro-page .start-btn,
+  .refusal-page #intro #startTestBtn { order: 9; width: 100%; min-height: 58px; }
+
+  .hogoo-page #intro-page .result-preview-link,
+  .risk-page #intro-page .result-preview-link,
+  .refusal-page #intro .result-preview-link { order: 10; justify-content: center; min-height: 48px; }
+}
