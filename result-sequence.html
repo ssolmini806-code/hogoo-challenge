@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+  <script type="module" src="/src/site-env.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GIVE ID 결과 흐름 · GIVE Ecosystem</title>
@@ -42,7 +43,7 @@
       <p class="sequence-line is-soft" id="seqIntro3D">지금도 조용히 작동하고 있어요.</p>
     </section>
 
-    <section class="sequence-slide" data-tone="plain" aria-label="강점">
+    <section class="sequence-slide" data-tone="mint" aria-label="강점">
       <span class="sequence-label">당신의 강점</span>
       <p class="sequence-line" id="seqStrengthLeadA">좋은 소식도 있어요.</p>
       <p class="sequence-line" id="seqStrengthLeadB">당신은 이미 <strong>느끼고 있었거든요</strong>.</p>
@@ -51,15 +52,15 @@
       <p class="sequence-line is-soft" id="seqStrengthOutro">그게 변화의 출발점이에요.</p>
     </section>
 
-    <section class="sequence-slide" data-tone="plain" aria-label="위험 신호">
-      <span class="sequence-label is-amber">위험 신호</span>
+    <section class="sequence-slide" data-tone="risk" aria-label="위험 신호">
+      <span class="sequence-label is-risk">위험 신호</span>
       <p class="sequence-line" id="seqRiskLead">이 패턴이 계속되면</p>
       <p class="sequence-copy" id="seqRisk"></p>
       <span class="sequence-rule" aria-hidden="true"></span>
       <p class="sequence-line is-soft" id="seqRiskOutro">지금 알아차린 것만으로도 이미 달라지고 있어요.</p>
     </section>
 
-    <section class="sequence-slide" data-tone="plain" aria-label="오늘의 조언">
+    <section class="sequence-slide is-mint" data-tone="mint" aria-label="오늘의 조언">
       <span class="sequence-label">오늘의 조언</span>
       <p class="sequence-line" id="seqAdviceLead">오늘 딱 하나만 해보세요.</p>
       <article class="sequence-action">
@@ -78,13 +79,24 @@
       <p class="sequence-tagline" id="seqTagline"></p>
     </section>
 
-    <section class="sequence-slide" data-tone="plain" aria-label="다음 행동">
+    <section class="sequence-slide" data-tone="plain" aria-label="선의 심리학 연결">
+      <span class="sequence-label is-why">WHY</span>
+      <p class="sequence-line" id="seqWhyTitle">호구냐 아니냐보다 중요한 건 반복 패턴입니다</p>
+      <span class="sequence-rule" aria-hidden="true"></span>
+      <p class="sequence-copy" id="seqWhyBody"></p>
+      <a href="/white-psychology.html" class="sequence-sub-link" id="seqWhyLink">선의 심리학 보러 가기 →</a>
+    </section>
+
+    <section class="sequence-slide" data-tone="plain" aria-label="마지막 행동">
       <p class="sequence-line" id="seqFinalA">아는 것과</p>
       <p class="sequence-line" id="seqFinalB">바꾸는 건 달라요.</p>
       <span class="sequence-rule" aria-hidden="true"></span>
       <p class="sequence-line is-soft" id="seqFinalC">7일은 첫 실행을 여는 시간입니다.</p>
-      <a href="/give-test.html" class="sequence-cta" id="seq-cta-result">내 결과 전체 보기 →</a>
-      <a href="/hogoo-test.html" class="sequence-sub-link" id="seq-cta-next">다음 행동 보기</a>
+      <div class="sequence-actions">
+        <a href="/give-test.html" class="sequence-cta" id="seq-retry">다시 검사하기</a>
+        <a href="https://givecosystem.com/" target="_blank" rel="noopener noreferrer" class="sequence-sub-cta" id="seq-paid-cta">GIVE ID 심화 리포트 보기 →</a>
+        <a href="/hogoo-test.html" class="sequence-sub-link" id="seq-cta-next">다음 행동 보기</a>
+      </div>
     </section>
   </main>
 
@@ -98,8 +110,10 @@
       give: {
         label: "GIVE ID 결과",
         home: "/give-test.html#result-page",
+        retryUrl: "/give-test.html",
         cta: "7일 챌린지 시작하기",
         ctaUrl: "/hogoo-test.html",
+        paidCta: "GIVE ID 심화 리포트 보기 →",
         fallback: "mixed",
         storage: "give_test_result",
         sequence: {
@@ -111,6 +125,11 @@
           riskLead: "이 패턴이 계속되면",
           riskOutro: "지금 알아차린 것만으로도 이미 달라지고 있어요.",
           adviceLead: "오늘 딱 하나만 해보세요.",
+          why: {
+            title: "착한 마음이 문제가 아니라, 반복 패턴이 문제예요",
+            body: "선의 심리학은 좋은 마음을 버리자는 이야기가 아닙니다. 내 기준이 늦게 도착하는 순간을 알아차리고, 지속 가능한 도움의 범위를 다시 정하는 방법을 다룹니다.",
+            linkText: "왜 착한 마음이 손해가 되는지 보기 →"
+          },
           final: ["아는 것과", "바꾸는 건 달라요.", "7일은 첫 실행을 여는 시간입니다."]
         },
         types: {
@@ -175,8 +194,10 @@
       hogoo: {
         label: "호구 테스트 결과",
         home: "/hogoo-check.html#result-page",
+        retryUrl: "/hogoo-check.html",
         cta: "거절력도 확인하기",
         ctaUrl: "/refusal-test.html",
+        paidCta: "GIVE ID 심화 리포트 보기 →",
         fallback: "middle",
         sequence: {
           intro1: ["부탁 앞에서", "내가 자꾸 뒤로 밀린다면,", "<strong>경계</strong>가 흐려진 거예요."],
@@ -187,6 +208,11 @@
           riskLead: "이 상태가 반복되면",
           riskOutro: "손해를 줄이는 첫 단계는 부탁 앞에서 잠깐 멈추는 거예요.",
           adviceLead: "오늘은 부탁 하나에 이렇게 반응해보세요.",
+          why: {
+            title: "호구냐 아니냐보다 중요한 건 반복 패턴입니다",
+            body: "착한 마음 자체가 문제가 아니라, 부탁 앞에서 내 기준이 늦게 도착하는 순간이 반복될 때 지치기 쉽습니다. 선의 심리학은 그 기준을 다시 세우는 방법을 다룹니다.",
+            linkText: "왜 착한 마음이 손해가 되는지 보기 →"
+          },
           final: ["좋은 사람인 것과", "다 해주는 사람은 달라요.", "이제 다음은 거절 문장 연습입니다."]
         },
         types: {
@@ -200,8 +226,10 @@
       relationship: {
         label: "인간관계 위험도 결과",
         home: "/relationship-risk.html#result-page",
+        retryUrl: "/relationship-risk.html",
         cta: "GIVE ID로 패턴 보기",
         ctaUrl: "/give-test.html",
+        paidCta: "GIVE ID 심화 분석 받기 →",
         fallback: "ok",
         sequence: {
           intro1: ["관계가 끝난 뒤", "유난히 기운이 빠진다면,", "<strong>신호</strong>가 켜진 거예요."],
@@ -212,6 +240,11 @@
           riskLead: "이 경고를 무시하면",
           riskOutro: "관계를 끊기 전에 먼저 내 회복선을 확인해야 합니다.",
           adviceLead: "오늘은 가장 피곤한 관계 하나만 떠올려보세요.",
+          why: {
+            title: "위험 신호는 관계를 끊으라는 판정이 아닙니다",
+            body: "관계가 나를 소진시키기 전에 몸과 마음의 신호를 읽고, 거리·경계·회복 순서를 정하는 자기 점검입니다. 선의 심리학은 선한 사람이 무너지지 않는 관계 설계를 다룹니다.",
+            linkText: "왜 착한 마음이 지치게 되는지 보기 →"
+          },
           final: ["참는 것과", "관계를 지키는 건 달라요.", "다음은 내 관계 패턴을 더 넓게 보는 단계입니다."]
         },
         types: {
@@ -224,8 +257,10 @@
       refusal: {
         label: "거절력 점검 결과",
         home: "/refusal-test.html#result",
+        retryUrl: "/refusal-test.html",
         cta: "관계 위험도도 보기",
         ctaUrl: "/relationship-risk.html",
+        paidCta: "GIVE ID 심화 리포트 보기 →",
         fallback: "sprout",
         sequence: {
           intro1: ["거절이 어려운 건", "말솜씨 문제가 아니라,", "<strong>불안</strong>의 문제일 수 있어요."],
@@ -236,6 +271,11 @@
           riskLead: "거절을 계속 미루면",
           riskOutro: "짧고 부드러운 한 문장이 관계를 더 오래 지켜줄 수 있어요.",
           adviceLead: "오늘은 이 문장 하나만 입 밖으로 꺼내보세요.",
+          why: {
+            title: "거절은 관계를 포기하는 말이 아닙니다",
+            body: "좋은 관계일수록 가능한 범위가 필요합니다. 선의 심리학은 공감은 남기고, 내 시간과 회복을 지키는 문장을 연습합니다.",
+            linkText: "왜 착한 마음이 손해가 되는지 보기 →"
+          },
           final: ["거절은", "관계를 끝내는 말이 아니에요.", "다음은 관계 위험도를 함께 확인해보세요."]
         },
         types: {
@@ -268,12 +308,20 @@
     var homeParts = test.home.split("#");
     var resultUrl = homeParts[0] + "?type=" + encodeURIComponent(key) + (homeParts[1] ? "#" + homeParts[1] : "");
     if (score) resultUrl = homeParts[0] + "?type=" + encodeURIComponent(key) + "&score=" + encodeURIComponent(score) + (homeParts[1] ? "#" + homeParts[1] : "");
-    var ctaBtn = document.getElementById("seq-cta-result");
-    if (ctaBtn) ctaBtn.href = resultUrl;
     var nextCta = document.getElementById("seq-cta-next");
     if (nextCta) {
       nextCta.textContent = test.cta;
       nextCta.href = test.ctaUrl;
+    }
+    var retryCta = document.getElementById("seq-retry");
+    if (retryCta) retryCta.href = test.retryUrl || homeParts[0];
+    var paidCta = document.getElementById("seq-paid-cta");
+    if (paidCta) {
+      var configuredPaidUrl = window.__PAID_SITE_URL && !String(window.__PAID_SITE_URL).includes("%VITE_")
+        ? window.__PAID_SITE_URL
+        : "https://givecosystem.com/";
+      paidCta.href = configuredPaidUrl;
+      paidCta.textContent = test.paidCta || "GIVE ID 심화 리포트 보기 →";
     }
     var sequence = test.sequence || tests.give.sequence;
     document.getElementById("seqIntro1A").textContent = sequence.intro1[0];
@@ -292,12 +340,15 @@
     document.getElementById("seqRiskLead").textContent = sequence.riskLead;
     document.getElementById("seqRiskOutro").textContent = sequence.riskOutro;
     document.getElementById("seqAdviceLead").textContent = sequence.adviceLead;
+    document.getElementById("seqWhyTitle").textContent = sequence.why.title;
+    document.getElementById("seqWhyBody").textContent = sequence.why.body;
+    document.getElementById("seqWhyLink").textContent = sequence.why.linkText;
     document.getElementById("seqFinalA").textContent = sequence.final[0];
     document.getElementById("seqFinalB").textContent = sequence.final[1];
     document.getElementById("seqFinalC").textContent = sequence.final[2];
-    document.getElementById("seqStrength").textContent = type.strength;
-    document.getElementById("seqRisk").textContent = type.risk;
-    document.getElementById("seqAdvice").textContent = type.advice;
+    document.getElementById("seqStrength").innerHTML = type.strength;
+    document.getElementById("seqRisk").innerHTML = type.risk;
+    document.getElementById("seqAdvice").innerHTML = type.advice;
     document.getElementById("seqTypeName").textContent = type.name;
     document.getElementById("seqTagline").textContent = type.tagline;
     document.getElementById("seqResultLabel").textContent = test.label;
@@ -337,7 +388,6 @@
 
     function next() {
       if (index >= slides.length - 1) {
-        window.location.href = resultUrl;
         return;
       }
       render(index + 1);

@@ -193,63 +193,9 @@
                 </a>
             </div>
 
-            <section class="result-report-lead" aria-label="거절력 결과 리포트 안내">
-                <div class="result-visual">
-                    <img src="/images/tests/refusal-test-illustration-v3.webp" alt="따뜻하지만 분명하게 거절을 연습하는 일러스트" loading="lazy">
-                </div>
-                <div class="result-report-copy">
-                    <strong>거절은 관계를 끝내는 말이 아닙니다</strong>
-                    <p>아래 결과는 내 기준을 지키는 힘과, 오늘 바로 연습할 수 있는 한 문장을 함께 보여줍니다.</p>
-                </div>
-            </section>
-
-            <div class="result-retry-top">
-                <button class="retry-link" id="retryTestBtnTop" type="button">다시 검사하기</button>
-            </div>
-            
-            <div class="card practice-card result-card action">
-                <div class="card-marker action"><span class="card-label">TODAY'S ACTION</span><div class="card-dotted-line" aria-hidden="true"></div></div>
-                <h2>오늘 바로 연습할 한 문장</h2>
-                <p id="script" class="practice-script"></p>
-                <small class="lace-note">상황 인정 → 마음 표현 → 내 기준 → 가능한 범위 순서로 말하면 덜 차갑고 더 분명해집니다.</small>
-            </div>
-
-            <section class="white-psychology-bridge result-card" aria-label="선의 심리학 안내">
-                <div class="card-marker why"><span class="card-label">WHY</span><div class="card-dotted-line" aria-hidden="true"></div></div>
-                <h2>거절은 관계를 포기하는 말이 아닙니다</h2>
-                <p>좋은 관계일수록 가능한 범위가 필요합니다. 선의 심리학은 공감은 남기고, 내 시간과 회복을 지키는 문장을 연습합니다.</p>
-                <a href="white-psychology.html">왜 착한 마음이 손해가 되는지 보기 →</a>
-            </section>
-
-            <!-- Expert Insight -->
-            <div id="expertInsight" class="expert-insight">
-                <span class="expert-title">Expert Insight</span>
-                <h3 class="expert-headline" id="expertHeadline">관계를 살리는 거절의 기술</h3>
-                <p class="expert-text" id="expertText">거절은 상대에 대한 거부가 아니라, 나의 상황에 대한 솔직한 공유입니다. 더 건강한 관계를 위해 경계선을 세우는 방법을 알아보세요.</p>
-                <a href="articles/setting-boundaries.html" class="expert-link" id="expertLink">전문 칼럼 읽어보기 →</a>
-            </div>
-
-            <div class="info">
-                <section class="info-card">
-                    <h2>거절력을 키우는 3단계</h2>
-                    <ol class="practice-list">
-                        <li>바로 답하지 않고 “확인하고 말해줄게”로 시간을 확보합니다.</li>
-                        <li>설명은 짧게 하고, 가능한 범위가 있으면 범위만 말합니다.</li>
-                        <li>죄책감이 올라오면 “내가 지킨 기준이 무엇인지”를 한 줄로 기록합니다.</li>
-                    </ol>
-                </section>
-            </div>
-
-            <div class="grid">
-                <a class="rel" href="give-test.html">GIVE ID 테스트<span>나의 관계 성향 확인</span></a>
-                <a class="rel" href="hogoo-check.html">나는 호구일까?<span>손해 보는 패턴 확인</span></a>
-                <a class="rel" href="relationship-risk.html">인간관계 위험도 테스트<span>소진되는 관계 점검</span></a>
-            </div>
-
-            <div class="home-return">
-                <a href="index.html">홈으로 돌아가기</a>
-            </div>
-            <div class="retry-wrap">
+            <div class="result-slide-return">
+                <p>강점, 위험 신호, 오늘의 조언, 선의 심리학 연결은 탭 슬라이드에서 이어서 확인할 수 있습니다.</p>
+                <a href="result-sequence.html?test=refusal&type=sprout" class="start-btn result-sequence-link" id="sequenceLinkBottom">전체 슬라이드 다시 보기 →</a>
                 <button class="retry-link" id="retryTestBtn" type="button">테스트 다시 하기</button>
             </div>
         </div>
@@ -323,14 +269,10 @@ img.loading='lazy';
 img.decoding='async';
 img.addEventListener('error',function(){img.remove();character.classList.add('is-empty')});
 character.replaceChildren(img);
-document.getElementById('body').textContent=r.body;
-document.getElementById('script').textContent=r.script;
-document.getElementById('sequenceLink').href='result-sequence.html?test=refusal&type='+encodeURIComponent(r.key);
-if(r.insight) {
-    document.getElementById('expertHeadline').textContent = r.insight.h;
-    document.getElementById('expertText').textContent = r.insight.t;
-    document.getElementById('expertLink').href = r.insight.l;
-}
+document.getElementById('body').innerHTML=r.body;
+const sequenceHref='result-sequence.html?test=refusal&type='+encodeURIComponent(r.key);
+document.getElementById('sequenceLink').href=sequenceHref;
+document.getElementById('sequenceLinkBottom').href=sequenceHref;
 scrollTo(0,0)}
 const initialType=new URLSearchParams(location.search).get('type');
 if(initialType) renderResult(initialType);
