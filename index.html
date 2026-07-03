@@ -2,8 +2,6 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <script src="/site-bootstrap.js" data-third-party="ga,ads,clarity,userback,addToAny" defer></script>
-    <script src="/third-party-loader.js" defer></script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="shortcut icon" href="/favicon.svg">
     <link rel="apple-touch-icon" href="/favicon.svg">
@@ -97,17 +95,23 @@
     }
     </script>
     <meta name="google-adsense-account" content="ca-pub-8564310871125079">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,1,400;9..144,1,500&display=swap" data-defer-style>
-    <link rel="preload" as="style" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" crossorigin data-defer-style>
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,1,400;9..144,1,500&display=swap"></noscript>
-    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" crossorigin></noscript>
-    <link rel="stylesheet" href="/give-theme.css">
+    <style>
+    :root{--bg:#FAF8F3;--surface:#FFFFFF;--ink:#1A1F1C;--ink-sub:#5C635E;--ink-faint:#767B74;--line:#E7E1D5;--green:#114B3C;--green-deep:#0D3B2F;--green-soft:#E9F2EC;--mint:#00A885;--mint-soft:#E2F4EE;--mint-ink:#127562;--r-lg:8px;--r-pill:999px;--sans:-apple-system,BlinkMacSystemFont,system-ui,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;--serif:Georgia,"Times New Roman",serif}
+    *{box-sizing:border-box;margin:0;padding:0;word-break:keep-all}
+    html{scroll-behavior:smooth}
+    body{min-width:320px;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+    a{color:inherit}.wrap{width:min(100%,560px);margin:0 auto;padding:0 22px}.skip{position:absolute;left:-999px;top:8px;z-index:10000;background:var(--green);color:var(--surface);padding:10px 16px;border-radius:8px;font-weight:800;text-decoration:none}.skip:focus{left:16px}
+    nav,.site-nav{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:18px 0;border-bottom:1px solid var(--line)}.logo,.brand{min-height:40px;display:inline-flex;align-items:center;white-space:nowrap;font-family:var(--serif);font-style:italic;font-weight:500;font-size:1.05rem;letter-spacing:.01em;color:var(--green);text-decoration:none}.nav-links{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:6px 15px}.nav-links a{min-height:44px;display:inline-flex;align-items:center;color:var(--ink-sub);font-size:.88rem;font-weight:700;text-decoration:none}
+    .hero{padding:52px 0 30px;text-align:center}.eyebrow,.section-label{display:inline-block;margin-bottom:14px;color:var(--mint-ink);font-family:var(--serif);font-size:.95rem;font-style:italic}.hero h1{max-width:12em;margin:0 auto 14px;font-size:clamp(2rem,8.4vw,2.8rem);font-weight:800;line-height:1.16;letter-spacing:0;text-wrap:balance}.hero p{max-width:25em;margin:0 auto 26px;color:var(--ink-sub);font-size:1rem;font-weight:450;line-height:1.75;text-wrap:pretty}.hero-actions{display:grid;gap:9px;max-width:380px;margin:0 auto}.hero-note{margin-top:12px;color:var(--ink-faint);font-size:.8rem;font-weight:700}
+    .btn{min-height:54px;border:1px solid transparent;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:0 18px;background:var(--surface);color:var(--green);font-weight:800;font-size:.98rem;text-decoration:none;cursor:pointer}.btn-primary{background:var(--green);color:var(--surface);box-shadow:0 12px 26px rgba(17,75,60,.16)}.btn-ghost{background:var(--surface);color:var(--green);border-color:var(--line)}
+    .choice-grid{display:grid;gap:12px}.choice-card{display:block;width:100%;padding:22px;border:1px solid var(--line);border-radius:var(--r-lg);background:var(--surface);color:inherit;text-align:left;text-decoration:none}.choice-card.featured{border-color:var(--mint);box-shadow:0 14px 34px rgba(17,75,60,.07)}.choice-card h2,.choice-card h3{margin:14px 0 7px;font-size:1.18rem;font-weight:800;line-height:1.35;letter-spacing:0;text-wrap:balance}.card-desc{color:var(--ink-sub);font-size:.94rem;line-height:1.7;margin-bottom:14px}.go{color:var(--green);font-size:.9rem;font-weight:800;text-decoration:none}.pill{display:inline-flex;margin-bottom:14px;padding:5px 10px;border-radius:var(--r-pill);background:var(--mint-soft);color:var(--mint-ink);font-size:.72rem;font-weight:800;letter-spacing:.02em}.test-card-image{margin:-22px -22px 2px;aspect-ratio:1/1;background:var(--green-soft);overflow:hidden}.test-card-image img{width:100%;height:100%;object-fit:cover;display:block}
+    @media (min-width:900px){.wrap{width:min(100%,1040px);padding:0 32px}.hero{padding:74px 0 46px}.hero-actions{grid-template-columns:1fr 1fr}.choice-grid{grid-template-columns:repeat(4,1fr)}}
+    @media (max-width:640px){.wrap{padding:0 20px}.site-nav,nav{align-items:flex-start}.choice-card{padding:20px}.test-card-image{margin:-20px -20px 2px}}
+    </style>
+    <noscript><link rel="stylesheet" href="/give-theme.css"></noscript>
     <link rel="preload" as="image" href="/images/tests/give-id-illustration-v3-400w.webp"
           imagesrcset="/images/tests/give-id-illustration-v3-400w.webp 400w, /images/tests/give-id-illustration-v3-800w.webp 800w"
-          imagesizes="(max-width: 600px) 400px, 560px" fetchpriority="high">
-    <script src="/share.js" defer></script>
+          imagesizes="(max-width: 600px) 80vw, 240px" fetchpriority="high">
 </head>
 <body>
     <a class="skip" href="#main">본문 바로가기</a>
@@ -142,7 +146,7 @@
                 <div class="test-card-image">
                     <img src="/images/tests/give-id-illustration-v3-400w.webp"
                          srcset="/images/tests/give-id-illustration-v3-400w.webp 400w, /images/tests/give-id-illustration-v3-800w.webp 800w"
-                         sizes="(max-width: 600px) 400px, 560px"
+                         sizes="(max-width: 600px) 80vw, 240px"
                          alt="세 사람이 균형 잡힌 관계를 이야기하는 따뜻한 일러스트" loading="eager" fetchpriority="high" width="560" height="560">
                 </div>
                 <span class="pill">가장 먼저 추천</span>
@@ -161,9 +165,9 @@
 
             <a href="hogoo-check.html" class="choice-card test-card">
                 <div class="test-card-image">
-                    <img src="/images/tests/hogoo-check-illustration-v3-400w.webp"
-                         srcset="/images/tests/hogoo-check-illustration-v3-400w.webp 400w, /images/tests/hogoo-check-illustration-v3-800w.webp 800w"
-                         sizes="(max-width: 600px) 400px, 560px"
+                    <img data-lazy-src="/images/tests/hogoo-check-illustration-v3-400w.webp"
+                         data-lazy-srcset="/images/tests/hogoo-check-illustration-v3-400w.webp 400w, /images/tests/hogoo-check-illustration-v3-800w.webp 800w"
+                         sizes="(max-width: 600px) 80vw, 240px"
                          alt="부탁 앞에서 자신의 경계를 고민하는 사람의 따뜻한 일러스트" loading="lazy" width="560" height="560">
                 </div>
                 <h2>나는 호구일까?</h2>
@@ -173,9 +177,9 @@
 
             <a href="relationship-risk.html" class="choice-card test-card">
                 <div class="test-card-image">
-                    <img src="/images/tests/relationship-risk-illustration-v3-400w.webp"
-                         srcset="/images/tests/relationship-risk-illustration-v3-400w.webp 400w, /images/tests/relationship-risk-illustration-v3-800w.webp 800w"
-                         sizes="(max-width: 600px) 400px, 560px"
+                    <img data-lazy-src="/images/tests/relationship-risk-illustration-v3-400w.webp"
+                         data-lazy-srcset="/images/tests/relationship-risk-illustration-v3-400w.webp 400w, /images/tests/relationship-risk-illustration-v3-800w.webp 800w"
+                         sizes="(max-width: 600px) 80vw, 240px"
                          alt="관계의 피로 신호를 차분히 살피는 상담 장면 일러스트" loading="lazy" width="560" height="560">
                 </div>
                 <span class="tag tag-amber">위험 신호 점검</span>
@@ -186,9 +190,9 @@
 
             <a href="selfless-otherish-test.html" class="choice-card test-card">
                 <div class="test-card-image">
-                    <img src="/images/tests/give-id-illustration-v3-400w.webp"
-                         srcset="/images/tests/give-id-illustration-v3-400w.webp 400w, /images/tests/give-id-illustration-v3-800w.webp 800w"
-                         sizes="(max-width: 600px) 400px, 560px"
+                    <img data-lazy-src="/images/tests/give-id-illustration-v3-400w.webp"
+                         data-lazy-srcset="/images/tests/give-id-illustration-v3-400w.webp 400w, /images/tests/give-id-illustration-v3-800w.webp 800w"
+                         sizes="(max-width: 600px) 80vw, 240px"
                          alt="도움과 회복의 균형을 살피는 따뜻한 일러스트" loading="lazy" width="560" height="560">
                 </div>
                 <span class="tag">선의 스펙트럼</span>
@@ -213,7 +217,7 @@
                     X
                 </button>
                 <button class="s-btn sb-threads" type="button" data-share-action="threads" aria-label="Threads에 공유">
-                    <img src="/images/threads-icon.webp" width="24" height="24" alt="" aria-hidden="true">
+                    <img data-lazy-src="/images/threads-icon.webp" width="24" height="24" alt="" aria-hidden="true">
                     Threads
                 </button>
                 <button class="s-btn sb-kakao" type="button" data-share-action="kakao" aria-label="카카오톡에 공유">
@@ -359,5 +363,109 @@
             <p>&copy; 2026 GIVE Ecosystem. All rights reserved.</p>
         </footer>
 
+<script>
+(function () {
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
+  window.trackEvent = window.trackEvent || function (name, params) {
+    if (typeof window.gtag === 'function') window.gtag('event', name, params || {});
+  };
+
+  function loadScript(src, attrs, onload) {
+    var script = document.createElement('script');
+    script.src = src;
+    script.async = true;
+    Object.keys(attrs || {}).forEach(function (key) { script.setAttribute(key, attrs[key]); });
+    if (onload) script.addEventListener('load', onload, { once: true });
+    document.head.appendChild(script);
+  }
+
+  function afterInteractionOrDelay(callback, delay) {
+    var done = false;
+    var events = ['pointerdown', 'keydown', 'touchstart', 'scroll'];
+    function run() {
+      if (done) return;
+      done = true;
+      events.forEach(function (eventName) { window.removeEventListener(eventName, run); });
+      callback();
+    }
+    events.forEach(function (eventName) { window.addEventListener(eventName, run, { once: true, passive: true }); });
+    window.setTimeout(run, delay);
+  }
+
+  afterInteractionOrDelay(function () {
+    loadScript('/site-bootstrap.js', { 'data-third-party': 'ga,ads,clarity,userback,addToAny' }, function () {
+      loadScript('/third-party-loader.js');
+    });
+  }, 45000);
+
+  afterInteractionOrDelay(function () {
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = '/give-theme.css';
+    document.head.appendChild(link);
+  }, 8000);
+
+  lazyImages();
+
+  document.addEventListener('pointerover', loadShareOnIntent, { passive: true });
+  document.addEventListener('focusin', loadShareOnIntent);
+  document.addEventListener('click', function (event) {
+    var target = event.target && event.target.closest ? event.target.closest('[data-share-action]') : null;
+    if (!target || window.snsCopy) return;
+    event.preventDefault();
+    event.stopPropagation();
+    loadShareOnIntent(function () { target.click(); });
+  }, true);
+
+  function loadShareOnIntent(eventOrCallback) {
+    var callback = typeof eventOrCallback === 'function' ? eventOrCallback : null;
+    if (!callback && eventOrCallback && eventOrCallback.target && eventOrCallback.target.closest) {
+      if (!eventOrCallback.target.closest('[data-share-action]')) return;
+    }
+    if (window.snsCopy) {
+      if (callback) callback();
+      return;
+    }
+    if (loadShareOnIntent.loading) {
+      if (callback) loadShareOnIntent.callbacks.push(callback);
+      return;
+    }
+    loadShareOnIntent.loading = true;
+    loadShareOnIntent.callbacks = callback ? [callback] : [];
+    loadScript('/share.js', {}, function () {
+      loadShareOnIntent.callbacks.splice(0).forEach(function (queuedCallback) { queuedCallback(); });
+    });
+  }
+  loadShareOnIntent.callbacks = [];
+
+  function lazyImages() {
+    var images = Array.prototype.slice.call(document.querySelectorAll('img[data-lazy-src]'));
+    if (!images.length) return;
+
+    function reveal(img) {
+      if (img.dataset.lazySrcset) img.srcset = img.dataset.lazySrcset;
+      img.src = img.dataset.lazySrc;
+      img.removeAttribute('data-lazy-src');
+      img.removeAttribute('data-lazy-srcset');
+    }
+
+    if (!('IntersectionObserver' in window)) {
+      window.setTimeout(function () { images.forEach(reveal); }, 8000);
+      return;
+    }
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        observer.unobserve(entry.target);
+        reveal(entry.target);
+      });
+    }, { rootMargin: '0px 0px 120px 0px' });
+
+    images.forEach(function (img) { observer.observe(img); });
+  }
+})();
+</script>
 </body>
 </html>

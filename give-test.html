@@ -2,12 +2,7 @@
 <html lang="ko">
 <head>
     <script type="module" src="/src/site-env.js"></script>
-    <script src="/site-bootstrap.js" data-third-party="ga,ads,clarity,addToAny" defer></script>
-    <script src="/third-party-loader.js" defer></script>
     <meta charset="UTF-8">
-    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-    <link rel="preconnect" href="https://www.googletagmanager.com">
-    <link rel="preconnect" href="https://t1.kakaocdn.net">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <title>GIVE ID Test | 왜 항상 나만 손해 볼까?</title>
@@ -23,15 +18,6 @@
     <meta property="og:locale" content="ko_KR">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="google-adsense-account" content="ca-pub-8564310871125079">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,1,400;9..144,1,500&display=swap" data-defer-style>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@500;600;700;800;900&display=swap">
-    <link rel="preload" as="style" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" crossorigin data-defer-style>
-    <script src="/share.js" defer></script>
-    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.8.1/kakao.min.js" defer></script>
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,1,400;9..144,1,500&display=swap"></noscript>
-    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" crossorigin></noscript>
     <link rel="stylesheet" href="/give-theme.css">
     <link rel="stylesheet" href="/test-landing.css">
     <script type="application/ld+json">
@@ -73,7 +59,7 @@
                 <h1>왜 항상 나만 손해 볼까?</h1>
                 <p class="hero-copy">16문항으로 확인합니다. 최근 내 실제 반응에 가장 가까운 선택지를 고르면 됩니다.</p>
                 <div class="test-intro-image">
-                    <img src="/images/tests/give-id-illustration-v3.webp" alt="도움, 경계, 회복 카드를 따라 내 관계 패턴을 살피는 따뜻한 일러스트" loading="eager">
+                    <img src="/images/tests/give-id-illustration-v3-400w.webp" srcset="/images/tests/give-id-illustration-v3-400w.webp 400w, /images/tests/give-id-illustration-v3-800w.webp 800w" sizes="(max-width: 600px) 80vw, 240px" alt="도움, 경계, 회복 카드를 따라 내 관계 패턴을 살피는 따뜻한 일러스트" loading="eager" fetchpriority="high" width="560" height="560">
                 </div>
                 <div class="prologue-metrics" aria-label="테스트 정보">
                     <div><strong>16</strong><span>문항</span></div>
@@ -156,7 +142,7 @@
                     <div class="result-body">
                         <section class="result-report-lead" aria-label="결과 리포트 안내">
                             <div class="result-visual">
-                                <img src="/images/tests/give-id-illustration-v3.webp" alt="도움, 경계, 회복 카드를 따라 관계 패턴을 살피는 따뜻한 일러스트" loading="lazy">
+                                <img src="/images/tests/give-id-illustration-v3-400w.webp" srcset="/images/tests/give-id-illustration-v3-400w.webp 400w, /images/tests/give-id-illustration-v3-800w.webp 800w" sizes="(max-width: 600px) 80vw, 240px" alt="도움, 경계, 회복 카드를 따라 관계 패턴을 살피는 따뜻한 일러스트" loading="lazy" width="560" height="560">
                             </div>
                             <div class="result-report-copy">
                                 <strong>결과는 유형보다 다음 행동이 중요합니다</strong>
@@ -410,6 +396,66 @@
 
 <script src="/give-test-logic.js" defer></script>
 <script>
+window.dataLayer = window.dataLayer || [];
+window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
+window.trackEvent = window.trackEvent || function (name, params) {
+    if (typeof window.gtag === 'function') window.gtag('event', name, params || {});
+};
+(function () {
+    function loadScript(src, attrs, onload) {
+        var script = document.createElement('script');
+        script.src = src;
+        script.async = true;
+        Object.keys(attrs || {}).forEach(function (key) { script.setAttribute(key, attrs[key]); });
+        if (onload) script.addEventListener('load', onload, { once: true });
+        document.head.appendChild(script);
+    }
+    var done = false;
+    function run() {
+        if (done) return;
+        done = true;
+        ['pointerdown', 'keydown', 'touchstart', 'scroll'].forEach(function (eventName) {
+            window.removeEventListener(eventName, run);
+        });
+        loadScript('/site-bootstrap.js', { 'data-third-party': 'ga,ads,clarity,addToAny' }, function () {
+            loadScript('/third-party-loader.js');
+        });
+    }
+    ['pointerdown', 'keydown', 'touchstart', 'scroll'].forEach(function (eventName) {
+        window.addEventListener(eventName, run, { once: true, passive: true });
+    });
+    window.setTimeout(run, 45000);
+
+    document.addEventListener('pointerover', loadShareOnIntent, { passive: true });
+    document.addEventListener('focusin', loadShareOnIntent);
+    document.addEventListener('click', function (event) {
+        var target = event.target && event.target.closest ? event.target.closest('[data-share-action]') : null;
+        if (!target || window.snsCopy) return;
+        event.preventDefault();
+        event.stopPropagation();
+        loadShareOnIntent(function () { target.click(); });
+    }, true);
+    function loadShareOnIntent(eventOrCallback) {
+        var callback = typeof eventOrCallback === 'function' ? eventOrCallback : null;
+        if (!callback && eventOrCallback && eventOrCallback.target && eventOrCallback.target.closest) {
+            if (!eventOrCallback.target.closest('[data-share-action]')) return;
+        }
+        if (window.snsCopy) {
+            if (callback) callback();
+            return;
+        }
+        if (loadShareOnIntent.loading) {
+            if (callback) loadShareOnIntent.callbacks.push(callback);
+            return;
+        }
+        loadShareOnIntent.loading = true;
+        loadShareOnIntent.callbacks = callback ? [callback] : [];
+        loadScript('/share.js', {}, function () {
+            loadShareOnIntent.callbacks.splice(0).forEach(function (queuedCallback) { queuedCallback(); });
+        });
+    }
+    loadShareOnIntent.callbacks = [];
+})();
 window.addEventListener('DOMContentLoaded', function() {
     var params = new URLSearchParams(location.search);
     var prologueSeen = false;

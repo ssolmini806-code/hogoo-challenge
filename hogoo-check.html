@@ -2,11 +2,7 @@
 <html lang="ko">
 <head>
     <script type="module" src="/src/site-env.js"></script>
-    <script src="/site-bootstrap.js" data-third-party="ga,ads" defer></script>
-    <script src="/third-party-loader.js" defer></script>
     <meta charset="UTF-8">
-    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-    <link rel="preconnect" href="https://www.googletagmanager.com">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>나는 호구일까? 테스트 | GIVE Ecosystem</title>
@@ -19,15 +15,6 @@
     <meta property="og:url" content="https://hogoo-challenge.pages.dev/hogoo-check.html">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
-    <link rel="preconnect" href="https://cdn.jsdelivr.net">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,1,400;9..144,1,500&display=swap" data-defer-style>
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@500;600;700;800;900&display=swap" data-defer-style>
-    <link rel="preload" as="style" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" data-defer-style>
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,1,400;9..144,1,500&display=swap"></noscript>
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@500;600;700;800;900&display=swap"></noscript>
-    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css"></noscript>
     <meta name="google-adsense-account" content="ca-pub-8564310871125079">
     <link rel="stylesheet" href="/give-theme.css">
     <link rel="stylesheet" href="/test-landing.css">
@@ -44,7 +31,7 @@
             </div>
             <span class="test-badge">심리학 기반 자가점검</span>
             <div class="test-intro-image">
-                <img src="/images/tests/hogoo-check-illustration-v3-800w.webp" srcset="/images/tests/hogoo-check-illustration-v3-400w.webp 400w, /images/tests/hogoo-check-illustration-v3-800w.webp 800w, /images/tests/hogoo-check-illustration-v3.webp 1200w" sizes="(max-width: 480px) 400px, 800px" alt="두 부탁 카드 앞에서 내 경계선을 확인하는 사람의 따뜻한 일러스트" loading="eager">
+                <img src="/images/tests/hogoo-check-illustration-v3-400w.webp" srcset="/images/tests/hogoo-check-illustration-v3-400w.webp 400w, /images/tests/hogoo-check-illustration-v3-800w.webp 800w" sizes="(max-width: 600px) 80vw, 240px" alt="두 부탁 카드 앞에서 내 경계선을 확인하는 사람의 따뜻한 일러스트" loading="eager" fetchpriority="high" width="560" height="560">
             </div>
             <p class="test-intro-caption">또 바로 “괜찮아”라고 말하기 전에, 내 경계선을 먼저 확인합니다.</p>
             <h1 class="test-title">나는 호구일까?</h1>
@@ -295,6 +282,38 @@ function showResult() {
     else key = 'wall';
     location.href = 'result-sequence.html?test=hogoo&type=' + encodeURIComponent(key) + '&score=' + encodeURIComponent(score);
 }
+</script>
+<script>
+(function () {
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
+  window.trackEvent = window.trackEvent || function (name, params) {
+    if (typeof window.gtag === 'function') window.gtag('event', name, params || {});
+  };
+  function loadScript(src, attrs, onload) {
+    var script = document.createElement('script');
+    script.src = src;
+    script.async = true;
+    Object.keys(attrs || {}).forEach(function (key) { script.setAttribute(key, attrs[key]); });
+    if (onload) script.addEventListener('load', onload, { once: true });
+    document.head.appendChild(script);
+  }
+  var done = false;
+  function run() {
+    if (done) return;
+    done = true;
+    ['pointerdown', 'keydown', 'touchstart', 'scroll'].forEach(function (eventName) {
+      window.removeEventListener(eventName, run);
+    });
+    loadScript('/site-bootstrap.js', { 'data-third-party': 'ga,ads' }, function () {
+      loadScript('/third-party-loader.js');
+    });
+  }
+  ['pointerdown', 'keydown', 'touchstart', 'scroll'].forEach(function (eventName) {
+    window.addEventListener(eventName, run, { once: true, passive: true });
+  });
+  window.setTimeout(run, 45000);
+})();
 </script>
 </body>
 </html>

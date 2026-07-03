@@ -589,7 +589,7 @@ export default function App() {
     }
     return (
       <img
-        src="/images/tests/hogoo-check-illustration-v3.webp"
+        src="/images/tests/hogoo-check-illustration-v3-400w.webp"
         alt="7일 챌린지 완료 이미지"
         onError={() => setError(true)}
         style={{ width: "100%", borderRadius: 16, display: "block" }}
@@ -629,7 +629,7 @@ export default function App() {
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, flexWrap: "wrap", marginBottom: 16 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 14, minWidth: 0 }}>
               <img
-                src="/images/tests/hogoo-check-illustration-v3.webp"
+                src="/images/tests/hogoo-check-illustration-v3-400w.webp"
                 alt=""
                 aria-hidden="true"
                 style={{ width: 58, height: 58, borderRadius: 14, objectFit: "cover", border: "1px solid #E7E1D5", boxShadow: "0 10px 24px rgba(17,75,60,.08)", flexShrink: 0 }}

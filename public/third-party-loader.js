@@ -33,6 +33,25 @@
     window.addEventListener('load', callback, { once: true });
   }
 
+  function afterInteractionOrDelay(callback, delay) {
+    var done = false;
+    var events = ['pointerdown', 'keydown', 'touchstart', 'scroll'];
+
+    function run() {
+      if (done) return;
+      done = true;
+      events.forEach(function (eventName) {
+        window.removeEventListener(eventName, run, { passive: true });
+      });
+      callback();
+    }
+
+    events.forEach(function (eventName) {
+      window.addEventListener(eventName, run, { once: true, passive: true });
+    });
+    window.setTimeout(run, delay);
+  }
+
   function loadGa() {
     appendScript('ga', 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID);
   }
@@ -69,20 +88,20 @@
   }
 
   afterLoad(function () {
-    onIdle(function () {
+    afterInteractionOrDelay(function () {
       if (config.ga !== false) loadGa();
-    }, 1200);
+    }, 45000);
 
-    onIdle(function () {
+    afterInteractionOrDelay(function () {
       if (config.ads !== false) loadAds();
-    }, 1800);
+    }, 60000);
 
-    onIdle(function () {
-      if (config.clarity !== false) loadClarity();
-    }, 2800);
+    afterInteractionOrDelay(function () {
+      if (config.clarity) loadClarity();
+    }, 70000);
 
     if (config.userback) {
-      onIdle(loadUserback, 7000);
+      afterInteractionOrDelay(loadUserback, 90000);
     }
   });
 
