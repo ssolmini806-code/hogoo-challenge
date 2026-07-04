@@ -66,10 +66,10 @@
                     <div><strong>3분</strong><span>예상 시간</span></div>
                     <div><strong>무료</strong><span>로그인 없이</span></div>
                 </div>
-                <button class="primary-btn" id="startTestBtn">테스트 시작하기</button>
+                <button class="primary-btn" id="startTestBtn">내 GIVE ID 확인하기</button>
                 <p class="micro">로그인 없이 결과까지 바로 확인할 수 있어요</p>
                 <a href="result-sequence.html?test=give&type=mixed" class="result-preview-link">
-                    결과 흐름 미리보기 →
+                    결과 살짝 엿보기 →
                 </a>
 
                 <div class="hero-panel">
@@ -137,7 +137,7 @@
                         <div id="character"></div>
                         <h1 class="type-name" id="typeName"></h1>
                         <p class="summary" id="typeSummary"></p>
-                        <button class="result-retry-btn" type="button" id="retryTestBtnTop">다시 검사하기</button>
+                        <button class="result-retry-btn" type="button" id="retryTestBtnTop">달라진 나 확인하기</button>
                     </div>
                     <div class="result-body">
                         <section class="result-report-lead" aria-label="결과 리포트 안내">
@@ -148,6 +148,11 @@
                                 <strong>결과는 유형보다 다음 행동이 중요합니다</strong>
                                 <p>아래 리포트는 당신의 배려가 강점으로 작동하는 부분과, 손해로 바뀌기 쉬운 신호를 한 흐름으로 보여줍니다.</p>
                             </div>
+                        </section>
+                        <section class="white-psychology-bridge type-story" aria-label="유형 스토리">
+                            <span class="bridge-label">Story</span>
+                            <h3>요즘, 이 유형은</h3>
+                            <p id="typeStory"></p>
                         </section>
                         <section class="giver-spectrum" aria-label="GIVE ID 선의 스펙트럼">
                             <div class="giver-spectrum-top">
@@ -340,7 +345,7 @@
                         ></div>
                     </div>
                     <div class="share-retry-actions">
-                        <button class="result-retry-btn" type="button" id="retryTestBtn">다시 시도해보기</button>
+                        <button class="result-retry-btn" type="button" id="retryTestBtn">달라진 나 확인하기</button>
                     </div>
                 </section>
 

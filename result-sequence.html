@@ -93,7 +93,7 @@
       <span class="sequence-rule" aria-hidden="true"></span>
       <p class="sequence-line is-soft" id="seqFinalC">7일은 첫 실행을 여는 시간입니다.</p>
       <div class="sequence-actions">
-        <a href="/give-test.html" class="sequence-cta" id="seq-retry">다시 검사하기</a>
+        <a href="/give-test.html" class="sequence-cta" id="seq-retry">달라진 나 확인하기</a>
         <a href="https://givecosystem.com/" target="_blank" rel="noopener noreferrer" class="sequence-sub-cta" id="seq-paid-cta">GIVE ID 심화 리포트 보기 →</a>
         <a href="/hogoo-test.html" class="sequence-sub-link" id="seq-cta-next">다음 행동 보기</a>
       </div>
@@ -119,8 +119,29 @@
         sequence: {
           intro1: ["관계에서", "자꾸 손해 보는 기분,", "<strong>이유</strong>가 있어요."],
           intro2: ["착해서 다 받아주는 게 아니에요.", "그 순간 거절이 <strong>불편해서</strong> 한 거죠.", "그리고 그 불편함, 꽤 오래됐을 거예요."],
-          intro3: ["이 패턴은", "가장 가까운 사람 앞에서", "<strong>반복</strong>됩니다.", "지금도 조용히 작동하고 있어요."],
-          strengthLead: ["좋은 소식도 있어요.", "당신은 이미 <strong>느끼고 있었거든요</strong>."],
+          intro3: ["이 패턴은", "가장 가까운 사람 앞에서", "<strong>반복</strong>됩니다.", [
+            "지금도 조용히 작동하고 있어요.",
+            "당신 마음의 기압이 움직이는 방식이에요.",
+            "당신 안의 계절이 도는 순서예요.",
+            "당신이라는 나무가 뻗는 방향이에요.",
+            "빛이 당신을 통과하는 각도예요.",
+            "당신 안에서 물이 흐르는 길이에요."
+          ]],
+          strengthLead: [[
+            "좋은 소식도 있어요.",
+            "다행히, 이 비는 그치는 비예요.",
+            "겨울 다음 순서는 이미 정해져 있어요.",
+            "마른 가지에도 새순은 준비돼 있어요.",
+            "그림자가 있다는 건, 빛이 있다는 뜻이죠.",
+            "물길은 언제든 다시 낼 수 있어요."
+          ], [
+            "당신은 이미 <strong>느끼고 있었거든요</strong>.",
+            "비 오기 전, 공기가 <strong>먼저 달라지잖아요</strong>.",
+            "계절이 바뀔 땐 몸이 <strong>먼저 알아채죠</strong>.",
+            "잎이 마르기 전에 뿌리는 <strong>먼저 알아요</strong>.",
+            "그림자가 길어진 걸, <strong>눈치채고 있었죠</strong>.",
+            "물결은 바람보다 <strong>먼저 흔들리거든요</strong>."
+          ]],
           strengthOutro: "그게 변화의 출발점이에요.",
           riskLead: "이 패턴이 계속되면",
           riskOutro: "지금 알아차린 것만으로도 이미 달라지고 있어요.",
@@ -333,9 +354,17 @@
     document.getElementById("seqIntro3A").textContent = sequence.intro3[0];
     document.getElementById("seqIntro3B").textContent = sequence.intro3[1];
     document.getElementById("seqIntro3C").innerHTML = sequence.intro3[2];
-    document.getElementById("seqIntro3D").textContent = sequence.intro3[3];
-    document.getElementById("seqStrengthLeadA").textContent = sequence.strengthLead[0];
-    document.getElementById("seqStrengthLeadB").innerHTML = sequence.strengthLead[1];
+    function pickVal(value, forcedIndex) {
+      if (!Array.isArray(value)) return value;
+      var i = typeof forcedIndex === "number" ? forcedIndex : Math.floor(Math.random() * value.length);
+      return value[i];
+    }
+    var strengthPairIndex = Array.isArray(sequence.strengthLead[0])
+      ? Math.floor(Math.random() * sequence.strengthLead[0].length)
+      : null;
+    document.getElementById("seqIntro3D").textContent = pickVal(sequence.intro3[3]);
+    document.getElementById("seqStrengthLeadA").textContent = pickVal(sequence.strengthLead[0], strengthPairIndex);
+    document.getElementById("seqStrengthLeadB").innerHTML = pickVal(sequence.strengthLead[1], strengthPairIndex);
     document.getElementById("seqStrengthOutro").textContent = sequence.strengthOutro;
     document.getElementById("seqRiskLead").textContent = sequence.riskLead;
     document.getElementById("seqRiskOutro").textContent = sequence.riskOutro;

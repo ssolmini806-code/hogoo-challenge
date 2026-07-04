@@ -6,6 +6,7 @@ import DAYS from "./days";
 import { supabase } from "./src/supabase";
 import LoginButton from "./src/components/LoginButton";
 import { initializeAdminModeFromUrl, isAdminModeEnabled } from "./src/utils/adminMode";
+import { getMascotLine } from "./src/mascotVoices";
 
 const LoginModal = lazy(() => import('./src/components/LoginModal'));
 const ChallengeRewardSection = lazy(() => import('./components/reward/ChallengeRewardSection'));
@@ -357,7 +358,11 @@ export default function App() {
   };
 
   const day = DAYS[currentDay];
-  
+  const mascot = getMascotLine(
+    typeof window === "undefined" ? null : window.localStorage.getItem("give_test_result"),
+    currentDay
+  );
+
   const updateField = (dayIdx, field, value) => {
     if (!adminMode && !session) { openLoginModal(setLoginModalOpen, 'field_update'); return; }
     const setters = {
@@ -557,7 +562,7 @@ export default function App() {
   if (loading) {
     return (
       <div style={{ background: "#FAF8F3", minHeight: "100vh", display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#5C635E' }}>
-        불러오는 중...
+        거의 다 왔어요, 잠시만요…
       </div>
     );
   }
@@ -565,7 +570,7 @@ export default function App() {
   const pathname = typeof window !== 'undefined' ? window.location.pathname : '/';
   if (pathname === '/mypage') {
     return (
-      <Suspense fallback={<div style={{ background: "#FAF8F3", minHeight: "100vh", display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#5C635E' }}>불러오는 중...</div>}>
+      <Suspense fallback={<div style={{ background: "#FAF8F3", minHeight: "100vh", display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#5C635E' }}>거의 다 왔어요, 잠시만요…</div>}>
         <MyPage
           session={session}
           challenge="seven_day_challenge"
@@ -726,7 +731,7 @@ export default function App() {
       {/* Main Content */}
       <div style={{ maxWidth: 680, margin: "0 auto", padding: "24px 20px 80px" }}>
         {activeTab === "reward" ? (
-          <Suspense fallback={<div style={{ textAlign: "center", padding: "40px 0", color: "#5C635E" }}>불러오는 중...</div>}>
+          <Suspense fallback={<div style={{ textAlign: "center", padding: "40px 0", color: "#5C635E" }}>거의 다 왔어요, 잠시만요…</div>}>
             <div>
               <div style={{ marginBottom: 24, textAlign: "center" }}>
                 <CertificateImage />
@@ -768,6 +773,18 @@ export default function App() {
                 목표: {day.goal}
               </p>
             </div>
+          </div>
+        </div>
+
+        {/* Mascot Voice */}
+        <div style={{
+          background: "#E9F2EC", border: "1px solid #E7E1D5", borderRadius: 10,
+          padding: "12px 16px", marginBottom: 12, display: "flex", alignItems: "flex-start", gap: 10
+        }}>
+          <span style={{ fontSize: 22, lineHeight: 1, flexShrink: 0 }} aria-hidden="true">{mascot.emoji}</span>
+          <div style={{ minWidth: 0 }}>
+            <div style={{ fontSize: 11, color: "#5C635E", fontWeight: 700, marginBottom: 3 }}>{mascot.name}의 한 마디</div>
+            <p style={{ margin: 0, fontSize: 14, color: "#1A1F1C", lineHeight: 1.55 }}>{mascot.line}</p>
           </div>
         </div>
 

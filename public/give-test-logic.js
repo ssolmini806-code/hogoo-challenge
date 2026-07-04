@@ -28,6 +28,7 @@ const results = {
         strength: "공감 능력이 뛰어나고 주변 사람에게 깊은 안정감을 줍니다.",
         risk: "거절하지 못해 내 일정, 감정, 돈이 뒤로 밀릴 수 있습니다.",
         advice: "도와주고 싶은 마음은 있지만, 지금은 제가 감당할 수 있는 범위를 넘어서 어려워요.",
+        story: "예전엔 \"부탁 하나만\"이라는 말만 들리면 이미 고개를 끄덕이고 있었습니다. 요즘은 대답하기 전에 딱 3초, 내 일정부터 떠올리는 연습을 하는 중이에요. 여전히 잘 주는 사람이지만, 이제 그 목록에 자기 자신도 넣기 시작했습니다.",
         spectrum: { pos: 18, label: "Selfless 쪽에 가까워요. 마음은 크지만 내 회복 시간이 자주 뒤로 밀릴 수 있습니다." },
         character: "/images/types/give-id/type-angel.webp",
         next: { title: "다음: 왜 거절 못할까?", copy: "“미안해서” 또 당하는 사람용.", url: "refusal-test.html" },
@@ -40,6 +41,7 @@ const results = {
         strength: "상황 파악이 빠르고 갈등을 완충하는 힘이 있습니다.",
         risk: "겉으로 웃다가 속으로 피로와 억울함이 쌓일 수 있습니다.",
         advice: "지금 바로 답하기는 어려워요. 일정 확인하고 가능한 범위만 다시 말해줄게요.",
+        story: "예전엔 회의실에 들어가면 안건보다 사람들 표정부터 스캔했습니다. 요즘은 \"분위기가 어떻지?\" 대신 \"내 생각은 뭐지?\"를 먼저 묻는 연습을 하고 있어요. 눈치는 여전히 빠르지만, 이제 그 레이더를 자기 마음에도 켜두기 시작했습니다.",
         spectrum: { pos: 34, label: "Selfless와 Otherish 사이에서 눈치를 많이 보는 구간입니다. 즉답을 늦추면 균형이 생깁니다." },
         character: "/images/types/give-id/type-diplomat.webp",
         next: { title: "다음: 그 관계 괜찮아?", copy: "계속 맞춰주면 언젠가 터져요.", url: "relationship-risk.html" },
@@ -52,6 +54,7 @@ const results = {
         strength: "리소스 관리와 판단력이 뛰어나 쉽게 휘둘리지 않습니다.",
         risk: "상대에게 거리감이 크게 느껴져 중요한 연결을 잃을 수 있습니다.",
         advice: "이번 요청은 제가 맡기는 어렵지만, 참고할 방법은 같이 생각해볼 수 있어요.",
+        story: "예전엔 \"계산적이다\"라는 말이 상처라서, 아닌 척 손해를 감수하곤 했습니다. 요즘은 그게 흠이 아니라 균형 감각이라는 걸 알아가는 중이에요. 셈이 빠른 사람이 마음까지 넉넉해지면, 사실 무서울 게 없거든요.",
         spectrum: { pos: 72, label: "Otherish 쪽에 가깝습니다. 기준은 좋고, 여기에 따뜻한 설명을 조금 더하면 관계 비용이 줄어듭니다." },
         character: "/images/types/give-id/type-awakening.webp",
         next: { title: "다음: 선일까, 벽일까?", copy: "좋은 사람까지 밀어내는지 확인.", url: "relationship-risk.html" },
@@ -64,6 +67,7 @@ const results = {
         strength: "자신의 한계와 원칙을 명확히 알고 있습니다.",
         risk: "새로운 사람에게 마음을 여는 속도가 너무 늦어질 수 있습니다.",
         advice: "여기까지는 가능하지만, 그 이상은 제 일정상 어렵습니다.",
+        story: "예전엔 선을 그을 때마다 \"내가 너무 차가운가\" 혼자 밤새 복기했습니다. 요즘은 그 경계 덕분에 지키고 싶은 사람들을 오래 지켜왔다는 걸 인정하는 중이에요. 문지기의 다음 단계는, 문을 조금 더 자주 열어보는 것뿐입니다.",
         spectrum: { pos: 82, label: "Otherish 기버에 가깝습니다. 선을 지키는 힘이 강하고, 유연한 제안이 더해지면 더 단단해집니다." },
         character: "/images/types/give-id/type-gatekeeper.webp",
         next: { title: "다음: 나 진짜 안 당할까?", copy: "특정 사람 앞에서만 무너질 수 있어요.", url: "hogoo-check.html" },
@@ -76,6 +80,7 @@ const results = {
         strength: "헌신적이고 책임감이 강해 쉽게 관계를 포기하지 않습니다.",
         risk: "작은 부탁에도 예민해지고 사람 자체를 피하게 될 수 있습니다.",
         advice: "미안하지만 오늘은 추가로 맡기 어렵습니다. 먼저 회복 시간이 필요해요.",
+        story: "예전엔 쳇바퀴가 멈추면 큰일 나는 줄 알고, 배터리 1%로도 달렸습니다. 요즘은 \"오늘은 여기까지\"라는 말을 하루 한 번씩 소리 내어 연습하고 있어요. 충전 중인 햄스터는 게으른 게 아니라, 다시 달릴 준비를 하는 중입니다.",
         spectrum: { pos: 10, label: "방전된 Selfless 구간입니다. 더 잘 돕기보다 먼저 멈추고 회복하는 게 필요합니다." },
         character: "/images/types/give-id/type-hamster.webp",
         next: { title: "다음: 이제 그만해도 돼요", copy: "착함 말고 멈춤이 필요해요.", url: "refusal-test.html" },
@@ -88,6 +93,7 @@ const results = {
         strength: "불필요한 희생과 감정 소모를 잘 피합니다.",
         risk: "결정적인 순간 도움을 청할 사람이 부족해질 수 있습니다.",
         advice: "그 방식은 어렵지만, 부담 없는 작은 도움이라면 받아볼게요.",
+        story: "예전엔 누가 다가오면 일단 가시부터 세우고, 이유는 나중에 찾았습니다. 요즘은 \"이 사람은 안전한가?\"를 가시 세우기 전에 한 번 물어보는 중이에요. 가시는 여전히 있지만, 이제 그건 벽이 아니라 선택할 수 있는 문이 되어가고 있습니다.",
         spectrum: { pos: 88, label: "방어적 Otherish 구간입니다. 손해는 잘 막지만, 안전한 호의를 받아들이는 연습이 도움이 됩니다." },
         character: "/images/types/give-id/type-hedgehog.webp",
         next: { title: "다음: 방어하다 외로워짐", copy: "상처는 피했는데 사람도 사라질 수 있어요.", url: "relationship-risk.html" },
@@ -100,6 +106,7 @@ const results = {
         strength: "상황 적응력이 좋고 관계를 한쪽으로 몰아가지 않습니다.",
         risk: "기준이 불명확해 반복적으로 손해 보는 관계가 생길 수 있습니다.",
         advice: "가능한 범위는 여기까지예요. 그 밖의 부분은 다시 정해봐야 합니다.",
+        story: "예전엔 균형을 잡는다면서, 사실은 이도 저도 결정을 미루고 있었습니다. 요즘은 \"상황 봐서\"가 아니라 \"이번엔 이렇게\"라고 한 발 먼저 정해보는 중이에요. 유연함에 방향이 생기면, 그건 눈치가 아니라 지혜라고 부릅니다.",
         spectrum: { pos: 56, label: "균형을 찾아가는 중간 구간입니다. 반복해서 지킬 최소 기준 하나가 핵심입니다." },
         character: "/images/types/give-id/type-balancer.webp",
         next: { title: "다음: 내가 무너지는 순간", copy: "기준이 애매하면 또 반복돼요.", url: "hogoo-check.html" },
@@ -586,6 +593,8 @@ function renderResult(key) {
     document.getElementById("character").replaceChildren(characterImage(finalResult));
     document.getElementById("typeName").textContent = finalResult.name;
     document.getElementById("typeSummary").textContent = finalResult.summary;
+    const storyEl = document.getElementById("typeStory");
+    if (storyEl) storyEl.textContent = finalResult.story || "";
     document.getElementById("strength").textContent = finalResult.strength;
     document.getElementById("risk").textContent = finalResult.risk;
     document.getElementById("advice").textContent = finalResult.advice;
