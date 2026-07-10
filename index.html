@@ -107,7 +107,46 @@
     .choice-grid{display:grid;gap:12px}.choice-card{display:block;width:100%;padding:22px;border:1px solid var(--line);border-radius:var(--r-lg);background:var(--surface);color:inherit;text-align:left;text-decoration:none}.choice-card.featured{border-color:var(--mint);box-shadow:0 14px 34px rgba(17,75,60,.07)}.choice-card h2,.choice-card h3{margin:14px 0 7px;font-size:1.18rem;font-weight:800;line-height:1.35;letter-spacing:0;text-wrap:balance}.card-desc{color:var(--ink-sub);font-size:.94rem;line-height:1.7;margin-bottom:14px}.go{color:var(--green);font-size:.9rem;font-weight:800;text-decoration:none}.pill{display:inline-flex;margin-bottom:14px;padding:5px 10px;border-radius:var(--r-pill);background:var(--mint-soft);color:var(--mint-ink);font-size:.72rem;font-weight:800;letter-spacing:.02em}.test-card-image{margin:-22px -22px 2px;aspect-ratio:1/1;background:var(--green-soft);overflow:hidden}.test-card-image img{width:100%;height:100%;object-fit:cover;display:block}
     @media (min-width:900px){.wrap{width:min(100%,1040px);padding:0 32px}.hero{padding:74px 0 46px}.hero-actions{grid-template-columns:1fr 1fr}.choice-grid{grid-template-columns:repeat(4,1fr)}}
     @media (max-width:640px){.wrap{padding:0 20px}.site-nav,nav{align-items:flex-start}.choice-card{padding:20px}.test-card-image{margin:-20px -20px 2px}}
+    /* ── RPG 타이틀 화면 ── */
+    .title-screen{position:relative;min-height:calc(100vh - 78px);min-height:calc(100svh - 78px);display:flex;align-items:center;justify-content:center;overflow:hidden;text-align:center}
+    .ts-bg{position:absolute;inset:0;z-index:0;pointer-events:none}
+    .ts-mascot{position:absolute;width:120px;height:auto;opacity:0;transition:opacity 1.4s ease;animation:ts-sway 9s ease-in-out infinite alternate}
+    .ts-mascot.on{opacity:.18}
+    .ts-bg .m1{top:7%;left:5%;width:140px;--tilt:-7deg;animation-duration:8s}
+    .ts-bg .m2{top:13%;right:7%;width:115px;--tilt:6deg;animation-duration:10s;animation-delay:-3s}
+    .ts-bg .m3{top:50%;left:3%;width:125px;--tilt:5deg;animation-duration:9s;animation-delay:-5s}
+    .ts-bg .m4{top:40%;right:3%;width:150px;--tilt:-5deg;animation-duration:11s;animation-delay:-2s}
+    .ts-bg .m5{bottom:8%;left:13%;width:105px;--tilt:8deg;animation-duration:8.5s;animation-delay:-6s}
+    .ts-bg .m6{bottom:6%;right:12%;width:130px;--tilt:-8deg;animation-duration:9.5s;animation-delay:-4s}
+    .ts-bg .m7{top:4%;left:44%;width:95px;--tilt:4deg;animation-duration:10.5s;animation-delay:-7s}
+    .ts-inner{position:relative;z-index:1;width:min(100%,560px);margin:0 auto;padding:40px 22px 72px}
+    .ts-logo{margin:0;font-family:'Hahmlet',var(--serif);font-weight:800;font-size:clamp(2.4rem,10vw,3.6rem);line-height:1.08;letter-spacing:.05em;color:var(--green);text-shadow:0 0 18px rgba(0,168,133,.30),0 0 48px rgba(0,168,133,.14)}
+    .ts-logo span{display:block;font-size:.5em;font-weight:700;letter-spacing:.34em;text-indent:.34em;margin-top:4px}
+    .ts-tagline{margin:14px 0 46px;color:var(--mint-ink);font-family:'Hahmlet',var(--serif);font-style:italic;font-size:.92rem}
+    .ts-menu{display:flex;flex-direction:column;align-items:center;gap:18px;padding:0;border-bottom:0}
+    .ts-item{display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:48px;padding:2px 18px;font-family:'Hahmlet',var(--serif);font-size:clamp(1.15rem,4.6vw,1.4rem);font-weight:700;color:var(--ink);text-decoration:none;transition:color .2s ease,transform .2s ease}
+    .ts-arrow{color:var(--mint);font-size:.85em}
+    .ts-item:hover,.ts-item:focus-visible{color:var(--mint);transform:scale(1.03)}
+    .ts-item:hover .ts-arrow,.ts-item:focus-visible .ts-arrow{animation:ts-nudge .7s ease-in-out infinite}
+    .ts-sub{display:inline-block;margin-top:48px;color:var(--ink-faint);font-size:.84rem;font-weight:600;text-decoration:none;border-bottom:1px solid var(--line);transition:color .2s ease,border-color .2s ease}
+    .ts-sub:hover{color:var(--mint-ink);border-color:var(--mint)}
+    .ts-scroll{position:absolute;left:50%;bottom:16px;z-index:1;color:var(--ink-faint);font-size:.76rem;font-weight:600;text-decoration:none;animation:ts-bob 2.4s ease-in-out infinite}
+    @keyframes ts-sway{from{transform:translateX(-4px) rotate(var(--tilt,0deg))}to{transform:translateX(4px) rotate(var(--tilt,0deg))}}
+    @keyframes ts-nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(3px)}}
+    @keyframes ts-bob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,6px)}}
+    @media (max-width:640px){
+      .title-screen{min-height:calc(100vh - 118px);min-height:calc(100svh - 118px)}
+      .ts-mascot.on{opacity:.12}
+      .ts-bg .m1{width:92px;top:4%;left:2%}
+      .ts-bg .m4{width:98px;top:9%;right:3%}
+      .ts-bg .m5{width:84px;bottom:5%;left:5%}
+      .ts-bg .m6{width:92px;bottom:9%;right:4%}
+    }
+    @media (prefers-reduced-motion:reduce){.ts-mascot,.ts-item:hover .ts-arrow,.ts-item:focus-visible .ts-arrow,.ts-scroll{animation:none}}
     </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@700;800&display=swap">
     <noscript><link rel="stylesheet" href="/give-theme.css"></noscript>
     <link rel="preload" as="image" href="/images/tests/give-id-illustration-v3-400w.webp"
           imagesrcset="/images/tests/give-id-illustration-v3-400w.webp 400w, /images/tests/give-id-illustration-v3-800w.webp 800w"
@@ -128,6 +167,22 @@
             </div>
         </nav>
     </header>
+
+    <section class="title-screen" aria-label="타이틀 메뉴">
+        <div class="ts-bg" aria-hidden="true"></div>
+        <div class="ts-inner">
+            <p class="ts-logo">GIVE<span>ECOSYSTEM</span></p>
+            <p class="ts-tagline">Smart giver, healthier boundaries</p>
+            <nav class="ts-menu" aria-label="테스트 바로가기">
+                <a class="ts-item" href="give-test.html"><span class="ts-arrow" aria-hidden="true">▸</span>GIVE ID 테스트</a>
+                <a class="ts-item" href="hogoo-check.html"><span class="ts-arrow" aria-hidden="true">▸</span>호구 체크</a>
+                <a class="ts-item" href="refusal-test.html"><span class="ts-arrow" aria-hidden="true">▸</span>거절력 테스트</a>
+                <a class="ts-item" href="relationship-risk.html"><span class="ts-arrow" aria-hidden="true">▸</span>관계 위험도</a>
+            </nav>
+            <a class="ts-sub" href="white-psychology.html">선의 심리학 알아보기</a>
+        </div>
+        <a class="ts-scroll" href="#main" aria-label="아래 콘텐츠로 이동">▾ 아래로</a>
+    </section>
 
     <main id="main" class="wrap">
         <section class="hero">
@@ -407,6 +462,7 @@
   }, 8000);
 
   lazyImages();
+  titleMascots();
 
   document.addEventListener('pointerover', loadShareOnIntent, { passive: true });
   document.addEventListener('focusin', loadShareOnIntent);
@@ -438,6 +494,34 @@
     });
   }
   loadShareOnIntent.callbacks = [];
+
+  function titleMascots() {
+    var host = document.querySelector('.ts-bg');
+    if (!host) return;
+    var mascots = [
+      ['m1', 'type-angel'],      // 다 퍼주는 강아지
+      ['m2', 'type-diplomat'],   // 눈치 보는 고양이
+      ['m3', 'type-awakening'],  // 야무진 여우
+      ['m4', 'type-gatekeeper'], // 현명한 올빼미
+      ['m5', 'type-hamster'],    // 방전된 햄스터
+      ['m6', 'type-hedgehog'],   // 철벽 고슴도치
+      ['m7', 'type-balancer']    // 영리한 너구리
+    ];
+    // 모바일에서는 가독성/전송량을 위해 모서리 4개만 로드
+    var small = window.matchMedia && window.matchMedia('(max-width: 640px)').matches;
+    var visible = small ? ['m1', 'm4', 'm5', 'm6'] : null;
+    mascots.forEach(function (mascot) {
+      if (visible && visible.indexOf(mascot[0]) === -1) return;
+      var img = document.createElement('img');
+      img.className = 'ts-mascot ' + mascot[0];
+      img.alt = '';
+      img.decoding = 'async';
+      img.setAttribute('fetchpriority', 'low');
+      img.addEventListener('load', function () { img.classList.add('on'); }, { once: true });
+      img.src = '/images/types/give-id/' + mascot[1] + '.webp';
+      host.appendChild(img);
+    });
+  }
 
   function lazyImages() {
     var images = Array.prototype.slice.call(document.querySelectorAll('img[data-lazy-src]'));
