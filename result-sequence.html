@@ -87,6 +87,30 @@
       <a href="/white-psychology.html" class="sequence-sub-link" id="seqWhyLink">선의 심리학 보러 가기 →</a>
     </section>
 
+    <section class="sequence-slide is-mint" data-tone="mint" id="slideWellMatched" aria-label="잘 맞는 유형">
+      <span class="sequence-label">WELL-MATCHED</span>
+      <p class="sequence-line" id="seqMatchTitle"></p>
+      <figure class="sequence-character is-match">
+        <img id="seqMatchCharacter" src="" alt="">
+      </figure>
+      <p class="sequence-match-name" id="seqMatchName"></p>
+      <span class="sequence-rule" aria-hidden="true"></span>
+      <p class="sequence-copy" id="seqMatchWhy"></p>
+    </section>
+
+    <section class="sequence-slide" data-tone="watch" id="slideWatchOut" aria-label="스트레스 주는 유형">
+      <span class="sequence-label is-watch">WATCH OUT</span>
+      <p class="sequence-line" id="seqClashTitle"></p>
+      <figure class="sequence-character is-match">
+        <img id="seqClashCharacter" src="" alt="">
+      </figure>
+      <p class="sequence-match-name" id="seqClashName"></p>
+      <span class="sequence-rule" aria-hidden="true"></span>
+      <p class="sequence-copy" id="seqClashWhy"></p>
+      <p class="sequence-match-note">이건 나쁜 조합이 아니라, 서로 다른 방식일 뿐이에요.</p>
+      <a href="/give-test.html" class="sequence-sub-link" id="seqClashShare">이 사람한테도 테스트 보내보기</a>
+    </section>
+
     <section class="sequence-slide" data-tone="plain" aria-label="마지막 행동">
       <p class="sequence-line" id="seqFinalA">아는 것과</p>
       <p class="sequence-line" id="seqFinalB">바꾸는 건 달라요.</p>
@@ -160,7 +184,11 @@
         strength: "공감 능력이 뛰어나고 주변 사람에게 깊은 안정감을 줍니다.",
         risk: "거절하지 못해 내 일정, 감정, 돈이 뒤로 밀릴 수 있습니다.",
         advice: "도와주고 싶은 마음은 있지만, 지금은 제가 감당할 수 있는 범위를 넘어서 어려워요.",
-        character: "/images/types/give-id/type-angel.webp"
+        character: "/images/types/give-id/type-angel.webp",
+        compatible: "architect",
+        compatibleReason: "여우는 당신이 놓치는 계산을 챙겨주고, 당신은 여우가 잊기 쉬운 온기를 채워줘요.",
+        stressor: "blocker",
+        stressorReason: "다가갈수록 밀어내는 고슴도치 앞에서, 당신은 상처만 쌓일 수 있어요."
           },
           diplomat: {
         name: "눈치 보는 고양이 🐱",
@@ -168,7 +196,11 @@
         strength: "상황 파악이 빠르고 갈등을 완충하는 힘이 있습니다.",
         risk: "겉으로 웃다가 속으로 피로와 억울함이 쌓일 수 있습니다.",
         advice: "지금 바로 답하기는 어려워요. 일정 확인하고 가능한 범위만 다시 말해줄게요.",
-        character: "/images/types/give-id/type-diplomat.webp"
+        character: "/images/types/give-id/type-diplomat.webp",
+        compatible: "guardian",
+        compatibleReason: "올빼미의 명확한 선이, 눈치 보느라 지친 당신에게 오히려 안정감을 줘요.",
+        stressor: "angel",
+        stressorReason: "다 들어주는 강아지를 보면, 눈치 보는 당신만 손해 보는 기분이 들 수 있어요."
           },
           architect: {
         name: "야무진 여우 🦊",
@@ -176,7 +208,11 @@
         strength: "리소스 관리와 판단력이 뛰어나 쉽게 휘둘리지 않습니다.",
         risk: "상대에게 거리감이 크게 느껴져 중요한 연결을 잃을 수 있습니다.",
         advice: "이번 요청은 제가 맡기는 어렵지만, 참고할 방법은 같이 생각해볼 수 있어요.",
-        character: "/images/types/give-id/type-awakening.webp"
+        character: "/images/types/give-id/type-awakening.webp",
+        compatible: "diplomat",
+        compatibleReason: "고양이의 섬세함이, 계산부터 하던 당신에게 다른 종류의 배려를 알려줘요.",
+        stressor: "burnout",
+        stressorReason: "계산 없이 무너지는 햄스터를 보면, 당신은 자꾸 대신 셈을 해주게 될 수 있어요."
           },
           guardian: {
         name: "현명한 올빼미 🦉",
@@ -184,7 +220,11 @@
         strength: "자신의 한계와 원칙을 명확히 알고 있습니다.",
         risk: "새로운 사람에게 마음을 여는 속도가 너무 늦어질 수 있습니다.",
         advice: "여기까지는 가능하지만, 그 이상은 제 일정상 어렵습니다.",
-        character: "/images/types/give-id/type-gatekeeper.webp"
+        character: "/images/types/give-id/type-gatekeeper.webp",
+        compatible: "diplomat",
+        compatibleReason: "눈치 빠른 고양이는 당신이 굳이 설명하지 않아도 알아서 맞춰줘요.",
+        stressor: "mixed",
+        stressorReason: "상황마다 달라지는 너구리 앞에서, 명확한 선을 원하는 당신은 예측이 안 돼 피곤할 수 있어요."
           },
           burnout: {
         name: "방전된 햄스터 🔋",
@@ -192,7 +232,11 @@
         strength: "헌신적이고 책임감이 강해 쉽게 관계를 포기하지 않습니다.",
         risk: "작은 부탁에도 예민해지고 사람 자체를 피하게 될 수 있습니다.",
         advice: "미안하지만 오늘은 추가로 맡기 어렵습니다. 먼저 회복 시간이 필요해요.",
-        character: "/images/types/give-id/type-hamster.webp"
+        character: "/images/types/give-id/type-hamster.webp",
+        compatible: "blocker",
+        compatibleReason: "고슴도치의 단단함이, 늘 퍼주기만 하던 당신에게 '그만 줘도 돼'를 알려줘요.",
+        stressor: "angel",
+        stressorReason: "둘 다 퍼주기만 하면, 아무도 못 쉬는 악순환에 빠질 수 있어요."
           },
           blocker: {
         name: "철벽 고슴도치 🦔",
@@ -200,7 +244,11 @@
         strength: "불필요한 희생과 감정 소모를 잘 피합니다.",
         risk: "결정적인 순간 도움을 청할 사람이 부족해질 수 있습니다.",
         advice: "그 방식은 어렵지만, 부담 없는 작은 도움이라면 받아볼게요.",
-        character: "/images/types/give-id/type-hedgehog.webp"
+        character: "/images/types/give-id/type-hedgehog.webp",
+        compatible: "burnout",
+        compatibleReason: "햄스터의 다정함이, 방어부터 하던 당신의 가시를 조금씩 눕혀줘요.",
+        stressor: "architect",
+        stressorReason: "논리로 계속 찌르는 여우 앞에서, 당신은 가시를 더 세우게 될 수 있어요."
           },
           mixed: {
         name: "영리한 너구리 🦝",
@@ -208,7 +256,11 @@
         strength: "상황 적응력이 좋고 관계를 한쪽으로 몰아가지 않습니다.",
         risk: "기준이 불명확해 반복적으로 손해 보는 관계가 생길 수 있습니다.",
         advice: "가능한 범위는 여기까지예요. 그 밖의 부분은 다시 정해봐야 합니다.",
-        character: "/images/types/give-id/type-balancer.webp"
+        character: "/images/types/give-id/type-balancer.webp",
+        compatible: "architect",
+        compatibleReason: "여우의 명확한 기준이, 상황 봐가며 흔들리던 당신에게 중심을 잡아줘요.",
+        stressor: "guardian",
+        stressorReason: "원칙만 고수하는 올빼미 앞에서, 유연한 당신은 답답함을 느낄 수 있어요."
           }
         }
       },
@@ -317,6 +369,61 @@
     var score = params.get("score");
     if (!test.types[key]) key = test.fallback;
     var type = test.types[key] || test.types[test.fallback];
+
+    (function setupMatchSlides(){
+      var wellSlide = document.getElementById("slideWellMatched");
+      var watchSlide = document.getElementById("slideWatchOut");
+      if (!wellSlide || !watchSlide) return;
+      var mate = type.compatible ? test.types[type.compatible] : null;
+      var clash = type.stressor ? test.types[type.stressor] : null;
+      if (!mate || !clash) {
+        wellSlide.remove();
+        watchSlide.remove();
+        return;
+      }
+      function plainName(name) {
+        return name.replace(/[^가-힣a-zA-Z0-9 ]/g, "").trim();
+      }
+      function josa(word, withJong, noJong) {
+        var code = word.charCodeAt(word.length - 1);
+        if (code < 0xAC00 || code > 0xD7A3) return noJong;
+        return (code - 0xAC00) % 28 ? withJong : noJong;
+      }
+      function fillCharacter(imgId, matchType) {
+        var img = document.getElementById(imgId);
+        img.src = matchType.character;
+        img.alt = matchType.name + " 캐릭터";
+        img.addEventListener("error", function(){
+          img.hidden = true;
+          img.closest(".sequence-character").classList.add("is-empty");
+        });
+      }
+      var myName = plainName(type.name);
+      document.getElementById("seqMatchTitle").textContent = myName + josa(myName, "과", "와") + " 잘 맞는 사람";
+      document.getElementById("seqMatchName").textContent = mate.name;
+      document.getElementById("seqMatchWhy").textContent = type.compatibleReason;
+      fillCharacter("seqMatchCharacter", mate);
+      document.getElementById("seqClashTitle").textContent = myName + josa(myName, "을", "를") + " 유독 지치게 하는 사람";
+      document.getElementById("seqClashName").textContent = clash.name;
+      document.getElementById("seqClashWhy").textContent = type.stressorReason;
+      fillCharacter("seqClashCharacter", clash);
+
+      var shareLink = document.getElementById("seqClashShare");
+      shareLink.href = test.retryUrl || "/give-test.html";
+      shareLink.addEventListener("click", function(event){
+        event.preventDefault();
+        if (typeof gtag === "function") gtag("event", "give_share_clicked", { channel: "match_slide", give_type: key });
+        var shareUrl = window.location.origin + (test.retryUrl || "/give-test.html");
+        if (navigator.share) {
+          navigator.share({ title: document.title, url: shareUrl }).catch(function(){});
+        } else if (navigator.clipboard) {
+          navigator.clipboard.writeText(shareUrl).then(function(){
+            shareLink.textContent = "테스트 링크를 복사했어요 ✓";
+          }).catch(function(){});
+        }
+      });
+    })();
+
     var slides = Array.from(document.querySelectorAll(".sequence-slide"));
     var dots = document.getElementById("sequenceDots");
     var nextButton = document.getElementById("sequenceNext");

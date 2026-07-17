@@ -176,6 +176,7 @@ footer{padding:54px 0 44px;border-top:1px solid var(--line);margin-top:48px;text
 .sequence-label.is-amber{color:var(--amber);}
 .sequence-label.is-risk{background:#fbf3f1;color:#b85c4f;border-color:#ead7d2;}
 .sequence-label.is-why{color:var(--ink-sub);}
+.sequence-label.is-watch{background:#fbf5ef;color:#b9805f;border-color:#eeddd0;}
 .sequence-action{width:min(100%,340px);margin-top:22px;padding:20px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);text-align:left;box-shadow:0 14px 32px rgba(17,75,60,.06);}
 .sequence-action span{display:block;margin-bottom:8px;color:var(--sequence-accent-ink);font-size:.78rem;font-weight:900;letter-spacing:.04em;}
 .sequence-action p{color:var(--ink);font-size:1rem;font-weight:800;line-height:1.65;}
@@ -184,6 +185,10 @@ footer{padding:54px 0 44px;border-top:1px solid var(--line);margin-top:48px;text
 .sequence-character::before{content:"";position:absolute;inset:12px;border-radius:30px;background:rgba(250,248,243,.72);}
 .sequence-character.is-empty::after{content:"";position:relative;z-index:1;width:58px;height:58px;border:2px solid var(--sequence-accent-ink);border-radius:22px;background:var(--sequence-soft);box-shadow:inset 0 0 0 12px rgba(255,255,255,.52);}
 .sequence-character img{position:relative;z-index:1;width:88%;height:88%;object-fit:contain;filter:saturate(.94) contrast(.98) drop-shadow(0 10px 18px rgba(13,59,47,.14));}
+.sequence-character.is-match{width:112px;height:112px;margin:14px auto 12px;border-radius:28px;box-shadow:0 16px 32px rgba(13,59,47,.14);}
+.sequence-character.is-match::before{inset:9px;border-radius:22px;}
+.sequence-match-name{color:var(--ink);font-size:clamp(1.5rem,7vw,1.95rem);font-weight:900;line-height:1.25;letter-spacing:-.015em;text-wrap:balance;}
+.sequence-match-note{margin-top:16px;color:var(--ink-sub);font-size:.85rem;font-style:italic;font-weight:450;opacity:.78;}
 .sequence-type{max-width:13em;color:var(--sequence-hero-text);font-size:clamp(1.9rem,8vw,2.55rem);font-weight:900;line-height:1.2;letter-spacing:-.018em;text-wrap:balance;}
 .sequence-tagline{max-width:20em;margin-top:10px;color:var(--sequence-hero-sub);font-size:1rem;font-weight:650;line-height:1.6;text-wrap:pretty;}
 .sequence-cta{min-height:54px;display:inline-flex;align-items:center;justify-content:center;margin-top:26px;border-radius:12px;background:var(--sequence-accent-ink);color:var(--surface);padding:0 24px;font-size:1rem;font-weight:900;text-decoration:none;}
