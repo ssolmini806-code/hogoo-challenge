@@ -58,40 +58,8 @@
       },
       "speakable": {
         "@type": "SpeakableSpecification",
-        "cssSelector": [".hero h1", ".hero p", ".define-section"]
+        "cssSelector": [".title-screen h1", ".ts-tagline", ".ts-menu", ".ts-sub"]
       }
-    }
-    </script>
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "호구 탈출 챌린지는 어떤 도움을 주나요?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "7일 챌린지는 습관을 완성한다고 약속하기보다, 부탁 앞에서 멈추고 경계를 말하는 첫 실행을 돕는 스타터 프로그램입니다."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "테스트 결과는 익명인가요?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "네, 모든 자가점검 결과는 개인정보 보호정책에 따라 안전하게 관리되며, 서비스 개선을 위한 통계 자료로만 활용됩니다."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "사기 예방에 도움이 되나요?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "호구 성향의 핵심인 '과도한 타인 의존'과 '거절의 두려움'을 해결함으로써, 심리적 취약점을 파고드는 사기 행위로부터 자신을 지키는 힘을 길러줍니다."
-          }
-        }
-      ]
     }
     </script>
     <meta name="google-adsense-account" content="ca-pub-8564310871125079">
@@ -102,11 +70,11 @@
     body{min-width:320px;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
     a{color:inherit}.wrap{width:min(100%,560px);margin:0 auto;padding:0 22px}.skip{position:absolute;left:-999px;top:8px;z-index:10000;background:var(--green);color:var(--surface);padding:10px 16px;border-radius:8px;font-weight:800;text-decoration:none}.skip:focus{left:16px}
     nav,.site-nav{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:18px 0;border-bottom:1px solid var(--line)}.logo,.brand{min-height:40px;display:inline-flex;align-items:center;white-space:nowrap;font-family:var(--serif);font-style:italic;font-weight:500;font-size:1.05rem;letter-spacing:.01em;color:var(--green);text-decoration:none}.nav-links{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:6px 15px}.nav-links a{min-height:44px;display:inline-flex;align-items:center;color:var(--ink-sub);font-size:.88rem;font-weight:700;text-decoration:none}
-    .hero{padding:52px 0 30px;text-align:center}.eyebrow,.section-label{display:inline-block;margin-bottom:14px;color:var(--mint-ink);font-family:var(--serif);font-size:.95rem;font-style:italic}.hero h1{max-width:12em;margin:0 auto 14px;font-size:clamp(2rem,8.4vw,2.8rem);font-weight:800;line-height:1.16;letter-spacing:0;text-wrap:balance}.hero p{max-width:25em;margin:0 auto 26px;color:var(--ink-sub);font-size:1rem;font-weight:450;line-height:1.75;text-wrap:pretty}.hero-actions{display:grid;gap:9px;max-width:380px;margin:0 auto}.hero-note{margin-top:12px;color:var(--ink-faint);font-size:.8rem;font-weight:700}
-    .btn{min-height:54px;border:1px solid transparent;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:0 18px;background:var(--surface);color:var(--green);font-weight:800;font-size:.98rem;text-decoration:none;cursor:pointer}.btn-primary{background:var(--green);color:var(--surface);box-shadow:0 12px 26px rgba(17,75,60,.16)}.btn-ghost{background:var(--surface);color:var(--green);border-color:var(--line)}
-    .choice-grid{display:grid;gap:12px}.choice-card{display:block;width:100%;padding:22px;border:1px solid var(--line);border-radius:var(--r-lg);background:var(--surface);color:inherit;text-align:left;text-decoration:none}.choice-card.featured{border-color:var(--mint);box-shadow:0 14px 34px rgba(17,75,60,.07)}.choice-card h2,.choice-card h3{margin:14px 0 7px;font-size:1.18rem;font-weight:800;line-height:1.35;letter-spacing:0;text-wrap:balance}.card-desc{color:var(--ink-sub);font-size:.94rem;line-height:1.7;margin-bottom:14px}.go{color:var(--green);font-size:.9rem;font-weight:800;text-decoration:none}.pill{display:inline-flex;margin-bottom:14px;padding:5px 10px;border-radius:var(--r-pill);background:var(--mint-soft);color:var(--mint-ink);font-size:.72rem;font-weight:800;letter-spacing:.02em}.test-card-image{margin:-22px -22px 2px;aspect-ratio:1/1;background:var(--green-soft);overflow:hidden}.test-card-image img{width:100%;height:100%;object-fit:cover;display:block}
-    @media (min-width:900px){.wrap{width:min(100%,1040px);padding:0 32px}.hero{padding:74px 0 46px}.hero-actions{grid-template-columns:1fr 1fr}.choice-grid{grid-template-columns:repeat(4,1fr)}}
-    @media (max-width:640px){.wrap{padding:0 20px}.site-nav,nav{align-items:flex-start}.choice-card{padding:20px}.test-card-image{margin:-20px -20px 2px}}
+    .home-footer{margin-top:0;padding:54px 22px 44px;border-top:1px solid var(--line);text-align:center;color:var(--ink-faint);font-size:.84rem}
+    .home-footer .footer-links{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 18px;margin-bottom:18px}
+    .home-footer .footer-links a{min-height:44px;display:inline-flex;align-items:center;color:var(--ink-sub);text-decoration:none}
+    @media (min-width:900px){.wrap{width:min(100%,1040px);padding-left:32px;padding-right:32px}}
+    @media (max-width:640px){.wrap{padding-left:20px;padding-right:20px}.site-nav,nav{align-items:flex-start}}
     /* ── RPG 타이틀 화면 ── */
     .title-screen{position:relative;min-height:calc(100vh - 78px);min-height:calc(100svh - 78px);display:flex;align-items:center;justify-content:center;overflow:hidden;text-align:center}
     .ts-bg{position:absolute;inset:0;z-index:0;pointer-events:none}
@@ -130,10 +98,8 @@
     .ts-item:hover .ts-arrow,.ts-item:focus-visible .ts-arrow{animation:ts-nudge .7s ease-in-out infinite}
     .ts-sub{display:inline-block;margin-top:48px;color:var(--ink-faint);font-size:.84rem;font-weight:600;text-decoration:none;border-bottom:1px solid var(--line);transition:color .2s ease,border-color .2s ease}
     .ts-sub:hover{color:var(--mint-ink);border-color:var(--mint)}
-    .ts-scroll{position:absolute;left:50%;bottom:16px;z-index:1;color:var(--ink-faint);font-size:.76rem;font-weight:600;text-decoration:none;animation:ts-bob 2.4s ease-in-out infinite}
     @keyframes ts-sway{from{transform:translateX(-4px) rotate(var(--tilt,0deg))}to{transform:translateX(4px) rotate(var(--tilt,0deg))}}
     @keyframes ts-nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(3px)}}
-    @keyframes ts-bob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,6px)}}
     @media (max-width:640px){
       .title-screen{min-height:calc(100vh - 118px);min-height:calc(100svh - 118px)}
       .ts-mascot.on{opacity:.12}
@@ -142,15 +108,12 @@
       .ts-bg .m5{width:84px;bottom:5%;left:5%}
       .ts-bg .m6{width:92px;bottom:9%;right:4%}
     }
-    @media (prefers-reduced-motion:reduce){.ts-mascot,.ts-item:hover .ts-arrow,.ts-item:focus-visible .ts-arrow,.ts-scroll{animation:none}}
+    @media (prefers-reduced-motion:reduce){.ts-mascot,.ts-item:hover .ts-arrow,.ts-item:focus-visible .ts-arrow{animation:none}}
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@700;800&display=swap">
     <noscript><link rel="stylesheet" href="/give-theme.css"></noscript>
-    <link rel="preload" as="image" href="/images/tests/give-id-illustration-v3-400w.webp"
-          imagesrcset="/images/tests/give-id-illustration-v3-400w.webp 400w, /images/tests/give-id-illustration-v3-800w.webp 800w"
-          imagesizes="(max-width: 600px) 80vw, 240px" fetchpriority="high">
 </head>
 <body>
     <a class="skip" href="#main">본문 바로가기</a>
@@ -168,10 +131,10 @@
         </nav>
     </header>
 
-    <section class="title-screen" aria-label="타이틀 메뉴">
+    <main id="main" class="title-screen" aria-label="타이틀 메뉴">
         <div class="ts-bg" aria-hidden="true"></div>
         <div class="ts-inner">
-            <p class="ts-logo">GIVE<span>ECOSYSTEM</span></p>
+            <h1 class="ts-logo">GIVE<span>ECOSYSTEM</span></h1>
             <p class="ts-tagline">Smart giver, healthier boundaries</p>
             <nav class="ts-menu" aria-label="테스트 바로가기">
                 <a class="ts-item" href="give-test.html"><span class="ts-arrow" aria-hidden="true">▸</span>GIVE ID 테스트</a>
@@ -181,232 +144,9 @@
             </nav>
             <a class="ts-sub" href="white-psychology.html">선의 심리학 알아보기</a>
         </div>
-        <a class="ts-scroll" href="#main" aria-label="아래 콘텐츠로 이동">▾ 아래로</a>
-    </section>
-
-    <main id="main" class="wrap">
-        <section class="hero">
-            <span class="eyebrow">Smart giver, healthier boundaries</span>
-            <h1>당신의 선의가 이용당하지 않도록</h1>
-            <p>착하게 살지 말자는 얘기가 아니에요. 덜 닳게 주는 법을 알자는 거죠. GIVE Ecosystem은 기버가 지치지 않는 관계의 기준을 나눕니다.</p>
-            <div class="hero-actions">
-                <a href="give-test.html" class="btn btn-primary">무료 자가점검 시작하기</a>
-                <a href="hogoo-test.html" class="btn btn-ghost">7일 챌린지 보기</a>
-            </div>
-            <div class="hero-note">로그인 없이 테스트 가능 · 결과 확인 후 보상 해금</div>
-        </section>
-
-        <section class="choice-grid" aria-label="무료 검사와 챌린지">
-            <a href="give-test.html" class="choice-card featured test-card">
-                <div class="test-card-image">
-                    <img src="/images/tests/give-id-illustration-v3-400w.webp"
-                         srcset="/images/tests/give-id-illustration-v3-400w.webp 400w, /images/tests/give-id-illustration-v3-800w.webp 800w"
-                         sizes="(max-width: 600px) 80vw, 240px"
-                         alt="세 사람이 균형 잡힌 관계를 이야기하는 따뜻한 일러스트" loading="eager" fetchpriority="high" width="560" height="560">
-                </div>
-                <span class="pill">가장 먼저 추천</span>
-                <h2>GIVE ID 자가점검</h2>
-                <p class="card-desc">나의 배려, 경계, 회복 패턴을 살피고 관계에서 나를 지키는 첫 기준을 확인하세요.</p>
-                <span class="go">지금 무료 점검하기</span>
-            </a>
-
-            <a href="hogoo-test.html" class="choice-card featured">
-                <span class="pill">실천 루틴</span>
-                <span class="itile lg" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3.5V20.5"/><path class="fa" d="M6 5H17L14 8.5L17 12H6Z"/></svg></span>
-                <h2>7일 챌린지</h2>
-                <p class="card-desc">아는 것을 넘어 첫 실행으로. 7일간의 작은 미션으로 경계 문장을 연습합니다.</p>
-                <span class="go">챌린지 참여하기</span>
-            </a>
-
-            <a href="hogoo-check.html" class="choice-card test-card">
-                <div class="test-card-image">
-                    <img data-lazy-src="/images/tests/hogoo-check-illustration-v3-400w.webp"
-                         data-lazy-srcset="/images/tests/hogoo-check-illustration-v3-400w.webp 400w, /images/tests/hogoo-check-illustration-v3-800w.webp 800w"
-                         sizes="(max-width: 600px) 80vw, 240px"
-                         alt="부탁 앞에서 자신의 경계를 고민하는 사람의 따뜻한 일러스트" loading="lazy" width="560" height="560">
-                </div>
-                <h2>나는 호구일까?</h2>
-                <p class="card-desc">착한 것과 호구는 다릅니다. 12가지 질문으로 내 호구 지수를 지금 확인해보세요.</p>
-                <span class="go">무료 테스트하기</span>
-            </a>
-
-            <a href="relationship-risk.html" class="choice-card test-card">
-                <div class="test-card-image">
-                    <img data-lazy-src="/images/tests/relationship-risk-illustration-v3-400w.webp"
-                         data-lazy-srcset="/images/tests/relationship-risk-illustration-v3-400w.webp 400w, /images/tests/relationship-risk-illustration-v3-800w.webp 800w"
-                         sizes="(max-width: 600px) 80vw, 240px"
-                         alt="관계의 피로 신호를 차분히 살피는 상담 장면 일러스트" loading="lazy" width="560" height="560">
-                </div>
-                <span class="tag tag-amber">위험 신호 점검</span>
-                <h2>인간관계 위험도</h2>
-                <p class="card-desc">지금 내 관계가 나를 지치게 하고 있나요? 12가지 질문으로 위험 신호를 확인하세요.</p>
-                <span class="go">무료 테스트하기</span>
-            </a>
-
-            <a href="selfless-otherish-test.html" class="choice-card test-card">
-                <div class="test-card-image">
-                    <img data-lazy-src="/images/tests/give-id-illustration-v3-400w.webp"
-                         data-lazy-srcset="/images/tests/give-id-illustration-v3-400w.webp 400w, /images/tests/give-id-illustration-v3-800w.webp 800w"
-                         sizes="(max-width: 600px) 80vw, 240px"
-                         alt="도움과 회복의 균형을 살피는 따뜻한 일러스트" loading="lazy" width="560" height="560">
-                </div>
-                <span class="tag">선의 스펙트럼</span>
-                <h2>Selfless vs Otherish</h2>
-                <p class="card-desc">내 선의가 나를 비우는 방식인지, 나까지 지키는 방식인지 20문항으로 확인하세요.</p>
-                <span class="go">무료 점검하기</span>
-            </a>
-
-            <a href="reviews.html" class="choice-card row-card">
-                <span class="itile sm" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 5H19a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H11l-4 3.5V16H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z"/><circle class="fa" cx="9" cy="10.5" r="1"/><circle class="fa" cx="12" cy="10.5" r="1"/><circle class="fa" cx="15" cy="10.5" r="1"/></svg></span>
-                <h2>챌린지 후기</h2>
-                <p class="card-desc">7일 챌린지를 직접 해본 사람들이 남긴 변화 기록과 후기를 확인하세요.</p>
-                <span class="go">챌린지 후기 보기</span>
-            </a>
-        </section>
-
-        <section class="share-wrap" aria-label="공유하기">
-            <div class="sh-title">친구에게 공유하기</div>
-            <div class="share-row">
-                <button class="s-btn sb-x" type="button" data-share-action="x" aria-label="X에 공유">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.261 5.636 5.903-5.636zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                    X
-                </button>
-                <button class="s-btn sb-threads" type="button" data-share-action="threads" aria-label="Threads에 공유">
-                    <img data-lazy-src="/images/threads-icon.webp" width="24" height="24" alt="" aria-hidden="true">
-                    Threads
-                </button>
-                <button class="s-btn sb-kakao" type="button" data-share-action="kakao" aria-label="카카오톡에 공유">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3C6.477 3 2 6.477 2 10.857c0 2.67 1.516 5.025 3.838 6.512l-.98 3.648a.25.25 0 0 0 .375.272l4.23-2.795C9.791 18.776 10.887 18.857 12 18.857c5.523 0 10-3.477 10-7.857S17.523 3 12 3"/></svg>
-                    카카오톡
-                </button>
-                <button class="s-btn sb-insta" type="button" data-share-action="insta" aria-label="인스타그램에 공유">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-                    인스타
-                </button>
-                <button class="s-btn sb-tiktok" type="button" data-share-action="tiktok" aria-label="틱톡 공유 안내">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.3 6.3 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg>
-                    틱톡
-                </button>
-            </div>
-        </section>
-        <div class="share-toast" id="snst"></div>
-
-        <section class="block">
-            <div class="block-head">
-                <div>
-                    <span class="section-label">Knowledge Hub</span>
-                    <h2>지식 허브</h2>
-                </div>
-                <a class="more" href="articles/">심리 칼럼 전체 보기</a>
-            </div>
-            <p class="lead">스마트 기버로 거듭나기 위한 심리학 전문 리포트</p>
-
-            <div class="art">
-                <a href="./articles/giver-burnout.html">
-                    <span class="itile" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3C8.5 6.2 6.7 9.2 6.7 12.4A5.3 5.3 0 0 0 12 17.7A5.3 5.3 0 0 0 17.3 12.4C17.3 9.2 15.5 6.2 12 3Z"/><path class="sa" d="M9 12.8C10.3 14 11.7 14 13 12.8"/></svg></span>
-                    <div>
-                        <span class="kicker">Psychology Report</span>
-                        <h3>착한 사람의 번아웃</h3>
-                        <p>왜 베풀수록 공허해질까요? 지속 가능한 선의를 위한 심리학적 분석.</p>
-                    </div>
-                </a>
-
-                <a href="./articles/setting-boundaries.html">
-                    <span class="itile" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path class="sa" d="M8 12H16"/></svg></span>
-                    <div>
-                        <span class="kicker">Communication Science</span>
-                        <h3>관계를 살리는 경계선</h3>
-                        <p>관계를 망치지 않으면서 나를 지키는 3단계 거절 전략.</p>
-                    </div>
-                </a>
-
-                <a href="./articles/taker-signals.html">
-                    <span class="itile warn" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="8" width="16" height="8" rx="2"/><path d="M21 10.5V13.5"/><rect class="fw" x="5.2" y="10" width="3" height="4" rx=".6"/></svg></span>
-                    <div>
-                        <span class="kicker">Relationship Analysis</span>
-                        <h3>테이커의 심리학</h3>
-                        <p>당신의 호의를 당연하게 여기는 사람들의 특징과 대응 방안.</p>
-                    </div>
-                </a>
-
-                <a href="./articles/smart-giver-guide.html">
-                    <span class="itile" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3L19 6V11C19 16 12 20.5 12 20.5S5 16 5 11V6Z"/><path class="sa" d="M9 11.5L11 13.5L15 9.5"/></svg></span>
-                    <div>
-                        <span class="kicker">Success Strategy</span>
-                        <h3>성공하는 이타주의자</h3>
-                        <p>성과 높은 기버들은 무엇이 다른지 실증 데이터로 살펴봅니다.</p>
-                    </div>
-                </a>
-
-                <a href="./articles/loss-aversion-relationships.html">
-                    <span class="itile warn" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3L21 19H3Z"/><path d="M12 8V13"/><path class="fw" d="M12 16.5h.01"/></svg></span>
-                    <div>
-                        <span class="kicker">NEW · Psychology</span>
-                        <h3>거절이 힘든 이유</h3>
-                        <p>거절할 때 생기는 죄책감을 손실 회피 이론으로 분석합니다.</p>
-                    </div>
-                </a>
-
-                <a href="./articles/curiosity-gap-patterns.html">
-                    <span class="itile" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 4H19V20H5Z"/><path class="sa" d="M8 8H16M8 12H14M8 16H12"/></svg></span>
-                    <div>
-                        <span class="kicker">NEW · Self-Awareness</span>
-                        <h3>나의 관계 패턴</h3>
-                        <p>왜 같은 관계 실수를 반복하는지 패턴 인식으로 살펴봅니다.</p>
-                    </div>
-                </a>
-            </div>
-        </section>
-
-        <section class="block define-section">
-            <h2>기버·테이커·매처란 무엇인가?</h2>
-            <p class="section-text">와튼스쿨 조직심리학자 <strong>애덤 그랜트(Adam Grant)</strong>는 저서 <em>Give and Take</em>에서 사람의 관계 유형을 3가지로 분류했습니다.</p>
-            <div class="types">
-                <div class="type g">
-                    <strong>기버(Giver)</strong>
-                    <p>타인에게 먼저 베푸는 사람. 대가를 기대하지 않고 돕는 성향으로, 조직 내 최하위 성과자이면서 동시에 최상위 성과자이기도 하다.</p>
-                </div>
-                <div class="type t">
-                    <strong>테이커(Taker)</strong>
-                    <p>받는 것을 우선시하는 사람. 관계를 제로섬 게임으로 인식하며, 자신의 이익이 상대의 손실보다 커야 만족한다.</p>
-                </div>
-                <div class="type m">
-                    <strong>매처(Matcher)</strong>
-                    <p>주고받음의 균형을 추구하는 사람. 상대가 베풀면 베풀고, 상대가 착취하면 방어한다. 전체 인구의 다수를 차지한다.</p>
-                </div>
-            </div>
-            <p class="section-text">GIVE Ecosystem은 기버들이 <strong>똑똑한 기버(Smart Giver)</strong>가 될 수 있도록 돕습니다. 선의 심리학은 학술 분과명이 아니라, 자기연민·번아웃·상호성·자기주장 연구를 선한 사람의 지속가능성이라는 렌즈로 엮은 근거 기반 실천 프레임입니다.</p>
-            <p class="section-text"><a href="./white-psychology.html" style="color:var(--green);font-weight:800;">왜 착한 마음이 손해가 되는지 보기 →</a></p>
-        </section>
-
-        <section class="block">
-            <h2>우리가 제공하는 가치</h2>
-            <p class="section-text">1. <strong>객관적 자아 성찰</strong>: 자가점검 문항을 통해 현재 나의 관계 맺기 패턴을 분석합니다.</p>
-            <p class="section-text">2. <strong>맞춤형 가이드라인</strong>: 각 유형에 맞는 실질적인 관계 대처법을 제안합니다.</p>
-            <p class="section-text">3. <strong>실천 중심의 훈련</strong>: 7일간의 소소한 미션을 통해 심리적 경계선을 말로 꺼내는 첫 실행을 연습합니다.</p>
-            <p class="section-text"><strong>안내</strong>: 이 테스트와 챌린지는 의학적 진단이나 전문 상담을 대체하지 않는 자기 점검 도구입니다. 심각한 불안, 우울, 폭력, 금전 착취가 의심되는 상황에서는 신뢰할 수 있는 사람이나 전문기관의 도움을 함께 받으세요.</p>
-        </section>
-
-        <section class="block">
-            <h2 class="mb18">자주 묻는 질문</h2>
-            <div class="faq">
-                <details>
-                    <summary>호구 탈출 챌린지는 어떤 도움을 주나요?</summary>
-                    <p>7일 챌린지는 습관을 완성한다고 약속하기보다, 부탁 앞에서 멈추고 경계를 말하는 첫 실행을 돕는 스타터 프로그램입니다. 이후 30일 루틴과 부스터로 이어질 때 더 안정적으로 남습니다.</p>
-                </details>
-                <details>
-                    <summary>테스트 결과는 익명인가요?</summary>
-                    <p>네, 모든 자가점검 결과는 개인정보 보호정책에 따라 안전하게 관리되며, 서비스 개선을 위한 통계 자료로만 활용됩니다.</p>
-                </details>
-                <details>
-                    <summary>사기 예방에 도움이 되나요?</summary>
-                    <p>호구 성향의 핵심인 과도한 타인 의존과 거절의 두려움을 해결함으로써, 심리적 취약점을 파고드는 사기 행위로부터 자신을 지키는 힘을 길러줍니다.</p>
-                </details>
-            </div>
-        </section>
     </main>
 
-        <footer class="wrap">
+        <footer class="wrap home-footer">
             <div class="footer-links">
                 <a href="index.html">홈으로</a>
                 <a href="about.html">브랜드 스토리</a>
@@ -461,39 +201,7 @@
     document.head.appendChild(link);
   }, 8000);
 
-  lazyImages();
   titleMascots();
-
-  document.addEventListener('pointerover', loadShareOnIntent, { passive: true });
-  document.addEventListener('focusin', loadShareOnIntent);
-  document.addEventListener('click', function (event) {
-    var target = event.target && event.target.closest ? event.target.closest('[data-share-action]') : null;
-    if (!target || window.snsCopy) return;
-    event.preventDefault();
-    event.stopPropagation();
-    loadShareOnIntent(function () { target.click(); });
-  }, true);
-
-  function loadShareOnIntent(eventOrCallback) {
-    var callback = typeof eventOrCallback === 'function' ? eventOrCallback : null;
-    if (!callback && eventOrCallback && eventOrCallback.target && eventOrCallback.target.closest) {
-      if (!eventOrCallback.target.closest('[data-share-action]')) return;
-    }
-    if (window.snsCopy) {
-      if (callback) callback();
-      return;
-    }
-    if (loadShareOnIntent.loading) {
-      if (callback) loadShareOnIntent.callbacks.push(callback);
-      return;
-    }
-    loadShareOnIntent.loading = true;
-    loadShareOnIntent.callbacks = callback ? [callback] : [];
-    loadScript('/share.js', {}, function () {
-      loadShareOnIntent.callbacks.splice(0).forEach(function (queuedCallback) { queuedCallback(); });
-    });
-  }
-  loadShareOnIntent.callbacks = [];
 
   function titleMascots() {
     var host = document.querySelector('.ts-bg');
@@ -523,32 +231,6 @@
     });
   }
 
-  function lazyImages() {
-    var images = Array.prototype.slice.call(document.querySelectorAll('img[data-lazy-src]'));
-    if (!images.length) return;
-
-    function reveal(img) {
-      if (img.dataset.lazySrcset) img.srcset = img.dataset.lazySrcset;
-      img.src = img.dataset.lazySrc;
-      img.removeAttribute('data-lazy-src');
-      img.removeAttribute('data-lazy-srcset');
-    }
-
-    if (!('IntersectionObserver' in window)) {
-      window.setTimeout(function () { images.forEach(reveal); }, 8000);
-      return;
-    }
-
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
-        observer.unobserve(entry.target);
-        reveal(entry.target);
-      });
-    }, { rootMargin: '0px 0px 120px 0px' });
-
-    images.forEach(function (img) { observer.observe(img); });
-  }
 })();
 </script>
 </body>
