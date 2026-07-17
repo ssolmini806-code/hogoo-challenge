@@ -78,8 +78,10 @@
     /* ── RPG 타이틀 화면 ── */
     .title-screen{position:relative;min-height:calc(100vh - 78px);min-height:calc(100svh - 78px);display:flex;align-items:center;justify-content:center;overflow:hidden;text-align:center}
     .ts-bg{position:absolute;inset:0;z-index:0;pointer-events:none}
-    .ts-mascot{position:absolute;width:120px;height:auto;opacity:0;transition:opacity 1.4s ease;animation:ts-sway 9s ease-in-out infinite alternate}
+    .ts-mascot{position:absolute;width:120px;height:auto;opacity:0;transition:opacity .4s ease;animation:ts-sway 9s ease-in-out infinite alternate}
     .ts-mascot.on{opacity:.18}
+    .ts-bg.has-active-mascot .ts-mascot.on{opacity:.1}
+    .ts-bg.has-active-mascot .ts-mascot.on.is-active{opacity:.35}
     .ts-bg .m1{top:7%;left:5%;width:140px;--tilt:-7deg;animation-duration:8s}
     .ts-bg .m2{top:13%;right:7%;width:115px;--tilt:6deg;animation-duration:10s;animation-delay:-3s}
     .ts-bg .m3{top:50%;left:3%;width:125px;--tilt:5deg;animation-duration:9s;animation-delay:-5s}
@@ -91,15 +93,15 @@
     .ts-logo{margin:0;font-family:'Hahmlet',var(--serif);font-weight:800;font-size:clamp(2.4rem,10vw,3.6rem);line-height:1.08;letter-spacing:.05em;color:var(--green);text-shadow:0 0 18px rgba(0,168,133,.30),0 0 48px rgba(0,168,133,.14)}
     .ts-logo span{display:block;font-size:.5em;font-weight:700;letter-spacing:.34em;text-indent:.34em;margin-top:4px}
     .ts-tagline{margin:14px 0 46px;color:var(--mint-ink);font-family:'Hahmlet',var(--serif);font-style:italic;font-size:.92rem}
-    .ts-menu{display:flex;flex-direction:column;align-items:center;gap:18px;padding:0;border-bottom:0}
-    .ts-item{display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:48px;padding:2px 18px;font-family:'Hahmlet',var(--serif);font-size:clamp(1.15rem,4.6vw,1.4rem);font-weight:700;color:var(--ink);text-decoration:none;transition:color .2s ease,transform .2s ease}
-    .ts-arrow{color:var(--mint);font-size:.85em}
-    .ts-item:hover,.ts-item:focus-visible{color:var(--mint);transform:scale(1.03)}
-    .ts-item:hover .ts-arrow,.ts-item:focus-visible .ts-arrow{animation:ts-nudge .7s ease-in-out infinite}
+    .ts-menu{position:relative;display:flex;width:max-content;max-width:100%;flex-direction:column;align-items:stretch;gap:18px;margin:0 auto;padding:0;border-bottom:0}
+    .ts-caret{position:absolute;top:0;left:0;display:flex;align-items:center;height:48px;color:var(--mint);font-size:clamp(.98rem,3.9vw,1.19rem);line-height:1;pointer-events:none;transform:translateY(0);transition:transform .28s cubic-bezier(.4,0,.2,1)}
+    .ts-item{position:relative;display:inline-flex;align-items:center;justify-content:flex-start;min-height:48px;padding:2px 18px 2px 30px;font-family:'Hahmlet',var(--serif);font-size:clamp(1.15rem,4.6vw,1.4rem);font-weight:700;color:var(--ink);text-decoration:none;transition:color .2s ease}
+    .ts-item::after{content:'';position:absolute;left:30px;right:18px;bottom:4px;height:2px;background:currentColor;transform:scaleX(0);transform-origin:left center;transition:transform .25s ease}
+    .ts-item:hover,.ts-item:focus-visible{color:var(--mint)}
+    .ts-item:hover::after,.ts-item:focus-visible::after{transform:scaleX(1)}
     .ts-sub{display:inline-block;margin-top:48px;color:var(--ink-faint);font-size:.84rem;font-weight:600;text-decoration:none;border-bottom:1px solid var(--line);transition:color .2s ease,border-color .2s ease}
     .ts-sub:hover{color:var(--mint-ink);border-color:var(--mint)}
     @keyframes ts-sway{from{transform:translateX(-4px) rotate(var(--tilt,0deg))}to{transform:translateX(4px) rotate(var(--tilt,0deg))}}
-    @keyframes ts-nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(3px)}}
     @media (max-width:640px){
       .title-screen{min-height:calc(100vh - 118px);min-height:calc(100svh - 118px)}
       .ts-mascot.on{opacity:.12}
@@ -108,7 +110,8 @@
       .ts-bg .m5{width:84px;bottom:5%;left:5%}
       .ts-bg .m6{width:92px;bottom:9%;right:4%}
     }
-    @media (prefers-reduced-motion:reduce){.ts-mascot,.ts-item:hover .ts-arrow,.ts-item:focus-visible .ts-arrow{animation:none}}
+    @media (hover:none){.ts-caret{transition:none}}
+    @media (prefers-reduced-motion:reduce){.ts-mascot{animation:none;transition:none}.ts-caret{transition:none}}
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -137,10 +140,11 @@
             <h1 class="ts-logo">GIVE<span>ECOSYSTEM</span></h1>
             <p class="ts-tagline">Smart giver, healthier boundaries</p>
             <nav class="ts-menu" aria-label="테스트 바로가기">
-                <a class="ts-item" href="give-test.html"><span class="ts-arrow" aria-hidden="true">▸</span>GIVE ID 테스트</a>
-                <a class="ts-item" href="hogoo-check.html"><span class="ts-arrow" aria-hidden="true">▸</span>호구 체크</a>
-                <a class="ts-item" href="refusal-test.html"><span class="ts-arrow" aria-hidden="true">▸</span>거절력 테스트</a>
-                <a class="ts-item" href="relationship-risk.html"><span class="ts-arrow" aria-hidden="true">▸</span>관계 위험도</a>
+                <span class="ts-caret" aria-hidden="true">▸</span>
+                <a class="ts-item" data-mascot="m3" href="give-test.html">GIVE ID 테스트</a>
+                <a class="ts-item" data-mascot="m1" href="hogoo-check.html">호구 체크</a>
+                <a class="ts-item" data-mascot="m6" href="refusal-test.html">거절력 테스트</a>
+                <a class="ts-item" data-mascot="m4" href="relationship-risk.html">관계 위험도</a>
             </nav>
             <a class="ts-sub" href="white-psychology.html">선의 심리학 알아보기</a>
         </div>
@@ -202,6 +206,67 @@
   }, 8000);
 
   titleMascots();
+  titleMenu();
+
+  function titleMenu() {
+    var menu = document.querySelector('.ts-menu');
+    var caret = menu && menu.querySelector('.ts-caret');
+    var items = menu ? Array.prototype.slice.call(menu.querySelectorAll('.ts-item')) : [];
+    var mascotHost = document.querySelector('.ts-bg');
+    if (!menu || !caret || !items.length) return;
+
+    var hoveredItem = null;
+    var focusedItem = null;
+    var isTouchMenu = window.matchMedia && window.matchMedia('(hover: none)').matches;
+
+    function moveCaret(item) {
+      caret.style.transform = 'translateY(' + item.offsetTop + 'px)';
+    }
+
+    function highlightMascot(item) {
+      if (!mascotHost) return;
+      var activeClass = item && item.getAttribute('data-mascot');
+      mascotHost.classList.toggle('has-active-mascot', Boolean(activeClass));
+      mascotHost.querySelectorAll('.ts-mascot').forEach(function (mascot) {
+        mascot.classList.toggle('is-active', Boolean(activeClass) && mascot.classList.contains(activeClass));
+      });
+    }
+
+    function syncSelection() {
+      var item = hoveredItem || focusedItem || items[0];
+      moveCaret(item);
+      highlightMascot(hoveredItem || focusedItem);
+    }
+
+    items.forEach(function (item) {
+      item.addEventListener('mouseenter', function () {
+        hoveredItem = item;
+        syncSelection();
+      });
+      item.addEventListener('mouseleave', function () {
+        hoveredItem = null;
+        syncSelection();
+      });
+      item.addEventListener('focus', function () {
+        focusedItem = item;
+        syncSelection();
+      });
+      item.addEventListener('blur', function () {
+        focusedItem = null;
+        syncSelection();
+      });
+      item.addEventListener('click', function (event) {
+        if (!isTouchMenu || event.defaultPrevented) return;
+        event.preventDefault();
+        hoveredItem = item;
+        syncSelection();
+        window.setTimeout(function () { window.location.href = item.href; }, 200);
+      });
+    });
+
+    moveCaret(items[0]);
+    window.addEventListener('resize', syncSelection, { passive: true });
+  }
 
   function titleMascots() {
     var host = document.querySelector('.ts-bg');
