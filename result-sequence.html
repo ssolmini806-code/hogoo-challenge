@@ -52,12 +52,32 @@
       <p class="sequence-line is-soft" id="seqStrengthOutro">그게 변화의 출발점이에요.</p>
     </section>
 
-    <section class="sequence-slide" data-tone="risk" aria-label="위험 신호">
-      <span class="sequence-label is-risk">위험 신호</span>
-      <p class="sequence-line" id="seqRiskLead">이 패턴이 계속되면</p>
-      <p class="sequence-copy" id="seqRisk"></p>
-      <span class="sequence-rule" aria-hidden="true"></span>
-      <p class="sequence-line is-soft" id="seqRiskOutro">지금 알아차린 것만으로도 이미 달라지고 있어요.</p>
+    <section class="sequence-slide is-green sequence-poster" data-tone="green" data-sequence-poster aria-label="GIVE ID 유형 공개">
+      <div class="sequence-poster-caption">
+        <span id="seqResultLabel">YOUR TYPE</span>
+        <i aria-hidden="true"></i>
+      </div>
+      <h1 class="sequence-type" id="seqTypeName">
+        <span class="sequence-type-copy" aria-hidden="true"></span>
+        <span class="sequence-type-copy is-contrast" aria-hidden="true"></span>
+        <span class="sequence-type-emoji" aria-hidden="true"></span>
+      </h1>
+      <p class="sequence-tagline" id="seqTagline"></p>
+      <figure class="sequence-character sequence-poster-character">
+        <img class="sequence-character-silhouette" src="" alt="" aria-hidden="true">
+        <img id="seqCharacter" src="" alt="관계 유형 캐릭터 일러스트">
+      </figure>
+      <p class="sequence-poster-meta">7가지 유형 중</p>
+    </section>
+
+    <section class="sequence-slide sequence-risk" data-tone="risk" aria-label="위험 신호">
+      <span class="sequence-risk-label">RISK SIGNAL</span>
+      <div class="sequence-risk-headline">
+        <p class="sequence-line" id="seqRiskLead">이 패턴이 계속되면</p>
+        <p class="sequence-copy" id="seqRisk"></p>
+      </div>
+      <span class="sequence-risk-diagonal" aria-hidden="true"></span>
+      <p class="sequence-risk-outro" id="seqRiskOutro">지금 알아차린 것만으로도 이미 달라지고 있어요.</p>
     </section>
 
     <section class="sequence-slide is-mint" data-tone="mint" aria-label="오늘의 조언">
@@ -68,15 +88,6 @@
         <p id="seqAdvice"></p>
         <small class="lace-note">상황 인정 → 마음 표현 → 내 기준 → 가능한 범위 순서로 말해보세요.</small>
       </article>
-    </section>
-
-    <section class="sequence-slide is-green" data-tone="green" aria-label="GIVE ID 공개">
-      <span class="sequence-label" id="seqResultLabel">당신의 결과</span>
-      <figure class="sequence-character">
-        <img id="seqCharacter" src="" alt="관계 유형 캐릭터 일러스트">
-      </figure>
-      <h1 class="sequence-type" id="seqTypeName"></h1>
-      <p class="sequence-tagline" id="seqTagline"></p>
     </section>
 
     <section class="sequence-slide" data-tone="plain" aria-label="선의 심리학 연결">
@@ -483,14 +494,52 @@
     document.getElementById("seqFinalB").textContent = sequence.final[1];
     document.getElementById("seqFinalC").textContent = sequence.final[2];
     document.getElementById("seqStrength").innerHTML = type.strength;
-    document.getElementById("seqRisk").innerHTML = type.risk;
+    var riskKeywords = {
+      angel: "내 일정",
+      diplomat: "피로",
+      architect: "거리감",
+      guardian: "마음을 여는 속도",
+      burnout: "예민",
+      blocker: "도움을 청할 사람",
+      mixed: "기준"
+    };
+    var riskText = type.risk;
+    var riskKeyword = testKey === "give" ? riskKeywords[key] : "";
+    if (riskKeyword && riskText.indexOf(riskKeyword) !== -1) {
+      var riskParts = riskText.split(riskKeyword);
+      var riskNode = document.getElementById("seqRisk");
+      riskNode.textContent = riskParts.shift();
+      var riskMark = document.createElement("mark");
+      riskMark.className = "sequence-risk-keyword";
+      riskMark.textContent = riskKeyword;
+      riskNode.appendChild(riskMark);
+      riskNode.appendChild(document.createTextNode(riskParts.join(riskKeyword)));
+    } else {
+      document.getElementById("seqRisk").textContent = riskText;
+    }
     document.getElementById("seqAdvice").innerHTML = type.advice;
-    document.getElementById("seqTypeName").textContent = type.name;
+    var typeNameMatch = type.name.match(/^(.*?)(\s*[\p{Extended_Pictographic}\uFE0F]+)?$/u);
+    var typeNameText = typeNameMatch && typeNameMatch[1] ? typeNameMatch[1].trim() : type.name;
+    var typeEmoji = typeNameMatch && typeNameMatch[2] ? typeNameMatch[2].trim() : "";
+    var typeNameNode = document.getElementById("seqTypeName");
+    typeNameNode.setAttribute("aria-label", type.name);
+    typeNameNode.querySelectorAll(".sequence-type-copy").forEach(function(node){
+      node.textContent = "";
+      typeNameText.split(/\s+/).forEach(function(word){
+        var wordNode = document.createElement("span");
+        wordNode.textContent = word;
+        node.appendChild(wordNode);
+      });
+    });
+    typeNameNode.querySelector(".sequence-type-emoji").textContent = typeEmoji;
     document.getElementById("seqTagline").textContent = type.tagline;
-    document.getElementById("seqResultLabel").textContent = test.label;
+    document.getElementById("seqResultLabel").textContent = "YOUR TYPE";
+    document.querySelector(".sequence-poster-meta").textContent = Object.keys(test.types).length + "가지 유형 중";
+    document.querySelector(".sequence-poster").setAttribute("aria-label", test.label + " 유형 공개");
     var character = document.getElementById("seqCharacter");
     character.src = type.character;
     character.alt = type.name + " 캐릭터";
+    document.querySelector(".sequence-character-silhouette").src = type.character;
     character.addEventListener("error", function(){
       character.hidden = true;
       character.closest(".sequence-character").classList.add("is-empty");
@@ -503,26 +552,68 @@
     });
     var dotItems = Array.from(dots.children);
 
+    slides.forEach(function(slide, slideIndex){
+      var isCurrent = slideIndex === 0;
+      slide.setAttribute("aria-hidden", isCurrent ? "false" : "true");
+      slide.inert = !isCurrent;
+    });
+
     slides.forEach(function(slide){
+      if (slide.hasAttribute("data-sequence-poster") || slide.classList.contains("sequence-risk")) return;
       Array.from(slide.children).forEach(function(child, childIndex){
         child.dataset.seqReveal = "";
         child.style.setProperty("--seq-delay", Math.min(300 + childIndex * 150, 1000) + "ms");
       });
     });
 
+    var posterTimer = 0;
+    var navigationLocked = false;
+    var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    function setNavigationLock(locked) {
+      navigationLocked = locked;
+      nextButton.disabled = locked;
+      backButton.disabled = locked || index === 0;
+      document.body.classList.toggle("sequence-input-locked", locked);
+      if (locked) {
+        nextButton.setAttribute("aria-label", "유형 공개 중");
+      } else {
+        nextButton.removeAttribute("aria-label");
+      }
+    }
+
     function render(nextIndex) {
+      window.clearTimeout(posterTimer);
+      setNavigationLock(false);
       slides[index].classList.remove("active");
+      slides[index].classList.remove("is-developed");
+      slides[index].setAttribute("aria-hidden", "true");
+      slides[index].inert = true;
       dotItems[index].classList.remove("is-active");
       index = nextIndex;
       slides[index].classList.add("active");
+      slides[index].setAttribute("aria-hidden", "false");
+      slides[index].inert = false;
       dotItems[index].classList.add("is-active");
       document.body.classList.toggle("sequence-green-active", slides[index].dataset.tone === "green");
       backButton.disabled = index === 0;
       nextButton.textContent = index === slides.length - 1 ? "완료" : "계속";
       hint.hidden = index === slides.length - 1;
+      if (slides[index].hasAttribute("data-sequence-poster")) {
+        if (reducedMotion.matches) {
+          slides[index].classList.add("is-developed");
+        } else {
+          setNavigationLock(true);
+          posterTimer = window.setTimeout(function(){
+            slides[index].classList.add("is-developed");
+            setNavigationLock(false);
+          }, 2850);
+        }
+      }
     }
 
     function next() {
+      if (navigationLocked) return;
       if (index >= slides.length - 1) {
         return;
       }
@@ -530,6 +621,7 @@
     }
 
     function prev() {
+      if (navigationLocked) return;
       if (index <= 0) return;
       render(index - 1);
     }
