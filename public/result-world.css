@@ -53,12 +53,12 @@
 .sequence-path-choice b i{color:#c85f43;font-size:1.15rem;font-style:normal;font-weight:400;transition:transform .25s ease;}
 .sequence-path-choice:hover b i,.sequence-path-choice:focus-visible b i{transform:translateX(.4rem);}
 .sequence-path-free{grid-column:1/-1;min-height:3rem;display:flex;align-items:center;justify-content:center;padding:.7rem 1rem;border-bottom:1px solid rgba(63,48,32,.35);color:#3f3020;font-size:.72rem;font-weight:750;text-align:center;text-decoration:none;}
-.sequence-retry-link{position:absolute;left:clamp(2rem,7vw,7rem);bottom:2rem;color:#796853;font-size:.65rem;text-decoration:none;border-bottom:1px solid rgba(63,48,32,.2);}
+.sequence-retry-link{position:relative!important;align-self:end;width:max-content;margin-top:-3.4rem;color:#796853;font-size:.65rem;text-decoration:none;border-bottom:1px solid rgba(63,48,32,.2);}
 
 @media(max-width:760px){
   :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-path-final{display:flex;align-items:stretch;justify-content:flex-start;gap:1.25rem;padding:2rem 1.15rem 5.5rem!important;overflow-y:auto;}
   .sequence-path-intro{flex:none}.sequence-path-final .sequence-label{margin-bottom:.65rem!important}.sequence-path-final .sequence-line{font-size:clamp(1.8rem,9vw,2.6rem)!important;line-height:.98!important}.sequence-path-final .sequence-line.is-soft{max-width:19rem!important;margin-top:.65rem!important;font-size:.72rem!important;line-height:1.55!important}
-  .sequence-path-choices{grid-template-columns:1fr 1fr;gap:.55rem;flex:none}.sequence-path-choice{min-height:12.5rem;padding:1rem}.sequence-path-choice.is-primary{margin-top:.9rem}.sequence-path-choice small{font-size:.52rem}.sequence-path-choice strong{font-size:1.16rem}.sequence-path-choice span{font-size:.6rem;line-height:1.45}.sequence-path-choice b{margin-top:.8rem;font-size:.66rem}.sequence-path-free{font-size:.62rem;line-height:1.5}.sequence-retry-link{left:1.15rem;bottom:3.9rem;font-size:.58rem}
+  .sequence-path-choices{grid-template-columns:1fr 1fr;gap:.55rem;flex:none}.sequence-path-choice{min-height:12.5rem;padding:1rem}.sequence-path-choice.is-primary{margin-top:.9rem}.sequence-path-choice small{font-size:.52rem}.sequence-path-choice strong{font-size:1.16rem}.sequence-path-choice span{font-size:.6rem;line-height:1.45}.sequence-path-choice b{margin-top:.8rem;font-size:.66rem}.sequence-path-free{font-size:.62rem;line-height:1.5}.sequence-retry-link{align-self:flex-start;margin-top:-.6rem;font-size:.58rem}
 }
 
 /* A continuous paper world sits behind every result instead of a framed photo. */

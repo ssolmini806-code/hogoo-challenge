@@ -656,7 +656,7 @@ export default function App() {
               />
               <div style={{ minWidth: 0 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6, flexWrap: "wrap" }}>
-                  <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: "0.16em", color: "#114B3C", textTransform: "uppercase" }}>7-Day Challenge</div>
+                  <div className="challenge-kicker" style={{ fontSize: 11, fontWeight: 800, letterSpacing: "0.16em", color: "#114B3C", textTransform: "uppercase" }}>7-Day Practice</div>
                   <LoginButton />
                 </div>
                 <h1 style={{ margin: 0, fontSize: 25, fontWeight: 900, color: "#1A1F1C", letterSpacing: 0, lineHeight: 1.15 }}>
