@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+  <script type="module" src="/src/site-env.js"></script>
+  <script src="/site-bootstrap.js" data-third-party="ga" defer></script>
+  <script src="/third-party-loader.js" defer></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>나는 selfless 기버일까, otherish 기버일까? | GIVE Ecosystem</title>
@@ -14,9 +17,11 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@500;600;700;800&display=swap">
   <link rel="stylesheet" href="/give-theme.css">
   <link rel="stylesheet" href="/selfless-world.css">
+  <link rel="stylesheet" href="/quick-check-world.css">
   <script src="/selfless-world.js" defer></script>
+  <script src="/quick-check-world.js" defer></script>
 </head>
-<body class="hogoo-page selfless-page">
+<body class="hogoo-page selfless-page" data-quick-check="selfless">
   <a class="skip" href="#intro-page">본문 바로가기</a>
 
   <div id="intro-page">
@@ -27,7 +32,7 @@
       </div>
       <span class="test-badge">선의 스펙트럼</span>
       <div class="test-intro-image">
-        <img src="/images/tests/give-id-illustration-v3-400w.webp" srcset="/images/tests/give-id-illustration-v3-400w.webp 400w, /images/tests/give-id-illustration-v3-800w.webp 800w" sizes="(max-width: 600px) 80vw, 240px" alt="도움, 경계, 회복 카드를 따라 내 관계 패턴을 살피는 따뜻한 일러스트" loading="eager" fetchpriority="high" width="560" height="560">
+        <img src="/images/tests/selfless-balance-illustration-v4-400w.webp" srcset="/images/tests/selfless-balance-illustration-v4-400w.webp 400w, /images/tests/selfless-balance-illustration-v4-800w.webp 800w" sizes="(max-width: 600px) 80vw, 240px" alt="도움에서 경계를 지나 성장으로 이어지는 테라코타 물길을 살피는 따뜻한 수채화" loading="eager" fetchpriority="high" width="800" height="800">
       </div>
       <p class="test-intro-caption">많이 주는 마음이 언제 소진되고, 언제 균형이 되는지 확인합니다.</p>
       <h1 class="test-title">선의는 나를<br>비우고 있나요?</h1>
@@ -80,10 +85,20 @@
   </div>
 
   <div id="test-page" class="hidden">
+    <span class="quick-field-note">FIELD NOTE 05 · 선의 균형</span>
     <div class="selfless-balance-world" aria-hidden="true">
+      <span class="balance-wash is-self"></span>
+      <span class="balance-wash is-other"></span>
+      <svg class="balance-route" viewBox="0 0 1000 260" preserveAspectRatio="none" focusable="false">
+        <path class="balance-route-paper" d="M40 188 C205 82 332 238 498 144 S782 48 960 132"></path>
+        <path class="balance-route-ink" pathLength="1" d="M40 188 C205 82 332 238 498 144 S782 48 960 132"></path>
+        <g class="balance-leaf balance-leaf-one"><path d="M288 169 C260 127 228 137 239 172 C256 187 275 181 288 169Z"></path><path d="M288 169 C315 129 346 140 333 174 C318 187 299 181 288 169Z"></path></g>
+        <g class="balance-leaf balance-leaf-two"><path d="M625 105 C600 64 569 75 579 110 C594 123 613 117 625 105Z"></path><path d="M625 105 C650 66 681 76 669 111 C654 124 637 117 625 105Z"></path></g>
+        <g class="balance-leaf balance-leaf-three"><path d="M846 91 C824 53 795 64 804 96 C818 108 835 102 846 91Z"></path><path d="M846 91 C870 55 898 66 887 97 C874 109 858 102 846 91Z"></path></g>
+      </svg>
+      <span class="balance-seed"><i></i></span>
       <span class="balance-word is-self">나를 비움</span>
       <span class="balance-word is-other">나도 지킴</span>
-      <span class="balance-beam"><i></i></span>
     </div>
     <div class="inner">
       <div class="progress-wrap">
@@ -110,7 +125,7 @@
 
       <section class="result-report-lead" aria-label="선의 스펙트럼 결과 리포트 안내">
         <div class="result-visual">
-          <img src="/images/tests/give-id-illustration-v3-400w.webp" srcset="/images/tests/give-id-illustration-v3-400w.webp 400w, /images/tests/give-id-illustration-v3-800w.webp 800w" sizes="(max-width: 600px) 80vw, 240px" alt="도움, 경계, 회복을 살피는 따뜻한 일러스트" loading="lazy" width="560" height="560">
+          <img src="/images/tests/selfless-balance-illustration-v4-400w.webp" srcset="/images/tests/selfless-balance-illustration-v4-400w.webp 400w, /images/tests/selfless-balance-illustration-v4-800w.webp 800w" sizes="(max-width: 600px) 80vw, 240px" alt="도움에서 경계를 지나 성장으로 이어지는 수채화" loading="lazy" width="800" height="800">
         </div>
         <div class="result-report-copy">
           <strong>좋은 사람인지보다 오래 지속 가능한지가 중요합니다</strong>

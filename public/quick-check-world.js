@@ -2,7 +2,7 @@
   'use strict';
   var key=document.body.dataset.quickCheck;
   if(!key)return;
-  var eventName={hogoo:'hogoo:answer',refusal:'refusal:answer',relationship:'risk:answer'}[key];
+  var eventName={hogoo:'hogoo:answer',refusal:'refusal:answer',relationship:'risk:answer',selfless:'selfless:answer'}[key];
   function track(name,params){if(typeof window.trackEvent==='function')window.trackEvent(name,Object.assign({test:key},params||{}));}
   window.addEventListener('DOMContentLoaded',function(){
     track('quick_check_view');
