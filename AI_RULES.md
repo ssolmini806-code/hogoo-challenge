@@ -1,107 +1,28 @@
-# AI_RULES.md
+# AI_RULES.md — 행동 규칙
 
-## Core Development Rules
+CLAUDE.md의 작업 모드(L0/L1/L2)와 함께 적용. 규칙은 모드에 비례해서 강해진다 — 작은 작업에 무거운 절차를 강요하지 않는다.
 
-### 1. Ask Before Large Changes
+## 1. 멈춰서 확인이 필요한 경우 (이때만 질문)
+- 데이터 삭제·덮어쓰기 등 되돌리기 어려운 작업
+- DB 구조 / RLS / 인증 구조 변경
+- 의존성 교체, 아키텍처 변경 등 요청 범위 자체가 바뀌는 결정
+→ 변경 내용·이유·리스크를 설명하고 확인 요청.
+그 외의 모호함은 **합리적 기본값으로 진행 + 완료 보고에 가정 명시**가 원칙. 확인 질문으로 작업을 블로킹하는 것이 기본값보다 비싸다.
 
-If the requested task requires:
+## 2. 코드 구조
+- 파일 하나에 다 넣지 않기: 기능별 모듈화, UI/로직/유틸 분리
+- 거대한 단일 컴포넌트·API 라우트 금지
+- 단, "구조 개선"을 핑계로 요청 범위 밖 리팩토링을 얹지 않는다 (그건 별도 제안으로)
 
-* major refactoring
-* architecture changes
-* dependency replacement
-* database structure changes
-* changes affecting multiple systems
+## 3. 기존 기능 보존
+- 변경 전 현재 동작을 파악하고, 동작하는 플로우를 깨지 않는다
+- 사이드 이펙트 가능성은 완료 보고에 명시
 
-DO NOT proceed immediately.
+## 4. 자체 검토 (모드별 차등)
+- **L0**: 빌드 깨짐 여부 + 요청한 동작이 실제로 되는지만 확인
+- **L1 이상**: 추가로 — 엣지 케이스 / 기존 플로우 파괴 여부 / 보안 리스크 / 프로덕션에서 가장 먼저 깨질 지점 1개를 스스로 답하고 고친 뒤 마무리
 
-First:
-
-* explain what will change
-* explain why it is necessary
-* explain risks/tradeoffs
-* ask for confirmation
-
----
-
-### 2. Never Put Everything in One File
-
-Avoid oversized files and tightly coupled logic.
-
-Always:
-
-* separate responsibilities
-* modularize by feature
-* split API, UI, logic, utilities, types
-* prefer maintainable structure over fast dumping
-
-Bad:
-
-* massive page.tsx
-* giant API route
-* mixed business logic/UI/database code
-
-Good:
-
-* reusable modules
-* isolated logic
-* clean folder structure
-
----
-
-### 3. Do Not Assume Ambiguous Requests
-
-If the request is unclear:
-
-* do not infer silently
-* do not implement speculative features
-* do not make hidden assumptions
-
-Instead:
-
-1. explain your understanding
-2. point out ambiguous parts
-3. ask concise clarification questions
-
----
-
-## Implementation Philosophy
-
-* prioritize production stability
-* avoid hacks unless explicitly requested
-* avoid fake/mock implementations
-* avoid unnecessary complexity
-* preserve existing functionality
-* optimize for maintainability
-* think about scaling early
-
----
-
-## Mandatory Self-Review
-
-Before finalizing any implementation:
-
-Check:
-
-* broken logic
-* duplicated code
-* unnecessary complexity
-* inconsistent naming
-* edge cases
-* hidden bugs
-* security risks
-* maintainability issues
-
-Then answer:
-
-1. What is most likely to fail in production?
-2. What assumptions were made?
-3. Is there a simpler solution?
-4. Could this break existing functionality?
-
-Fix issues before finalizing.
-
-### 4. Preserve Existing Features
-Before changing existing code:
-- identify what currently works
-- avoid breaking working flows
-- explain possible side effects before modifying core logic
+## 5. 철학
+- 프로덕션 안정성 우선, 불필요한 복잡도 금지
+- 가짜 값·목업 구현 금지 (측정되지 않은 수치를 UI에 표시하지 않는다)
+- 해킹성 우회는 명시적 요청 시에만

@@ -2,11 +2,19 @@
 
 ## 프로젝트 개요
 애덤 그랜트의 기버/테이커 이론 기반 심리 진단 플랫폼.
-- **GIVE ID 진단**: 16문항으로 관계 유형 분석 (7가지 유형)
-- **7일 챌린지**: 호구 탈출 훈련 앱 (로그인 필요)
-- **지식 허브**: 심리 칼럼 4편
+배포 URL: `https://hogoo-challenge.pages.dev` (한국어 사이트)
 
-배포 URL: `https://hogoo-challenge.pages.dev`
+- **진단 테스트 5종** (순수 JS): GIVE ID(`give-test`), 호구 지수(`hogoo-check`), 거절 능력(`refusal-test`), 관계 위험도(`relationship-risk`), 이타성(`selfless-otherish-test`)
+- **7일 챌린지**: 호구 탈출 훈련 앱 (`hogoo-test.html`에 React 마운트, 로그인 필요)
+- **지식 허브**: 심리 칼럼 (`articles/`)
+
+## 현재 목표: 무료 → 유료 전환 유도
+- 테스트 자체는 로그인 없이 가능. 보상 버튼 클릭 시 로그인 모달 표시
+- 보상 3단계: A(SNS 공유) / B(후기 작성) / A+B(둘 다)
+  - "공유했어요 ✓" 확인 버튼 클릭 = A 해금 (공유창 열기만으론 해금 안 됨)
+- 보상 상태는 로그인 후 Supabase DB 저장
+- 무료 조언(A 보상)만 CSS blur 허용
+- 유료 링크는 환경변수 `VITE_PAID_SITE_URL` 사용
 
 ---
 
@@ -15,7 +23,7 @@
 | 영역 | 기술 |
 |---|---|
 | 정적 페이지 | 순수 HTML / CSS / JS (프레임워크 없음) |
-| 챌린지 앱 | React 18 + Vite 5 |
+| 챌린지 앱 | React 18 + Vite 5 (**Tailwind·Next.js 미사용** — 인라인 style 객체) |
 | 인증 / DB | Supabase (이메일+비밀번호 로그인, `user_progress` 테이블) |
 | 아이콘 | lucide-react |
 | 폰트 | Pretendard (CDN) |
@@ -24,68 +32,98 @@
 | 광고 | Google AdSense (ca-pub-8564310871125079) |
 | 피드백 | Userback (A-5n1vSEp2urCeuAdUdVofAoB0M) |
 | 빌드 | `npm run build` → `dist/` |
-| 배포 | GitHub push → Cloudflare Pages 자동 배포 |
+| 배포 | GitHub push → Cloudflare Pages 자동 배포 (1~2분) |
 
 ---
 
 ## 파일 구조
 
+**핵심 패턴**: 테스트 페이지 하나 = 루트 HTML + `public/<이름>-world.css` + `public/<이름>-world.js` 3종 세트.
+페이지 하나를 고치는 작업은 보통 이 3개 파일을 함께 수정한다 (→ 이것만으로는 Fable 모드 아님).
+
 ```
 /
-├── index.html          # 메인 랜딩 (포털)
-├── give-test.html      # GIVE ID 진단 테스트 (순수 JS)
-├── hogoo-test.html     # 7일 챌린지 앱 진입점 (React 마운트)
-├── about.html          # 브랜드 스토리
-├── affiliate.html      # 제휴 문의
-├── privacy.html        # 개인정보처리방침
-├── terms.html          # 이용약관
-├── App.jsx             # 챌린지 앱 메인 컴포넌트
-├── main.jsx            # React 엔트리포인트
-├── days.js             # 7일치 미션/대사/컨셉 데이터
-├── vite.config.js      # 멀티 HTML 빌드 설정
+├── index.html                  # 메인 랜딩 (포털)
+├── give-test.html              # GIVE ID 진단 (+ public/give-test-logic.js, give-question-world.css)
+├── give-prologue.html          # 테스트 프롤로그 (슬라이드 전환)
+├── hogoo-check.html            # 호구 지수 테스트 (+ public/hogoo-world.*)
+├── refusal-test.html           # 거절 능력 테스트 (+ public/refusal-world.*)
+├── relationship-risk.html      # 관계 위험도 테스트 (+ public/risk-world.*)
+├── selfless-otherish-test.html # 이타성 테스트 (+ public/selfless-world.*)
+├── result-sequence.html        # 결과 슬라이드 시퀀스 (+ public/result-world.*)
+├── hogoo-test.html             # 7일 챌린지 앱 진입점 (React 마운트)
+├── design-lab.html             # 디자인 실험실 (+ public/design-lab.*)
+├── reviews.html / white-psychology.html / about.html / affiliate.html / privacy.html / terms.html
+├── App.jsx / main.jsx / days.js  # 챌린지 앱 (React)
+├── vite.config.js              # 멀티 HTML 빌드 설정
+├── components/                 # advice / result / reward (ChallengeRewardSection.tsx 등)
 ├── src/
-│   ├── supabase.js     # Supabase 클라이언트
-│   └── components/
-│       └── Auth.jsx    # 로그인/회원가입 컴포넌트
-└── articles/
-    ├── giver-burnout.html
-    ├── setting-boundaries.html
-    ├── taker-signals.html
-    └── smart-giver-guide.html
+│   ├── supabase.js
+│   └── components/             # Auth.jsx, LoginModal.tsx, LoginButton.tsx, MyPage.jsx
+├── public/
+│   ├── give-theme.css          # ⚠ 공유 테마 — 여러 페이지 영향
+│   ├── site-bootstrap.js       # ⚠ 전 페이지 공통 부트스트랩
+│   ├── share.css / share.js    # ⚠ 공유 버튼 공통
+│   ├── third-party-loader.js   # ⚠ GA/Clarity/AdSense 로더
+│   ├── give-progress.js / challenge-done.html
+│   └── (각 테스트별 *-world.css / *-world.js)
+└── articles/                   # 칼럼 4편
 ```
+
+⚠ 표시 파일 수정 = 전 페이지 영향 → 아래 L1 검증 대상.
 
 ---
 
-## 배포 워크플로우
+## 작업 모드 (가성비 원칙)
 
-```
-코드 수정 → git add → git commit → git push origin main
-                                          ↓
-                              Cloudflare Pages 자동 감지
-                                          ↓
-                              1~2분 후 프로덕션 반영
-```
+**원칙: 필요할 때만 더 생각한다.** 기본은 빠르게, 아래 신호가 있을 때만 단계를 추가한다.
 
-GitHub 원격: `https://github.com/ssolmini806-code/hogoo-challenge`
-git remote에 토큰이 포함된 HTTPS URL 방식 사용 중.
+### L0 — 기본 모드 (대부분의 작업)
+- 요청 범위만 수정, 최소 단계로 바로 실행
+- 사용자가 번호/섹션(`── 1 ──` 식)으로 구체적 스펙을 준 경우: 스펙 그대로 구현하고 중간 확인 질문으로 멈추지 않는다
+- 모호한 부분이 작고 되돌리기 쉬우면: 합리적 기본값을 선택하고 **완료 보고에 가정을 명시** (질문으로 블로킹 금지)
+- 자체 검토는 "빌드가 깨지지 않는가" 수준이면 충분
+
+### L1 — 검증 플러스 (해당하면 자동 적용)
+L0 + 커밋 전 검증(`npm run build` 통과 + 영향받는 페이지/플로우 확인). 트리거:
+- ⚠ 공유 자산(give-theme.css, site-bootstrap.js, share.*, third-party-loader.js) 또는 vite.config.js 수정
+- **서로 다른 페이지 2개 이상**에 걸친 변경 (한 페이지의 html+css+js 3종 세트는 해당 없음)
+- 로그인 / 보상 해금 / Supabase 연동 로직 변경
+
+### L2 — Fable 모드 (조사→계획→실행→검증 4단계)
+트리거 (하나라도 해당 시):
+- "원인 모름", "왜 안 되지" 류의 버그 — 코드 수정 전에 원인부터 확정
+- DB 스키마 / RLS / 인증 구조 변경
+- 구조적 리팩토링, 여러 시스템에 영향을 주는 변경
+- 명시적으로 "꼼꼼하게" / "fable 모드로" 요청 시
+
+### 에스컬레이션 / 디에스컬레이션
+- **올리기**: 첫 수정 시도가 실패하거나, 조사 결과가 처음 가정과 어긋나면 즉시 한 단계 올려 원인 조사부터 다시 시작 (같은 수정을 반복 시도하지 않는다)
+- **내리기**: L2 조건이라도 조사 단계에서 원인이 바로 확정되면 남은 형식적 단계는 생략하고 수정으로 직행
 
 ---
+
+## 완료 기준 (모든 모드 공통)
+- 수정 → 커밋 → `git push origin main`까지가 한 작업의 끝 (Cloudflare Pages 자동 배포)
+- 완료 보고에 포함: 무엇이 바뀌었는지 / 커밋 완료 여부 / (L0에서 가정했다면) 가정 내용
+- 검증 실패·미확인 상태면 그대로 보고한다. 완료로 포장 금지
+
+## 주요 규칙
+- HTML은 모두 한국어(`lang="ko"`), Pretendard 폰트
+- 모바일 viewport: `width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no`
+- OG/Twitter 이미지는 절대 URL (`https://hogoo-challenge.pages.dev/og-image.jpg`)
+- 디자인/UI 작업은 모바일·데스크탑 양쪽 확인 (사용자가 매번 별도로 요구하지 않아도)
+- Supabase 환경변수: `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` (`.env`)
+- GitHub 원격: `https://github.com/ssolmini806-code/hogoo-challenge` (토큰 포함 HTTPS URL)
 
 ## 디자인 시스템
-
-### CSS 변수 (공통)
 ```css
 --primary: #00a885        /* 메인 그린 */
 --primary-soft: #f0f9f7   /* 연한 그린 배경 */
 --text-main: #1d1d1f      /* 기본 텍스트 */
 --text-sub: #6e6e73       /* 보조 텍스트 */
 ```
-
-### 챌린지 앱 다크 테마
-```
-배경: #1a1614  |  카드: #231f1c  |  보더: #3a3530
-텍스트: #f5ede3  |  완료: #7cc88a
-```
+챌린지 앱 다크 테마: 배경 `#1a1614` | 카드 `#231f1c` | 보더 `#3a3530` | 텍스트 `#f5ede3` | 완료 `#7cc88a`
 
 ### 공유 버튼 표준 (모든 페이지 통일)
 ```html
@@ -101,22 +139,7 @@ git remote에 토큰이 포함된 HTTPS URL 방식 사용 중.
 <script async src="https://static.addtoany.com/menu/page.js"></script>
 ```
 
----
-
-## 주요 규칙
-
-- HTML 파일은 모두 한국어(`lang="ko"`), Pretendard 폰트
-- 모바일 viewport: `width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no`
-- OG/Twitter 이미지는 반드시 절대 URL (`https://hogoo-challenge.pages.dev/og-image.jpg`)
-- React 컴포넌트는 인라인 style 객체 방식 사용 (Tailwind 미사용)
-- Supabase 환경변수: `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` (`.env` 파일)
-- 수정 후 반드시 커밋 + `git push origin main` 으로 배포까지 완료
-
----
-
-## Supabase DB 스키마
-
-### `user_progress` 테이블
+## Supabase DB 스키마 — `user_progress`
 | 컬럼 | 타입 | 설명 |
 |---|---|---|
 | user_id | uuid | 사용자 ID |
@@ -129,38 +152,3 @@ git remote에 토큰이 포함된 HTTPS URL 방식 사용 중.
 | updated_at | timestamptz | 마지막 수정 시각 |
 
 @AI_RULES.md
-
-# GIVE 에코시스템 — 무료 사이트
-
-## 프로젝트 정보
-- 사이트: hogoo-challenge.pages.dev
-- 배포: Cloudflare Pages
-- 스택: Vite + React, Supabase, Tailwind CSS
-- 언어: 한국어
-
-## 현재 목표
-무료 → 유료 전환 유도 + A/B/A+B 3단계 보상 구조
-
-## 무료 사이트 전용 규칙
-- 테스트 자체는 로그인 없이 가능
-- 보상 버튼 클릭 시 로그인 모달 표시
-- 보상 상태는 로그인 후 Supabase DB 저장
-- 무료 조언(A 보상)만 CSS blur 허용
-- 유료 링크는 환경변수 VITE_PAID_SITE_URL 사용
-
-## 보상 구조
-A(SNS 공유) / B(후기 작성) / A+B(둘 다) 3단계
-"공유했어요 ✓" 확인 버튼 클릭 = A 해금 (공유창 열기만으론 해금 안 됨)
-
-
-## AI 작업 모드
-
-### 기본 모드 (대부분의 작업)
-- 빠르게 실행, 최소 단계
-
-### Fable 루프 모드 (아래 조건일 때만)
-다음 중 하나에 해당하면 조사→계획→실행→검증 4단계 강제:
-- "원인 모름", "왜 안 되지" 류의 버그
-- 3개 파일 이상 동시 수정
-- DB 스키마 / RLS / Edge Function 변경
-- 명시적으로 "꼼꼼하게" / "fable 모드로" 요청 시
