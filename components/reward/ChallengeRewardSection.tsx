@@ -129,9 +129,9 @@ export default function ChallengeRewardSection({
   };
 
   return (
-    <section className="w-full bg-white px-4 py-8 text-gray-950 sm:px-6">
-      <div className="mx-auto max-w-2xl">
-        <div className="mb-5">
+    <section className="challenge-reward w-full bg-white px-4 py-8 text-gray-950 sm:px-6">
+      <div className="challenge-reward-inner mx-auto max-w-2xl">
+        <div className="challenge-reward-intro mb-5">
           <p className="text-sm font-semibold text-emerald-700">
             공유하면 인증서를, 후기를 남기면 7일 회고록을 드려요.
           </p>
@@ -140,10 +140,10 @@ export default function ChallengeRewardSection({
           </p>
         </div>
 
-        <div className="space-y-4">
-          <article className="rounded-lg border border-gray-200 p-4 shadow-sm">
-            <div className="flex items-start gap-3">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-emerald-700">
+        <div className="challenge-reward-list space-y-4">
+          <article className="challenge-reward-step rounded-lg border border-gray-200 p-4 shadow-sm">
+            <div className="challenge-reward-step-head flex items-start gap-3">
+              <div className="challenge-reward-icon flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-emerald-700">
                 <Share2 className="h-5 w-5" aria-hidden="true" />
               </div>
               <div className="min-w-0 flex-1">
@@ -162,10 +162,10 @@ export default function ChallengeRewardSection({
               value={shareMessage}
               onChange={(event) => setShareMessage(event.target.value)}
               rows={3}
-              className="mt-2 w-full resize-none rounded-lg border border-gray-200 bg-gray-50 p-3 text-sm leading-6 text-gray-700 outline-none transition focus:border-emerald-500 focus:bg-white focus:ring-2 focus:ring-emerald-100"
+              className="challenge-reward-message mt-2 w-full resize-none rounded-lg border border-gray-200 bg-gray-50 p-3 text-sm leading-6 text-gray-700 outline-none transition focus:border-emerald-500 focus:bg-white focus:ring-2 focus:ring-emerald-100"
             />
 
-            <div className="mt-4 grid gap-2 sm:grid-cols-2">
+            <div className="challenge-reward-actions mt-4 grid gap-2 sm:grid-cols-2">
               <button
                 type="button"
                 onClick={handleShareComplete}
@@ -190,16 +190,16 @@ export default function ChallengeRewardSection({
             </div>
 
             {isShared ? (
-              <p className="mt-3 flex items-start gap-2 text-sm font-medium text-emerald-700">
+              <p className="challenge-reward-status mt-3 flex items-start gap-2 text-sm font-medium text-emerald-700">
                 <Award className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
                 후기 게시판에 닉네임 옆 배지가 표시돼요 🏅
               </p>
             ) : null}
           </article>
 
-          <article className="rounded-lg border border-gray-200 p-4 shadow-sm">
-            <div className="flex items-start gap-3">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-amber-50 text-amber-700">
+          <article className="challenge-reward-step rounded-lg border border-gray-200 p-4 shadow-sm">
+            <div className="challenge-reward-step-head flex items-start gap-3">
+              <div className="challenge-reward-icon flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-amber-50 text-amber-700">
                 <BookOpenText className="h-5 w-5" aria-hidden="true" />
               </div>
               <div className="min-w-0 flex-1">
@@ -222,7 +222,7 @@ export default function ChallengeRewardSection({
             </button>
 
             {isReviewed ? (
-              <div className="mt-4 rounded-lg border border-dashed border-amber-200 bg-amber-50 p-4">
+              <div className="challenge-reward-status mt-4 rounded-lg border border-dashed border-amber-200 bg-amber-50 p-4">
                 <p className="text-sm font-bold text-amber-900">7일 회고록</p>
                 <p className="mt-1 text-sm leading-6 text-amber-800">
                   API에서 생성된 회고록 내용이 여기에 표시됩니다.
@@ -231,9 +231,9 @@ export default function ChallengeRewardSection({
             ) : null}
           </article>
 
-          <article className="rounded-lg border border-gray-200 p-4 shadow-sm">
-            <div className="flex items-start gap-3">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-indigo-50 text-indigo-700">
+          <article className="challenge-reward-step rounded-lg border border-gray-200 p-4 shadow-sm">
+            <div className="challenge-reward-step-head flex items-start gap-3">
+              <div className="challenge-reward-icon flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-indigo-50 text-indigo-700">
                 <Gift className="h-5 w-5" aria-hidden="true" />
               </div>
               <div className="min-w-0 flex-1">
@@ -245,7 +245,7 @@ export default function ChallengeRewardSection({
             </div>
 
             {diagnosisVisible ? (
-              <div className="mt-4 rounded-lg bg-indigo-50 p-4">
+              <div className="challenge-reward-unlock mt-4 rounded-lg bg-indigo-50 p-4">
                 <p className="flex items-center gap-2 text-sm font-bold text-indigo-950">
                   <Sparkles className="h-4 w-4" aria-hidden="true" />
                   {diagnosisResult.label}
@@ -262,7 +262,7 @@ export default function ChallengeRewardSection({
                 </button>
               </div>
             ) : (
-              <div className="mt-4 rounded-lg bg-gray-50 p-4 text-sm leading-6 text-gray-600">
+              <div className="challenge-reward-unlock mt-4 rounded-lg bg-gray-50 p-4 text-sm leading-6 text-gray-600">
                 SNS 공유와 후기 작성을 모두 완료하면 30일 확장 적합도 카드가 열립니다.
               </div>
             )}

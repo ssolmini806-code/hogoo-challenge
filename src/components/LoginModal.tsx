@@ -108,6 +108,7 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: Props) {
 
   return (
     <div
+      className="login-modal-backdrop"
       role="dialog"
       aria-modal="true"
       aria-labelledby="login-modal-title"
@@ -118,7 +119,7 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: Props) {
         background: 'rgba(0,0,0,0.72)', padding: '16px',
       }}
     >
-      <div ref={dialogRef} style={{
+      <div ref={dialogRef} className="login-modal-sheet" style={{
         width: '100%', maxWidth: 380,
         background: 'var(--surface)', borderRadius: 20, padding: '32px 24px',
         border: '1px solid var(--line)', position: 'relative',

@@ -1,430 +1,69 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GIVE ID 프롤로그</title>
-<meta name="description" content="GIVE ID 자가점검을 시작하기 전 관계 패턴, 경계 감각, 회복 신호를 안내하는 전환 화면입니다.">
-<meta name="robots" content="noindex, follow">
-<link rel="canonical" href="https://hogoo-challenge.pages.dev/give-test.html">
-<style>
-:root{
-  --bg:#FAF8F3;--surface:#FFFFFF;--surface-2:#F3EFE7;--ink:#1A1F1C;--ink-sub:#5C635E;--ink-faint:#767B74;
-  --line:#E7E1D5;--green:#114B3C;--green-deep:#0D3B2F;--green-soft:#E9F2EC;--mint:#00A885;--mint-soft:#E2F4EE;
-  --amber:#9A6516;--amber-soft:#F6ECD8;--shadow:0 20px 46px rgba(17,75,60,.12);
-  --sans:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,sans-serif;--serif:'Fraunces',Georgia,serif;
-}
-*{box-sizing:border-box;margin:0;padding:0;word-break:keep-all;}
-html,body{min-width:320px;min-height:100%;overflow:hidden;background:var(--bg);}
-body{font-family:var(--sans);color:var(--ink);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
-button,a{font:inherit;-webkit-tap-highlight-color:transparent;}
-:focus-visible{outline:2.5px solid var(--mint);outline-offset:3px;border-radius:6px;}
-.prologue-page{position:fixed;inset:0;background:linear-gradient(180deg,var(--bg),var(--green-soft) 58%,var(--bg));}
-.prologue-page::before{content:"";position:absolute;inset:78px 18px 92px;border:1px solid rgba(17,75,60,.08);background:linear-gradient(90deg,rgba(17,75,60,.05) 1px,transparent 1px),linear-gradient(180deg,rgba(17,75,60,.04) 1px,transparent 1px);background-size:32px 32px;border-radius:8px;pointer-events:none;}
-.hd{position:fixed;top:0;left:0;right:0;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 22px 10px;}
-.hd-brand{display:grid;gap:1px;color:var(--green);font-weight:950;font-size:.8rem;letter-spacing:.12em;}
-.hd-brand span{color:var(--ink-faint);font-family:var(--serif);font-style:italic;font-size:.76rem;font-weight:500;letter-spacing:0;}
-.skip-btn{min-height:40px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.72);color:var(--ink-sub);padding:0 13px;font-size:.82rem;font-weight:850;cursor:pointer;}
-.dots{position:fixed;top:62px;left:50%;z-index:30;display:grid;grid-template-columns:repeat(4,1fr);gap:7px;width:min(100% - 44px,420px);transform:translateX(-50%);}
-.dot{position:relative;height:5px;border-radius:999px;background:rgba(17,75,60,.14);}
-.dot::before{content:"";display:block;width:0;height:100%;border-radius:inherit;background:var(--green);transition:width .32s ease;}
-.dot.on::before{width:100%;}
-.dot:last-child::before{background:#114B3C;}
-.dot-label{position:absolute;top:10px;left:0;color:var(--ink-faint);font-size:8px;font-weight:750;letter-spacing:.04em;white-space:nowrap;transition:color .3s ease,font-weight .3s ease;}
-.dot.on .dot-label{color:var(--ink);font-weight:900;}
-.prologue-page.completed .hd-brand,.prologue-page.completed .hd-brand span,.prologue-page.completed .dot-label{color:var(--mint-soft);border-color:rgba(255,255,255,.35);}
-.prologue-page.completed .dot{background:rgba(255,255,255,.2);}
-.prologue-page.completed .dot::before{background:var(--mint);}
-.prologue-page.completed .dot:last-child::before{background:#fff;}
-.deck{position:fixed;inset:82px 0 82px;z-index:2;}
-.slide{position:absolute;inset:0;display:grid;place-items:center;padding:22px;opacity:0;pointer-events:none;transform:translateY(16px);transition:opacity .45s cubic-bezier(.16,1,.3,1),transform .45s cubic-bezier(.16,1,.3,1);}
-.slide.active{opacity:1;pointer-events:auto;transform:translateY(0);}
-.slide.exiting{opacity:0;pointer-events:none;transform:translateY(-12px);transition:opacity .2s cubic-bezier(.4,0,1,1),transform .2s cubic-bezier(.4,0,1,1);}
-.lab-card{width:min(100%,420px);display:grid;gap:18px;border:1px solid var(--line);border-radius:8px;background:rgba(255,255,255,.88);padding:20px;box-shadow:var(--shadow);backdrop-filter:blur(12px);}
-.lab-top{display:flex;align-items:center;justify-content:space-between;gap:14px;}
-.slide-num{display:inline-flex;align-items:center;min-height:30px;border-radius:999px;background:var(--green-soft);color:var(--green);padding:0 10px;font-size:.75rem;font-weight:950;letter-spacing:.06em;}
-.lab-chip{color:var(--ink-faint);font-size:.74rem;font-weight:850;}
-.slide-illus{position:relative;min-height:172px;border:1px solid var(--line);border-radius:8px;background:linear-gradient(180deg,var(--surface),var(--green-soft));display:grid;place-items:center;overflow:hidden;}
-.slide-illus::before{content:"";position:absolute;inset:15px;border:1px dashed rgba(17,75,60,.2);border-radius:8px;}
-.slide-illus svg{position:relative;z-index:1;width:min(72%,220px);height:auto;}
-.slide-msg{font-size:clamp(1.75rem,8vw,2.35rem);font-weight:950;line-height:1.16;letter-spacing:0;text-wrap:balance;}
-.slide-msg b{color:var(--green);}
-.slide-desc{color:var(--ink-sub);font-size:1rem;font-weight:650;line-height:1.7;text-wrap:pretty;}
-.signal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
-.signal{min-height:58px;border:1px solid var(--line);border-radius:8px;background:var(--surface);padding:9px 8px;text-align:left;}
-.signal strong{display:block;color:var(--green);font-size:.78rem;font-weight:950;}
-.signal span{display:block;margin-top:2px;color:var(--ink-sub);font-size:.72rem;font-weight:800;line-height:1.35;}
-.s2 .slide-num,.s2 .slide-msg b,.s2 .signal strong{color:var(--amber);}
-.s2 .slide-num{background:var(--amber-soft);}
-.s2 .slide-illus{background:linear-gradient(180deg,var(--surface),var(--amber-soft));}
-.s3 .slide-num,.s3 .slide-msg b,.s3 .signal strong{color:#0A5F4D;}
-.s3 .slide-num{background:var(--mint-soft);}
-.s4 .lab-card{background:var(--green);color:var(--surface);border-color:rgba(255,255,255,.18);}
-.s4 .slide-num{background:rgba(255,255,255,.12);color:var(--mint-soft);}
-.s4 .lab-chip,.s4 .slide-desc{color:var(--mint-soft);}
-.s4 .slide-illus{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.18);}
-.s4 .slide-illus::before{border-color:rgba(255,255,255,.22);}
-.s4 .slide-msg b{color:var(--mint);}
-.s4 .signal{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.18);}
-.s4 .signal strong{color:var(--surface);}
-.s4 .signal span{color:var(--mint-soft);}
-.lab-top,.slide-msg,.slide-desc,.signal-grid,.signal,.slide-illus{opacity:0;transition:opacity .38s ease,transform .45s cubic-bezier(.16,1,.3,1);}
-.lab-top,.slide-msg,.slide-desc,.signal-grid,.signal{transform:translateY(10px);}
-.slide-illus{transform:scale(.97);}
-.slide.active .lab-top{opacity:1;transform:none;transition-delay:0s;}
-.slide.active .slide-msg{opacity:1;transform:none;transition-delay:.08s;}
-.slide.active .slide-desc{opacity:1;transform:none;transition-delay:.16s;}
-.slide.active .signal-grid{opacity:1;transform:none;transition-delay:.24s;}
-.slide.active .signal{opacity:1;transform:none;}
-.slide.active .signal:nth-child(1){transition-delay:.24s;}
-.slide.active .signal:nth-child(2){transition-delay:.28s;}
-.slide.active .signal:nth-child(3){transition-delay:.32s;}
-.slide.active .slide-illus{opacity:1;transform:scale(1);transition-delay:.15s;}
-.s4-wash{position:fixed;inset:0;z-index:1;background:#114B3C;opacity:0;pointer-events:none;}
-@supports (clip-path:circle(0% at 50% 100%)){
-  .s4-wash{opacity:1;clip-path:circle(0% at 50% 100%);transition:clip-path .6s cubic-bezier(.16,1,.3,1);}
-  .s4-wash.expand{clip-path:circle(150% at 50% 100%);}
-}
-@supports not (clip-path:circle(0% at 50% 100%)){
-  .s4-wash{transition:opacity .6s ease;}
-  .s4-wash.expand{opacity:1;}
-}
-.foot{position:fixed;left:0;right:0;bottom:0;z-index:30;padding:12px 22px 24px;display:grid;gap:10px;justify-items:center;}
-.tap-hint{color:var(--ink-faint);font-size:.78rem;font-weight:800;text-align:center;transition:opacity .25s;}
-.start-btn{width:min(100%,360px);min-height:56px;border-radius:8px;border:0;background:var(--green);color:#fff;display:none;align-items:center;justify-content:center;padding:0 18px;font-size:1rem;font-weight:950;text-decoration:none;box-shadow:0 14px 28px rgba(17,75,60,.22);}
-.start-btn.show{display:flex;}
-@media (min-width:720px){
-  .prologue-page::before{inset:84px calc(50% - 330px) 96px;}
-  .lab-card{width:min(100%,620px);grid-template-columns:220px 1fr;align-items:center;padding:22px;}
-  .lab-top,.slide-copy,.signal-grid{grid-column:2;}
-  .slide-illus{grid-column:1;grid-row:1 / span 3;min-height:300px;}
-  .signal-grid{grid-template-columns:repeat(3,1fr);}
-  .slide-msg{filter:blur(3px);transition-property:opacity,transform,filter;}
-  .slide.active .slide-msg{filter:blur(0);}
-}
-@media (max-width:390px){
-  .hd{padding:14px 16px 8px;}
-  .dots{width:calc(100% - 32px);}
-  .slide{padding:16px;}
-  .lab-card{gap:14px;padding:16px;}
-  .slide-illus{min-height:142px;}
-  .slide-msg{font-size:clamp(1.52rem,8.2vw,1.9rem);}
-  .slide-desc{font-size:.94rem;line-height:1.62;}
-  .signal{min-height:54px;padding:8px 7px;}
-  .signal span{font-size:.68rem;}
-}
-@media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important;}
-  .slide-msg{filter:none!important;}
-}
-
-/* Editorial prologue: preserve the four-step curiosity flow, replace the card-template look. */
-.prologue-page{background:#F8F5EE;}
-.prologue-page::before{content:none;}
-.hd{padding:20px clamp(20px,4vw,48px) 10px;}
-.hd-brand{display:flex;align-items:baseline;gap:9px;color:#114B3C;font-size:.74rem;letter-spacing:.16em;}
-.hd-brand span{padding-left:9px;border-left:1px solid #D9D4C9;color:#657069;font-family:var(--sans);font-style:normal;font-size:.67rem;font-weight:750;letter-spacing:.1em;text-transform:uppercase;}
-.skip-btn{border:0;border-bottom:1px solid #BFC7C1;border-radius:0;background:transparent;color:#4F5B54;padding:0 2px;}
-.dots{top:64px;width:min(calc(100% - 40px),1050px);gap:9px;}
-.dot{height:2px;border-radius:0;background:#D9D4C9;}
-.dot::before{border-radius:0;background:#114B3C;}
-.deck{inset:80px 0 82px;}
-.slide{padding:clamp(20px,4vw,48px);}
-.lab-card{
-  width:min(100%,1050px);
-  display:grid;
-  grid-template-columns:minmax(0,.88fr) minmax(360px,1.12fr);
-  grid-template-rows:auto auto auto;
-  column-gap:clamp(44px,7vw,96px);
-  row-gap:20px;
-  align-items:center;
-  border:0;
-  border-radius:0;
-  background:transparent;
-  padding:0;
-  box-shadow:none;
-  backdrop-filter:none;
-}
-.lab-top{grid-column:1;grid-row:1;justify-content:flex-start;gap:14px;}
-.slide-num{min-height:0;border-radius:0;background:transparent;color:#114B3C;padding:0 0 8px;border-bottom:2px solid #114B3C;font-size:.68rem;font-weight:850;letter-spacing:.13em;}
-.lab-chip{color:#778079;font-size:.67rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;}
-.slide-illus{grid-column:2;grid-row:1 / 4;min-height:0;aspect-ratio:1/1;border:0;border-radius:96px 96px 14px 96px;background:#E4ECE7;box-shadow:18px 18px 0 #DCE8E1;}
-.slide-illus::before{content:none;}
-.slide-illus svg{width:min(64%,260px);}
-.slide-illus img{width:100%;height:100%;object-fit:cover;filter:saturate(.88) contrast(.98);}
-.slide-copy{grid-column:1;grid-row:2;}
-.slide-msg{font-family:'Hahmlet','Noto Serif KR',Georgia,serif;font-size:clamp(2.5rem,5vw,4.5rem);font-weight:800;line-height:1.12;letter-spacing:-.055em;}
-.slide-msg b{color:#0A5F4D;}
-.slide-desc{max-width:31em;margin-top:18px;color:#566159;font-size:1.02rem;font-weight:520;line-height:1.78;}
-.signal-grid{grid-column:1;grid-row:3;gap:0;border-top:1px solid #D9D4C9;border-bottom:1px solid #D9D4C9;}
-.signal{min-height:82px;border:0;border-right:1px solid #D9D4C9;border-radius:0;background:transparent;padding:16px 14px;}
-.signal:first-child{padding-left:0;}
-.signal:last-child{border-right:0;}
-.signal strong{color:#114B3C;font-family:'Hahmlet','Noto Serif KR',Georgia,serif;font-size:.82rem;font-weight:750;}
-.signal span{margin-top:4px;color:#707A73;font-size:.68rem;font-weight:650;}
-.s2 .slide-num,.s2 .slide-msg b,.s2 .signal strong,
-.s3 .slide-num,.s3 .slide-msg b,.s3 .signal strong{color:#0A5F4D;}
-.s2 .slide-num,.s3 .slide-num{background:transparent;}
-.s2 .slide-illus,.s3 .slide-illus{background:#E4ECE7;}
-.s4 .lab-card{border:0;border-radius:0;background:#114B3C;padding:clamp(24px,4vw,44px);color:#fff;}
-.s4 .slide-illus{box-shadow:18px 18px 0 rgba(0,0,0,.14);}
-.s4 .signal-grid{border-color:rgba(255,255,255,.18);}
-.s4 .signal{border-color:rgba(255,255,255,.18);background:transparent;}
-.s4 .slide-num{border-color:#8ED0BA;}
-.s4.awaiting-content .lab-top,.s4.awaiting-content .slide-msg,.s4.awaiting-content .slide-desc,.s4.awaiting-content .signal-grid,.s4.awaiting-content .signal,.s4.awaiting-content .slide-illus{opacity:0;transform:none;transition:none;}
-.s4.reveal-check .lab-top,.s4.reveal-check .slide-msg,.s4.reveal-check .slide-desc,.s4.reveal-check .signal-grid,.s4.reveal-check .signal{opacity:0;transform:none;transition:none;}
-.s4.reveal-check .slide-illus{opacity:1;transform:scale(1);transition-delay:0s;}
-.s4.reveal-headline .slide-msg{opacity:1;transform:none;filter:none;transition:opacity .38s ease,transform .45s cubic-bezier(.16,1,.3,1);}
-.foot{padding:10px 22px 22px;}
-.tap-hint{color:#717A74;font-size:.72rem;font-weight:700;}
-.start-btn{min-height:58px;border-radius:0;background:#114B3C;font-size:.94rem;font-weight:800;box-shadow:none;transition:background .18s ease,transform .18s ease;}
-.start-btn::after{content:"\2192";margin-left:14px;font-size:1.2em;}
-.start-btn:hover{background:#0D3B2F;transform:translateY(-2px);}
-
-@media (max-width:719px){
-  .hd{padding:16px 18px 8px;}
-  .hd-brand{display:grid;gap:2px;}
-  .hd-brand span{padding:0;border:0;font-size:.61rem;}
-  .dots{top:60px;width:calc(100% - 36px);}
-  .deck{inset:70px 0 78px;}
-  .slide{place-items:start center;padding:18px;overflow-y:auto;}
-  .lab-card{width:min(100%,430px);display:flex;flex-direction:column;gap:13px;align-items:stretch;padding:0;}
-  .lab-top{order:1;}
-  .slide-illus{order:2;width:min(100% - 22px,280px);min-height:0;margin:0 auto 5px;border-radius:56px 56px 9px 56px;box-shadow:9px 9px 0 #DCE8E1;}
-  .slide-copy{order:3;}
-  .slide-msg{font-size:clamp(1.85rem,8.7vw,2.5rem);line-height:1.14;}
-  .slide-desc{margin-top:9px;font-size:.88rem;line-height:1.62;}
-  .signal-grid{order:4;}
-  .signal{min-height:61px;padding:10px 8px;}
-  .signal strong{font-size:.72rem;}
-  .signal span{font-size:.61rem;}
-  .s4 .lab-card{padding:20px;}
-  .s4 .slide-illus{width:min(100% - 18px,250px);box-shadow:8px 8px 0 rgba(0,0,0,.14);}
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="GIVE ID 자가점검을 시작하기 전 관계의 돌봄, 경계, 회복 신호를 직접 발견하는 인터랙티브 프롤로그입니다.">
+  <meta name="robots" content="noindex,follow">
+  <link rel="canonical" href="https://hogoo-challenge.pages.dev/give-test.html">
+  <title>GIVE ID · 관계의 실을 따라가기</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@500;600;700;800&family=Pretendard:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/design-lab.css">
 </head>
 <body>
-<main class="prologue-page" aria-label="GIVE ID 테스트 프롤로그">
-  <div class="s4-wash" id="s4Wash" aria-hidden="true"></div>
-  <header class="hd">
-    <div class="hd-brand">GIVE ID <span>Pattern Lab</span></div>
-    <button class="skip-btn" id="skipBtn" type="button">바로 시작</button>
-  </header>
+  <main class="world" id="world" data-thread-stage data-next-url="/give-test.html?start=1" aria-labelledby="worldTitle">
+    <header class="world-header">
+      <a href="/give-test.html" class="world-brand">GIVE ID <span>Pattern Lab</span></a>
+      <p aria-hidden="true">INTERACTIVE PROLOGUE · 01</p>
+      <a class="world-skip" href="/give-test.html?start=1">바로 시작</a>
+    </header>
 
-  <div class="dots" id="dots" aria-hidden="true"></div>
+    <div class="world-art" aria-hidden="true">
+      <img class="world-layer world-layer-base" src="/images/design-lab/give-prologue-world-v1.webp" alt="" fetchpriority="high" draggable="false">
+      <img class="world-layer world-layer-subject" src="/images/design-lab/give-prologue-world-v1.webp" alt="" draggable="false">
+      <img class="world-layer world-layer-foreground" src="/images/design-lab/give-prologue-world-v1.webp" alt="" draggable="false">
+      <span class="portal-light"></span>
+    </div>
 
-  <div class="deck" id="deck">
-    <section class="slide s1">
-      <article class="lab-card">
-        <div class="lab-top">
-          <div class="slide-num">01 · PATTERN</div>
-          <div class="lab-chip">16 questions</div>
-        </div>
-        <div class="slide-illus" aria-hidden="true">
-          <img src="/images/tests/give-id-illustration-v3-400w.webp" srcset="/images/tests/give-id-illustration-v3-400w.webp 400w, /images/tests/give-id-illustration-v3-800w.webp 800w" sizes="(max-width: 600px) 80vw, 240px" alt="" loading="eager" fetchpriority="high" width="560" height="560">
-        </div>
-        <div class="slide-copy">
-          <h1 class="slide-msg">손해 보는 순간은<br><b>반복 패턴</b>으로 남아요</h1>
-          <p class="slide-desc">부탁, 인정 욕구, 거절 부담, 회복 속도를 한 장의 관계 리포트처럼 읽습니다.</p>
-        </div>
-        <div class="signal-grid" aria-label="검사 신호">
-          <div class="signal"><strong>Care</strong><span>먼저 챙김</span></div>
-          <div class="signal"><strong>Line</strong><span>경계 감각</span></div>
-          <div class="signal"><strong>Recover</strong><span>회복 속도</span></div>
-        </div>
-      </article>
+    <svg class="living-thread" id="livingThread" viewBox="0 0 1600 1000" preserveAspectRatio="none" aria-hidden="true">
+      <path class="thread-shadow" d="M-20 690 C260 720 470 660 650 635 C820 610 895 690 1030 610 C1135 548 1190 492 1320 470 C1435 452 1500 415 1620 365" pathLength="100" />
+      <path class="thread-path" id="threadPath" d="M-20 690 C260 720 470 660 650 635 C820 610 895 690 1030 610 C1135 548 1190 492 1320 470 C1435 452 1500 415 1620 365" pathLength="100" />
+      <circle class="thread-orb" id="threadOrb" cx="-20" cy="690" r="12" />
+    </svg>
+
+    <section class="world-copy">
+      <p class="world-kicker"><span>01</span> 마음의 실을 따라가기</p>
+      <h1 id="worldTitle"><span>늘 먼저 챙긴</span><span>그 마음을,</span><em>이번엔 따라가요.</em></h1>
+      <p class="world-description">이 테스트는 얼마나 착한지를 재지 않습니다.<br><b>돌봄·경계·회복</b>이 관계에서 작동하는 방식을 읽습니다.</p>
     </section>
 
-    <section class="slide s2">
-      <article class="lab-card">
-        <div class="lab-top">
-          <div class="slide-num">02 · BOUNDARY</div>
-          <div class="lab-chip">no login</div>
-        </div>
-        <div class="slide-illus" aria-hidden="true">
-          <svg viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="34" y="42" width="64" height="136" rx="14" fill="#F6ECD8" stroke="#9A6516" stroke-width="2"/>
-            <rect x="122" y="42" width="64" height="136" rx="14" fill="#fff" stroke="#E7E1D5" stroke-width="2"/>
-            <path d="M110 36v148" stroke="#9A6516" stroke-width="4" stroke-linecap="round" stroke-dasharray="10 9"/>
-            <path d="M75 110h56" stroke="#E9A23B" stroke-width="5" stroke-linecap="round"/>
-            <path d="M131 110l-9-8M131 110l-9 8" stroke="#E9A23B" stroke-width="5" stroke-linecap="round"/>
-            <circle cx="66" cy="82" r="14" fill="#E9A23B"/>
-            <circle cx="154" cy="82" r="14" fill="#D4C0A0"/>
-            <path d="M54 145h25M142 145h25" stroke="#9A6516" stroke-width="6" stroke-linecap="round" opacity=".28"/>
-          </svg>
-        </div>
-        <div class="slide-copy">
-          <h2 class="slide-msg">착한 것과<br><b>무리하는 것</b>을 나눕니다</h2>
-          <p class="slide-desc">결과는 성격 딱지가 아니라, 어디까지 괜찮고 어디서부터 소진되는지 보는 기준입니다.</p>
-        </div>
-        <div class="signal-grid" aria-label="경계 기준">
-          <div class="signal"><strong>무료</strong><span>로그인 없이</span></div>
-          <div class="signal"><strong>3분</strong><span>짧은 흐름</span></div>
-          <div class="signal"><strong>즉시</strong><span>결과 확인</span></div>
-        </div>
-      </article>
-    </section>
+    <ol class="signal-notes" aria-live="polite" aria-label="관계에서 발견한 신호">
+      <li data-threshold=".28"><span>CARE</span><strong>먼저 챙긴 마음</strong></li>
+      <li data-threshold=".50"><span>LINE</span><strong>늦게 도착한 경계</strong></li>
+      <li data-threshold=".72"><span>RECOVER</span><strong>다시 나에게 오는 길</strong></li>
+    </ol>
 
-    <section class="slide s3">
-      <article class="lab-card">
-        <div class="lab-top">
-          <div class="slide-num">03 · REPORT</div>
-          <div class="lab-chip">GIVE map</div>
-        </div>
-        <div class="slide-illus" aria-hidden="true">
-          <svg viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="38" y="34" width="144" height="152" rx="18" fill="#fff" stroke="#114B3C" stroke-width="2"/>
-            <rect x="38" y="34" width="144" height="40" rx="18" fill="#114B3C"/>
-            <path d="M38 56h144" stroke="#114B3C" stroke-width="20"/>
-            <path d="M64 102h92M64 124h70M64 146h84" stroke="#00A885" stroke-width="8" stroke-linecap="round" opacity=".28"/>
-            <circle cx="72" cy="54" r="7" fill="#00A885"/>
-            <path d="M141 86l6 13 14 2-10 10 3 14-13-7-13 7 3-14-10-10 14-2z" fill="#E9A23B"/>
-          </svg>
-        </div>
-        <div class="slide-copy">
-          <h2 class="slide-msg">유형보다<br><b>다음 행동</b>을 먼저 보여줘요</h2>
-          <p class="slide-desc">강점, 위험 신호, 오늘의 조언, 다음 테스트 추천이 한 흐름으로 이어집니다.</p>
-        </div>
-        <div class="signal-grid" aria-label="결과 구성">
-          <div class="signal"><strong>강점</strong><span>남길 것</span></div>
-          <div class="signal"><strong>신호</strong><span>조심할 것</span></div>
-          <div class="signal"><strong>행동</strong><span>오늘 할 것</span></div>
-        </div>
-      </article>
-    </section>
+    <p class="drag-hint" id="dragHint"><b>왼쪽의 민트빛 실을 잡고,</b> 오른쪽 문을 향해 천천히 당겨 보세요 <span aria-hidden="true">→</span></p>
 
-    <section class="slide s4">
-      <article class="lab-card">
-        <div class="lab-top">
-          <div class="slide-num">04 · START</div>
-          <div class="lab-chip">free test</div>
-        </div>
-        <div class="slide-illus" aria-hidden="true">
-          <svg viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="42" y="48" width="136" height="124" rx="18" fill="rgba(255,255,255,.16)" stroke="rgba(255,255,255,.55)" stroke-width="2"/>
-            <path d="M72 90l14 14 28-32" stroke="#00A885" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M74 130h72M74 150h48" stroke="#E2F4EE" stroke-width="7" stroke-linecap="round" opacity=".7"/>
-            <path d="M150 48l10-18 10 18 18 10-18 10-10 18-10-18-18-10z" fill="#00A885"/>
-          </svg>
-        </div>
-        <div class="slide-copy">
-          <h2 class="slide-msg">이제 내 관계의<br><b>손해 구조</b>를 확인합니다</h2>
-          <p class="slide-desc">질문에는 정답이 없습니다. 최근 실제 반응에 가장 가까운 선택지를 고르면 됩니다.</p>
-        </div>
-        <div class="signal-grid" aria-label="시작 전 안내">
-          <div class="signal"><strong>16문항</strong><span>관계 장면</span></div>
-          <div class="signal"><strong>무료</strong><span>바로 시작</span></div>
-          <div class="signal"><strong>보상</strong><span>로그인 후 저장</span></div>
-        </div>
-      </article>
-    </section>
-  </div>
-
-  <div class="foot" id="foot">
-    <span class="tap-hint" id="tapHint">화면을 탭하거나 넘겨서 계속 보기</span>
-    <a href="give-test.html?start=1" class="start-btn" id="startBtn">GIVE ID 시작하기</a>
-  </div>
-</main>
-
-<script>
-(function(){
-  try { localStorage.setItem('givePrologueSeen', '1'); } catch (e) {}
-  var slides = Array.from(document.querySelectorAll('.slide'));
-  var dotsEl = document.getElementById('dots');
-  var tapHint = document.getElementById('tapHint');
-  var startBtn = document.getElementById('startBtn');
-  var skipBtn = document.getElementById('skipBtn');
-  var s4Wash = document.getElementById('s4Wash');
-  var cur = 0, busy = false, LAST = slides.length - 1;
-  var labels = ['패턴','기준','행동','시작'];
-  var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-
-  slides.forEach(function(_,i){
-    var d = document.createElement('span');
-    d.className = 'dot' + (i === 0 ? ' on' : '');
-    var label = document.createElement('span');
-    label.className = 'dot-label';
-    label.textContent = labels[i];
-    d.appendChild(label);
-    dotsEl.appendChild(d);
-  });
-  var dotEls = Array.from(dotsEl.children);
-
-  function updateChrome(){
-    dotEls.forEach(function(dot, i){ dot.classList.toggle('on', i <= cur); });
-    skipBtn.textContent = cur === 2 ? '거의 다 왔어요 · 바로 시작' : '바로 시작';
-    skipBtn.hidden = cur === LAST;
-  }
-
-  function activate(n){
-    cur = n;
-    slides[cur].classList.add('active');
-    updateChrome();
-    if(cur === LAST){
-      document.querySelector('.prologue-page').classList.add('completed');
-      tapHint.style.opacity = '0';
-      slides[cur].classList.add('awaiting-content');
-      setTimeout(function(){
-        slides[cur].classList.remove('awaiting-content');
-        slides[cur].classList.add('reveal-check');
-        setTimeout(function(){
-          slides[cur].classList.add('reveal-headline');
-          setTimeout(function(){ startBtn.classList.add('show'); }, reducedMotion.matches ? 0 : 700);
-        }, reducedMotion.matches ? 0 : 150);
-      }, reducedMotion.matches ? 0 : 400);
-    } else {
-      tapHint.style.opacity = '1';
-      startBtn.classList.remove('show');
-      setTimeout(function(){ busy = false; }, reducedMotion.matches ? 0 : 450);
-    }
-  }
-
-  function next(){
-    if(busy || cur >= LAST) return;
-    busy = true;
-    var outgoing = slides[cur];
-    var target = cur + 1;
-    if(reducedMotion.matches){
-      outgoing.classList.remove('active');
-      if(target === LAST) s4Wash.classList.add('expand');
-      activate(target);
-      busy = false;
-      return;
-    }
-    outgoing.classList.add('exiting');
-    setTimeout(function(){
-      outgoing.classList.remove('active','exiting');
-      setTimeout(function(){
-        if(target === LAST){
-          s4Wash.classList.add('expand');
-          setTimeout(function(){ activate(target); busy = false; }, 600);
-        } else {
-          activate(target);
-        }
-      }, 120);
-    }, 200);
-  }
-  window.__givePrologueNext = next;
-
-  activate(0);
-
-  document.addEventListener('click', function(e){
-    if(e.target.closest('a,button')) return;
-    next();
-  });
-
-  var tx = 0;
-  document.addEventListener('touchstart', function(e){ tx = e.touches[0].clientX; }, {passive:true});
-  document.addEventListener('touchend', function(e){
-    if(e.changedTouches[0].clientX - tx < -40) next();
-  }, {passive:true});
-  document.addEventListener('keydown', function(e){
-    if(e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') next();
-  });
-  skipBtn.addEventListener('click', function(){
-    location.href = 'give-test.html?start=1';
-  });
-})();
-</script>
+    <nav class="page-rail" aria-label="프롤로그 진행">
+      <button class="rail-button rail-prev" type="button" disabled aria-label="이전 단계">←</button>
+      <div class="rail-progress">
+        <ol class="rail-stages" aria-label="프롤로그 네 단계">
+          <li data-stage="0" class="is-current"><b>01</b><span>실 잡기</span></li>
+          <li data-stage=".18"><b>02</b><span>돌봄</span></li>
+          <li data-stage=".46"><b>03</b><span>경계</span></li>
+          <li data-stage=".72"><b>04</b><span>회복</span></li>
+        </ol>
+        <label for="threadRange" class="sr-only">프롤로그 장면 진행도</label>
+        <input id="threadRange" type="range" min="0" max="100" value="0">
+      </div>
+      <button class="rail-button rail-next" id="railNext" type="button">
+        <span>실을 따라가기</span><b aria-hidden="true">→</b>
+      </button>
+    </nav>
+  </main>
+  <script src="/design-lab.js"></script>
 </body>
 </html>

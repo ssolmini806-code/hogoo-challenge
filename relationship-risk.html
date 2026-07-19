@@ -29,8 +29,11 @@
     <meta name="google-adsense-account" content="ca-pub-8564310871125079">
     <link rel="stylesheet" href="/give-theme.css">
     <link rel="stylesheet" href="/test-landing.css">
+    <link rel="stylesheet" href="/hogoo-world.css">
+    <link rel="stylesheet" href="/risk-world.css">
+    <script src="/risk-world.js" defer></script>
 </head>
-<body class="risk-page">
+<body class="risk-page hogoo-page">
 <a class="skip" href="#intro-page">본문 바로가기</a>
 
 <div id="intro-page">
@@ -45,7 +48,7 @@
                 <img src="/images/tests/relationship-risk-illustration-v3.webp" alt="배터리, 일방향 화살표, 경계 신호 카드를 살피는 따뜻한 일러스트" loading="eager">
             </div>
             <p class="test-intro-caption">관계가 나를 소진시키기 전에, 작게 켜진 경고등을 먼저 봅니다.</p>
-            <h1 class="test-title">내 인간관계 위험도 테스트</h1>
+            <h1 class="test-title">내 관계,<br>지금 안전할까?</h1>
             <p class="test-subtitle">지금 내 관계가 나를 지치게 하고 있나요? 12가지 질문으로 위험 신호를 점검해보세요.</p>
             <div class="prologue-metrics" aria-label="테스트 정보">
                 <div><strong>12</strong><span>문항</span></div>
@@ -176,6 +179,15 @@
 </div>
 
 <div id="test-page" class="hidden">
+    <div class="risk-crack-world" aria-hidden="true">
+        <span class="risk-recovery-light"></span>
+        <svg viewBox="0 0 1000 700" preserveAspectRatio="none" focusable="false">
+            <path pathLength="1" d="M1000 72 L852 190 L905 276 L710 345 L754 452 L560 520 L482 700"></path>
+            <path pathLength="1" d="M854 190 L720 136 L638 52"></path>
+            <path pathLength="1" d="M710 345 L592 294 L508 336"></path>
+            <path pathLength="1" d="M754 452 L868 520 L927 612"></path>
+        </svg>
+    </div>
     <div class="inner">
         <div class="progress-wrap">
             <div class="progress-info">
@@ -227,18 +239,18 @@ document.querySelectorAll('.test-tabs').forEach(function(tabs) {
 </script>
 <script>
 const questions = [
-    { q: "최근 특정 관계에서 대화 후 피곤하거나 지친 느낌이 드나요?", a: ["항상 그렇다", "자주 그렇다", "가끔 그렇다", "그렇지 않다"] },
-    { q: "주변에 내 말을 끊거나 무시하는 사람이 있나요?", a: ["자주 있다", "가끔 있다", "드물게 있다", "없다"] },
-    { q: "경계를 분명히 했는데도 무시당한 경험이 있나요?", a: ["최근에도 있다", "과거에 있다", "기억이 잘 안 난다", "없다"] },
-    { q: "특정 관계에서 내 감정을 솔직하게 표현하기 어렵나요?", a: ["매우 어렵다", "어려운 편이다", "조금 어렵다", "전혀 어렵지 않다"] },
-    { q: "나를 진심으로 걱정해주는 사람이 있다고 느끼나요?", a: ["없다고 느낀다", "잘 모르겠다", "한두 명은 있다", "충분히 있다"] },
-    { q: "관계에서 내가 더 많이 희생하고 있다고 느끼나요?", a: ["항상 그렇게 느낀다", "자주 그렇게 느낀다", "가끔 그렇게 느낀다", "그렇지 않다"] },
-    { q: "최근 6개월 안에 관계 문제로 잠을 못 잔 적이 있나요?", a: ["자주 있다", "있다", "한 번 있다", "없다"] },
-    { q: "특정 사람과의 관계가 일방적이라고 느끼나요?", a: ["강하게 느낀다", "어느 정도 느낀다", "약간 느낀다", "그렇지 않다"] },
-    { q: "상대방이 화낼까봐 내 의견을 참는 경우가 있나요?", a: ["자주 있다", "가끔 있다", "드물게 있다", "없다"] },
-    { q: "내가 거절했더니 관계가 나빠진 경험이 있나요?", a: ["최근에도 있다", "과거에 있다", "잘 모르겠다", "없다"] },
-    { q: "지금 나의 주요 관계들이 내게 에너지를 주나요, 빼앗아 가나요?", a: ["대부분 빼앗아 간다", "빼앗아 가는 관계가 더 많다", "비슷하다", "대부분 에너지를 준다"] },
-    { q: "지금 이 관계를 계속 유지해야 한다고 생각하는 이유가 뭔가요?", a: ["진심으로 소중하니까", "정이 들어서", "끊기가 무서워서", "뭔지 모르겠다"] }
+    { q: "그 사람과 대화한 뒤 지치나요?", a: ["항상 그렇다", "자주 그렇다", "가끔 그렇다", "그렇지 않다"] },
+    { q: "내 말을 끊거나 무시하나요?", a: ["자주 있다", "가끔 있다", "드물게 있다", "없다"] },
+    { q: "말한 경계가 다시 무시됐나요?", a: ["최근에도 있다", "과거에 있다", "기억이 잘 안 난다", "없다"] },
+    { q: "내 감정을 솔직히 말하기 어렵나요?", a: ["매우 어렵다", "어려운 편이다", "조금 어렵다", "전혀 어렵지 않다"] },
+    { q: "나를 진심으로 걱정해주는 사람이 있나요?", a: ["없다고 느낀다", "잘 모르겠다", "한두 명은 있다", "충분히 있다"] },
+    { q: "관계에서 나만 더 희생하나요?", a: ["항상 그렇게 느낀다", "자주 그렇게 느낀다", "가끔 그렇게 느낀다", "그렇지 않다"] },
+    { q: "관계 때문에 잠을 설친 적이 있나요?", a: ["자주 있다", "있다", "한 번 있다", "없다"] },
+    { q: "이 관계가 일방적으로 느껴지나요?", a: ["강하게 느낀다", "어느 정도 느낀다", "약간 느낀다", "그렇지 않다"] },
+    { q: "상대가 화낼까 봐 의견을 참나요?", a: ["자주 있다", "가끔 있다", "드물게 있다", "없다"] },
+    { q: "거절한 뒤 관계가 나빠졌나요?", a: ["최근에도 있다", "과거에 있다", "잘 모르겠다", "없다"] },
+    { q: "주요 관계가 에너지를 주나요?", a: ["대부분 빼앗아 간다", "빼앗아 가는 관계가 더 많다", "비슷하다", "대부분 에너지를 준다"] },
+    { q: "이 관계를 유지하는 이유는 뭔가요?", a: ["진심으로 소중하니까", "정이 들어서", "끊기가 무서워서", "뭔지 모르겠다"] }
 ];
 
 let score = 0, current = 0;
@@ -259,16 +271,29 @@ function renderQ() {
     document.getElementById('progFill').style.width = pct + '%';
     document.getElementById('qText').textContent = q.q;
     const list = document.getElementById('answerList');
+    list.classList.remove('is-answering');
     list.replaceChildren();
     q.a.forEach((ans, i) => {
         const btn = document.createElement('button');
         btn.className = 'ans-btn';
         btn.textContent = ans;
         btn.onclick = () => {
-            score += (3 - i);
-            current++;
-            if (current >= questions.length) showResult();
-            else { window.scrollTo(0, 0); renderQ(); }
+            if (list.classList.contains('is-answering')) return;
+            list.classList.add('is-answering');
+            btn.classList.add('is-chosen');
+            window.dispatchEvent(new CustomEvent('risk:answer', { detail: {
+                value: 3 - i,
+                questionIndex: current,
+                total: questions.length
+            }}));
+            const moveNext = () => {
+                score += (3 - i);
+                current++;
+                if (current >= questions.length) showResult();
+                else { window.scrollTo(0, 0); renderQ(); }
+            };
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) moveNext();
+            else window.setTimeout(moveNext, 460);
         };
         list.appendChild(btn);
     });

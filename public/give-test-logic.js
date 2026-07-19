@@ -199,6 +199,7 @@ const typeAxisProfiles = {
 
 let current = 0;
 let scores = { burnout: 0, refusal: 0, reciprocity: 0, recovery: 0 };
+let answerLocked = false;
 let finalResult = null;
 let finalKey = null;
 
@@ -347,11 +348,15 @@ function setShareCardStat(prefix, value) {
 }
 
 function startTest() {
+    localStorage.removeItem('give_test_result');
+    localStorage.removeItem('give_test_scores');
     current = 0;
     scores = { burnout: 0, refusal: 0, reciprocity: 0, recovery: 0 };
     finalResult = null;
     finalKey = null;
-    document.getElementById("landing-page").classList.add("hidden");
+    answerLocked = false;
+    document.body.classList.add("is-testing");
+    document.getElementById("landing-page")?.classList.add("hidden");
     document.getElementById("result-page").classList.add("hidden");
     document.getElementById("test-page").classList.remove("hidden");
     window.scrollTo(0, 0);
@@ -361,11 +366,16 @@ function startTest() {
 function renderQuestion() {
     const q = questions[current];
     const pct = Math.round((current / questions.length) * 100);
+    const questionMatch = q.q.match(/^\[([^\]]+)\]\s*(.*)$/);
+    const questionAxis = questionMatch ? questionMatch[1] : "관계 패턴";
+    const questionCopy = questionMatch ? questionMatch[2] : q.q;
+    answerLocked = false;
+    document.getElementById("test-page").style.setProperty("--question-progress", `${pct}%`);
     document.getElementById("qCount").textContent = `${current + 1} / ${questions.length}`;
     document.getElementById("qPercent").textContent = `${pct}%`;
     document.getElementById("progressFill").style.width = `${pct}%`;
-    document.getElementById("qLabel").textContent = `Q${current + 1}`;
-    document.getElementById("qText").textContent = q.q;
+    document.getElementById("qLabel").textContent = `Q${String(current + 1).padStart(2, "0")} · ${questionAxis}`;
+    document.getElementById("qText").textContent = questionCopy;
     document.getElementById("rewardText").textContent = getRewardText(current);
 
     const list = document.getElementById("answerList");
@@ -374,11 +384,12 @@ function renderQuestion() {
         const btn = document.createElement("button");
         btn.className = "answer-btn";
         btn.textContent = answer;
-        btn.onclick = () => selectAnswer(index + 1);
+        btn.onclick = () => selectAnswer(index + 1, btn);
         list.appendChild(btn);
     });
 
     const card = document.getElementById("questionCard");
+    card.classList.remove("is-leaving");
     card.classList.remove("question-card");
     void card.offsetWidth;
     card.classList.add("question-card");
@@ -391,23 +402,39 @@ function getRewardText(idx) {
     return "첫 번째 축: 선의가 소진으로 바뀌는 신호를 봅니다.";
 }
 
-function selectAnswer(score) {
-    if (current === 0) trackEvent('give_test_start');
-    if (current === 4) trackEvent('give_test_progress', { checkpoint: 5 });
-    if (current === 9) trackEvent('give_test_progress', { checkpoint: 10 });
+function selectAnswer(score, selectedButton) {
+    if (answerLocked) return;
+    answerLocked = true;
+    const card = document.getElementById("questionCard");
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    document.querySelectorAll("#answerList .answer-btn").forEach((button) => { button.disabled = true; });
+    selectedButton?.classList.add("is-selected");
 
-    if (4 > current) scores.burnout += score;
-    else if (8 > current) scores.refusal += score;
-    else if (12 > current) scores.reciprocity += score;
-    else scores.recovery += score;
+    const completeSelection = () => {
+        if (current === 0) trackEvent('give_test_start');
+        if (current === 4) trackEvent('give_test_progress', { checkpoint: 5 });
+        if (current === 9) trackEvent('give_test_progress', { checkpoint: 10 });
 
-    current += 1;
-    if (questions.length > current) {
-        renderQuestion();
-    } else {
-        document.getElementById("progressFill").style.width = "100%";
-        showResult();
+        if (4 > current) scores.burnout += score;
+        else if (8 > current) scores.refusal += score;
+        else if (12 > current) scores.reciprocity += score;
+        else scores.recovery += score;
+
+        current += 1;
+        if (questions.length > current) {
+            renderQuestion();
+        } else {
+            document.getElementById("progressFill").style.width = "100%";
+            showResult();
+        }
+    };
+
+    if (reducedMotion) {
+        completeSelection();
+        return;
     }
+    window.setTimeout(() => card.classList.add("is-leaving"), 210);
+    window.setTimeout(completeSelection, 520);
 }
 
 function getFinalKey() {
@@ -452,15 +479,8 @@ function resetFreeTestResult() {
     url.searchParams.delete("reviewed");
     history.replaceState(null, "", url.toString());
 
-    current = 0;
-    scores = { burnout: 0, refusal: 0, reciprocity: 0, recovery: 0 };
-    finalResult = null;
-    finalKey = null;
     document.getElementById("completion").classList.remove("show");
-    document.getElementById("test-page").classList.add("hidden");
-    document.getElementById("result-page").classList.add("hidden");
-    document.getElementById("landing-page").classList.remove("hidden");
-    window.scrollTo(0, 0);
+    startTest();
 }
 
 function requestRetryTest() {
@@ -580,7 +600,7 @@ function renderResult(key) {
     finalKey = key;
     finalResult = results[key];
     const paid = paidDetails[key] || paidDetails.mixed;
-    document.getElementById("landing-page").classList.add("hidden");
+    document.getElementById("landing-page")?.classList.add("hidden");
     document.getElementById("test-page").classList.add("hidden");
     document.getElementById("result-page").classList.remove("hidden");
     document.getElementById("completion").classList.add("show");
@@ -736,19 +756,3 @@ function showToast(message) {
     toast.classList.add("show");
     setTimeout(() => toast.classList.remove("show"), 1800);
 }
-
-(function() {
-    const params = new URLSearchParams(location.search);
-    const queryKey = params.get('type');
-    const savedKey = localStorage.getItem('give_test_result');
-    const resultKey = queryKey && results[queryKey] ? queryKey : savedKey;
-
-    console.log("[give-test] initial result check:", { queryKey, savedKey, resultKey });
-
-    if (resultKey && results[resultKey]) {
-        showResultFromKey(resultKey);
-    } else if (savedKey && !results[savedKey]) {
-        console.log("[give-test] invalid saved result ignored:", savedKey);
-        localStorage.removeItem('give_test_result');
-    }
-})();

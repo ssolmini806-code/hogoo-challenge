@@ -16,8 +16,11 @@
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="google-adsense-account" content="ca-pub-8564310871125079">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@500;600;700;800&display=swap">
     <link rel="stylesheet" href="/give-theme.css">
     <link rel="stylesheet" href="/test-landing.css">
+    <link rel="stylesheet" href="/hogoo-world.css">
+    <script src="/hogoo-world.js" defer></script>
 </head>
 <body class="hogoo-page">
 <a class="skip" href="#intro-page">본문 바로가기</a>
@@ -175,6 +178,13 @@
 </div>
 
 <div id="test-page" class="hidden">
+    <div class="hogoo-pressure-world" aria-hidden="true">
+        <span class="hogoo-ink-level"></span>
+        <span class="hogoo-plant-shadow"></span>
+        <svg viewBox="0 0 1000 180" preserveAspectRatio="none" focusable="false">
+            <path pathLength="1" d="M0 125 C128 54 232 156 355 91 S594 37 720 108 S900 144 1000 61"></path>
+        </svg>
+    </div>
     <div class="inner">
         <div class="progress-wrap">
             <div class="progress-info">
@@ -226,18 +236,18 @@ document.querySelectorAll('.test-tabs').forEach(function(tabs) {
 </script>
 <script>
 const questions = [
-    { q: "부탁을 받으면 어떻게 반응하나요?", a: ["고민도 없이 \"응, 할게!\"", "고민하다가 결국 한다", "한번 생각해보겠다고 한다", "상황에 따라 다르게 답한다"] },
-    { q: "부탁을 거절했을 때 어떤 기분이 드나요?", a: ["내가 나쁜 사람 같아서 매우 죄책감이 든다", "약간 미안한 마음이 든다", "거절은 했지만 찜찜하다", "별로 죄책감이 없다"] },
-    { q: "상대방이 불편해할까봐 원하는 걸 참은 적이 있나요?", a: ["자주 있다", "가끔 있다", "드물게 있다", "거의 없다"] },
-    { q: "'착하다'는 말을 들을 때 솔직히 어떤 기분이에요?", a: ["기분 좋다", "고맙긴 한데 조금 찜찜하다", "이제 그 말이 부담스럽다", "착한 게 손해인 것 같다"] },
-    { q: "내가 도움을 요청하기는 어려운 편인가요?", a: ["매우 어렵다. 부담 줄까봐 못 한다", "조금 어렵다", "그저 그렇다", "전혀 어렵지 않다"] },
-    { q: "같은 사람이 반복해서 부탁할 때 어떻게 하나요?", a: ["계속 들어준다", "부담되지만 들어준다", "한번쯤 말해본다", "기준을 정하고 말한다"] },
-    { q: "관계가 끊길까봐 싫은 것도 참은 적이 있나요?", a: ["자주 있다", "가끔 있다", "드물게 있다", "거의 없다"] },
-    { q: "나보다 상대방 감정/기분을 먼저 생각하는 편인가요?", a: ["항상 그렇다", "자주 그렇다", "가끔 그렇다", "그렇지 않다"] },
-    { q: "도움을 주고 나서 감사 인사가 없으면 어떤가요?", a: ["많이 서운하고 상처가 된다", "살짝 서운하다", "별로 신경 쓰지 않는다", "전혀 신경 안 쓴다"] },
-    { q: "거절 후 상대방이 실망할 것 같아서 번복한 적이 있나요?", a: ["자주 있다", "가끔 있다", "드물게 있다", "없다"] },
-    { q: "지금 내 에너지 상태가 어떤가요?", a: ["항상 지쳐있다. 충전이 안 된다", "가끔 번아웃이 온다", "보통이다", "에너지가 넘친다"] },
-    { q: "내 인간관계에서 나는...", a: ["항상 더 많이 주는 쪽이다", "대체로 더 많이 주는 것 같다", "주고받는 것이 비슷하다", "받는 편이다"] }
+    { q: "부탁을 받으면, 보통 어떻게 답하나요?", a: ["고민도 없이 \"응, 할게!\"", "고민하다가 결국 한다", "한번 생각해보겠다고 한다", "상황에 따라 다르게 답한다"] },
+    { q: "거절한 뒤 죄책감이 드나요?", a: ["내가 나쁜 사람 같아서 매우 죄책감이 든다", "약간 미안한 마음이 든다", "거절은 했지만 찜찜하다", "별로 죄책감이 없다"] },
+    { q: "상대가 불편할까 봐 원하는 걸 참나요?", a: ["자주 있다", "가끔 있다", "드물게 있다", "거의 없다"] },
+    { q: "‘착하다’는 말을 들으면 어떤가요?", a: ["기분 좋다", "고맙긴 한데 조금 찜찜하다", "이제 그 말이 부담스럽다", "착한 게 손해인 것 같다"] },
+    { q: "도움을 청하기 어렵나요?", a: ["매우 어렵다. 부담 줄까봐 못 한다", "조금 어렵다", "그저 그렇다", "전혀 어렵지 않다"] },
+    { q: "같은 부탁이 반복되면 어떻게 하나요?", a: ["계속 들어준다", "부담되지만 들어준다", "한번쯤 말해본다", "기준을 정하고 말한다"] },
+    { q: "관계가 멀어질까 봐 싫은 걸 참나요?", a: ["자주 있다", "가끔 있다", "드물게 있다", "거의 없다"] },
+    { q: "내 감정보다 상대 기분을 먼저 보나요?", a: ["항상 그렇다", "자주 그렇다", "가끔 그렇다", "그렇지 않다"] },
+    { q: "도움 뒤 감사가 없으면 어떤가요?", a: ["많이 서운하고 상처가 된다", "살짝 서운하다", "별로 신경 쓰지 않는다", "전혀 신경 안 쓴다"] },
+    { q: "상대가 실망할까 봐 거절을 번복하나요?", a: ["자주 있다", "가끔 있다", "드물게 있다", "없다"] },
+    { q: "요즘 에너지는 어떤가요?", a: ["항상 지쳐있다. 충전이 안 된다", "가끔 번아웃이 온다", "보통이다", "에너지가 넘친다"] },
+    { q: "관계에서 나는 어느 쪽인가요?", a: ["항상 더 많이 주는 쪽이다", "대체로 더 많이 주는 것 같다", "주고받는 것이 비슷하다", "받는 편이다"] }
 ];
 
 let score = 0, current = 0;
@@ -258,16 +268,30 @@ function renderQ() {
     document.getElementById('progFill').style.width = pct + '%';
     document.getElementById('qText').textContent = q.q;
     const list = document.getElementById('answerList');
+    list.classList.remove('is-answering');
     list.replaceChildren();
     q.a.forEach((ans, i) => {
         const btn = document.createElement('button');
         btn.className = 'ans-btn';
         btn.textContent = ans;
         btn.onclick = () => {
-            score += (3 - i);
-            current++;
-            if (current >= questions.length) showResult();
-            else { window.scrollTo(0, 0); renderQ(); }
+            if (list.classList.contains('is-answering')) return;
+            list.classList.add('is-answering');
+            btn.classList.add('is-chosen');
+            window.dispatchEvent(new CustomEvent('hogoo:answer', { detail: {
+                answerIndex: i,
+                questionIndex: current,
+                value: 3 - i,
+                total: questions.length
+            }}));
+            const moveNext = () => {
+                score += (3 - i);
+                current++;
+                if (current >= questions.length) showResult();
+                else { window.scrollTo(0, 0); renderQ(); }
+            };
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) moveNext();
+            else window.setTimeout(moveNext, 460);
         };
         list.appendChild(btn);
     });

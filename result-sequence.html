@@ -11,6 +11,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,1,400;9..144,1,500&family=Hahmlet:wght@400;500;600;700;800&family=Pretendard:wght@400;450;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/give-theme.css">
+  <link rel="stylesheet" href="/result-world.css">
+  <script src="/result-world.js" defer></script>
 </head>
 <body class="sequence-page">
   <a class="skip" href="#sequence-main">본문으로 바로가기</a>
@@ -19,6 +21,12 @@
     <a class="sequence-brand" href="/give-test.html">GIVE ID 결과</a>
     <div class="sequence-dots" id="sequenceDots" aria-hidden="true"></div>
   </header>
+
+  <div class="result-atmosphere" aria-hidden="true">
+    <svg viewBox="0 0 1000 180" preserveAspectRatio="none" focusable="false">
+      <path pathLength="1" d="M0 115 C150 18 244 166 392 92 S635 24 760 108 S910 158 1000 44"></path>
+    </svg>
+  </div>
 
   <main class="sequence-main" id="sequence-main">
     <section class="sequence-slide active" data-tone="plain" aria-label="패턴 확인">
@@ -147,8 +155,8 @@
     var tests = {
       give: {
         label: "GIVE ID 결과",
-        home: "/give-test.html#result-page",
-        retryUrl: "/give-test.html",
+        home: "/result-sequence.html?test=give",
+        retryUrl: "/give-test.html?start=1&retry=1",
         cta: "7일 챌린지 시작하기",
         ctaUrl: "/hogoo-test.html",
         paidCta: "GIVE ID 심화 리포트 보기 →",
@@ -370,6 +378,38 @@
           shaky: { name:"Lv.2 흔들리는 배려형", tagline:"거절은 하지만 미안함에 흔들려요", strength:"도와주고 싶은 마음과 내 기준을 함께 보려는 힘이 있습니다.", risk:"미안함 때문에 한 번 정한 경계를 다시 무를 수 있습니다.", advice:"\"도와주고 싶은 마음은 있는데, 이번 주에는 내가 맡기 어렵다.\"를 말해보세요.", character:"/images/types/refusal-test/type-shaky.webp" },
           growth: { name:"Lv.3 기준 성장형", tagline:"대부분의 상황에서 선을 지켜요", strength:"가능한 범위와 어려운 범위를 구분할 수 있습니다.", risk:"반복 부탁에는 아직 고정 문장이 부족할 수 있습니다.", advice:"\"가능한 범위는 여기까지야. 그 이상은 내 일정상 어렵다.\"를 준비해두세요.", character:"/images/types/refusal-test/type-growth.webp" },
           master: { name:"Lv.4 거절 마스터", tagline:"거절력이 좋은 편이에요", strength:"내 기준을 지키면서도 관계를 완전히 끊지 않는 균형감이 있습니다.", risk:"짧고 단호한 표현이 가끔 차갑게 느껴질 수 있습니다.", advice:"\"이번 요청은 어렵지만, 다른 방법을 같이 생각해볼 수는 있어.\"처럼 짧은 대안을 더해보세요.", character:"/images/types/refusal-test/type-master.webp" }
+        }
+      },
+      selfless: {
+        label: "선의 균형 결과",
+        home: "/selfless-otherish-test.html",
+        retryUrl: "/selfless-otherish-test.html",
+        cta: "거절력도 확인하기",
+        ctaUrl: "/refusal-test.html",
+        paidCta: "GIVE ID 심화 리포트 보기 →",
+        fallback: "awakening",
+        sequence: {
+          intro1: ["많이 돕는데도", "마음이 자꾸 비어간다면,", "<strong>회복</strong>이 빠진 거예요."],
+          intro2: ["선의가 부족한 게 아니라", "나를 계산에서 <strong>빼고</strong> 있었던 거죠.", "오래 돕기 위해서는 나도 남아 있어야 해요."],
+          intro3: ["균형은", "덜 주는 사람이 되는 게 아니라", "<strong>지속 가능하게</strong> 주는 힘이에요.", "지금 결과는 그 균형의 현재 위치입니다."],
+          strengthLead: ["당신의 마음은 이미 충분해요.", "이제 선의에 <strong>회복과 기준</strong>을 더하면 됩니다."],
+          strengthOutro: "나를 포함한 친절이 더 오래갑니다.",
+          riskLead: "나를 계속 빼놓으면",
+          riskOutro: "쉬는 시간도 선의를 오래 지키는 약속입니다.",
+          adviceLead: "오늘은 도움 하나에 내 조건을 함께 말해보세요.",
+          why: {
+            title: "좋은 사람보다 지속 가능한 사람이 오래 돕습니다",
+            body: "Otherish 기버는 상대를 돕는 동시에 자신의 시간과 회복도 계산에 넣습니다. 선의 심리학은 마음을 줄이는 대신, 오래 쓸 수 있는 구조를 만드는 방법을 다룹니다.",
+            linkText: "지속 가능한 선의 알아보기 →"
+          },
+          final: ["나를 지키는 건", "선의를 줄이는 일이 아니에요.", "다음은 짧은 경계 문장을 연습할 차례입니다."]
+        },
+        types: {
+          drained: { name:"방전된 선의", tagline:"지금은 더 주기보다 먼저 쉬어야 해요", strength:"관계를 쉽게 포기하지 않고 오래 버텨온 힘이 있습니다.", risk:"작은 부탁에도 예민해지고 선의 자체가 부담처럼 느껴질 수 있습니다.", advice:"오늘은 추가 부탁 하나를 보류하고 회복 시간을 먼저 확보하세요.", character:"/images/types/give-id/type-hamster.webp" },
+          risk: { name:"소진 직전 기버", tagline:"마음보다 회복이 늦게 따라오고 있어요", strength:"상대의 어려움을 빠르게 알아차리고 실제로 움직이는 힘이 있습니다.", risk:"반복 부탁과 즉답 습관이 쌓이면 번아웃으로 이어질 수 있습니다.", advice:"부탁을 받으면 ‘가능한 범위 확인하고 다시 말할게요’로 한 박자 멈추세요.", character:"/images/types/give-id/type-angel.webp" },
+          awakening: { name:"균형을 찾는 기버", tagline:"패턴을 알아차리고 기준을 배우는 중이에요", strength:"상황을 유연하게 보고 행동을 바꿀 여지가 큽니다.", risk:"특정 사람 앞에서는 여전히 내 기준이 늦게 도착할 수 있습니다.", advice:"이번 주에 절대 넘기지 않을 관계 원칙 하나를 적어보세요.", character:"/images/types/give-id/type-balancer.webp" },
+          balanced: { name:"균형 잡힌 기버", tagline:"상대도 돕고 나도 지키고 있어요", strength:"가능한 범위와 어려운 범위를 구분하는 힘이 있습니다.", risk:"새로운 관계나 위계가 강한 관계에서는 다시 흔들릴 수 있습니다.", advice:"도울 때 시간, 범위, 역할 분담 중 하나를 먼저 말해보세요.", character:"/images/types/give-id/type-awakening.webp" },
+          solid: { name:"단단한 선의", tagline:"선의와 기준이 함께 작동하고 있어요", strength:"자기 보호와 관계 유지 사이의 균형감이 좋습니다.", risk:"짧은 기준이 가끔 차갑게 느껴질 수 있습니다.", advice:"거절 뒤에는 ‘마음은 이해한다’는 한 문장을 덧붙여 온기를 남겨보세요.", character:"/images/types/give-id/type-gatekeeper.webp" }
         }
       }
     };
@@ -605,6 +645,8 @@
       slides[index].inert = true;
       dotItems[index].classList.remove("is-active");
       index = nextIndex;
+      document.body.style.setProperty("--result-scene-x", ((index % 5) - 2) * .55 + "%");
+      document.body.style.setProperty("--result-progress", slides.length > 1 ? index / (slides.length - 1) : 1);
       slides[index].classList.add("active");
       slides[index].setAttribute("aria-hidden", "false");
       slides[index].inert = false;

@@ -12,7 +12,10 @@
   <meta property="og:image" content="https://hogoo-challenge.pages.dev/og-image.jpg">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <meta name="google-adsense-account" content="ca-pub-8564310871125079">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@500;600;700;800&display=swap">
   <link rel="stylesheet" href="/give-theme.css">
+  <link rel="stylesheet" href="/selfless-world.css">
+  <script src="/selfless-world.js" defer></script>
 </head>
 <body class="hogoo-page selfless-page">
   <a class="skip" href="#intro-page">본문 바로가기</a>
@@ -28,7 +31,7 @@
         <img src="/images/tests/give-id-illustration-v3-400w.webp" srcset="/images/tests/give-id-illustration-v3-400w.webp 400w, /images/tests/give-id-illustration-v3-800w.webp 800w" sizes="(max-width: 600px) 80vw, 240px" alt="도움, 경계, 회복 카드를 따라 내 관계 패턴을 살피는 따뜻한 일러스트" loading="eager" fetchpriority="high" width="560" height="560">
       </div>
       <p class="test-intro-caption">많이 주는 마음이 언제 소진되고, 언제 균형이 되는지 확인합니다.</p>
-      <h1 class="test-title">나는 selfless 기버일까, otherish 기버일까?</h1>
+      <h1 class="test-title">선의는 나를<br>비우고 있나요?</h1>
       <p class="test-subtitle">착한 사람인지 평가하지 않습니다. 내 선의가 나를 비우는 방식인지, 나까지 지키는 방식인지 20문항으로 점검합니다.</p>
       <div class="prologue-metrics" aria-label="테스트 정보">
         <div><strong>20</strong><span>문항</span></div>
@@ -73,11 +76,16 @@
         <p>소진형 선의에 가깝다면 <a href="articles/not-kindness-burnout.html">착하게 살아서 번아웃 온 게 아닙니다</a>에서 회복 없는 도움의 구조를 먼저 읽어보세요. 거절 문장이 막힌다면 <a href="articles/lace-refusal-framework.html">LACE 4단계 거절 프레임</a>이 실제 대화에 더 직접적으로 도움이 됩니다.</p>
       </section>
 
-      <button class="start-btn" id="startTestBtn">무료 점검 시작하기</button>
+      <button class="start-btn" id="startTestBtn">점검 시작하기</button>
     </div>
   </div>
 
   <div id="test-page" class="hidden">
+    <div class="selfless-balance-world" aria-hidden="true">
+      <span class="balance-word is-self">나를 비움</span>
+      <span class="balance-word is-other">나도 지킴</span>
+      <span class="balance-beam"><i></i></span>
+    </div>
     <div class="inner">
       <div class="progress-wrap">
         <div class="progress-info"><span id="qNum">1 / 20</span><span id="qPct">0%</span></div>
@@ -190,16 +198,30 @@ function renderQuestion() {
   document.getElementById("progFill").style.width = Math.round(current / questions.length * 100) + "%";
   document.getElementById("qText").textContent = item[0];
   const list = document.getElementById("answerList");
+  list.classList.remove("is-answering");
   list.replaceChildren();
   item[1].forEach(function(answer, index) {
     const btn = document.createElement("button");
     btn.className = "ans-btn";
     btn.textContent = answer;
     btn.onclick = function() {
-      score += 4 - index;
-      current += 1;
-      if (current >= questions.length) showResult();
-      else renderQuestion();
+      if (list.classList.contains("is-answering")) return;
+      list.classList.add("is-answering");
+      btn.classList.add("is-chosen");
+      window.dispatchEvent(new CustomEvent("selfless:answer", { detail: {
+        value: 4 - index,
+        answerIndex: index,
+        questionIndex: current,
+        total: questions.length
+      }}));
+      const moveNext = function() {
+        score += 4 - index;
+        current += 1;
+        if (current >= questions.length) showResult();
+        else renderQuestion();
+      };
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) moveNext();
+      else window.setTimeout(moveNext, 430);
     };
     list.appendChild(btn);
   });
@@ -235,16 +257,7 @@ function renderResultCard(id, title, body, options) {
 
 function showResult() {
   const result = results.find(function(item) { return score <= item.max; }) || results[results.length - 1];
-  document.getElementById("test-page").classList.add("hidden");
-  document.getElementById("result-page").classList.remove("hidden");
-  document.getElementById("typeName").textContent = result.name;
-  document.getElementById("spectrumDot").style.setProperty("--spectrum-pos", result.pos + "%");
-  document.getElementById("spectrumCopy").textContent = "Selfless ← 현재 위치 → Otherish";
-  document.getElementById("resultSummary").textContent = result.summary;
-  renderResultCard("cardStrength", "강점", result.strength);
-  renderResultCard("cardRisk", "주의할 점", result.risk, { warning: true });
-  renderResultCard("cardAdvice", "오늘의 조언", result.advice, { note: "상황 인정 → 마음 표현 → 내 기준 → 가능한 범위 순서로 말해보세요." });
-  window.scrollTo(0, 0);
+  location.href = "result-sequence.html?test=selfless&type=" + encodeURIComponent(result.key) + "&score=" + encodeURIComponent(score);
 }
 
 function retryTest() {

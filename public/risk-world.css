@@ -1,0 +1,36 @@
+.risk-page{--risk-strain:.2;}
+.risk-page #intro-page>.inner>div::before{background-image:url('/images/tests/relationship-risk-illustration-v3.webp');}
+.risk-page #intro-page .test-title{max-width:7.2em;font-size:clamp(3.4rem,6.4vw,7rem);}
+.risk-page #intro-page .test-badge{color:var(--hogoo-amber);}
+.risk-page #intro-page .start-btn{background:var(--hogoo-paper);color:var(--hogoo-green);}
+.risk-page #intro-page .start-btn:hover{background:var(--hogoo-green);color:var(--hogoo-paper);}
+
+.risk-page #test-page{background:linear-gradient(90deg,rgba(250,248,243,.98) 0 44%,rgba(250,248,243,.72) 64%,rgba(250,248,243,.3)),url('/images/results/give-result-world-v1.webp') 64% center/cover no-repeat;}
+.risk-page .hogoo-pressure-world{display:none;}
+.risk-page .q-num-label{color:var(--hogoo-amber);}
+.risk-page .ans-btn.is-chosen{background:linear-gradient(90deg,rgba(154,101,22,.16),transparent);}
+
+.risk-crack-world{position:absolute;inset:0;z-index:2;overflow:hidden;pointer-events:none;}
+.risk-crack-world svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;}
+.risk-crack-world path{fill:none;stroke:rgba(154,101,22,calc(.12 + var(--risk-strain) * .32));stroke-width:1;vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--hogoo-progress) * var(--risk-strain));filter:drop-shadow(0 1px 1px rgba(154,101,22,.12));transition:stroke-dashoffset 1s cubic-bezier(.2,.75,.2,1),stroke .8s ease;}
+.risk-crack-world path:nth-child(2){transition-delay:.08s;}
+.risk-crack-world path:nth-child(3){transition-delay:.14s;}
+.risk-crack-world path:nth-child(4){transition-delay:.2s;}
+.risk-recovery-light{position:absolute;right:-8vw;top:8%;width:48vw;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(255,244,198,.58),rgba(250,248,243,0) 68%);opacity:calc(.22 + (1 - var(--risk-strain)) * .46);transform:scale(calc(.86 + (1 - var(--risk-strain)) * .18));transition:opacity .9s ease,transform 1s ease;}
+.risk-is-recovering .risk-recovery-light{animation:riskRecoveryBreath .72s ease both;}
+.risk-is-recovering .risk-crack-world path{stroke:rgba(250,248,243,.62);}
+
+@keyframes riskRecoveryBreath{50%{opacity:.9;transform:scale(1.12);}}
+
+@media(max-width:719px){
+  .risk-page #intro-page .test-title{font-size:clamp(2.7rem,12vw,3.5rem);}
+  .risk-page #intro-page>.inner>div::before{right:-21vw;width:137vw;}
+  .risk-page #test-page{background:linear-gradient(180deg,rgba(250,248,243,.98) 0 63%,rgba(250,248,243,.45)),url('/images/results/give-result-world-v1.webp') 68% center/auto 100% no-repeat;}
+  .risk-crack-world svg{left:8%;width:120%;}
+  .risk-recovery-light{right:-32vw;top:36%;width:92vw;}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .risk-crack-world path,.risk-recovery-light{transition:none;}
+  .risk-is-recovering .risk-recovery-light{animation:none;}
+}

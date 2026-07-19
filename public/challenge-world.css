@@ -1,0 +1,107 @@
+body:has(.challenge-world){background:#FAF8F3 url('/images/results/give-result-world-v1.webp') 62% top/cover fixed no-repeat;}
+.challenge-world{
+  background:linear-gradient(90deg,rgba(250,248,243,.96),rgba(250,248,243,.68) 62%,rgba(250,248,243,.24))!important;
+  color:#18211d!important;
+}
+.challenge-world-header{
+  position:relative;
+  padding:clamp(2.5rem,6vh,5rem) clamp(1.25rem,5vw,5rem) 1.5rem!important;
+  border:0!important;
+  background:transparent!important;
+}
+.challenge-world-header::before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(250,248,243,.92) 0 48%,transparent 78%);}
+.challenge-world-header-inner{position:relative;z-index:1;max-width:1120px!important;}
+.challenge-world-title-row{align-items:flex-end!important;margin-bottom:2.2rem!important;}
+.challenge-world-title-row>div:first-child{align-items:flex-end!important;gap:clamp(1rem,2.5vw,2rem)!important;}
+.challenge-world-avatar{width:clamp(5.5rem,9vw,8rem)!important;height:clamp(5.5rem,9vw,8rem)!important;border:0!important;border-radius:50%!important;box-shadow:none!important;-webkit-mask-image:radial-gradient(circle,#000 54%,transparent 76%);mask-image:radial-gradient(circle,#000 54%,transparent 76%);}
+.challenge-world-title-row h1{font-family:'Hahmlet',serif!important;font-size:clamp(2.2rem,4vw,4.4rem)!important;font-weight:650!important;line-height:1!important;letter-spacing:-.05em!important;color:#114B3C!important;}
+.challenge-world-stats>div>div{min-width:6.5rem;padding:.75rem 1rem!important;border:0!important;border-left:1px solid rgba(17,75,60,.28)!important;border-radius:0!important;background:transparent!important;text-align:left;}
+.challenge-world-stats>div>div div:first-child{letter-spacing:.08em;}
+
+.challenge-world-days{position:relative;gap:0!important;flex-wrap:nowrap!important;border-top:1px solid rgba(17,75,60,.2);border-bottom:1px solid rgba(17,75,60,.2);overflow-x:auto;scrollbar-width:none;}
+.challenge-world-days::-webkit-scrollbar{display:none;}
+.challenge-world-days .day-btn{flex:0 0 auto!important;min-width:6.2rem;height:3.5rem!important;border:0!important;border-radius:0!important;background:transparent!important;color:#526159!important;outline:0!important;outline-offset:0!important;white-space:nowrap;}
+.challenge-world-days .day-btn:hover{transform:none!important;background:rgba(17,75,60,.06)!important;}
+.challenge-world-days .day-btn.is-active{background:#114B3C!important;color:#FAF8F3!important;}
+
+.challenge-world-main{max-width:1120px!important;padding:clamp(2.5rem,6vh,5rem) clamp(1.25rem,5vw,4rem) 8rem!important;}
+.challenge-world-day-head{max-width:48rem;margin-bottom:2rem!important;}
+.challenge-world-day-head span{border-radius:0!important;background:transparent!important;color:#9A6516!important;padding:0 0 .4rem!important;border-bottom:1px solid rgba(154,101,22,.5);}
+.challenge-world-day-head h2{font-family:'Hahmlet',serif!important;font-size:clamp(2.2rem,4.5vw,4.8rem)!important;font-weight:650!important;line-height:1.06!important;letter-spacing:-.045em!important;}
+.challenge-world-day-head p{font-weight:550!important;color:#59665e!important;}
+.challenge-world-mascot{max-width:46rem;padding:1rem 0 1rem 1.2rem!important;border:0!important;border-left:1px solid rgba(17,75,60,.55)!important;border-radius:0!important;background:transparent!important;}
+.challenge-world-concept{max-width:46rem;padding:1.1rem 0!important;border:0!important;border-top:1px solid rgba(17,75,60,.18)!important;border-bottom:1px solid rgba(17,75,60,.18)!important;border-radius:0!important;background:transparent!important;}
+.challenge-world-concept p{font-family:'Hahmlet',serif!important;font-size:clamp(1rem,1.6vw,1.3rem)!important;color:#114B3C!important;}
+
+.challenge-world-missions,.challenge-world-phrases,.challenge-world-note,.challenge-world-scores{max-width:52rem;}
+.challenge-world-missions .mission-item,.challenge-world-phrases .phrase-card{padding:1rem .2rem!important;border:0!important;border-bottom:1px solid rgba(17,75,60,.22)!important;border-radius:0!important;background:transparent!important;}
+.challenge-world-missions .mission-item:hover,.challenge-world-phrases .phrase-card:hover{padding-left:.8rem!important;background:linear-gradient(90deg,rgba(17,75,60,.07),transparent)!important;transform:none!important;}
+.challenge-world-scores>div{padding:1rem 0!important;border:0!important;border-top:1px solid rgba(17,75,60,.22)!important;border-radius:0!important;background:transparent!important;}
+.challenge-world-scores button{border-radius:50%!important;background:rgba(250,248,243,.72)!important;}
+.challenge-world-note textarea{border:0!important;border-bottom:1px solid rgba(17,75,60,.4)!important;border-radius:0!important;background:rgba(250,248,243,.5)!important;}
+.challenge-world-analysis{max-width:52rem;padding:2rem 0!important;border:0!important;border-top:1px solid rgba(17,75,60,.24)!important;border-bottom:1px solid rgba(17,75,60,.24)!important;border-radius:0!important;background:transparent!important;text-align:left!important;}
+.challenge-world-analysis>div:first-of-type{display:none;}
+.challenge-world-analysis [style*="linear-gradient(90deg, #00A885"]{max-width:28rem;border:1px solid #114B3C!important;border-radius:0!important;background:#114B3C!important;box-shadow:none!important;text-align:center;}
+
+/* Completion reward: one unfolding path instead of stacked cards. */
+.challenge-world .challenge-reward-view{display:grid;grid-template-columns:minmax(13rem,20rem) minmax(0,1fr);gap:clamp(2.5rem,7vw,7rem);align-items:start;}
+.challenge-world .challenge-reward-visual{position:sticky;top:2rem;margin:0!important;}
+.challenge-world .challenge-reward-illustration{width:100%!important;aspect-ratio:1;object-fit:cover;border-radius:50%!important;box-shadow:none;-webkit-mask-image:radial-gradient(circle,#000 56%,transparent 76%);mask-image:radial-gradient(circle,#000 56%,transparent 76%);}
+.challenge-world .challenge-reward-hold{display:none;}
+.challenge-world .challenge-reward{padding:1.5rem 0!important;background:transparent!important;color:#18211d!important;}
+.challenge-world .challenge-reward-inner{max-width:none!important;}
+.challenge-world .challenge-reward-intro{padding:0 0 1.5rem;border-bottom:1px solid rgba(17,75,60,.28);}
+.challenge-world .challenge-reward-intro p:first-child{font-family:'Hahmlet',serif;font-size:clamp(1.3rem,2.7vw,2.2rem)!important;font-weight:600!important;color:#114B3C!important;}
+.challenge-world .challenge-reward-intro p:last-child{max-width:36rem;color:#536159!important;}
+.challenge-world .challenge-reward-list{display:grid;gap:0!important;counter-reset:reward-step;}
+.challenge-world .challenge-reward-step{position:relative;margin:0!important;padding:2rem 0 2rem clamp(3.4rem,7vw,5.5rem)!important;border:0!important;border-bottom:1px solid rgba(17,75,60,.25)!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;counter-increment:reward-step;}
+.challenge-world .challenge-reward-step::before{content:"0" counter(reward-step);position:absolute;left:0;top:2rem;font-family:'Hahmlet',serif;font-size:1.15rem;color:#9A6516;}
+.challenge-world .challenge-reward-step-head{display:block;}
+.challenge-world .challenge-reward-icon{display:none!important;}
+.challenge-world .challenge-reward-step h2{font-family:'Hahmlet',serif;font-size:1.35rem!important;font-weight:600!important;color:#114B3C!important;}
+.challenge-world .challenge-reward-step label{display:block;margin-top:1.2rem;color:#42534a;font-size:.78rem;font-weight:750;}
+.challenge-world .challenge-reward-message{display:block;width:100%;min-height:5.5rem;margin-top:.5rem;padding:.8rem 0;border:0!important;border-bottom:1px solid rgba(17,75,60,.35)!important;border-radius:0!important;background:rgba(250,248,243,.42)!important;color:#30443a;line-height:1.65;resize:none;}
+.challenge-world .challenge-reward-actions{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-top:1rem;}
+.challenge-world .challenge-reward-status,.challenge-world .challenge-reward-unlock{margin-top:1rem;padding:1rem;border-left:1px solid rgba(154,101,22,.5);background:rgba(246,236,216,.48);color:#405148;font-size:.82rem;line-height:1.65;}
+.challenge-world .challenge-reward-step>button,.challenge-world .challenge-reward-unlock button{width:100%;margin-top:1rem;}
+.challenge-world .challenge-reward-step button{display:inline-flex;min-height:2.9rem;align-items:center;justify-content:center;gap:.45rem;padding:.65rem 1rem;border:1px solid rgba(17,75,60,.36)!important;border-radius:0!important;background:rgba(250,248,243,.56)!important;color:#114B3C!important;font-family:inherit;font-size:.83rem;font-weight:800;box-shadow:none!important;cursor:pointer;}
+.challenge-world .challenge-reward-step button:not(:disabled):hover{background:rgba(17,75,60,.08)!important;}
+.challenge-world .challenge-reward-step button:disabled{opacity:.45;cursor:not-allowed;}
+.challenge-world .challenge-reward-step:first-child button:first-of-type,
+.challenge-world .challenge-reward-step:nth-child(2)>button,
+.challenge-world .challenge-reward-step:nth-child(3) button:not(:disabled){border-color:#114B3C!important;background:#114B3C!important;color:#FAF8F3!important;}
+
+.challenge-world .login-modal-backdrop{background:rgba(13,59,47,.72)!important;backdrop-filter:blur(8px);}
+.challenge-world .login-modal-sheet{border:1px solid rgba(17,75,60,.28)!important;border-radius:0!important;background:#FAF8F3 url('/images/results/give-result-world-v1.webp') 70% center/cover no-repeat!important;box-shadow:0 2rem 6rem rgba(13,59,47,.26);}
+.challenge-world .login-modal-sheet::before{content:"";position:absolute;inset:0;z-index:-1;background:rgba(250,248,243,.88);}
+.challenge-world .login-modal-sheet h2{font-family:'Hahmlet',serif!important;font-weight:600!important;color:#114B3C!important;}
+.challenge-world .login-modal-sheet input{border:0!important;border-bottom:1px solid rgba(17,75,60,.35)!important;border-radius:0!important;background:rgba(250,248,243,.55)!important;}
+.challenge-world .login-modal-sheet button[type="submit"]{border-radius:0!important;background:#114B3C!important;}
+
+@media(max-width:719px){
+  body:has(.challenge-world){background-position:68% top;background-size:auto 100vh;}
+  .site-nav{display:none;}
+  .challenge-world-header{padding:2.2rem 1.25rem 0!important;}
+  .challenge-world-title-row{align-items:flex-start!important;margin-bottom:1.6rem!important;}
+  .challenge-world-avatar{width:4.3rem!important;height:4.3rem!important;}
+  .challenge-world-title-row h1{font-size:2rem!important;}
+  .challenge-world-stats{width:100%;}
+  .challenge-world-stats>div{width:100%;justify-content:flex-start;}
+  .challenge-world-stats>div>div{min-width:0;flex:1;padding:.55rem .75rem!important;}
+  .challenge-world-days{margin:0 -1.25rem;padding-left:1.25rem;}
+  .challenge-world-days .day-btn{min-width:5.3rem;height:3.2rem!important;}
+  .challenge-world-main{padding:2.8rem 1.25rem 6rem!important;}
+  .challenge-world-day-head h2{font-size:clamp(2rem,9vw,2.7rem)!important;}
+  .challenge-world-mascot{margin-bottom:1rem!important;}
+  .challenge-world-scores{grid-template-columns:1fr!important;}
+  .challenge-world-scores button{width:2.25rem!important;height:2.25rem!important;}
+  .challenge-world-analysis{padding:1.4rem 0!important;}
+  .challenge-world .challenge-reward-view{display:block;}
+  .challenge-world .challenge-reward-visual{position:relative;top:auto;width:9rem;margin:0 auto 1.2rem!important;}
+  .challenge-world .challenge-reward-intro p:last-child{display:none;}
+  .challenge-world .challenge-reward-step{padding:1.6rem 0 1.6rem 2.7rem!important;}
+  .challenge-world .challenge-reward-step::before{top:1.6rem;font-size:.95rem;}
+  .challenge-world .challenge-reward-actions{grid-template-columns:1fr;}
+}
+
+@media(prefers-reduced-motion:reduce){.challenge-world *{transition:none!important;scroll-behavior:auto!important;}}

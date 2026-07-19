@@ -1,0 +1,125 @@
+.hogoo-page{
+  --hogoo-paper:#FAF8F3;
+  --hogoo-green:#114B3C;
+  --hogoo-amber:#9A6516;
+  --hogoo-progress:0;
+  --hogoo-pressure:.35;
+  background:var(--hogoo-paper);
+}
+
+/* Opening scene: one quiet invitation, with the illustration dissolved into paper. */
+.hogoo-page #intro-page{
+  min-height:100svh;
+  padding:0;
+  align-items:stretch;
+  overflow:hidden;
+  background:
+    linear-gradient(90deg,rgba(250,248,243,.98) 0 43%,rgba(250,248,243,.62) 60%,rgba(250,248,243,.08)),
+    url('/images/results/give-result-world-v1.webp') 62% center/cover no-repeat;
+  text-align:left;
+}
+.hogoo-page #intro-page>.inner{width:100%;max-width:none;padding:0;}
+.hogoo-page #intro-page>.inner>div{position:relative;min-height:100svh;padding:clamp(5rem,10vh,8rem) 55vw 5rem clamp(2rem,7vw,7rem);display:flex;flex-direction:column;align-items:flex-start;justify-content:center;}
+.hogoo-page #intro-page>.inner>div::before{
+  content:"";
+  position:absolute;
+  z-index:0;
+  right:-3vw;
+  top:50%;
+  width:min(61vw,54rem);
+  aspect-ratio:1;
+  background:url('/images/tests/hogoo-check-illustration-v3-800w.webp') center/contain no-repeat;
+  transform:translateY(-50%);
+  -webkit-mask-image:radial-gradient(circle,#000 52%,transparent 75%);
+  mask-image:radial-gradient(circle,#000 52%,transparent 75%);
+  filter:saturate(.84);
+}
+.hogoo-page #intro-page>.inner>div>*{position:relative;z-index:2;}
+.hogoo-page #intro-page .prologue-lab-bar{order:-4;width:max-content;margin:0 0 1.8rem;padding:0 0 .55rem;border:0;border-bottom:1px solid rgba(17,75,60,.5);background:transparent;box-shadow:none;color:var(--hogoo-green);}
+.hogoo-page #intro-page .prologue-lab-bar span,.hogoo-page #intro-page .prologue-lab-bar strong{color:inherit;font-size:.63rem;letter-spacing:.16em;}
+.hogoo-page #intro-page .prologue-lab-bar strong::before{background:var(--hogoo-green);}
+.hogoo-page #intro-page .test-badge{order:-3;margin:0 0 1rem;padding:0;border:0;background:transparent;color:var(--hogoo-amber);font-size:.68rem;letter-spacing:.12em;}
+.hogoo-page #intro-page .test-title{order:-2;max-width:6em;margin:0;color:var(--hogoo-green);font-family:'Hahmlet',serif;font-size:clamp(3.7rem,7vw,7.6rem);font-weight:800;line-height:.88;letter-spacing:-.08em;text-align:left;}
+.hogoo-page #intro-page .test-subtitle{order:-1;display:block;max-width:30rem;margin:1.7rem 0 0;color:#536158;font-size:clamp(.9rem,1.25vw,1.06rem);line-height:1.75;text-align:left;}
+.hogoo-page #intro-page .start-btn{width:min(100%,24rem);min-height:3.5rem;margin:2rem 0 0;border:1px solid var(--hogoo-green);border-radius:0;background:var(--hogoo-green);box-shadow:none;color:var(--hogoo-paper);font-family:'Hahmlet',serif;font-size:1rem;}
+.hogoo-page #intro-page .start-btn::after{content:"  →";}
+.hogoo-page #intro-page .start-btn:hover{background:var(--hogoo-paper);color:var(--hogoo-green);transform:translateY(-2px);}
+.hogoo-page #intro-page .test-intro-image,
+.hogoo-page #intro-page .test-intro-caption,
+.hogoo-page #intro-page .prologue-metrics,
+.hogoo-page #intro-page .prologue-start-card,
+.hogoo-page #intro-page .result-preview-link,
+.hogoo-page #intro-page .test-meta,
+.hogoo-page #intro-page .test-tabs,
+.hogoo-page #intro-page .quality-section{display:none!important;}
+
+/* Question stage: answers change the watercolour pressure, not just a bar. */
+.hogoo-page #test-page{
+  position:fixed;
+  inset:0;
+  min-height:0;
+  padding:0;
+  overflow:hidden;
+  isolation:isolate;
+  background:
+    linear-gradient(90deg,rgba(250,248,243,.97) 0 42%,rgba(250,248,243,.74) 63%,rgba(250,248,243,.32)),
+    url('/images/results/give-result-world-v1.webp') 64% center/cover no-repeat;
+}
+.hogoo-page #test-page>.inner{position:relative;z-index:4;width:100%;max-width:none;height:100%;padding:clamp(4.5rem,10vh,7rem) clamp(2rem,7vw,7rem) 5rem;display:grid;grid-template-columns:minmax(0,1fr) minmax(20rem,34rem);grid-template-rows:auto 1fr;column-gap:clamp(4rem,9vw,10rem);}
+.hogoo-page .progress-wrap{grid-column:1/-1;width:100%;margin:0 0 clamp(2rem,7vh,5rem);}
+.hogoo-page .progress-info{color:var(--hogoo-green);font-size:.67rem;font-weight:750;letter-spacing:.1em;}
+.hogoo-page .progress-bar{height:1px;border:0;border-radius:0;background:rgba(17,75,60,.17);overflow:visible;}
+.hogoo-page .progress-fill{height:2px;border-radius:0;background:var(--hogoo-green);box-shadow:none;transition:width .65s cubic-bezier(.2,.75,.2,1);}
+.hogoo-page .q-num-label{position:absolute;left:clamp(2rem,7vw,7rem);top:clamp(7.7rem,19vh,11.5rem);margin:0;color:var(--hogoo-amber);font-family:'Pretendard',sans-serif;font-size:.64rem;font-weight:850;letter-spacing:.18em;}
+.hogoo-page .q-text{grid-column:1;align-self:center;max-width:9.5em;min-height:0;margin:0;color:#19221e;font-family:'Hahmlet',serif;font-size:clamp(2.7rem,5vw,5.6rem);font-weight:760;line-height:1.04;letter-spacing:-.065em;text-align:left;text-wrap:balance;}
+.hogoo-page .answer-list{grid-column:2;align-self:center;gap:0;border-top:1px solid rgba(17,75,60,.28);}
+.hogoo-page .ans-btn{position:relative;width:100%;min-height:4.4rem;padding:1.1rem 3rem 1.1rem .3rem;border:0;border-bottom:1px solid rgba(17,75,60,.25);border-radius:0;background:transparent;color:#39463f;font-size:clamp(.88rem,1.2vw,1.02rem);font-weight:650;line-height:1.45;text-align:left;box-shadow:none;transition:color .3s ease,padding .35s ease,background .35s ease;}
+.hogoo-page .ans-btn::after{content:"0" counter(hogoo-answer);position:absolute;right:.3rem;top:50%;color:rgba(17,75,60,.35);font-family:'Hahmlet',serif;font-size:.72rem;transform:translateY(-50%);}
+.hogoo-page .answer-list{counter-reset:hogoo-answer;}
+.hogoo-page .ans-btn{counter-increment:hogoo-answer;}
+.hogoo-page .ans-btn:hover,.hogoo-page .ans-btn:focus-visible{padding-left:1rem;background:linear-gradient(90deg,rgba(17,75,60,.08),transparent);color:var(--hogoo-green);transform:none;}
+.hogoo-page .ans-btn.is-chosen{padding-left:1rem;background:linear-gradient(90deg,rgba(154,101,22,.13),transparent);color:var(--hogoo-green);}
+.hogoo-page .answer-list.is-answering .ans-btn{pointer-events:none;}
+.hogoo-page .answer-list.is-answering .ans-btn:not(.is-chosen){opacity:.38;}
+
+/* GIVE ID is poster-like; this self-check should read like a softer essay. */
+.hogoo-page:not(.risk-page) #intro-page .test-title{font-weight:650;line-height:.98;letter-spacing:-.045em;}
+.hogoo-page:not(.risk-page) .q-text{font-weight:620;line-height:1.16;letter-spacing:-.03em;}
+.hogoo-page:not(.risk-page) .ans-btn{font-weight:560;letter-spacing:-.01em;}
+
+.hogoo-pressure-world{position:absolute;inset:0;z-index:1;overflow:hidden;pointer-events:none;}
+.hogoo-ink-level{position:absolute;left:-14vw;bottom:-25vh;width:63vw;height:82vh;border-radius:48% 52% 43% 57%;background:radial-gradient(ellipse at 60% 44%,rgba(154,101,22,calc(.04 + var(--hogoo-pressure) * .11)),rgba(17,75,60,calc(.05 + var(--hogoo-pressure) * .14)) 48%,transparent 72%);filter:blur(10px);transform:translateY(calc((1 - var(--hogoo-progress)) * 36%)) scale(calc(.82 + var(--hogoo-pressure) * .2));transition:transform .9s cubic-bezier(.2,.75,.2,1),background .9s ease;}
+.hogoo-plant-shadow{position:absolute;right:-5vw;bottom:-12vh;width:46vw;height:74vh;background:url('/images/results/give-result-world-v1.webp') 100% 100%/auto 100% no-repeat;mix-blend-mode:multiply;opacity:calc(.06 + var(--hogoo-progress) * .16);filter:grayscale(.3) contrast(1.05);transform:translateY(calc((1 - var(--hogoo-progress)) * 18%));transition:opacity .9s ease,transform 1.1s ease;}
+.hogoo-pressure-world svg{position:absolute;left:-5%;bottom:8%;width:110%;height:25%;filter:drop-shadow(0 1px 4px rgba(17,75,60,.16));}
+.hogoo-pressure-world path{fill:none;stroke:rgba(250,248,243,.74);stroke-width:1.1;vector-effect:non-scaling-stroke;stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--hogoo-progress));transition:stroke-dashoffset .9s cubic-bezier(.2,.75,.2,1);}
+.hogoo-answer-pulse .hogoo-ink-level{animation:hogooInkPulse .7s ease both;}
+
+@keyframes hogooInkPulse{50%{filter:blur(4px);transform:translateY(calc((1 - var(--hogoo-progress)) * 36%)) scale(calc(.88 + var(--hogoo-pressure) * .24));}}
+
+@media(max-width:719px){
+  .hogoo-page #intro-page{background:linear-gradient(180deg,rgba(250,248,243,.97) 0 47%,rgba(250,248,243,.42) 72%,rgba(250,248,243,.08)),url('/images/results/give-result-world-v1.webp') 67% center/auto 100% no-repeat;}
+  .hogoo-page #intro-page>.inner>div{padding:4.6rem 1.25rem 52vh;justify-content:flex-start;}
+  .hogoo-page #intro-page>.inner>div::before{right:-24vw;top:auto;bottom:-8vh;width:142vw;transform:none;}
+  .hogoo-page #intro-page .prologue-lab-bar{margin-bottom:1.5rem;}
+  .hogoo-page #intro-page .test-badge,.hogoo-page #intro-page .test-subtitle{display:none!important;}
+  .hogoo-page #intro-page .test-title{font-size:clamp(2.85rem,12.8vw,3.75rem);line-height:.98;}
+  .hogoo-page #intro-page .start-btn{position:static;width:100%;margin:1.8rem 0 0;}
+
+  .hogoo-page #test-page{background:linear-gradient(180deg,rgba(250,248,243,.97) 0 63%,rgba(250,248,243,.48)),url('/images/results/give-result-world-v1.webp') 68% center/auto 100% no-repeat;}
+  .hogoo-page #test-page>.inner{padding:2rem 1.25rem 2.2rem;display:flex;flex-direction:column;}
+  .hogoo-page .progress-wrap{margin-bottom:3.2rem;}
+  .hogoo-page .progress-info{display:none;}
+  .hogoo-page .q-num-label{position:static;margin-bottom:1.2rem;}
+  .hogoo-page .q-text{max-width:12em;margin:0 0 clamp(2.4rem,8vh,4.8rem);font-size:clamp(1.75rem,7.7vw,2.35rem);line-height:1.16;}
+  .hogoo-page .answer-list{width:100%;margin-top:auto;}
+  .hogoo-page .ans-btn{min-height:3.65rem;padding:.8rem 2.2rem .8rem .2rem;font-size:.82rem;}
+  .hogoo-ink-level{left:-45vw;bottom:-18vh;width:130vw;height:56vh;}
+  .hogoo-plant-shadow{right:-28vw;bottom:-7vh;width:95vw;height:50vh;}
+  .hogoo-pressure-world svg{bottom:4%;height:18%;width:145%;}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .hogoo-page *{scroll-behavior:auto!important;}
+  .hogoo-page .progress-fill,.hogoo-ink-level,.hogoo-plant-shadow,.hogoo-pressure-world path{transition:none;}
+  .hogoo-answer-pulse .hogoo-ink-level{animation:none;}
+}

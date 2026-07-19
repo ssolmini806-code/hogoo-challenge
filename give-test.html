@@ -18,8 +18,10 @@
     <meta property="og:locale" content="ko_KR">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="google-adsense-account" content="ca-pub-8564310871125079">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@500;600;700;800&display=swap">
     <link rel="stylesheet" href="/give-theme.css">
     <link rel="stylesheet" href="/test-landing.css">
+    <link rel="stylesheet" href="/give-question-world.css">
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -49,66 +51,13 @@
     </nav>
 
     <main id="main">
-        <section id="landing-page" class="landing">
-            <div class="inner hero">
-
-                <div class="prologue-lab-bar" aria-label="GIVE Pattern Lab">
-                    <span>GIVE Pattern Lab</span>
-                    <strong>무료 자가점검</strong>
-                </div>
-                <h1>왜 항상 나만 손해 볼까?</h1>
-                <p class="hero-copy">16문항으로 확인합니다. 최근 내 실제 반응에 가장 가까운 선택지를 고르면 됩니다.</p>
-                <div class="test-intro-image">
-                    <img src="/images/tests/give-id-illustration-v3-400w.webp" srcset="/images/tests/give-id-illustration-v3-400w.webp 400w, /images/tests/give-id-illustration-v3-800w.webp 800w" sizes="(max-width: 600px) 80vw, 240px" alt="도움, 경계, 회복 카드를 따라 내 관계 패턴을 살피는 따뜻한 일러스트" loading="eager" fetchpriority="high" width="560" height="560">
-                </div>
-                <div class="prologue-metrics" aria-label="테스트 정보">
-                    <div><strong>16</strong><span>문항</span></div>
-                    <div><strong>3분</strong><span>예상 시간</span></div>
-                    <div><strong>무료</strong><span>로그인 없이</span></div>
-                </div>
-                <button class="primary-btn" id="startTestBtn">내 GIVE ID 확인하기</button>
-                <p class="micro">로그인 없이 결과까지 바로 확인할 수 있어요</p>
-                <a href="result-sequence.html?test=give&type=mixed" class="result-preview-link">
-                    결과 살짝 엿보기 →
-                </a>
-
-                <div class="hero-panel">
-                    <ul class="problem-list">
-                        <li><span class="dot"></span><span>부탁을 거절하면 내가 나쁜 사람처럼 느껴진다</span></li>
-                        <li><span class="dot"></span><span>도와주고도 고맙다는 말 하나에 하루가 흔들린다</span></li>
-                        <li><span class="dot"></span><span>착하다는 말이 더 이상 칭찬처럼 들리지 않는다</span></li>
-                    </ul>
-                </div>
-
-                <section class="quality-section" aria-labelledby="give-method-title">
-                    <span class="section-label">Original Method</span>
-                    <h2 id="give-method-title">GIVE ID는 진단이 아닌 관계 자가점검입니다</h2>
-                    <p>GIVE ID는 관계에서 반복되는 손해 패턴을 네 가지 축으로 읽는 자기 점검 도구입니다. 소진 신호, 거절 곤란, 상호성 결핍, 회복력 저하를 함께 봅니다.</p>
-                    <p>그래서 결과는 “착하다/이기적이다” 같은 딱지를 붙이지 않습니다. 대신 어떤 상황에서 선의가 강점이 되고, 어떤 순간에 기준이 흐려져 손해로 바뀌는지 설명합니다. 사용자는 결과 화면에서 강점, 위험 신호, 오늘 바로 해볼 행동, 관련 칼럼을 순서대로 확인할 수 있습니다.</p>
-                </section>
-
-                <section class="quality-section muted" aria-labelledby="give-use-title">
-                    <h2 id="give-use-title">검사 전 알아두면 좋은 기준</h2>
-                    <div class="quality-grid">
-                        <article>
-                            <h3>소진 신호</h3>
-                            <p>도움 뒤 멍함, 피로, 예민함이 오래 남는지 봅니다. 선의가 회복 없이 반복되면 번아웃 신호가 먼저 켜집니다.</p>
-                        </article>
-                        <article>
-                            <h3>거절 곤란</h3>
-                            <p>부탁 앞에서 불안, 죄책감, 체면 걱정 때문에 내 기준이 늦게 도착하는지 봅니다.</p>
-                        </article>
-                        <article>
-                            <h3>상호성·회복</h3>
-                            <p>감사, 역할 분담, 피드백이 빠진 관계가 반복되는지와 도운 뒤 나를 되돌리는 힘을 함께 점검합니다.</p>
-                        </article>
-                    </div>
-                </section>
-            </div>
-        </section>
-
         <section id="test-page" class="hidden">
-            <div class="inner">
+            <div class="question-world-art" aria-hidden="true">
+                <img src="/images/design-lab/give-prologue-world-v1.webp" alt="" draggable="false">
+                <span class="question-world-light"></span>
+            </div>
+            <div class="question-thread" aria-hidden="true"></div>
+            <div class="inner question-layout">
                 <div class="test-top">
                     <div class="progress-row">
                         <span id="qCount">1 / 16</span>
@@ -463,9 +412,12 @@ window.trackEvent = window.trackEvent || function (name, params) {
 })();
 window.addEventListener('DOMContentLoaded', function() {
     var params = new URLSearchParams(location.search);
-    var prologueSeen = false;
-    try { prologueSeen = localStorage.getItem('givePrologueSeen') === '1'; } catch (e) {}
-    if (!params.get('intro') && params.get('start') !== '1' && !prologueSeen) {
+    var requestedType = params.get('type');
+    if (requestedType) {
+        location.replace('result-sequence.html?test=give&type=' + encodeURIComponent(requestedType));
+        return;
+    }
+    if (params.get('start') !== '1') {
         location.replace('give-prologue.html');
         return;
     }
@@ -496,7 +448,7 @@ window.addEventListener('DOMContentLoaded', function() {
         event.preventDefault();
         handleHogooCheckClick();
     });
-    if (params.get('start') === '1') startTest();
+    startTest();
 });
 </script>
 <script type="module" src="/src/free-test-reward-widget.tsx"></script>

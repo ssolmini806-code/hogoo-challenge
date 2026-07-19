@@ -594,6 +594,7 @@ export default function App() {
     }
     return (
       <img
+        className="challenge-reward-illustration"
         src="/images/tests/hogoo-check-illustration-v3-400w.webp"
         alt="7일 챌린지 완료 이미지"
         onError={() => setError(true)}
@@ -603,7 +604,7 @@ export default function App() {
   }
 
   return (
-    <div style={{
+    <div className="challenge-world" style={{
       fontFamily: '"Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", name, sans-serif',
       background: "linear-gradient(180deg, #E9F2EC 0%, #FAF8F3 42%, #FFFFFF 100%)",
       minHeight: "100vh", 
@@ -629,11 +630,11 @@ export default function App() {
       `}</style>
 
       {/* Header */}
-      <div style={{ background: "linear-gradient(180deg, #E9F2EC 0%, #FFFFFF 100%)", borderBottom: "1px solid #E7E1D5", padding: "24px 24px 18px" }}>
-        <div style={{ maxWidth: 680, margin: "0 auto" }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, flexWrap: "wrap", marginBottom: 16 }}>
+      <div className="challenge-world-header" style={{ background: "linear-gradient(180deg, #E9F2EC 0%, #FFFFFF 100%)", borderBottom: "1px solid #E7E1D5", padding: "24px 24px 18px" }}>
+        <div className="challenge-world-header-inner" style={{ maxWidth: 680, margin: "0 auto" }}>
+          <div className="challenge-world-title-row" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, flexWrap: "wrap", marginBottom: 16 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 14, minWidth: 0 }}>
-              <img
+              <img className="challenge-world-avatar"
                 src="/images/tests/hogoo-check-illustration-v3-400w.webp"
                 alt=""
                 aria-hidden="true"
@@ -649,7 +650,7 @@ export default function App() {
                 </h1>
               </div>
             </div>
-            <div style={{ textAlign: "right" }}>
+            <div className="challenge-world-stats" style={{ textAlign: "right" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <div style={{ background: "#F3EFE7", borderRadius: 10, padding: "8px 14px", border: "1px solid #E7E1D5" }}>
                   <div style={{ fontSize: 10, color: "#5C635E", marginBottom: 2 }}>총 점수</div>
@@ -664,7 +665,7 @@ export default function App() {
           </div>
 
           {/* Challenge tabs */}
-          <div style={{ display: "flex", gap: 6, alignItems: "center", flexWrap: "wrap" }}>
+          <div className="challenge-world-days" style={{ display: "flex", gap: 6, alignItems: "center", flexWrap: "wrap" }}>
             {DAYS.map((d, i) => {
               const score = getDayScore(i);
               const isActive = activeTab === "day" && i === currentDay;
@@ -677,7 +678,7 @@ export default function App() {
               return (
                 <button
                   key={i}
-                  className={`day-btn ${!unlocked && !isActive ? 'locked' : ''}`}
+                  className={`day-btn ${isActive ? 'is-active' : ''} ${!unlocked && !isActive ? 'locked' : ''}`}
                   onClick={() => {
                     if (unlocked) {
                       setCurrentDay(i);
@@ -700,7 +701,7 @@ export default function App() {
             })}
             <button
               type="button"
-              className={`day-btn ${!isChallengeCompleted && activeTab !== "reward" ? 'locked' : ''}`}
+              className={`day-btn ${activeTab === "reward" ? 'is-active' : ''} ${!isChallengeCompleted && activeTab !== "reward" ? 'locked' : ''}`}
               onClick={() => {
                 if (isChallengeCompleted) {
                   setActiveTab("reward");
@@ -729,13 +730,13 @@ export default function App() {
       </div>
 
       {/* Main Content */}
-      <div style={{ maxWidth: 680, margin: "0 auto", padding: "24px 20px 80px" }}>
+      <div className="challenge-world-main" style={{ maxWidth: 680, margin: "0 auto", padding: "24px 20px 80px" }}>
         {activeTab === "reward" ? (
           <Suspense fallback={<div style={{ textAlign: "center", padding: "40px 0", color: "#5C635E" }}>거의 다 왔어요, 잠시만요…</div>}>
-            <div>
-              <div style={{ marginBottom: 24, textAlign: "center" }}>
+            <div className="challenge-reward-view">
+              <div className="challenge-reward-visual" style={{ marginBottom: 24, textAlign: "center" }}>
                 <CertificateImage />
-                <p style={{ margin: "10px 0 0", fontSize: 12, color: "#5C635E" }}>
+                <p className="challenge-reward-hold" style={{ margin: "10px 0 0", fontSize: 12, color: "#5C635E" }}>
                   저장하려면 꾹 눌러주세요 (모바일)
                 </p>
               </div>
@@ -758,7 +759,7 @@ export default function App() {
           <>
 
         {/* Day Header */}
-        <div style={{ marginBottom: 20 }}>
+        <div className="challenge-world-day-head" style={{ marginBottom: 20 }}>
           <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
             <div style={{ flex: 1 }}>
               <span style={{
@@ -777,7 +778,7 @@ export default function App() {
         </div>
 
         {/* Mascot Voice */}
-        <div style={{
+        <div className="challenge-world-mascot" style={{
           background: "#E9F2EC", border: "1px solid #E7E1D5", borderRadius: 10,
           padding: "12px 16px", marginBottom: 12, display: "flex", alignItems: "flex-start", gap: 10
         }}>
@@ -789,7 +790,7 @@ export default function App() {
         </div>
 
         {/* Concept Card */}
-        <div style={{
+        <div className="challenge-world-concept" style={{
           background: "#FFFFFF", border: "1px solid #E7E1D5", borderLeft: `3px solid ${{ amber: "#9A6516", orange: "#9A6516", red: "#9A6516", green: "#114B3C", teal: "#00A885", purple: "#0A5F4D", blue: "#0D3B2F" }[day.color]}`,
           borderRadius: 10, padding: "14px 16px", marginBottom: 20
         }}>
@@ -800,7 +801,7 @@ export default function App() {
         </div>
 
         {/* Missions */}
-        <div style={{ marginBottom: 24 }}>
+        <div className="challenge-world-missions" style={{ marginBottom: 24 }}>
           <div style={{ fontSize: 12, color: "#5C635E", letterSpacing: 2, marginBottom: 12, display: "flex", alignItems: "center", gap: 6 }}>
             <Flame size={14} color={{ amber: "#9A6516", orange: "#9A6516", red: "#9A6516", green: "#114B3C", teal: "#00A885", purple: "#0A5F4D", blue: "#0D3B2F" }[day.color]} />
             <span>오늘의 미션 ({dayMissions.length}/3)</span>
@@ -841,7 +842,7 @@ export default function App() {
         </div>
 
         {/* Scores */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 24 }}>
+        <div className="challenge-world-scores" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 24 }}>
           {[
             { label: "불안 점수", key: "anxiety" },
             { label: "죄책감 점수", key: "guilt" }
@@ -868,7 +869,7 @@ export default function App() {
         </div>
 
         {/* Today's Phrases */}
-        <div style={{ marginBottom: 24 }}>
+        <div className="challenge-world-phrases" style={{ marginBottom: 24 }}>
           <div style={{ fontSize: 12, color: "#5C635E", letterSpacing: 2, marginBottom: 12 }}>
             오늘의 대사 — 하나 골라봐 (+1점)
           </div>
@@ -905,7 +906,7 @@ export default function App() {
         </div>
 
         {/* Personal Notes */}
-        <div style={{ marginBottom: 24 }}>
+        <div className="challenge-world-note" style={{ marginBottom: 24 }}>
           <div style={{ fontSize: 12, color: "#5C635E", letterSpacing: 2, marginBottom: 10 }}>
             오늘 내가 실제로 한 말 / 행동
           </div>
@@ -924,7 +925,7 @@ export default function App() {
         </div>
 
         {/* Personal Analysis & Character (New) */}
-        <div style={{ 
+        <div className="challenge-world-analysis" style={{
           background: "linear-gradient(135deg, #E9F2EC 0%, #FFFFFF 100%)", 
           borderRadius: "20px", padding: "32px 24px", marginBottom: "24px", 
           textAlign: "center", border: "1px solid #E7E1D5", position: "relative", overflow: "hidden"

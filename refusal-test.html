@@ -27,6 +27,8 @@
     <meta name="google-adsense-account" content="ca-pub-8564310871125079">
     <link rel="stylesheet" href="/give-theme.css">
     <link rel="stylesheet" href="/test-landing.css">
+    <link rel="stylesheet" href="/refusal-world.css">
+    <script src="/refusal-world.js" defer></script>
 </head>
 <body class="refusal-page">
 <a class="skip" href="#intro">본문 바로가기</a>
@@ -147,7 +149,7 @@
                 <a href="result-sequence.html?test=refusal&type=sprout" class="result-preview-link">
                     결과 흐름 미리보기 →
                 </a>
-                <button id="startTestBtn">설명 확인했어요, 점검 시작하기</button>
+                <button id="startTestBtn">점검 시작하기</button>
                 <section class="quality-section" aria-labelledby="refusal-method-title">
                     <span class="section-label">Boundary Practice</span>
                     <h2 id="refusal-method-title">거절력 테스트는 “매정함”이 아니라 “조절력”을 확인합니다</h2>
@@ -175,8 +177,10 @@
         </div>
     </section>
     <section id="test" class="page hidden">
+        <div class="refusal-print-world" id="refusalPrintWorld" aria-hidden="true"></div>
         <div class="inner">
             <div class="progress"><div class="fill" id="fill"></div></div>
+            <span class="refusal-question-no" id="refusalQuestionNo">Question 01</span>
             <h2 class="q" id="q"></h2>
             <div class="answers" id="answers"></div>
         </div>
@@ -235,7 +239,7 @@ const rs=[
 ];
 let i=0,s=0;
 function start(){i=0;s=0;intro.classList.add("hidden");test.classList.remove("hidden");render()}
-function render(){fill.style.width=Math.round(i/qs.length*100)+"%";q.textContent=qs[i][0];answers.replaceChildren();qs[i][1].forEach((a,idx)=>{const b=document.createElement("button");b.className="ans";b.textContent=a;b.onclick=()=>pick(idx+1);answers.appendChild(b)})}
+function render(){fill.style.width=Math.round(i/qs.length*100)+"%";q.textContent=qs[i][0];document.getElementById('refusalQuestionNo').textContent='Question '+String(i+1).padStart(2,'0');answers.classList.remove('is-answering');answers.replaceChildren();qs[i][1].forEach((a,idx)=>{const b=document.createElement("button");b.className="ans";b.textContent=a;b.onclick=()=>{if(answers.classList.contains('is-answering'))return;answers.classList.add('is-answering');b.classList.add('is-chosen');window.dispatchEvent(new CustomEvent('refusal:answer',{detail:{answerIndex:idx,questionIndex:i,total:qs.length}}));const next=()=>pick(idx+1);if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)next();else window.setTimeout(next,430)};answers.appendChild(b)})}
 function pick(v){s+=v;i++;if(i<qs.length)render();else show()}
 function show(){const r=rs.find(x=>s<=x.limit);
 location.href='result-sequence.html?test=refusal&type='+encodeURIComponent(r.key)}
