@@ -121,13 +121,15 @@ function fallbackCopyLink(url: string) {
   document.body.removeChild(el);
 }
 
-function paidRewardUrl(resultType: string) {
+function paidRewardUrl(_resultType: string) {
   const url = new URL(PAID_SITE_URL);
-  url.searchParams.set('utm_source', 'give_id_free_reward');
+  url.pathname = '/start';
+  url.search = '';
+  url.searchParams.set('product', 'give_id_only');
+  url.searchParams.set('utm_source', 'hogoo_free');
   url.searchParams.set('utm_medium', 'reward_cta');
-  url.searchParams.set('utm_campaign', 'paid_conversion');
+  url.searchParams.set('utm_campaign', 'first_path');
   url.searchParams.set('utm_content', 'a_plus_b_bonus');
-  url.searchParams.set('result_type', resultType);
   return url.toString();
 }
 

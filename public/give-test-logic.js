@@ -718,16 +718,18 @@ function paidUrl(source) {
         ? window.__PAID_SITE_URL
         : "https://givecosystem.com/";
     const url = new URL(configuredUrl);
-    url.searchParams.set("utm_source", "give_id_free_result");
-    url.searchParams.set("utm_medium", "cta");
-    url.searchParams.set("utm_campaign", "paid_conversion");
+    url.pathname = "/start";
+    url.search = "";
+    url.searchParams.set("product", "give_id_only");
+    url.searchParams.set("utm_source", "hogoo_free");
+    url.searchParams.set("utm_medium", "give_result_legacy");
+    url.searchParams.set("utm_campaign", "first_path");
     url.searchParams.set("utm_content", source);
-    if (finalKey) url.searchParams.set("type", finalKey);
     return url.toString();
 }
 
 function openPaid(source) {
-    trackEvent('paid_cta_clicked', { source: source, give_type: finalKey });
+    trackEvent('paid_cta_click', { source: source, product: 'give_id_only', give_type: finalKey });
     window.open(paidUrl(source), "_blank", "noopener,noreferrer");
 }
 

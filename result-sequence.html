@@ -37,14 +37,14 @@
       <p class="sequence-line" id="seqIntro1C"><strong>이유</strong>가 있어요.</p>
     </section>
 
-    <section class="sequence-slide" data-tone="plain" aria-label="공감">
+    <section class="sequence-slide" id="seqIntroDetail" data-tone="plain" aria-label="공감">
       <p class="sequence-line" id="seqIntro2A">착해서 다 받아주는 게 아니에요.</p>
       <p class="sequence-line" id="seqIntro2B">그 순간 거절이 <strong>불편해서</strong> 한 거죠.</p>
       <span class="sequence-rule" aria-hidden="true"></span>
       <p class="sequence-line is-soft" id="seqIntro2C">그리고 그 불편함, 꽤 오래됐을 거예요.</p>
     </section>
 
-    <section class="sequence-slide" data-tone="plain" aria-label="반복 패턴">
+    <section class="sequence-slide" id="seqPatternDetail" data-tone="plain" aria-label="반복 패턴">
       <p class="sequence-line" id="seqIntro3A">이 패턴은</p>
       <p class="sequence-line" id="seqIntro3B">가장 가까운 사람 앞에서</p>
       <p class="sequence-line" id="seqIntro3C"><strong>반복</strong>됩니다.</p>
@@ -136,16 +136,29 @@
       <a href="/give-test.html" class="sequence-sub-link" id="seqClashShare">이 사람한테도 테스트 보내보기</a>
     </section>
 
-    <section class="sequence-slide" data-tone="plain" aria-label="마지막 행동">
-      <p class="sequence-line" id="seqFinalA">아는 것과</p>
-      <p class="sequence-line" id="seqFinalB">바꾸는 건 달라요.</p>
-      <span class="sequence-rule" aria-hidden="true"></span>
-      <p class="sequence-line is-soft" id="seqFinalC">7일은 첫 실행을 여는 시간입니다.</p>
-      <div class="sequence-actions">
-        <a href="/give-test.html" class="sequence-cta" id="seq-retry">달라진 나 확인하기</a>
-        <a href="https://givecosystem.com/" target="_blank" rel="noopener noreferrer" class="sequence-sub-cta" id="seq-paid-cta">GIVE ID 심화 리포트 보기 →</a>
-        <a href="/hogoo-test.html" class="sequence-sub-link" id="seq-cta-next">다음 행동 보기</a>
+    <section class="sequence-slide sequence-path-final" data-tone="path" aria-label="결과에서 이어지는 길">
+      <div class="sequence-path-intro">
+        <span class="sequence-label">YOUR NEXT PATH</span>
+        <p class="sequence-line" id="seqFinalA">아는 것과</p>
+        <p class="sequence-line" id="seqFinalB">바꾸는 건 달라요.</p>
+        <p class="sequence-line is-soft" id="seqFinalC">발견한 패턴에서 다음 길이 이어집니다.</p>
       </div>
+      <div class="sequence-path-choices" aria-label="다음 길 선택">
+        <a href="https://givecosystem.com/start?product=give_id_only" target="_blank" rel="noopener noreferrer" class="sequence-path-choice" id="seq-paid-report" data-product="give_id_only">
+          <small>더 정확히 알고 싶다면</small>
+          <strong>심화 결과 보기</strong>
+          <span>관계별 반응과 반복되는 순서를 읽어요</span>
+          <b>5,900원 <i aria-hidden="true">→</i></b>
+        </a>
+        <a href="https://givecosystem.com/start?product=give_id_challenge" target="_blank" rel="noopener noreferrer" class="sequence-path-choice is-primary" id="seq-paid-cta" data-product="give_id_challenge">
+          <small>지금부터 바꾸고 싶다면</small>
+          <strong>첫 번째 길 시작하기</strong>
+          <span>내 결과에서 이어지는 30일 변화를 시작해요</span>
+          <b>29,900원 <i aria-hidden="true">→</i></b>
+        </a>
+        <a href="/hogoo-test.html?from=give_result" class="sequence-path-free" id="seq-cta-next">아직 고민된다면, 7일 동안 무료로 먼저 걸어보기</a>
+      </div>
+      <a href="/give-test.html?start=1&amp;retry=1" class="sequence-retry-link" id="seq-retry">처음부터 다시 검사하기</a>
     </section>
   </main>
 
@@ -200,7 +213,7 @@
             body: "선의 심리학은 좋은 마음을 버리자는 이야기가 아닙니다. 내 기준이 늦게 도착하는 순간을 알아차리고, 지속 가능한 도움의 범위를 다시 정하는 방법을 다룹니다.",
             linkText: "왜 착한 마음이 손해가 되는지 보기 →"
           },
-          final: ["아는 것과", "바꾸는 건 달라요.", "7일은 첫 실행을 여는 시간입니다."]
+          final: ["나를 알게 된 자리에서", "다음 길이 시작돼요.", "더 알아볼 수도, 작은 행동부터 먼저 걸어볼 수도 있어요."]
         },
         types: {
           angel: {
@@ -481,7 +494,14 @@
       });
     })();
 
-    var slides = Array.from(document.querySelectorAll(".sequence-slide"));
+    var allSlides = Array.from(document.querySelectorAll(".sequence-slide"));
+    var giveOptionalSlideIds = ["seqIntroDetail", "seqPatternDetail", "slideWellMatched", "slideWatchOut"];
+    allSlides.forEach(function(slide){
+      var isOptionalGiveDetail = testKey === "give" && giveOptionalSlideIds.indexOf(slide.id) !== -1;
+      slide.hidden = isOptionalGiveDetail;
+      if (isOptionalGiveDetail) slide.inert = true;
+    });
+    var slides = allSlides.filter(function(slide){ return !slide.hidden; });
     var dots = document.getElementById("sequenceDots");
     var nextButton = document.getElementById("sequenceNext");
     var backButton = document.getElementById("sequenceBack");
@@ -495,19 +515,46 @@
     if (score) resultUrl = homeParts[0] + "?type=" + encodeURIComponent(key) + "&score=" + encodeURIComponent(score) + (homeParts[1] ? "#" + homeParts[1] : "");
     var nextCta = document.getElementById("seq-cta-next");
     if (nextCta) {
-      nextCta.textContent = test.cta;
+      if (testKey !== "give") nextCta.textContent = test.cta;
       nextCta.href = test.ctaUrl;
     }
     var retryCta = document.getElementById("seq-retry");
     if (retryCta) retryCta.href = test.retryUrl || homeParts[0];
-    var paidCta = document.getElementById("seq-paid-cta");
-    if (paidCta) {
-      var configuredPaidUrl = window.__PAID_SITE_URL && !String(window.__PAID_SITE_URL).includes("%VITE_")
-        ? window.__PAID_SITE_URL
-        : "https://givecosystem.com/";
-      paidCta.href = configuredPaidUrl;
-      paidCta.textContent = test.paidCta || "GIVE ID 심화 리포트 보기 →";
+    var configuredPaidUrl = window.__PAID_SITE_URL && !String(window.__PAID_SITE_URL).includes("%VITE_")
+      ? window.__PAID_SITE_URL
+      : "https://givecosystem.com/";
+    function paidProductUrl(product) {
+      try {
+        var url = new URL(configuredPaidUrl, window.location.origin);
+        url.pathname = "/start";
+        url.search = "";
+        url.searchParams.set("product", product);
+        url.searchParams.set("utm_source", "hogoo_free");
+        url.searchParams.set("utm_medium", "give_result");
+        url.searchParams.set("utm_campaign", "first_path");
+        return url.toString();
+      } catch (_) {
+        return "https://givecosystem.com/start?product=" + encodeURIComponent(product);
+      }
     }
+    document.querySelectorAll("[data-product]").forEach(function(link){
+      link.href = paidProductUrl(link.dataset.product);
+      link.addEventListener("click", function(){
+        if (typeof window.trackEvent === "function") window.trackEvent("paid_cta_click", {
+          product: link.dataset.product,
+          placement: "result_final_path",
+          test: testKey,
+          result_type: key
+        });
+      });
+    });
+    if (nextCta) nextCta.addEventListener("click", function(){
+      if (typeof window.trackEvent === "function") window.trackEvent("free_challenge_start", {
+        placement: "result_final_path",
+        test: testKey,
+        result_type: key
+      });
+    });
     var sequence = test.sequence || tests.give.sequence;
     document.getElementById("seqIntro1A").textContent = sequence.intro1[0];
     document.getElementById("seqIntro1B").textContent = sequence.intro1[1];
@@ -681,6 +728,13 @@
         total: slides.length,
         slide: slides[index]
       }}));
+      if (typeof window.trackEvent === "function") window.trackEvent("give_result_slide_view", {
+        test: testKey,
+        result_type: key,
+        slide: slides[index].getAttribute("aria-label") || String(index + 1),
+        slide_index: index + 1,
+        total_slides: slides.length
+      });
     }
 
     function next() {

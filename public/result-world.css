@@ -1,8 +1,8 @@
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless){
-  --result-bg:#FAF8F3;
-  --result-green:#114B3C;
-  --result-mint:#00A885;
-  --result-amber:#9A6516;
+  --result-bg:#eee6d2;
+  --result-green:#3f3020;
+  --result-mint:#c85f43;
+  --result-amber:#9f3223;
   --result-progress:0;
   --result-scene-x:0%;
   --result-parallax-x:0px;
@@ -13,13 +13,61 @@
   background:var(--result-bg);
 }
 
+/* The free result is the first sheet of the paid paper-and-ink journey. */
+:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-path-final{
+  display:grid;
+  grid-template-columns:minmax(0,.72fr) minmax(31rem,1.28fr);
+  gap:clamp(2rem,7vw,7rem);
+  align-items:center;
+  justify-content:stretch;
+  padding:clamp(3rem,7vh,6rem) clamp(2rem,7vw,7rem) clamp(6.5rem,12vh,8rem)!important;
+  background:
+    linear-gradient(102deg,rgba(238,230,210,.98) 0 45%,rgba(216,207,180,.88) 45% 100%),
+    repeating-linear-gradient(0deg,transparent 0 6px,rgba(63,48,32,.035) 6px 7px)!important;
+}
+:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-path-final::before{
+  content:""!important;
+  position:absolute!important;
+  left:-5vw!important;
+  right:-5vw!important;
+  bottom:clamp(4rem,10vh,8rem)!important;
+  width:auto!important;
+  height:clamp(5rem,14vw,11rem)!important;
+  z-index:0!important;
+  background:linear-gradient(169deg,transparent 48%,rgba(159,50,35,.72) 48.3%,rgba(159,50,35,.72) 48.75%,transparent 49.05%),linear-gradient(174deg,transparent 58%,rgba(63,48,32,.25) 58.2%,rgba(63,48,32,.25) 58.5%,transparent 58.7%)!important;
+  color:transparent!important;
+  pointer-events:none;
+}
+.sequence-path-intro,.sequence-path-choices,.sequence-retry-link{position:relative;z-index:2;}
+.sequence-path-final .sequence-line{max-width:8.5em!important;color:#3f3020!important;font-size:clamp(2.3rem,4.7vw,5rem)!important;}
+.sequence-path-final .sequence-line.is-soft{max-width:26rem!important;margin-top:1.25rem!important;color:#6f5c47!important;font-family:'Pretendard',sans-serif!important;font-size:clamp(.86rem,1.25vw,1rem)!important;font-weight:550!important;line-height:1.7!important;}
+.sequence-path-choices{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;align-items:stretch;}
+.sequence-path-choice{position:relative;display:flex;min-height:clamp(16rem,34vh,21rem);flex-direction:column;padding:clamp(1.35rem,2.6vw,2.2rem);border:1px solid rgba(63,48,32,.34);background:rgba(238,230,210,.58);color:#3f3020;text-decoration:none;transition:transform .28s ease,background .28s ease,border-color .28s ease;}
+.sequence-path-choice:hover,.sequence-path-choice:focus-visible{z-index:2;transform:translateY(-.45rem) rotate(-.35deg);border-color:#9f3223;background:#eee6d2;outline:none;}
+.sequence-path-choice.is-primary{margin-top:clamp(1.3rem,3vh,2.5rem);border-color:#17130e;background:#17130e;color:#eee5d2;}
+.sequence-path-choice.is-primary:hover,.sequence-path-choice.is-primary:focus-visible{background:#211a13;}
+.sequence-path-choice small{color:#9f3223;font-size:.61rem;font-weight:850;letter-spacing:.12em;}
+.sequence-path-choice strong{display:block;margin-top:auto;font-family:'Hahmlet',serif;font-size:clamp(1.35rem,2.3vw,2.1rem);font-weight:650;line-height:1.2;letter-spacing:-.04em;}
+.sequence-path-choice span{display:block;max-width:18rem;margin-top:.75rem;color:inherit;font-size:.72rem;line-height:1.6;opacity:.7;}
+.sequence-path-choice b{display:flex;align-items:center;justify-content:space-between;margin-top:1.5rem;padding-top:.85rem;border-top:1px solid currentColor;font-size:.78rem;letter-spacing:.02em;}
+.sequence-path-choice b i{color:#c85f43;font-size:1.15rem;font-style:normal;font-weight:400;transition:transform .25s ease;}
+.sequence-path-choice:hover b i,.sequence-path-choice:focus-visible b i{transform:translateX(.4rem);}
+.sequence-path-free{grid-column:1/-1;min-height:3rem;display:flex;align-items:center;justify-content:center;padding:.7rem 1rem;border-bottom:1px solid rgba(63,48,32,.35);color:#3f3020;font-size:.72rem;font-weight:750;text-align:center;text-decoration:none;}
+.sequence-retry-link{position:absolute;left:clamp(2rem,7vw,7rem);bottom:2rem;color:#796853;font-size:.65rem;text-decoration:none;border-bottom:1px solid rgba(63,48,32,.2);}
+
+@media(max-width:760px){
+  :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-path-final{display:flex;align-items:stretch;justify-content:flex-start;gap:1.25rem;padding:2rem 1.15rem 5.5rem!important;overflow-y:auto;}
+  .sequence-path-intro{flex:none}.sequence-path-final .sequence-label{margin-bottom:.65rem!important}.sequence-path-final .sequence-line{font-size:clamp(1.8rem,9vw,2.6rem)!important;line-height:.98!important}.sequence-path-final .sequence-line.is-soft{max-width:19rem!important;margin-top:.65rem!important;font-size:.72rem!important;line-height:1.55!important}
+  .sequence-path-choices{grid-template-columns:1fr 1fr;gap:.55rem;flex:none}.sequence-path-choice{min-height:12.5rem;padding:1rem}.sequence-path-choice.is-primary{margin-top:.9rem}.sequence-path-choice small{font-size:.52rem}.sequence-path-choice strong{font-size:1.16rem}.sequence-path-choice span{font-size:.6rem;line-height:1.45}.sequence-path-choice b{margin-top:.8rem;font-size:.66rem}.sequence-path-free{font-size:.62rem;line-height:1.5}.sequence-retry-link{left:1.15rem;bottom:3.9rem;font-size:.58rem}
+}
+
 /* A continuous paper world sits behind every result instead of a framed photo. */
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-header{
   height:4.25rem;
   padding:0 clamp(1.25rem,4vw,4rem);
   border:0;
-  background:rgba(250,248,243,.76);
-  box-shadow:0 1px 0 rgba(17,75,60,.14);
+  background:rgba(238,230,210,.76);
+  box-shadow:0 1px 0 rgba(63,48,32,.14);
   backdrop-filter:blur(12px);
 }
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-brand{
@@ -31,22 +79,22 @@
   letter-spacing:.16em;
 }
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-dots{gap:.2rem;width:min(42vw,24rem);}
-:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-dots span{flex:1;width:auto;height:2px;border-radius:0;background:rgba(17,75,60,.13);transform:none;}
+:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-dots span{flex:1;width:auto;height:2px;border-radius:0;background:rgba(63,48,32,.13);transform:none;}
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-dots span.is-active{background:var(--result-green);transform:none;}
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-main{
   inset:4.25rem 0 0;
   isolation:isolate;
   counter-reset:result-slide;
   background:
-    linear-gradient(90deg,rgba(250,248,243,.84) 0 38%,rgba(250,248,243,.22) 70%,rgba(250,248,243,.04)),
-    url('/images/results/give-result-world-v1.webp') 58% center/cover no-repeat;
+    linear-gradient(90deg,rgba(238,230,210,.84) 0 38%,rgba(238,230,210,.22) 70%,rgba(238,230,210,.04)),
+    url('/images/results/give-result-path-v2.webp') 58% center/cover no-repeat;
 }
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-main::before{
   content:"";
   position:absolute;
   inset:-5%;
   z-index:-1;
-  background:url('/images/results/give-result-world-v1.webp') calc(58% + var(--result-scene-x)) center/cover no-repeat;
+  background:url('/images/results/give-result-path-v2.webp') calc(58% + var(--result-scene-x)) center/cover no-repeat;
   opacity:.24;
   filter:saturate(.85);
   transform:translate3d(var(--result-parallax-x),var(--result-parallax-y),0) scale(1.06);
@@ -57,16 +105,16 @@
   position:absolute;
   inset:0;
   z-index:-1;
-  background:linear-gradient(90deg,rgba(250,248,243,.94) 0 43%,rgba(250,248,243,.56) 63%,rgba(250,248,243,.08));
+  background:linear-gradient(90deg,rgba(238,230,210,.94) 0 43%,rgba(238,230,210,.56) 63%,rgba(238,230,210,.08));
   pointer-events:none;
 }
 
 /* Organic thread that grows as the reader moves through the result. */
 .result-atmosphere{display:none;}
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .result-atmosphere{display:block;position:fixed;inset:4.25rem 0 0;z-index:15;overflow:hidden;pointer-events:none;}
-:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .result-atmosphere svg{position:absolute;inset:auto -4% 9% -4%;width:108%;height:32%;overflow:visible;filter:drop-shadow(0 1px 5px rgba(17,75,60,.2));}
-:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .result-atmosphere path{fill:none;stroke:rgba(250,248,243,.78);stroke-width:1.25;vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--result-progress));transition:stroke-dashoffset 1s cubic-bezier(.2,.76,.2,1);}
-:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .result-thread-orb{fill:#9A6516;stroke:rgba(250,248,243,.94);stroke-width:2;vector-effect:non-scaling-stroke;transform-box:fill-box;transform-origin:center;filter:drop-shadow(0 0 5px rgba(154,101,22,.36));transition:transform 1s cubic-bezier(.2,.76,.2,1);animation:resultThreadBreathe 2.4s ease-in-out infinite;}
+:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .result-atmosphere svg{position:absolute;inset:auto -4% 9% -4%;width:108%;height:32%;overflow:visible;filter:drop-shadow(0 1px 5px rgba(63,48,32,.2));}
+:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .result-atmosphere path{fill:none;stroke:rgba(238,230,210,.78);stroke-width:1.25;vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--result-progress));transition:stroke-dashoffset 1s cubic-bezier(.2,.76,.2,1);}
+:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .result-thread-orb{fill:#9f3223;stroke:rgba(238,230,210,.94);stroke-width:2;vector-effect:non-scaling-stroke;transform-box:fill-box;transform-origin:center;filter:drop-shadow(0 0 5px rgba(159,50,35,.36));transition:transform 1s cubic-bezier(.2,.76,.2,1);animation:resultThreadBreathe 2.4s ease-in-out infinite;}
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .result-atmosphere::after{
   content:"";
   position:absolute;
@@ -96,7 +144,7 @@
   left:calc(48% - .65em);
   bottom:clamp(3.5rem,7vh,5.5rem);
   z-index:0;
-  color:rgba(17,75,60,.08);
+  color:rgba(63,48,32,.08);
   font-family:'Hahmlet',serif;
   font-size:clamp(11rem,24vw,23rem);
   font-weight:800;
@@ -107,7 +155,7 @@
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-slide:not(.sequence-poster):not(.sequence-risk)>*{position:relative;z-index:2;}
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-line{
   max-width:10em;
-  color:#18211d;
+  color:#3f3020;
   font-family:'Hahmlet',serif;
   font-size:clamp(2.25rem,4.5vw,4.8rem);
   font-weight:740;
@@ -116,16 +164,16 @@
   text-align:left;
 }
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-line strong{color:var(--result-green);font-weight:820;}
-:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-line.is-soft{max-width:24em;margin-top:.2rem;color:#56645c;font-size:clamp(1rem,1.6vw,1.3rem);font-weight:550;line-height:1.6;letter-spacing:-.02em;}
-:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-copy{max-width:31rem;margin-top:1rem;color:#4d5b53;font-size:clamp(.9rem,1.25vw,1.05rem);font-weight:570;line-height:1.72;text-align:left;}
-:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-rule{width:clamp(3rem,6vw,5rem);height:1px;margin:clamp(1rem,2.5vh,1.7rem) 0;background:rgba(17,75,60,.72);}
+:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-line.is-soft{max-width:24em;margin-top:.2rem;color:#796853;font-size:clamp(1rem,1.6vw,1.3rem);font-weight:550;line-height:1.6;letter-spacing:-.02em;}
+:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-copy{max-width:31rem;margin-top:1rem;color:#6f5c47;font-size:clamp(.9rem,1.25vw,1.05rem);font-weight:570;line-height:1.72;text-align:left;}
+:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-rule{width:clamp(3rem,6vw,5rem);height:1px;margin:clamp(1rem,2.5vh,1.7rem) 0;background:rgba(63,48,32,.72);}
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-label{
   width:max-content;
   min-height:0;
   margin-bottom:1.25rem;
   padding:0 0 .5rem;
   border:0;
-  border-bottom:1px solid rgba(17,75,60,.62);
+  border-bottom:1px solid rgba(63,48,32,.62);
   border-radius:0;
   background:transparent;
   color:var(--result-green);
@@ -134,13 +182,13 @@
   font-weight:850;
   letter-spacing:.18em;
 }
-:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-slide.is-mint:not(.sequence-poster){background:linear-gradient(90deg,rgba(226,244,238,.74),rgba(250,248,243,.16) 53%,transparent);}
+:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-slide.is-mint:not(.sequence-poster){background:linear-gradient(90deg,rgba(226,244,238,.74),rgba(238,230,210,.16) 53%,transparent);}
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-slide[aria-label="강점"] .sequence-copy{max-width:28rem;padding-left:1rem;border-left:2px solid var(--result-green);color:var(--result-green);}
-:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-action{width:min(100%,37rem);margin-top:1.5rem;padding:1.2rem 0 1.3rem 1.4rem;border:0;border-left:2px solid rgba(17,75,60,.72);border-radius:0;background:linear-gradient(90deg,rgba(250,248,243,.78),transparent);box-shadow:none;text-align:left;}
+:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-action{width:min(100%,37rem);margin-top:1.5rem;padding:1.2rem 0 1.3rem 1.4rem;border:0;border-left:2px solid rgba(63,48,32,.72);border-radius:0;background:linear-gradient(90deg,rgba(238,230,210,.78),transparent);box-shadow:none;text-align:left;}
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-action span{color:var(--result-green);font-size:.62rem;letter-spacing:.18em;}
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-action p{max-width:27em;color:var(--result-green);font-family:'Hahmlet',serif;font-size:clamp(1.05rem,1.7vw,1.45rem);font-weight:700;line-height:1.5;}
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .lace-note{display:block;max-width:30rem;margin-top:.8rem;color:#667169;font-size:.66rem;line-height:1.55;}
-:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-sub-link{min-height:2.5rem;margin-top:1.2rem;border-bottom:1px solid rgba(17,75,60,.32);color:var(--result-green);font-size:.76rem;font-weight:780;text-decoration:none;}
+:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-sub-link{min-height:2.5rem;margin-top:1.2rem;border-bottom:1px solid rgba(63,48,32,.32);color:var(--result-green);font-size:.76rem;font-weight:780;text-decoration:none;}
 
 /* Poster reveal: blank paper for the name, an irregular character apparition. */
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-poster{display:block;overflow:hidden;background:var(--result-green);text-align:left;isolation:isolate;}
@@ -150,19 +198,19 @@
   inset:0;
   z-index:0;
   background:
-    linear-gradient(90deg,var(--result-green) 0 43%,rgba(17,75,60,.96) 51%,rgba(17,75,60,.08) 73%),
-    url('/images/results/give-result-world-v1.webp') 63% center/cover no-repeat;
+    linear-gradient(90deg,var(--result-green) 0 43%,rgba(63,48,32,.96) 51%,rgba(63,48,32,.08) 73%),
+    url('/images/results/give-result-path-v2.webp') 63% center/cover no-repeat;
 }
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-poster::after{
   content:"";
   position:absolute;
   inset:0;
   z-index:1;
-  background:linear-gradient(90deg,transparent 0 40%,rgba(250,248,243,.06) 54%,rgba(250,248,243,.42));
+  background:linear-gradient(90deg,transparent 0 40%,rgba(238,230,210,.06) 54%,rgba(238,230,210,.42));
   pointer-events:none;
 }
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-poster-caption{left:clamp(2rem,5vw,5rem);top:clamp(2rem,5vh,4rem);z-index:6;color:var(--result-bg);}
-:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-poster-caption i{background:rgba(250,248,243,.72);}
+:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-poster-caption i{background:rgba(238,230,210,.72);}
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-poster .sequence-type{
   left:clamp(2rem,5vw,5rem);
   top:clamp(8.2rem,25vh,14rem);
@@ -205,37 +253,37 @@
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .result-reveal-canvas{position:absolute;inset:0;z-index:4;width:100%;height:100%;opacity:0;cursor:crosshair;touch-action:none;pointer-events:none;transition:opacity .65s ease;}
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-poster.is-developed:not(.is-discovered) .result-reveal-canvas{opacity:.92;pointer-events:auto;}
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-poster.is-discovered .result-reveal-canvas{opacity:0;pointer-events:none;}
-:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .result-reveal-canvas:focus-visible{outline:2px solid rgba(250,248,243,.92);outline-offset:-5px;border-radius:40%;}
-:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .result-discovery-hint{position:absolute;right:clamp(2rem,7vw,7rem);bottom:clamp(5.6rem,10vh,7rem);z-index:9;display:flex;align-items:center;gap:.65rem;margin:0;padding:.6rem 0;border-bottom:1px solid rgba(250,248,243,.66);color:#114B3C;font-family:'Pretendard',sans-serif;font-size:.68rem;font-weight:800;letter-spacing:.06em;opacity:0;transform:translateY(.4rem);pointer-events:none;transition:opacity .35s ease,transform .45s ease;}
+:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .result-reveal-canvas:focus-visible{outline:2px solid rgba(238,230,210,.92);outline-offset:-5px;border-radius:40%;}
+:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .result-discovery-hint{position:absolute;right:clamp(2rem,7vw,7rem);bottom:clamp(5.6rem,10vh,7rem);z-index:9;display:flex;align-items:center;gap:.65rem;margin:0;padding:.6rem 0;border-bottom:1px solid rgba(238,230,210,.66);color:#3f3020;font-family:'Pretendard',sans-serif;font-size:.68rem;font-weight:800;letter-spacing:.06em;opacity:0;transform:translateY(.4rem);pointer-events:none;transition:opacity .35s ease,transform .45s ease;}
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .result-discovery-hint b{font-size:1rem;font-weight:500;animation:resultHintDrift 1.8s ease-in-out infinite;}
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-poster.is-developed:not(.is-discovered) .result-discovery-hint{opacity:1;transform:none;}
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-poster.is-discovered .result-discovery-hint{opacity:0;}
-.result-water-brush{position:fixed;left:0;top:0;z-index:28;width:clamp(4.8rem,12vw,7rem);aspect-ratio:1;border:1px solid rgba(250,248,243,.7);border-radius:46% 54% 48% 52%;background:radial-gradient(circle,transparent 26%,rgba(250,248,243,.12) 54%,rgba(154,101,22,.16) 76%,transparent);box-shadow:0 0 1.4rem rgba(250,248,243,.22),inset 0 0 1rem rgba(250,248,243,.28);opacity:0;transform:translate(-50%,-50%) scale(.6) rotate(-5deg);pointer-events:none;transition:opacity .16s ease,transform .3s cubic-bezier(.16,1,.3,1);}
+.result-water-brush{position:fixed;left:0;top:0;z-index:28;width:clamp(4.8rem,12vw,7rem);aspect-ratio:1;border:1px solid rgba(238,230,210,.7);border-radius:46% 54% 48% 52%;background:radial-gradient(circle,transparent 26%,rgba(238,230,210,.12) 54%,rgba(159,50,35,.16) 76%,transparent);box-shadow:0 0 1.4rem rgba(238,230,210,.22),inset 0 0 1rem rgba(238,230,210,.28);opacity:0;transform:translate(-50%,-50%) scale(.6) rotate(-5deg);pointer-events:none;transition:opacity .16s ease,transform .3s cubic-bezier(.16,1,.3,1);}
 .result-water-brush.is-on{opacity:1;transform:translate(-50%,-50%) scale(1) rotate(2deg);}
-:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-poster .sequence-tagline{left:clamp(2rem,5vw,5rem);bottom:clamp(7.4rem,15vh,10rem);z-index:8;width:min(30vw,22rem);max-width:none;margin:0;padding:.25rem 0 .35rem 1rem;border:0;border-left:1px solid rgba(250,248,243,.68);background:transparent;color:rgba(250,248,243,.92);font-family:'Hahmlet',serif;font-size:clamp(1rem,1.8vw,1.3rem);font-style:italic;opacity:0;transform:rotate(-2deg) translateY(.5rem);}
+:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-poster .sequence-tagline{left:clamp(2rem,5vw,5rem);bottom:clamp(7.4rem,15vh,10rem);z-index:8;width:min(30vw,22rem);max-width:none;margin:0;padding:.25rem 0 .35rem 1rem;border:0;border-left:1px solid rgba(238,230,210,.68);background:transparent;color:rgba(238,230,210,.92);font-family:'Hahmlet',serif;font-size:clamp(1rem,1.8vw,1.3rem);font-style:italic;opacity:0;transform:rotate(-2deg) translateY(.5rem);}
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-poster.active .sequence-tagline{animation:posterTaglineIn .4s ease 2.28s both;}
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-poster-meta{left:clamp(2rem,5vw,5rem);bottom:clamp(4rem,8vh,5.2rem);z-index:8;color:rgba(226,244,238,.72);}
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-poster-folio{left:-.1em;bottom:-.08em;z-index:1;color:var(--result-bg);font-size:clamp(14rem,37vw,30rem);opacity:0;}
-:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-poster-running{right:clamp(.7rem,1.4vw,1.3rem);top:clamp(1.4rem,4vh,2.5rem);z-index:8;background:var(--result-green);color:rgba(250,248,243,.74);}
+:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-poster-running{right:clamp(.7rem,1.4vw,1.3rem);top:clamp(1.4rem,4vh,2.5rem);z-index:8;background:var(--result-green);color:rgba(238,230,210,.74);}
 
 /* Risk remains deliberately off-grid, but now lives in the same paper world. */
-:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-risk{background:rgba(250,248,243,.9);}
+:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-risk{background:rgba(238,230,210,.9);}
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-risk::before{
   content:"";
   position:absolute;
   inset:0;
   background:
-    linear-gradient(90deg,rgba(250,248,243,.98) 0 54%,rgba(250,248,243,.48) 74%,rgba(250,248,243,.1)),
-    url('/images/results/give-result-world-v1.webp') 68% center/cover no-repeat;
+    linear-gradient(90deg,rgba(238,230,210,.98) 0 54%,rgba(238,230,210,.48) 74%,rgba(238,230,210,.1)),
+    url('/images/results/give-result-path-v2.webp') 68% center/cover no-repeat;
   opacity:.72;
 }
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-risk>*{z-index:2;}
-:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-risk-keyword{position:relative;z-index:3;cursor:pointer;border-bottom:1px solid rgba(154,101,22,.35);outline:0;transition:color .25s ease,text-shadow .35s ease;}
-:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-risk-keyword::after{content:"";position:absolute;inset:-.35em -.5em;z-index:-1;border-radius:48% 52% 44% 56%;background:radial-gradient(ellipse,rgba(154,101,22,.26),rgba(154,101,22,.09) 54%,transparent 74%);opacity:0;transform:scale(.2) rotate(-4deg);pointer-events:none;}
-:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-risk-keyword:focus-visible{outline:2px solid #9A6516;outline-offset:4px;border-radius:2px;}
-:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-risk.is-inked .sequence-risk-keyword{color:#7A4E12;text-shadow:0 0 1.4rem rgba(154,101,22,.32);}
+:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-risk-keyword{position:relative;z-index:3;cursor:pointer;border-bottom:1px solid rgba(159,50,35,.35);outline:0;transition:color .25s ease,text-shadow .35s ease;}
+:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-risk-keyword::after{content:"";position:absolute;inset:-.35em -.5em;z-index:-1;border-radius:48% 52% 44% 56%;background:radial-gradient(ellipse,rgba(159,50,35,.26),rgba(159,50,35,.09) 54%,transparent 74%);opacity:0;transform:scale(.2) rotate(-4deg);pointer-events:none;}
+:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-risk-keyword:focus-visible{outline:2px solid #9f3223;outline-offset:4px;border-radius:2px;}
+:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-risk.is-inked .sequence-risk-keyword{color:#7A4E12;text-shadow:0 0 1.4rem rgba(159,50,35,.32);}
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-risk.is-inked .sequence-risk-keyword::after{animation:resultRiskWordPool 1.2s cubic-bezier(.18,.7,.2,1) both;}
-.result-risk-ink{position:fixed;z-index:25;width:3rem;aspect-ratio:1;margin:-1.5rem 0 0 -1.5rem;border-radius:44% 56% 48% 52%;background:radial-gradient(circle,rgba(154,101,22,.24),rgba(154,101,22,.1) 44%,transparent 72%);mix-blend-mode:multiply;filter:blur(1px);pointer-events:none;animation:resultRiskInk 1.25s cubic-bezier(.18,.7,.2,1) both;}
+.result-risk-ink{position:fixed;z-index:25;width:3rem;aspect-ratio:1;margin:-1.5rem 0 0 -1.5rem;border-radius:44% 56% 48% 52%;background:radial-gradient(circle,rgba(159,50,35,.24),rgba(159,50,35,.1) 44%,transparent 72%);mix-blend-mode:multiply;filter:blur(1px);pointer-events:none;animation:resultRiskInk 1.25s cubic-bezier(.18,.7,.2,1) both;}
 
 /* Compatibility is staged as an apparition, not a square image card. */
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) #slideWellMatched,:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) #slideWatchOut{padding-right:54vw;}
@@ -256,23 +304,23 @@
   mask-image:radial-gradient(circle,#000 50%,transparent 76%);
 }
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) #slideWellMatched .sequence-character::before,:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) #slideWatchOut .sequence-character::before{display:none;}
-:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) #slideWellMatched .sequence-character img,:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) #slideWatchOut .sequence-character img{width:100%;height:100%;object-fit:contain;filter:saturate(.98) drop-shadow(0 1.2rem 1.8rem rgba(17,75,60,.14));}
+:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) #slideWellMatched .sequence-character img,:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) #slideWatchOut .sequence-character img{width:100%;height:100%;object-fit:contain;filter:saturate(.98) drop-shadow(0 1.2rem 1.8rem rgba(63,48,32,.14));}
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-match-name{max-width:11em;color:var(--result-green);font-family:'Hahmlet',serif;font-size:clamp(1.7rem,3.2vw,3.2rem);font-weight:780;line-height:1.08;text-align:left;}
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-match-note{max-width:28rem;margin-top:1rem;color:#647068;font-size:.7rem;text-align:left;}
 
 /* Final door: the generated archway becomes the destination of the thread. */
-:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-slide:not(.sequence-poster):not(.sequence-risk)[aria-label="마지막 행동"]{background:linear-gradient(90deg,rgba(17,75,60,.98) 0 45%,rgba(17,75,60,.55) 63%,rgba(17,75,60,.04));}
-:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-slide[aria-label="마지막 행동"]::before{color:rgba(250,248,243,.07);}
+:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-slide:not(.sequence-poster):not(.sequence-risk)[aria-label="마지막 행동"]{background:linear-gradient(90deg,rgba(63,48,32,.98) 0 45%,rgba(63,48,32,.55) 63%,rgba(63,48,32,.04));}
+:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-slide[aria-label="마지막 행동"]::before{color:rgba(238,230,210,.07);}
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-slide[aria-label="마지막 행동"] .sequence-line{color:var(--result-bg);}
-:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-slide[aria-label="마지막 행동"] .sequence-line.is-soft{color:rgba(250,248,243,.82);}
-:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-slide[aria-label="마지막 행동"] .sequence-rule{background:rgba(250,248,243,.68);}
+:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-slide[aria-label="마지막 행동"] .sequence-line.is-soft{color:rgba(238,230,210,.82);}
+:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-slide[aria-label="마지막 행동"] .sequence-rule{background:rgba(238,230,210,.68);}
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-actions{width:min(100%,27rem);align-items:stretch;margin-top:1.6rem;}
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-cta,:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-sub-cta{border-radius:0;box-shadow:none;}
-:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-slide[aria-label="마지막 행동"] .sequence-cta{border:1px solid rgba(250,248,243,.75);background:var(--result-bg);color:var(--result-green);}
-:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-slide[aria-label="마지막 행동"] .sequence-sub-cta{border:1px solid rgba(250,248,243,.52);background:rgba(17,75,60,.25);color:var(--result-bg);}
-:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-slide[aria-label="마지막 행동"] .sequence-sub-link{color:var(--result-bg);border-color:rgba(250,248,243,.36);}
+:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-slide[aria-label="마지막 행동"] .sequence-cta{border:1px solid rgba(238,230,210,.75);background:var(--result-bg);color:var(--result-green);}
+:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-slide[aria-label="마지막 행동"] .sequence-sub-cta{border:1px solid rgba(238,230,210,.52);background:rgba(63,48,32,.25);color:var(--result-bg);}
+:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-slide[aria-label="마지막 행동"] .sequence-sub-link{color:var(--result-bg);border-color:rgba(238,230,210,.36);}
 
-:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-back,:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-next{z-index:30;bottom:1.1rem;display:inline-flex;min-width:0;min-height:2.9rem;align-items:center;gap:.65rem;padding:.4rem .15rem;border:0;border-bottom:1px solid rgba(17,75,60,.42);border-radius:0;background:transparent;color:var(--result-green);box-shadow:none;backdrop-filter:none;font-family:'Pretendard',sans-serif;font-size:.68rem;font-weight:800;letter-spacing:.08em;transition:gap .25s ease,color .25s ease,border-color .25s ease,opacity .25s ease;}
+:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-back,:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-next{z-index:30;bottom:1.1rem;display:inline-flex;min-width:0;min-height:2.9rem;align-items:center;gap:.65rem;padding:.4rem .15rem;border:0;border-bottom:1px solid rgba(63,48,32,.42);border-radius:0;background:transparent;color:var(--result-green);box-shadow:none;backdrop-filter:none;font-family:'Pretendard',sans-serif;font-size:.68rem;font-weight:800;letter-spacing:.08em;transition:gap .25s ease,color .25s ease,border-color .25s ease,opacity .25s ease;}
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-back::before{content:"←";font-size:.9rem;font-weight:500;}
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-next::after{content:"→";font-size:.9rem;font-weight:500;}
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-back:hover,:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-next:hover{gap:.95rem;border-color:var(--result-green);background:transparent;transform:none;}
@@ -280,11 +328,11 @@
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-next{right:clamp(1.25rem,4vw,4rem);}
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-back:disabled{opacity:0;pointer-events:none;}
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-next:disabled{opacity:.34;cursor:wait;}
-:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless).sequence-green-active .sequence-back{border-color:rgba(250,248,243,.58);color:var(--result-bg);}
-:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless).sequence-green-active .sequence-next{border-color:rgba(17,75,60,.5);color:var(--result-green);}
+:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless).sequence-green-active .sequence-back{border-color:rgba(238,230,210,.58);color:var(--result-bg);}
+:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless).sequence-green-active .sequence-next{border-color:rgba(63,48,32,.5);color:var(--result-green);}
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless).sequence-green-active .sequence-back:hover{border-color:var(--result-bg);}
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless).sequence-green-active .sequence-next:hover{border-color:var(--result-green);}
-:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-hint{z-index:30;bottom:1.8rem;color:rgba(17,75,60,.5);font-size:.64rem;font-weight:700;}
+:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-hint{z-index:30;bottom:1.8rem;color:rgba(63,48,32,.5);font-size:.64rem;font-weight:700;}
 
 .result-ink-bloom{
   position:fixed;
@@ -293,7 +341,7 @@
   aspect-ratio:1;
   margin:-4.5rem 0 0 -4.5rem;
   border-radius:46% 54% 48% 52%;
-  background:radial-gradient(circle,rgba(154,101,22,.12),rgba(17,75,60,.075) 42%,transparent 72%);
+  background:radial-gradient(circle,rgba(159,50,35,.12),rgba(63,48,32,.075) 42%,transparent 72%);
   filter:blur(2px);
   mix-blend-mode:multiply;
   pointer-events:none;
@@ -328,9 +376,9 @@
   :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-header{height:3.75rem;padding:0 1rem;}
   :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-brand{font-size:.61rem;}
   :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-dots{width:42vw;}
-  :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-main{inset:3.75rem 0 0;background:linear-gradient(180deg,rgba(250,248,243,.94) 0 57%,rgba(250,248,243,.12) 82%),url('/images/results/give-result-world-v1.webp') 64% center/auto 100% no-repeat;}
+  :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-main{inset:3.75rem 0 0;background:linear-gradient(180deg,rgba(238,230,210,.94) 0 57%,rgba(238,230,210,.12) 82%),url('/images/results/give-result-path-v2.webp') 64% center/auto 100% no-repeat;}
   :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-main::before{background-position:64% center;opacity:.22;}
-  :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-main::after{background:linear-gradient(180deg,rgba(250,248,243,.9) 0 50%,rgba(250,248,243,.54) 68%,rgba(250,248,243,.06));}
+  :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-main::after{background:linear-gradient(180deg,rgba(238,230,210,.9) 0 50%,rgba(238,230,210,.54) 68%,rgba(238,230,210,.06));}
   :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .result-atmosphere{inset:3.75rem 0 0;}
   :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .result-atmosphere svg{bottom:8%;height:24%;width:150%;left:-26%;}
   :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .result-atmosphere::after{right:-24vw;top:44%;width:76vw;}
@@ -344,18 +392,18 @@
   :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-action{margin-top:1rem;padding:1rem 0 1rem 1rem;}
   :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-action p{font-size:1rem;}
 
-  :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-poster::before{background:linear-gradient(180deg,var(--result-green) 0 43%,rgba(17,75,60,.88) 52%,rgba(17,75,60,.04) 78%),url('/images/results/give-result-world-v1.webp') 64% center/auto 100% no-repeat;}
-  :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-poster::after{background:linear-gradient(180deg,transparent 0 40%,rgba(250,248,243,.04) 53%,rgba(250,248,243,.34));}
+  :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-poster::before{background:linear-gradient(180deg,var(--result-green) 0 43%,rgba(63,48,32,.88) 52%,rgba(63,48,32,.04) 78%),url('/images/results/give-result-path-v2.webp') 64% center/auto 100% no-repeat;}
+  :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-poster::after{background:linear-gradient(180deg,transparent 0 40%,rgba(238,230,210,.04) 53%,rgba(238,230,210,.34));}
   :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-poster-caption{left:1.25rem;top:1.25rem;}
   :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-poster .sequence-type{left:1.25rem;top:5.2rem;width:calc(100% - 2.7rem);font-size:clamp(2.65rem,12vw,3.5rem);line-height:.9;}
   :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-poster .sequence-tagline{left:1.25rem;bottom:auto;top:calc(44% - 4rem);width:calc(100% - 4rem);font-size:.92rem;}
   :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-poster-meta{left:1.25rem;bottom:auto;top:calc(44% - 1.5rem);}
   :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-poster-character{right:-13vw;bottom:2.8rem;width:126vw;height:59%;-webkit-mask-image:radial-gradient(ellipse 55% 50% at 54% 58%,#000 57%,transparent 94%);mask-image:radial-gradient(ellipse 55% 50% at 54% 58%,#000 57%,transparent 94%);}
-  :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .result-discovery-hint{right:1.2rem;bottom:4.7rem;padding:.45rem 0;background:rgba(250,248,243,.64);font-size:.62rem;}
+  :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .result-discovery-hint{right:1.2rem;bottom:4.7rem;padding:.45rem 0;background:rgba(238,230,210,.64);font-size:.62rem;}
   :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-poster-folio{bottom:50%;font-size:11rem;}
   :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-poster-running{right:.45rem;top:47%;font-size:.48rem;}
 
-  :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-risk::before{background:linear-gradient(180deg,rgba(250,248,243,.98) 0 62%,rgba(250,248,243,.32)),url('/images/results/give-result-world-v1.webp') 66% center/auto 100% no-repeat;}
+  :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-risk::before{background:linear-gradient(180deg,rgba(238,230,210,.98) 0 62%,rgba(238,230,210,.32)),url('/images/results/give-result-path-v2.webp') 66% center/auto 100% no-repeat;}
   :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) #slideWellMatched,:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) #slideWatchOut{padding:2.2rem 1.25rem 48vh;}
   :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) #slideWellMatched .sequence-character,:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) #slideWatchOut .sequence-character{right:50%;top:auto;bottom:4.5rem;width:min(72vw,18rem);height:min(72vw,18rem);transform:translateX(50%);}
   :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) #slideWellMatched.active .sequence-character,:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) #slideWatchOut.active .sequence-character{animation-name:resultCharacterArriveMobile;}
@@ -365,7 +413,7 @@
   :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-back,:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-next{bottom:.7rem;}
   :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-back{left:1rem;}
   :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-next{right:1rem;min-width:5.4rem;}
-  :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless).sequence-green-active .sequence-back{border-color:rgba(17,75,60,.38);color:var(--result-green);}
+  :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless).sequence-green-active .sequence-back{border-color:rgba(63,48,32,.38);color:var(--result-green);}
   :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-hint{display:none;}
 }
 

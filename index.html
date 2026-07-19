@@ -59,7 +59,7 @@
     </script>
     <meta name="google-adsense-account" content="ca-pub-8564310871125079">
     <style>
-    :root{--bg:#FAF8F3;--surface:#FFFFFF;--ink:#1A1F1C;--ink-sub:#5C635E;--ink-faint:#767B74;--line:#E7E1D5;--green:#114B3C;--green-deep:#0D3B2F;--green-soft:#E9F2EC;--mint:#00A885;--mint-soft:#E2F4EE;--mint-ink:#127562;--r-lg:8px;--r-pill:999px;--sans:-apple-system,BlinkMacSystemFont,system-ui,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;--serif:Georgia,"Times New Roman",serif}
+    :root{--bg:#eee6d2;--surface:#f4eddc;--ink:#3f3020;--ink-sub:#6f5c47;--ink-faint:#897762;--line:rgba(63,48,32,.2);--green:#3f3020;--green-deep:#17130e;--green-soft:#d8cfb4;--mint:#c85f43;--mint-soft:#ead6c9;--mint-ink:#9f3223;--r-lg:8px;--r-pill:999px;--sans:"Pretendard",-apple-system,BlinkMacSystemFont,system-ui,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;--serif:"Hahmlet",Georgia,"Times New Roman",serif}
     *{box-sizing:border-box;margin:0;padding:0;word-break:keep-all}
     html{scroll-behavior:smooth}
     body{min-width:320px;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
@@ -73,12 +73,14 @@
     @media (min-width:900px){.wrap{width:min(100%,1040px);padding-left:32px;padding-right:32px}}
     @media (max-width:640px){.wrap{padding-left:20px;padding-right:20px}.site-nav,nav{align-items:flex-start}.home-article-grid{grid-template-columns:1fr}.home-method{display:block}.home-method a{display:inline-block;margin-top:14px}}
     /* ── RPG 타이틀 화면 ── */
-    .title-screen{position:relative;min-height:calc(100vh - 78px);min-height:calc(100svh - 78px);display:flex;align-items:center;justify-content:center;overflow:hidden;text-align:center}
+    .title-screen{position:relative;min-height:calc(100vh - 78px);min-height:calc(100svh - 78px);display:flex;align-items:center;justify-content:center;overflow:hidden;text-align:left;background:#17130e;color:#eee5d2;isolation:isolate}
+    .title-screen::before{content:"";position:absolute;inset:-10%;z-index:0;background:radial-gradient(circle at 73% 35%,rgba(200,95,67,.22),transparent 24%),radial-gradient(circle at 18% 78%,rgba(216,207,180,.09),transparent 30%),repeating-linear-gradient(94deg,rgba(238,229,210,.025) 0 1px,transparent 1px 5px);filter:url("#paper-noise");pointer-events:none}
+    .title-screen::after{content:"";position:absolute;left:0;right:0;bottom:clamp(2rem,7vh,5rem);height:clamp(8rem,24vh,16rem);z-index:0;background:linear-gradient(164deg,transparent 48.7%,rgba(200,95,67,.78) 49%,rgba(200,95,67,.78) 49.35%,transparent 49.65%),linear-gradient(171deg,transparent 56%,rgba(238,229,210,.22) 56.2%,rgba(238,229,210,.22) 56.45%,transparent 56.65%);transform:scaleX(1.08);transform-origin:center;pointer-events:none}
     .ts-bg{position:absolute;inset:0;z-index:0;pointer-events:none}
     .ts-mascot{position:absolute;width:120px;height:auto;opacity:0;transition:opacity .4s ease;animation:ts-sway 9s ease-in-out infinite alternate}
-    .ts-mascot.on{opacity:.18}
-    .ts-bg.has-active-mascot .ts-mascot.on{opacity:.1}
-    .ts-bg.has-active-mascot .ts-mascot.on.is-active{opacity:.35}
+    .ts-mascot.on{opacity:.12;filter:sepia(.35) saturate(.8) drop-shadow(0 1.2rem 2.5rem rgba(0,0,0,.3))}
+    .ts-bg.has-active-mascot .ts-mascot.on{opacity:.055}
+    .ts-bg.has-active-mascot .ts-mascot.on.is-active{opacity:.32;filter:sepia(.1) saturate(.9) drop-shadow(0 1.3rem 2.8rem rgba(0,0,0,.4))}
     .ts-bg .m1{top:7%;left:5%;width:140px;--tilt:-7deg;animation-duration:8s}
     .ts-bg .m2{top:13%;right:7%;width:115px;--tilt:6deg;animation-duration:10s;animation-delay:-3s}
     .ts-bg .m3{top:50%;left:3%;width:125px;--tilt:5deg;animation-duration:9s;animation-delay:-5s}
@@ -86,21 +88,27 @@
     .ts-bg .m5{bottom:8%;left:13%;width:105px;--tilt:8deg;animation-duration:8.5s;animation-delay:-6s}
     .ts-bg .m6{bottom:6%;right:12%;width:130px;--tilt:-8deg;animation-duration:9.5s;animation-delay:-4s}
     .ts-bg .m7{top:4%;left:44%;width:95px;--tilt:4deg;animation-duration:10.5s;animation-delay:-7s}
-    .ts-inner{position:relative;z-index:1;width:min(100%,560px);margin:0 auto;padding:40px 22px 72px}
-    .ts-logo{margin:0;font-family:'Hahmlet',var(--serif);font-weight:800;font-size:clamp(2.4rem,10vw,3.6rem);line-height:1.08;letter-spacing:.05em;color:var(--green);text-shadow:0 0 18px rgba(0,168,133,.30),0 0 48px rgba(0,168,133,.14)}
-    .ts-logo span{display:block;font-size:.5em;font-weight:700;letter-spacing:.34em;text-indent:.34em;margin-top:4px}
-    .ts-tagline{margin:14px 0 46px;color:var(--mint-ink);font-family:'Hahmlet',var(--serif);font-style:italic;font-size:.92rem}
-    .ts-menu{position:relative;display:flex;width:max-content;max-width:100%;flex-direction:column;align-items:stretch;gap:18px;margin:0 auto;padding:0;border-bottom:0}
-    .ts-caret{position:absolute;top:0;left:0;display:flex;align-items:center;height:48px;color:var(--mint);font-size:clamp(.98rem,3.9vw,1.19rem);line-height:1;pointer-events:none;transform:translateY(0);transition:transform .28s cubic-bezier(.4,0,.2,1)}
-    .ts-item{position:relative;display:inline-flex;align-items:center;justify-content:flex-start;min-height:48px;padding:2px 18px 2px 30px;font-family:'Hahmlet',var(--serif);font-size:clamp(1.15rem,4.6vw,1.4rem);font-weight:700;color:var(--ink);text-decoration:none;transition:color .2s ease}
+    .ts-inner{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(19rem,.85fr);gap:clamp(3rem,9vw,9rem);align-items:center;width:min(100%,1180px);margin:0 auto;padding:clamp(3rem,8vh,6rem) clamp(1.4rem,5vw,4.5rem)}
+    .ts-intro{position:relative;max-width:44rem}
+    .ts-eyebrow{display:flex;align-items:center;gap:.7rem;margin-bottom:clamp(1.4rem,4vh,2.6rem);color:#c85f43;font-size:.65rem;font-weight:850;letter-spacing:.22em}.ts-eyebrow::before{content:"";width:2.8rem;height:1px;background:currentColor}
+    .ts-logo{margin:0;font-family:'Hahmlet',var(--serif);font-weight:600;font-size:clamp(3.1rem,7.6vw,7.4rem);line-height:.86;letter-spacing:-.065em;color:#eee5d2;text-shadow:none}
+    .ts-logo span{display:block;margin:.45em 0 0 .12em;color:#c85f43;font-family:var(--sans);font-size:.13em;font-weight:800;letter-spacing:.5em;text-indent:.5em}
+    .ts-tagline{max-width:29rem;margin:clamp(1.5rem,4vh,2.5rem) 0 0;color:#bcae98;font-family:'Hahmlet',var(--serif);font-style:normal;font-size:clamp(1rem,1.7vw,1.3rem);line-height:1.7}
+    .ts-menu-wrap{position:relative;padding:clamp(1.5rem,4vw,2.8rem) 0;border-top:1px solid rgba(238,229,210,.24);border-bottom:1px solid rgba(238,229,210,.24)}
+    .ts-menu-label{margin-bottom:1.25rem;color:#9e8d76;font-size:.63rem;font-weight:800;letter-spacing:.2em}
+    .ts-menu{position:relative;display:flex;width:100%;max-width:100%;flex-direction:column;align-items:stretch;gap:.5rem;margin:0;padding:0;border-bottom:0}
+    .ts-caret{position:absolute;top:0;left:0;display:flex;align-items:center;height:48px;color:#c85f43;font-size:clamp(.98rem,3.9vw,1.19rem);line-height:1;pointer-events:none;transform:translateY(0);transition:transform .28s cubic-bezier(.4,0,.2,1)}
+    .ts-item{position:relative;display:inline-flex;align-items:center;justify-content:flex-start;min-height:48px;padding:2px 18px 2px 30px;font-family:'Hahmlet',var(--serif);font-size:clamp(1rem,2.1vw,1.25rem);font-weight:600;color:#c8baa5;text-decoration:none;transition:color .2s ease,transform .2s ease}
     .ts-item::after{content:'';position:absolute;left:30px;right:18px;bottom:4px;height:2px;background:currentColor;transform:scaleX(0);transform-origin:left center;transition:transform .25s ease}
-    .ts-item:hover,.ts-item:focus-visible{color:var(--mint)}
+    .ts-item:hover,.ts-item:focus-visible{color:#eee5d2;transform:translateX(.3rem)}
     .ts-item:hover::after,.ts-item:focus-visible::after{transform:scaleX(1)}
-    .ts-sub{display:inline-block;margin-top:48px;color:var(--ink-faint);font-size:.84rem;font-weight:600;text-decoration:none;border-bottom:1px solid var(--line);transition:color .2s ease,border-color .2s ease}
+    .ts-primary{display:grid!important;grid-template-columns:1fr auto;gap:.7rem;align-items:end!important;min-height:8.4rem;margin-bottom:1rem;padding:1.4rem 1.4rem 1.25rem!important;border:1px solid rgba(200,95,67,.74);background:linear-gradient(135deg,rgba(200,95,67,.2),rgba(200,95,67,.04));color:#eee5d2!important;transform:none!important}.ts-primary::after{display:none}.ts-primary strong{display:block;font-size:clamp(1.6rem,3vw,2.5rem);line-height:1.05}.ts-primary small{display:block;margin-top:.7rem;color:#c8baa5;font-family:var(--sans);font-size:.72rem;font-weight:500;line-height:1.55}.ts-primary b{align-self:center;color:#c85f43;font-family:var(--sans);font-size:1.5rem;font-weight:400;transition:transform .25s ease}.ts-primary:hover b,.ts-primary:focus-visible b{transform:translateX(.4rem)}
+    .ts-sub{display:inline-block;margin-top:2rem;color:#9e8d76;font-size:.78rem;font-weight:600;text-decoration:none;border-bottom:1px solid rgba(238,229,210,.18);transition:color .2s ease,border-color .2s ease}
     .ts-sub:hover{color:var(--mint-ink);border-color:var(--mint)}
     @keyframes ts-sway{from{transform:translateX(-4px) rotate(var(--tilt,0deg))}to{transform:translateX(4px) rotate(var(--tilt,0deg))}}
-    @media (max-width:640px){
+    @media (max-width:760px){
       .title-screen{min-height:calc(100vh - 118px);min-height:calc(100svh - 118px)}
+      .ts-inner{display:block;padding:3.3rem 1.25rem 5rem}.ts-intro{margin-bottom:3rem}.ts-logo{font-size:clamp(3rem,17vw,4.7rem)}.ts-tagline{max-width:18rem;font-size:.92rem}.ts-menu-wrap{padding:1.5rem 0}.ts-primary{min-height:7.2rem!important}.ts-primary strong{font-size:1.65rem}.ts-primary small{max-width:16rem}
       .ts-mascot.on{opacity:.12}
       .ts-bg .m1{width:92px;top:4%;left:2%}
       .ts-bg .m4{width:98px;top:9%;right:3%}
@@ -134,16 +142,22 @@
     <main id="main" class="title-screen" aria-label="타이틀 메뉴">
         <div class="ts-bg" aria-hidden="true"></div>
         <div class="ts-inner">
-            <h1 class="ts-logo">GIVE<span>ECOSYSTEM</span></h1>
-            <p class="ts-tagline">Smart giver, healthier boundaries</p>
-            <nav class="ts-menu" aria-label="테스트 바로가기">
-                <span class="ts-caret" aria-hidden="true">▸</span>
-                <a class="ts-item" data-mascot="m3" href="give-test.html">GIVE ID 테스트</a>
-                <a class="ts-item" data-mascot="m1" href="hogoo-check.html">호구 체크</a>
-                <a class="ts-item" data-mascot="m6" href="refusal-test.html">거절력 테스트</a>
-                <a class="ts-item" data-mascot="m4" href="relationship-risk.html">관계 위험도</a>
-            </nav>
-            <a class="ts-sub" href="white-psychology.html">선의 심리학 알아보기</a>
+            <div class="ts-intro">
+                <p class="ts-eyebrow">A MAP OF HOW YOU GIVE</p>
+                <h1 class="ts-logo">GIVE<span>ECOSYSTEM</span></h1>
+                <p class="ts-tagline">관계에서 자꾸 지치는 이유부터.<br>나의 선의가 흐르는 방향을 발견해 보세요.</p>
+            </div>
+            <div class="ts-menu-wrap">
+                <p class="ts-menu-label">먼저, 나의 패턴을 찾는 길</p>
+                <nav class="ts-menu" aria-label="테스트 바로가기">
+                    <span class="ts-caret" aria-hidden="true">›</span>
+                    <a class="ts-item ts-primary" data-mascot="m3" data-track="home_give_click" href="give-test.html"><span><strong>내 GIVE ID 찾기</strong><small>반복되는 마음과 행동의 패턴을 유형으로 확인해요</small></span><b aria-hidden="true">→</b></a>
+                    <a class="ts-item" data-mascot="m1" href="hogoo-check.html">호구 신호 빠르게 점검</a>
+                    <a class="ts-item" data-mascot="m6" href="refusal-test.html">나의 거절력 확인</a>
+                    <a class="ts-item" data-mascot="m4" href="relationship-risk.html">관계 위험 신호 확인</a>
+                </nav>
+                <a class="ts-sub" href="white-psychology.html">선의 심리학부터 읽어보기 →</a>
+            </div>
         </div>
     </main>
 
@@ -269,6 +283,7 @@
         syncSelection();
       });
       item.addEventListener('click', function (event) {
+        if (item.dataset.track) window.trackEvent(item.dataset.track, { placement: 'home_primary' });
         if (!isTouchMenu || event.defaultPrevented) return;
         event.preventDefault();
         hoveredItem = item;

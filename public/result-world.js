@@ -117,9 +117,9 @@
         context.clearRect(0, 0, rect.width, rect.height);
 
         var wash = context.createLinearGradient(0, 0, rect.width, rect.height);
-        wash.addColorStop(0, "rgba(250,248,243,.2)");
-        wash.addColorStop(.42, "rgba(238,235,219,.58)");
-        wash.addColorStop(1, "rgba(17,75,60,.16)");
+        wash.addColorStop(0, "rgba(238,230,210,.2)");
+        wash.addColorStop(.42, "rgba(216,207,180,.58)");
+        wash.addColorStop(1, "rgba(63,48,32,.16)");
         context.fillStyle = wash;
         context.fillRect(0, 0, rect.width, rect.height);
 
@@ -128,8 +128,8 @@
           var y = rect.height * (.06 + ((i * 53) % 88) / 100);
           var radius = Math.max(28, Math.min(rect.width, rect.height) * (.08 + (i % 4) * .024));
           var stain = context.createRadialGradient(x, y, 0, x, y, radius);
-          stain.addColorStop(0, i % 3 === 0 ? "rgba(17,75,60,.13)" : "rgba(250,248,243,.3)");
-          stain.addColorStop(1, "rgba(250,248,243,0)");
+          stain.addColorStop(0, i % 3 === 0 ? "rgba(63,48,32,.13)" : "rgba(238,230,210,.3)");
+          stain.addColorStop(1, "rgba(238,230,210,0)");
           context.fillStyle = stain;
           context.beginPath();
           context.ellipse(x, y, radius, radius * (.72 + (i % 3) * .1), (i % 5) * .18, 0, Math.PI * 2);

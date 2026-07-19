@@ -2,6 +2,20 @@ import { useState, useEffect, useRef, lazy, Suspense } from "react";
 import { CheckCircle, Circle, ChevronRight, ChevronLeft, Award, Flame, Copy, Check, MessageSquare, Send, Star, Trash2 } from "lucide-react";
 
 const PAID_SITE_URL = import.meta.env.VITE_PAID_SITE_URL ?? 'https://givecosystem.com/';
+function paidProductUrl(product, medium = 'seven_day_challenge') {
+  try {
+    const url = new URL(PAID_SITE_URL, window.location.origin);
+    url.pathname = '/start';
+    url.search = '';
+    url.searchParams.set('product', product);
+    url.searchParams.set('utm_source', 'hogoo_free');
+    url.searchParams.set('utm_medium', medium);
+    url.searchParams.set('utm_campaign', 'first_path');
+    return url.toString();
+  } catch {
+    return `https://givecosystem.com/start?product=${encodeURIComponent(product)}`;
+  }
+}
 import DAYS from "./days";
 import { supabase } from "./src/supabase";
 import LoginButton from "./src/components/LoginButton";
@@ -646,7 +660,7 @@ export default function App() {
                   <LoginButton />
                 </div>
                 <h1 style={{ margin: 0, fontSize: 25, fontWeight: 900, color: "#1A1F1C", letterSpacing: 0, lineHeight: 1.15 }}>
-                  호구 탈출 챌린지
+                  7일 경계 연습
                 </h1>
               </div>
             </div>
@@ -945,24 +959,25 @@ export default function App() {
             "착한 게 아니라 사려 깊은 거예요. 다만, 그 다정함이 당신을 깎아먹지 않도록 오늘은 조금 더 이기적이어도 괜찮아요."
           </p>
 
-          {/* 심화 리포트 CTA */}
-          <div 
-            onClick={() => window.open(PAID_SITE_URL, '_blank', 'noopener,noreferrer')}
-            style={{ 
-              display: "block", background: "linear-gradient(90deg, #00A885 0%, #0A5F4D 100%)", 
-              color: "#FFFFFF", padding: "16px", borderRadius: "12px",
-              fontWeight: 800, fontSize: "15px", cursor: "pointer",
-              boxShadow: "0 10px 25px rgba(0, 168, 133, 0.24)",
-              transition: "transform 0.2s ease", lineHeight: 1.35, wordBreak: "keep-all", overflowWrap: "break-word"
-            }}
-            onMouseOver={e => e.currentTarget.style.transform = "scale(1.02)"}
-            onMouseOut={e => e.currentTarget.style.transform = "scale(1)"}
-          >
-            GIVE ID 심화 리포트 바로 받기
-            <div style={{ fontSize: "11px", marginTop: "4px", opacity: 0.8, fontWeight: 500 }}>
-              givecosystem.com · 유료 심화 리포트로 이동
-            </div>
-          </div>
+          {/* 무료 7일은 유료의 관문이 아니라, 망설이는 사용자를 위한 짧은 체험이다. */}
+          {(currentDay === 0 || currentDay === 2 || currentDay === 6) && (
+            <button
+              type="button"
+              className="challenge-first-path-cta"
+              onClick={() => {
+                trackEvent('paid_cta_click', {
+                  product: 'give_id_challenge',
+                  placement: `challenge_day_${currentDay + 1}`,
+                  challenge_day: currentDay + 1
+                });
+                window.open(paidProductUrl('give_id_challenge'), '_blank', 'noopener,noreferrer');
+              }}
+            >
+              <small>{currentDay === 6 ? '무료로 걸어본 길을 계속 이어가세요' : '이 연습을 내 패턴에 맞춰 이어가고 싶다면'}</small>
+              <strong>{currentDay === 6 ? 'GIVE ID — 첫 번째 길 시작하기' : '첫 번째 길 미리 보기'}</strong>
+              <span>givecosystem.com · 30일 변화 과정</span>
+            </button>
+          )}
         </div>
 
         {/* Certification Box */}
