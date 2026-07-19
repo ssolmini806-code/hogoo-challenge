@@ -22,7 +22,7 @@
 - 작고 되돌리기 쉬운 모호함은 기본값 선택 후 보고에 가정 명시
 
 ### L1 검증 플러스 (해당 시 자동)
-커밋 전 `npm run build` 통과 + 영향 페이지 확인. 트리거:
+커밋 전 `npm run verify` 실행 (빌드 + 13개 페이지 스모크 테스트). 트리거:
 - 공유 자산(give-theme.css, site-bootstrap.js, share.*, third-party-loader.js, vite.config.js) 수정
 - 서로 다른 페이지 2개 이상 변경 (한 페이지의 html+css+js 세트는 해당 없음)
 - 로그인/보상/Supabase 로직 변경

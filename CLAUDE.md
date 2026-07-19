@@ -85,7 +85,7 @@
 - 자체 검토는 "빌드가 깨지지 않는가" 수준이면 충분
 
 ### L1 — 검증 플러스 (해당하면 자동 적용)
-L0 + 커밋 전 검증(`npm run build` 통과 + 영향받는 페이지/플로우 확인). 트리거:
+L0 + 커밋 전 `npm run verify` 실행 (빌드 + 주요 13개 페이지 스모크 테스트: JS 에러·리소스 404·빈 화면·React 마운트 실패 검출). 트리거:
 - ⚠ 공유 자산(give-theme.css, site-bootstrap.js, share.*, third-party-loader.js) 또는 vite.config.js 수정
 - **서로 다른 페이지 2개 이상**에 걸친 변경 (한 페이지의 html+css+js 3종 세트는 해당 없음)
 - 로그인 / 보상 해금 / Supabase 연동 로직 변경
