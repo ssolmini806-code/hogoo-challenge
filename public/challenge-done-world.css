@@ -21,7 +21,7 @@ body.done-page::after{content:"07";position:fixed;z-index:0;right:-2vw;top:50%;c
 .done-page .topbar-logo{font-family:'Hahmlet',serif;font-size:.75rem;font-style:normal;font-weight:750;letter-spacing:.13em;text-transform:uppercase;color:var(--done-ink);}
 .done-page .topbar-home{color:var(--done-ink-soft);font-size:.7rem;font-weight:760;}
 .done-page .page{position:relative;z-index:1;width:min(100% - clamp(2.5rem,10vw,9rem),72rem);max-width:none;margin-inline:auto;padding:clamp(5rem,12vh,9rem) 0 7rem;display:grid;grid-template-columns:minmax(0,1.18fr) minmax(18rem,.82fr);column-gap:clamp(3rem,8vw,8rem);align-items:start;}
-.done-page .badge-wrap{position:relative;grid-row:span 4;padding:0;text-align:left;}
+.done-page .badge-wrap{position:relative;grid-row:span 5;padding:0;text-align:left;}
 .done-page .badge-wrap::before{content:attr(data-folio);display:block;width:max-content;margin-bottom:clamp(3rem,8vh,6rem);padding-bottom:.5rem;border-bottom:1px solid var(--done-terra);color:var(--done-terra-deep);font-size:.62rem;font-weight:850;letter-spacing:.18em;}
 .done-page .badge-ring{position:absolute;z-index:-1;right:4%;top:5rem;width:clamp(11rem,20vw,17rem);height:clamp(11rem,20vw,17rem);margin:0;filter:none;transform:rotate(-7deg);opacity:.82;}
 .done-page .badge-ring circle:first-child{stroke:rgba(159,50,35,.2)!important;stroke-width:2!important;}
@@ -57,6 +57,20 @@ body.done-page::after{content:"07";position:fixed;z-index:0;right:-2vw;top:50%;c
 .done-page .next-card.is-paid-path :is(.nc-desc,.nc-go){color:#cbbda7;}
 .done-page .next-card.is-paid-path .nc-go{color:var(--done-terra);font-weight:850;}
 .done-page .next-card.is-paid-path:hover{padding-left:1.35rem;border-color:var(--done-terra);background:#211a13;}
+.done-page .change-map{position:relative;margin:clamp(3.2rem,7vh,5.2rem) 0;padding:0 0 2.8rem;border-bottom:1px solid var(--done-line);}
+.done-page .change-map-head{display:grid;grid-template-columns:8.5rem 1fr;column-gap:1rem;align-items:baseline;margin-bottom:1.2rem;}
+.done-page .change-map-eyebrow{grid-row:span 2;color:var(--done-terra-deep);font-size:.6rem;font-weight:850;letter-spacing:.17em;}
+.done-page .change-map h2{margin:0;color:var(--done-ink);font-family:'Hahmlet',serif;font-size:clamp(1.8rem,3.2vw,3rem);font-weight:650;line-height:1.08;letter-spacing:-.035em;}
+.done-page .change-map-head p{margin:.45rem 0 0;color:var(--done-ink-soft);font-size:.78rem;}
+.done-page .change-map-stage{position:relative;isolation:isolate;min-height:clamp(17rem,32vw,22rem);overflow:hidden;border:1px solid rgba(238,229,210,.12);background:#17130e;box-shadow:0 1.8rem 4rem rgba(63,48,32,.13);cursor:crosshair;touch-action:pan-y;}
+.done-page .change-map-stage::before{content:"";position:absolute;z-index:-1;inset:0;opacity:.16;background:repeating-linear-gradient(93deg,rgba(238,229,210,.08) 0 1px,transparent 1px 8px),radial-gradient(circle at 80% 18%,rgba(200,95,67,.22),transparent 30%);pointer-events:none;}
+.done-page #changeMapCanvas{display:block;width:100%;height:clamp(17rem,32vw,22rem);}
+.done-page .change-map-detail{position:absolute;z-index:2;left:clamp(.8rem,3vw,1.5rem);bottom:clamp(.8rem,3vw,1.4rem);max-width:calc(100% - 2rem);margin:0;padding:.55rem .75rem;border-left:1px solid var(--done-terra);background:rgba(23,19,14,.72);color:#eee5d2;font-size:clamp(.68rem,1.1vw,.78rem);line-height:1.45;backdrop-filter:blur(8px);pointer-events:none;}
+.done-page .change-map-actions{display:grid;grid-template-columns:8.5rem 1fr;margin-top:.8rem;border-top:1px solid var(--done-line);}
+.done-page .change-map-actions button{min-height:3.4rem;padding:.6rem .2rem;border:0;border-bottom:1px solid var(--done-line);background:transparent;color:var(--done-ink);font:750 .73rem var(--sans);text-align:left;cursor:pointer;transition:padding .25s ease,background .25s ease;}
+.done-page .change-map-actions button+button{padding-left:1rem;border-left:1px solid var(--done-line);color:var(--done-terra-deep);}
+.done-page .change-map-actions button:hover{padding-left:.6rem;background:rgba(200,95,67,.08);}
+.done-page .change-map-actions button+button:hover{padding-left:1.6rem;}
 .done-page .reset-wrap{margin-top:2.5rem;padding:0;border:0;text-align:left;}
 .done-page .reset-btn{color:var(--done-ink-soft);text-underline-offset:.25em;}
 
@@ -79,6 +93,15 @@ body.done-page::after{content:"07";position:fixed;z-index:0;right:-2vw;top:50%;c
   .done-page .share-btns{grid-template-columns:1fr;}
   .done-page .btn-threads{border-right:0;}
   .done-page .nc-desc{display:none;}
+  .done-page .change-map{margin-block:3.5rem;}
+  .done-page .change-map-head{display:block;margin-bottom:1rem;}
+  .done-page .change-map-eyebrow{display:block;margin-bottom:.7rem;}
+  .done-page .change-map h2{font-size:2rem;}
+  .done-page .change-map-head p{display:none;}
+  .done-page .change-map-stage{min-height:14rem;}
+  .done-page #changeMapCanvas{height:14rem;}
+  .done-page .change-map-detail{right:.8rem;font-size:.67rem;}
+  .done-page .change-map-actions{grid-template-columns:1fr 1.45fr;}
 }
 
 @media(prefers-reduced-motion:reduce){.done-page *{transition:none!important;animation:none!important;}}

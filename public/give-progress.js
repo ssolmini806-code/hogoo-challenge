@@ -85,6 +85,7 @@
       localStorage.removeItem(KEY);
       localStorage.removeItem(KEY_START);
       localStorage.removeItem(KEY_LAST);
+      localStorage.removeItem('give_challenge_map_v1');
       syncJourney();
     }
   };

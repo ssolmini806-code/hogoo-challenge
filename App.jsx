@@ -51,6 +51,7 @@ async function syncUserTimezone(userId) {
 }
 
 const CHALLENGE_COMPLETED_AT_KEY = 'challenge_completed_at';
+const CHALLENGE_MAP_KEY = 'give_challenge_map_v1';
 
 function trackEvent(name, params) {
   if (typeof gtag === 'function') gtag('event', name, params || {});
@@ -418,6 +419,32 @@ export default function App() {
   const completedMissions = Object.values(missions).reduce((sum, arr) => sum + (arr ? arr.length : 0), 0);
   const completedDays = DAYS.reduce((sum, _, i) => sum + ((missions[`${i}`] || []).length === 3 ? 1 : 0), 0);
 
+  const saveChallengeMapSnapshot = (missionState = missions) => {
+    if (typeof window === 'undefined') return;
+    const resultType = window.localStorage.getItem('give_test_result') || getJourneyContext().resultType || null;
+    const safeScore = value => Number.isFinite(Number(value))
+      ? Math.max(0, Math.min(10, Number(value)))
+      : null;
+    const snapshot = {
+      version: 1,
+      savedAt: new Date().toISOString(),
+      resultType,
+      days: DAYS.map((_, index) => ({
+        day: index + 1,
+        missions: Math.max(0, Math.min(3, (missionState[`${index}`] || []).length)),
+        anxiety: safeScore(anxiety[`${index}`]),
+        guilt: safeScore(guilt[`${index}`]),
+        hasPhrase: selectedPhrase[`${index}`] !== undefined && selectedPhrase[`${index}`] !== null,
+      })),
+    };
+    window.localStorage.setItem(CHALLENGE_MAP_KEY, JSON.stringify(snapshot));
+  };
+
+  useEffect(() => {
+    if (loading) return;
+    saveChallengeMapSnapshot();
+  }, [loading, missions, selectedPhrase, anxiety, guilt]);
+
   const toggleMission = (dayIdx, mIdx) => {
     if (!adminMode && !session) { openLoginModal(setLoginModalOpen, 'mission_click'); return; }
     const key = `${dayIdx}`;
@@ -425,7 +452,8 @@ export default function App() {
     const isAdding = !arr.includes(mIdx);
     const newArr = isAdding ? [...arr, mIdx] : arr.filter(i => i !== mIdx);
     saveProgress(dayIdx, { missions: newArr });
-    setMissions(prev => ({ ...prev, [key]: newArr }));
+    const nextMissions = { ...missions, [key]: newArr };
+    setMissions(nextMissions);
 
     if (isAdding) {
       const totalForDay = DAYS[dayIdx].missions.length;
@@ -438,6 +466,7 @@ export default function App() {
         if (window.giveProgress && window.giveProgress.get().day < dayIdx + 1) {
           var s = window.giveProgress.completeDay();
           if (s.isComplete) {
+            saveChallengeMapSnapshot(nextMissions);
             location.href = 'challenge-done.html';
           }
         }

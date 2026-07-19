@@ -80,6 +80,23 @@
     </div>
   </div>
 
+  <section class="change-map reveal" aria-labelledby="changeMapTitle">
+    <div class="change-map-head">
+      <span class="change-map-eyebrow">YOUR 7-DAY MAP</span>
+      <h2 id="changeMapTitle">당신이 지나온 길</h2>
+      <p>길 위를 움직여 하루씩 다시 바라보세요.</p>
+    </div>
+    <div class="change-map-stage" id="changeMapStage">
+      <canvas id="changeMapCanvas" role="img" aria-label="7일 동안의 미션과 감정 변화를 표현한 수채화 길"></canvas>
+      <p class="change-map-detail" id="changeMapDetail" aria-live="polite">길이 피어나는 중이에요.</p>
+    </div>
+    <ol class="sr-only" id="changeMapSummary" aria-label="7일 변화 지도 상세"></ol>
+    <div class="change-map-actions">
+      <button type="button" id="changeMapReplay">다시 피우기</button>
+      <button type="button" id="changeMapShare">변화 지도 저장·공유</button>
+    </div>
+  </section>
+
   <div class="share-card reveal">
     <span class="sc-eyebrow">Threads 인증</span>
     <h2>이 변화를 기록으로 남겨두세요</h2>
@@ -101,6 +118,7 @@
 
 </main>
 
+<script src="/challenge-map.js" defer></script>
 <script src="/challenge-done.js" defer></script>
 
 </body>
