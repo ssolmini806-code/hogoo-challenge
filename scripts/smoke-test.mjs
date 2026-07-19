@@ -7,7 +7,7 @@ import { join } from 'node:path'
 import { chromium } from 'playwright'
 
 const PORT = 4173
-const BASE = `http://localhost:${PORT}`
+const BASE = `http://127.0.0.1:${PORT}`
 const ROOT = new URL('..', import.meta.url).pathname
 const MOBILE = { width: 390, height: 844 }
 
@@ -21,6 +21,7 @@ const PAGES = [
   { path: '/selfless-otherish-test.html', label: '이타성' },
   { path: '/result-sequence.html', label: '결과 시퀀스' },
   { path: '/hogoo-test.html', label: '7일 챌린지 (React)', mount: '#root' },
+  { path: '/challenge-done.html', label: '챌린지 완주·변화 지도' },
   { path: '/reviews.html', label: '후기' },
   { path: '/about.html', label: '브랜드 스토리' },
   { path: '/white-psychology.html', label: '선의 심리학' },
@@ -50,7 +51,7 @@ function lintHtmlFiles() {
 
 function startPreview() {
   return new Promise((resolvePromise, reject) => {
-    const proc = spawn('npx', ['vite', 'preview', '--port', String(PORT), '--strictPort'], {
+    const proc = spawn('npx', ['vite', 'preview', '--host', '127.0.0.1', '--port', String(PORT), '--strictPort'], {
       cwd: new URL('..', import.meta.url).pathname,
       stdio: ['ignore', 'pipe', 'pipe'],
     })
@@ -83,7 +84,10 @@ async function checkPage(browser, { path, label, mount }) {
   page.on('pageerror', (err) => errors.push(`JS 예외: ${err.message.split('\n')[0]}`))
   page.on('requestfailed', (req) => {
     const url = req.url()
-    if (url.startsWith(BASE)) errors.push(`로컬 리소스 로드 실패: ${url.replace(BASE, '')}`)
+    if (url.startsWith(BASE)) {
+      const reason = req.failure()?.errorText
+      errors.push(`로컬 리소스 로드 실패: ${url.replace(BASE, '')}${reason ? ` (${reason})` : ''}`)
+    }
   })
   page.on('response', (res) => {
     if (res.url().startsWith(BASE) && res.status() >= 400) {
@@ -115,6 +119,72 @@ async function checkPage(browser, { path, label, mount }) {
   return { path, label, errors }
 }
 
+async function checkFunnelContract(browser) {
+  const page = await browser.newPage({ viewport: { width: 1280, height: 800 } })
+  const errors = []
+  await page.route('**/*', (route) => {
+    const url = route.request().url()
+    url.startsWith(BASE) ? route.continue() : route.abort()
+  })
+  await page.addInitScript(() => {
+    localStorage.setItem('give_test_result', 'diplomat')
+    localStorage.setItem('give_challenge_day', '3')
+    localStorage.setItem('give_funnel_journey_v1', JSON.stringify({
+      id: 'verify-journey-id',
+      resultType: 'diplomat',
+      firstSeenAt: '2026-07-19T00:00:00.000Z',
+    }))
+  })
+
+  try {
+    await page.goto(`${BASE}/result-sequence.html?test=give&type=diplomat#next-path`, {
+      waitUntil: 'load', timeout: 15000,
+    })
+    await page.waitForFunction(() => window.GiveJourney && window.trackEvent?.__giveContextual, null, { timeout: 5000 })
+
+    const result = await page.evaluate(() => {
+      window.trackEvent('funnel_contract_probe', { product: 'give_id_only' })
+      const links = Array.from(document.querySelectorAll('[data-product]')).map((link) => ({
+        product: link.dataset.product,
+        href: link.href,
+      }))
+      const dynamicUrl = window.GiveJourney.paidUrl('give_id_only', {
+        medium: 'contract_test', content: 'dynamic_reward',
+      })
+      const events = window.dataLayer.map((entry) => Array.from(entry))
+      const probe = events.find((entry) => entry[0] === 'event' && entry[1] === 'funnel_contract_probe')
+      return { links, dynamicUrl, probe: probe ? probe[2] : null }
+    })
+
+    for (const link of result.links) {
+      const url = new URL(link.href)
+      if (url.hostname !== 'givecosystem.com') errors.push(`${link.product}: 유료 호스트 불일치`)
+      if (url.pathname !== '/start') errors.push(`${link.product}: /start 경로 누락`)
+      if (url.searchParams.get('product') !== link.product) errors.push(`${link.product}: product 불일치`)
+      if (url.searchParams.get('journey_id') !== 'verify-journey-id') errors.push(`${link.product}: journey_id 누락`)
+      if (url.searchParams.get('result_type') !== 'diplomat') errors.push(`${link.product}: result_type 누락`)
+      if (!url.searchParams.get('utm_medium')) errors.push(`${link.product}: UTM 누락`)
+    }
+
+    const dynamicUrl = new URL(result.dynamicUrl)
+    if (dynamicUrl.searchParams.get('journey_id') !== 'verify-journey-id') errors.push('동적 유료 URL: journey_id 누락')
+    if (dynamicUrl.searchParams.get('result_type') !== 'diplomat') errors.push('동적 유료 URL: result_type 누락')
+    if (dynamicUrl.searchParams.get('utm_content') !== 'dynamic_reward') errors.push('동적 유료 URL: utm_content 누락')
+    if (!result.probe) errors.push('공통 이벤트 컨텍스트가 dataLayer에 기록되지 않음')
+    else {
+      if (result.probe.journey_id !== 'verify-journey-id') errors.push('이벤트 journey_id 불일치')
+      if (result.probe.result_type !== 'diplomat') errors.push('이벤트 result_type 불일치')
+      if (result.probe.journey_stage !== 'give_result') errors.push('이벤트 journey_stage 불일치')
+      if (result.probe.challenge_day !== 3) errors.push('이벤트 challenge_day 불일치')
+    }
+  } catch (error) {
+    errors.push(`퍼널 계약 검사 실패: ${error.message.split('\n')[0]}`)
+  } finally {
+    await page.close()
+  }
+  return errors
+}
+
 // 1) 정적 린트
 const lint = lintHtmlFiles()
 if (lint.problems.length) {
@@ -139,6 +209,14 @@ try {
       console.log(`  ✗ ${label} (${path})`)
       for (const err of errors) console.log(`      - ${err}`)
     }
+  }
+  const funnelErrors = await checkFunnelContract(browser)
+  if (funnelErrors.length === 0) {
+    console.log('  ✓ 무료→유료 퍼널 데이터 계약')
+  } else {
+    failed++
+    console.log('  ✗ 무료→유료 퍼널 데이터 계약')
+    for (const error of funnelErrors) console.log(`      - ${error}`)
   }
 } finally {
   await browser.close()

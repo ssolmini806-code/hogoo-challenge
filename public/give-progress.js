@@ -41,7 +41,8 @@
       if (!localStorage.getItem(KEY_START)) {
         localStorage.setItem(KEY_START, today());
         if (!localStorage.getItem(KEY)) localStorage.setItem(KEY, '0');
-        if (typeof gtag === 'function') gtag('event', 'challenge_started');
+        if (typeof w.trackEvent === 'function') w.trackEvent('challenge_started');
+        else if (typeof gtag === 'function') gtag('event', 'challenge_started');
       }
       syncJourney();
       return api.get();
@@ -56,7 +57,10 @@
       localStorage.setItem(KEY, String(next));
       localStorage.setItem(KEY_LAST, today());
       if (!localStorage.getItem(KEY_START)) localStorage.setItem(KEY_START, today());
-      if (typeof gtag === 'function') {
+      if (typeof w.trackEvent === 'function') {
+        w.trackEvent('challenge_day_complete', { day: next });
+        if (next >= TOTAL) w.trackEvent('challenge_completed');
+      } else if (typeof gtag === 'function') {
         gtag('event', 'challenge_day_complete', { day: next });
         if (next >= TOTAL) gtag('event', 'challenge_completed');
       }

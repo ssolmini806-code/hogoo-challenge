@@ -491,7 +491,7 @@
       shareLink.href = test.retryUrl || "/give-test.html";
       shareLink.addEventListener("click", function(event){
         event.preventDefault();
-        if (typeof gtag === "function") gtag("event", "give_share_clicked", { channel: "match_slide", give_type: key });
+        if (typeof window.trackEvent === "function") window.trackEvent("give_share_clicked", { channel: "match_slide", give_type: key });
         var shareUrl = window.location.origin + (test.retryUrl || "/give-test.html");
         if (navigator.share) {
           navigator.share({ title: document.title, url: shareUrl }).catch(function(){});

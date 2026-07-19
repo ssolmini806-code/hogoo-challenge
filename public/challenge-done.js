@@ -26,7 +26,7 @@
 
   document.getElementById('threadsBtn').addEventListener('click', function () {
     window.open('https://www.threads.net/intent/post?text=' + shareText, '_blank', 'noopener,noreferrer');
-    if (typeof window.gtag === 'function') window.gtag('event', 'challenge_shared', { platform: 'threads' });
+    if (typeof window.trackEvent === 'function') window.trackEvent('challenge_shared', { platform: 'threads' });
   });
 
   document.getElementById('shareMoreBtn').addEventListener('click', function () {
@@ -39,7 +39,7 @@
         alert('문구가 복사됐어요. SNS에 붙여넣기 해주세요!');
       });
     }
-    if (typeof window.gtag === 'function') window.gtag('event', 'challenge_shared', { platform: 'other' });
+    if (typeof window.trackEvent === 'function') window.trackEvent('challenge_shared', { platform: 'other' });
   });
 
   var paidPath = document.querySelector('.is-paid-path');

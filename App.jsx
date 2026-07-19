@@ -54,7 +54,9 @@ const CHALLENGE_COMPLETED_AT_KEY = 'challenge_completed_at';
 const CHALLENGE_MAP_KEY = 'give_challenge_map_v1';
 
 function trackEvent(name, params) {
-  if (typeof gtag === 'function') gtag('event', name, params || {});
+  if (typeof window !== 'undefined' && typeof window.trackEvent === 'function') {
+    window.trackEvent(name, params || {});
+  } else if (typeof gtag === 'function') gtag('event', name, params || {});
 }
 
 function openLoginModal(setFn, trigger) {

@@ -2,6 +2,7 @@
 <html lang="ko">
 <head>
     <script type="module" src="/src/site-env.js"></script>
+    <script src="/site-bootstrap.js" data-third-party="ga,ads,clarity,addToAny" defer></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -21,6 +22,8 @@
     <link rel="stylesheet" href="/give-theme.css">
     <link rel="stylesheet" href="/test-landing.css">
     <link rel="stylesheet" href="/give-question-world.css">
+    <link rel="stylesheet" href="/journey-continuity.css">
+    <script src="/journey-continuity.js" defer></script>
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -370,9 +373,7 @@ window.trackEvent = window.trackEvent || function (name, params) {
         ['pointerdown', 'keydown', 'touchstart', 'scroll'].forEach(function (eventName) {
             window.removeEventListener(eventName, run);
         });
-        loadScript('/site-bootstrap.js', { 'data-third-party': 'ga,ads,clarity,addToAny' }, function () {
-            loadScript('/third-party-loader.js');
-        });
+        loadScript('/third-party-loader.js');
     }
     ['pointerdown', 'keydown', 'touchstart', 'scroll'].forEach(function (eventName) {
         window.addEventListener(eventName, run, { once: true, passive: true });

@@ -121,7 +121,16 @@ function fallbackCopyLink(url: string) {
   document.body.removeChild(el);
 }
 
-function paidRewardUrl(_resultType: string) {
+function paidRewardUrl(resultType: string) {
+  const journeyApi = (window as typeof window & {
+    GiveJourney?: { paidUrl?: (product: string, options?: Record<string, string>) => string }
+  }).GiveJourney;
+  if (typeof journeyApi?.paidUrl === 'function') {
+    return journeyApi.paidUrl('give_id_only', {
+      medium: 'reward_cta',
+      content: 'a_plus_b_bonus',
+    });
+  }
   const url = new URL(PAID_SITE_URL);
   url.pathname = '/start';
   url.search = '';
@@ -130,6 +139,11 @@ function paidRewardUrl(_resultType: string) {
   url.searchParams.set('utm_medium', 'reward_cta');
   url.searchParams.set('utm_campaign', 'first_path');
   url.searchParams.set('utm_content', 'a_plus_b_bonus');
+  try {
+    const journey = JSON.parse(window.localStorage.getItem('give_funnel_journey_v1') || '{}');
+    if (journey.id) url.searchParams.set('journey_id', journey.id);
+    if (resultType || journey.resultType) url.searchParams.set('result_type', resultType || journey.resultType);
+  } catch {}
   return url.toString();
 }
 

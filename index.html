@@ -2,6 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
+    <script src="/site-bootstrap.js" data-third-party="ga,clarity,userback,addToAny" defer></script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="shortcut icon" href="/favicon.svg">
     <link rel="apple-touch-icon" href="/favicon.svg">
@@ -223,9 +224,7 @@
   }
 
   afterInteractionOrDelay(function () {
-    loadScript('/site-bootstrap.js', { 'data-third-party': 'ga,clarity,userback,addToAny' }, function () {
-      loadScript('/third-party-loader.js');
-    });
+    loadScript('/third-party-loader.js');
   }, 45000);
 
   afterInteractionOrDelay(function () {

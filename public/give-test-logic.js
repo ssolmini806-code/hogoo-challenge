@@ -714,6 +714,12 @@ window.addEventListener("free-test-reward-status", (event) => {
 });
 
 function paidUrl(source) {
+    if (window.GiveJourney && typeof window.GiveJourney.paidUrl === "function") {
+        return window.GiveJourney.paidUrl("give_id_only", {
+            medium: "give_result_legacy",
+            content: source
+        });
+    }
     const configuredUrl = window.__PAID_SITE_URL && !String(window.__PAID_SITE_URL).includes("%VITE_")
         ? window.__PAID_SITE_URL
         : "https://givecosystem.com/";
@@ -725,6 +731,12 @@ function paidUrl(source) {
     url.searchParams.set("utm_medium", "give_result_legacy");
     url.searchParams.set("utm_campaign", "first_path");
     url.searchParams.set("utm_content", source);
+    try {
+        const journey = JSON.parse(localStorage.getItem("give_funnel_journey_v1") || "{}");
+        const resultType = finalKey || journey.resultType || localStorage.getItem("give_test_result");
+        if (journey.id) url.searchParams.set("journey_id", journey.id);
+        if (resultType) url.searchParams.set("result_type", resultType);
+    } catch (_) {}
     return url.toString();
 }
 

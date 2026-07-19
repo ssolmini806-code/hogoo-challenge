@@ -20,9 +20,49 @@
     allow_linker: true,
     linker: { domains: ['hogoo-challenge.pages.dev', 'givecosystem.com'] }
   });
-  window.trackEvent = window.trackEvent || function (name, params) {
-    if (typeof window.gtag === 'function') window.gtag('event', name, params || {});
+
+  function journeyStage() {
+    var path = window.location.pathname;
+    if (path.indexOf('give-prologue') !== -1) return 'prologue';
+    if (path.indexOf('give-test') !== -1) return 'give_test';
+    if (path.indexOf('result-sequence') !== -1) return 'give_result';
+    if (path.indexOf('challenge-done') !== -1) return 'challenge_complete';
+    if (path.indexOf('hogoo-test') !== -1) return 'free_challenge';
+    if (path.indexOf('articles') !== -1) return 'content';
+    if (path === '/' || path.endsWith('/index.html')) return 'home';
+    return 'site';
+  }
+
+  function analyticsContext() {
+    var state = {};
+    try { state = JSON.parse(localStorage.getItem('give_funnel_journey_v1') || '{}') || {}; } catch (_) {}
+    if (!state.id) {
+      state.id = window.crypto && typeof window.crypto.randomUUID === 'function'
+        ? window.crypto.randomUUID()
+        : 'gj_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
+      state.firstSeenAt = state.firstSeenAt || new Date().toISOString();
+      state.landingPath = state.landingPath || window.location.pathname + window.location.search;
+      try { localStorage.setItem('give_funnel_journey_v1', JSON.stringify(state)); } catch (_) {}
+    }
+    var resultType = state.resultType;
+    try { resultType = resultType || localStorage.getItem('give_test_result'); } catch (_) {}
+    var challengeDay = 0;
+    try { challengeDay = Math.max(0, Math.min(7, parseInt(localStorage.getItem('give_challenge_day') || '0', 10) || 0)); } catch (_) {}
+    return {
+      journey_id: state.id,
+      result_type: resultType || 'unknown',
+      journey_stage: journeyStage(),
+      challenge_day: challengeDay
+    };
+  }
+
+  window.trackEvent = function (name, params) {
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', name, Object.assign(analyticsContext(), params || {}));
+    }
   };
+  window.trackEvent.__giveContextual = true;
+  window.GiveAnalytics = { context: analyticsContext, stage: journeyStage };
   document.dispatchEvent(new CustomEvent('give:analytics-ready'));
 
   window.addEventListener('load', function () {

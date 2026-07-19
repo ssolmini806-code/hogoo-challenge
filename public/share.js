@@ -1,6 +1,7 @@
 (function(){
   function trackEvent(name, params) {
-    if (typeof gtag === 'function') gtag('event', name, params || {});
+    if (typeof window.trackEvent === 'function') window.trackEvent(name, params || {});
+    else if (typeof gtag === 'function') gtag('event', name, params || {});
   }
   function toast(m){
     var e=document.getElementById('snst');

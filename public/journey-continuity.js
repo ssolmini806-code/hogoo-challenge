@@ -65,22 +65,34 @@
     return configured && !String(configured).includes("%VITE_") ? configured : "https://givecosystem.com/";
   }
 
+  function paidUrl(product, options) {
+    var opts = options || {};
+    state = readState();
+    var url = new URL(paidBase(), location.origin);
+    url.pathname = "/start";
+    url.search = "";
+    url.searchParams.set("product", product || "give_id_challenge");
+    url.searchParams.set("utm_source", opts.source || "hogoo_free");
+    url.searchParams.set("utm_medium", opts.medium || stageForPath());
+    url.searchParams.set("utm_campaign", opts.campaign || "first_path");
+    if (opts.content) url.searchParams.set("utm_content", opts.content);
+    url.searchParams.set("journey_id", state.id);
+    if (state.resultType) url.searchParams.set("result_type", state.resultType);
+    return url.toString();
+  }
+
   function decoratePaidLink(link) {
     var product = link.dataset.product;
     var current;
     try { current = new URL(link.href, location.origin); } catch (_) { return; }
     if (!product && current.hostname !== "givecosystem.com") return;
     try {
-      var url = new URL(paidBase(), location.origin);
-      url.pathname = "/start";
-      url.search = "";
-      url.searchParams.set("product", product || current.searchParams.get("product") || "give_id_challenge");
-      url.searchParams.set("utm_source", current.searchParams.get("utm_source") || "hogoo_free");
-      url.searchParams.set("utm_medium", current.searchParams.get("utm_medium") || stageForPath());
-      url.searchParams.set("utm_campaign", current.searchParams.get("utm_campaign") || "first_path");
-      url.searchParams.set("journey_id", state.id);
-      if (state.resultType) url.searchParams.set("result_type", state.resultType);
-      link.href = url.toString();
+      link.href = paidUrl(product || current.searchParams.get("product") || "give_id_challenge", {
+        source: current.searchParams.get("utm_source") || "hogoo_free",
+        medium: current.searchParams.get("utm_medium") || stageForPath(),
+        campaign: current.searchParams.get("utm_campaign") || "first_path",
+        content: current.searchParams.get("utm_content") || ""
+      });
       link.dataset.journeyDecorated = "true";
     } catch (_) {}
   }
@@ -157,6 +169,7 @@
     get: function () { return Object.assign({}, state); },
     refresh: function () { state = readState(); decorateAll(); },
     track: track,
+    paidUrl: paidUrl,
     decoratePaidLink: decoratePaidLink
   };
 
