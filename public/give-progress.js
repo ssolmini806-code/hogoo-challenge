@@ -18,6 +18,7 @@
 
   function today(){ var d = new Date(); return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
   function getInt(k){ return parseInt(localStorage.getItem(k) || '0', 10) || 0; }
+  function syncJourney(){ if (w.GiveJourney && typeof w.GiveJourney.refresh === 'function') w.GiveJourney.refresh(); }
 
   var api = {
     /* 현재 상태 객체 반환 */
@@ -42,6 +43,7 @@
         if (!localStorage.getItem(KEY)) localStorage.setItem(KEY, '0');
         if (typeof gtag === 'function') gtag('event', 'challenge_started');
       }
+      syncJourney();
       return api.get();
     },
 
@@ -58,6 +60,7 @@
         gtag('event', 'challenge_day_complete', { day: next });
         if (next >= TOTAL) gtag('event', 'challenge_completed');
       }
+      syncJourney();
       return api.get();
     },
 
@@ -73,6 +76,7 @@
       n = Math.max(0, Math.min(TOTAL, parseInt(n, 10) || 0));
       localStorage.setItem(KEY, String(n));
       localStorage.setItem(KEY_LAST, today());
+      syncJourney();
       return api.get();
     },
 
@@ -81,6 +85,7 @@
       localStorage.removeItem(KEY);
       localStorage.removeItem(KEY_START);
       localStorage.removeItem(KEY_LAST);
+      syncJourney();
     }
   };
 

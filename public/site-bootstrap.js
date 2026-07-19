@@ -16,10 +16,14 @@
     window.dataLayer.push(arguments);
   };
   window.gtag('js', new Date());
-  window.gtag('config', 'G-P6PM6JBJH1');
+  window.gtag('config', 'G-P6PM6JBJH1', {
+    allow_linker: true,
+    linker: { domains: ['hogoo-challenge.pages.dev', 'givecosystem.com'] }
+  });
   window.trackEvent = window.trackEvent || function (name, params) {
     if (typeof window.gtag === 'function') window.gtag('event', name, params || {});
   };
+  document.dispatchEvent(new CustomEvent('give:analytics-ready'));
 
   window.addEventListener('load', function () {
     document.querySelectorAll('link[data-defer-style]').forEach(function (link) {
@@ -28,4 +32,17 @@
       link.removeAttribute('data-defer-style');
     });
   }, { once: true });
+
+  if (!document.querySelector('link[href="/journey-continuity.css"]')) {
+    var journeyStyle = document.createElement('link');
+    journeyStyle.rel = 'stylesheet';
+    journeyStyle.href = '/journey-continuity.css';
+    document.head.appendChild(journeyStyle);
+  }
+  if (!document.querySelector('script[src="/journey-continuity.js"]')) {
+    var journeyScript = document.createElement('script');
+    journeyScript.src = '/journey-continuity.js';
+    journeyScript.defer = true;
+    document.head.appendChild(journeyScript);
+  }
 })();

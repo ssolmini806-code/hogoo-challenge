@@ -52,6 +52,11 @@ body.done-page::after{content:"07";position:fixed;z-index:0;right:-2vw;top:50%;c
 .done-page .next-card:hover{padding-left:.7rem;border-color:var(--done-line);background:linear-gradient(90deg,rgba(200,95,67,.09),transparent);}
 .done-page .nc-title{color:var(--done-ink);}
 .done-page .nc-desc,.done-page .nc-go{color:var(--done-ink-soft);}
+.done-page .next-card.is-paid-path{margin-top:.8rem;padding:1.25rem 1rem;border:1px solid var(--done-dark);background:var(--done-dark);color:#eee5d2;}
+.done-page .next-card.is-paid-path .nc-title{color:#eee5d2;}
+.done-page .next-card.is-paid-path :is(.nc-desc,.nc-go){color:#cbbda7;}
+.done-page .next-card.is-paid-path .nc-go{color:var(--done-terra);font-weight:850;}
+.done-page .next-card.is-paid-path:hover{padding-left:1.35rem;border-color:var(--done-terra);background:#211a13;}
 .done-page .reset-wrap{margin-top:2.5rem;padding:0;border:0;text-align:left;}
 .done-page .reset-btn{color:var(--done-ink-soft);text-underline-offset:.25em;}
 

@@ -12,6 +12,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,1,400;9..144,1,500&family=Hahmlet:wght@400;500;600;700;800&family=Pretendard:wght@400;450;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/give-theme.css">
   <link rel="stylesheet" href="/result-world.css">
+  <script src="/site-bootstrap.js" data-third-party="ga" defer></script>
+  <script src="/third-party-loader.js" defer></script>
   <script src="/result-world.js" defer></script>
 </head>
 <body class="sequence-page">
@@ -144,6 +146,13 @@
         <p class="sequence-line is-soft" id="seqFinalC">발견한 패턴에서 다음 길이 이어집니다.</p>
       </div>
       <div class="sequence-path-choices" aria-label="다음 길 선택">
+        <p class="sequence-path-fork-hint" aria-hidden="true">손끝을 가까이 대면, 잉크 길이 먼저 움직여요</p>
+        <svg class="sequence-path-fork" viewBox="0 0 600 120" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+          <path class="sequence-path-fork-trunk" d="M300 0V38"></path>
+          <path class="sequence-path-fork-report" d="M300 38C300 69 150 55 150 120"></path>
+          <path class="sequence-path-fork-challenge" d="M300 38C300 69 450 55 450 120"></path>
+          <circle class="sequence-path-fork-seed" cx="300" cy="38" r="5"></circle>
+        </svg>
         <a href="https://givecosystem.com/start?product=give_id_only" target="_blank" rel="noopener noreferrer" class="sequence-path-choice" id="seq-paid-report" data-product="give_id_only">
           <small>더 정확히 알고 싶다면</small>
           <strong>심화 결과 보기</strong>
@@ -779,7 +788,12 @@
       }
     });
 
-    render(0);
+    var resumeAtPath = location.hash === "#next-path" && testKey === "give";
+    render(resumeAtPath ? slides.length - 1 : 0);
+    if (resumeAtPath && typeof window.trackEvent === "function") window.trackEvent("funnel_result_resumed", {
+      result_type: key,
+      destination: "next_path"
+    });
   })();
   </script>
 </body>

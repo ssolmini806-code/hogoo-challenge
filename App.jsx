@@ -2,8 +2,20 @@ import { useState, useEffect, useRef, lazy, Suspense } from "react";
 import { CheckCircle, Circle, ChevronRight, ChevronLeft, Award, Flame, Copy, Check, MessageSquare, Send, Star, Trash2 } from "lucide-react";
 
 const PAID_SITE_URL = import.meta.env.VITE_PAID_SITE_URL ?? 'https://givecosystem.com/';
+function getJourneyContext() {
+  if (typeof window === 'undefined') return {};
+  if (window.GiveJourney && typeof window.GiveJourney.get === 'function') return window.GiveJourney.get();
+  try {
+    const saved = JSON.parse(window.localStorage.getItem('give_funnel_journey_v1') || '{}');
+    const resultType = saved.resultType || window.localStorage.getItem('give_test_result');
+    return { ...saved, resultType };
+  } catch {
+    return { resultType: window.localStorage.getItem('give_test_result') };
+  }
+}
 function paidProductUrl(product, medium = 'seven_day_challenge') {
   try {
+    const journey = getJourneyContext();
     const url = new URL(PAID_SITE_URL, window.location.origin);
     url.pathname = '/start';
     url.search = '';
@@ -11,6 +23,8 @@ function paidProductUrl(product, medium = 'seven_day_challenge') {
     url.searchParams.set('utm_source', 'hogoo_free');
     url.searchParams.set('utm_medium', medium);
     url.searchParams.set('utm_campaign', 'first_path');
+    if (journey.id) url.searchParams.set('journey_id', journey.id);
+    if (journey.resultType) url.searchParams.set('result_type', journey.resultType);
     return url.toString();
   } catch {
     return `https://givecosystem.com/start?product=${encodeURIComponent(product)}`;

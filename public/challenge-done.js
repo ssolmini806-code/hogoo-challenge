@@ -8,6 +8,10 @@
   document.getElementById('dayNum').textContent = s.day || 7;
   document.getElementById('statDay').textContent = s.day || 7;
 
+  if (typeof window.trackEvent === 'function') {
+    window.trackEvent('challenge_complete_view', { completed_days: s.day || 7 });
+  }
+
   var circle = document.querySelector('.badge-ring circle:last-child');
   var pct = s.isComplete ? 100 : s.percent;
   var r = 54;
@@ -36,6 +40,15 @@
       });
     }
     if (typeof window.gtag === 'function') window.gtag('event', 'challenge_shared', { platform: 'other' });
+  });
+
+  var paidPath = document.querySelector('.is-paid-path');
+  if (paidPath) paidPath.addEventListener('click', function () {
+    if (typeof window.trackEvent === 'function') window.trackEvent('paid_cta_click', {
+      product: 'give_id_challenge_upgrade',
+      placement: 'challenge_complete_path',
+      challenge_day: s.day || 7
+    });
   });
 
   document.getElementById('resetBtn').addEventListener('click', function () {

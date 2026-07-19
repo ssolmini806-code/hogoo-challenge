@@ -315,11 +315,43 @@
       });
     }
 
+    function initPathFork() {
+      var fork = document.querySelector(".sequence-path-choices");
+      var report = document.getElementById("seq-paid-report");
+      var challenge = document.getElementById("seq-paid-cta");
+      if (!fork || !report || !challenge) return;
+      var previewed = {};
+
+      function choose(kind) {
+        fork.classList.toggle("is-report-path", kind === "report");
+        fork.classList.toggle("is-challenge-path", kind === "challenge");
+        if (!kind || previewed[kind]) return;
+        previewed[kind] = true;
+        if (typeof window.trackEvent === "function") window.trackEvent("result_path_preview", {
+          path_choice: kind,
+          placement: "result_final_path"
+        });
+      }
+
+      [[report, "report"], [challenge, "challenge"]].forEach(function (entry) {
+        listen(entry[0], "pointerenter", function () { choose(entry[1]); });
+        listen(entry[0], "focus", function () { choose(entry[1]); });
+        listen(entry[0], "pointerdown", function () { choose(entry[1]); });
+      });
+      listen(fork, "pointerleave", function () {
+        if (!fork.contains(document.activeElement)) choose("");
+      });
+      listen(fork, "focusout", function (event) {
+        if (!fork.contains(event.relatedTarget)) choose("");
+      });
+    }
+
     initLivingThread();
     initParallax();
     initInkBloom();
     initWatercolorDiscovery();
     initRiskInk();
+    initPathFork();
 
     window.addEventListener("pagehide", function () {
       disposers.splice(0).forEach(function (dispose) { dispose(); });
