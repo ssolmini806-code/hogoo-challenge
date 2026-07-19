@@ -25,6 +25,8 @@ const PAGES = [
   { path: '/about.html', label: '브랜드 스토리' },
   { path: '/white-psychology.html', label: '선의 심리학' },
   { path: '/articles/index.html', label: '칼럼 목록' },
+  { path: '/articles/giver-burnout.html', label: '근거 기반 칼럼' },
+  { path: '/editorial-policy.html', label: '편집 원칙' },
 ]
 
 // ── 정적 린트: CLAUDE.md 주요 규칙을 소스 HTML에서 자동 검사 ──

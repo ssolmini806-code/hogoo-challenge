@@ -9,7 +9,7 @@
     "postbuild": "node scripts/purgecss.mjs",
     "preview": "vite preview",
     "smoke": "node scripts/smoke-test.mjs",
-    "verify": "npm run build && node scripts/smoke-test.mjs"
+    "verify": "npm run build && node scripts/content-quality.mjs && node scripts/smoke-test.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.104.1",
