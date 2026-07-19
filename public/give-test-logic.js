@@ -396,10 +396,10 @@ function renderQuestion() {
 }
 
 function getRewardText(idx) {
-    if (idx >= 12) return "마지막 축: 도운 뒤 내가 회복되는 속도를 봅니다.";
-    if (idx >= 8) return "세 번째 축: 도움의 상호성이 새고 있는지 봅니다.";
-    if (idx >= 4) return "두 번째 축: 거절 직전의 불안과 죄책감을 봅니다.";
-    return "첫 번째 축: 선의가 소진으로 바뀌는 신호를 봅니다.";
+    if (idx >= 12) return "마지막 기록 · 회복의 속도";
+    if (idx >= 8) return "세 번째 기록 · 관계의 균형";
+    if (idx >= 4) return "두 번째 기록 · 거절 전의 흔들림";
+    return "첫 번째 기록 · 소진의 시작";
 }
 
 function selectAnswer(score, selectedButton) {

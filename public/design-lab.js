@@ -14,9 +14,14 @@
   var dragStartX=0;
   var dragStartProgress=0;
 
+  window.addEventListener('DOMContentLoaded',function(){
+    if(typeof window.trackEvent==='function')window.trackEvent('give_prologue_view');
+  },{once:true});
+
   function enterTest(){
     if(entering)return;
     entering=true;
+    if(typeof window.trackEvent==='function')window.trackEvent('give_prologue_complete',{method:progress>=.985?'drag':'button'});
     world.classList.add('is-entering');
     world.style.setProperty('--scene-scale','1.12');
     window.setTimeout(function(){window.location.href=nextUrl;},reduced.matches?0:950);
@@ -49,7 +54,7 @@
       stage.classList.toggle('is-current',index===currentStage);
       stage.classList.toggle('is-passed',index<currentStage);
     });
-    next.querySelector('span').textContent=progress>.88?'문을 열고 시작하기':'실을 따라가기';
+    next.querySelector('span').textContent=progress>.88?'이 길에서 시작하기':'길 이어가기';
   }
 
   world.addEventListener('pointerdown',function(event){
