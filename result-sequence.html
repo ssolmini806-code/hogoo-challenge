@@ -25,6 +25,7 @@
   <div class="result-atmosphere" aria-hidden="true">
     <svg viewBox="0 0 1000 180" preserveAspectRatio="none" focusable="false">
       <path pathLength="1" d="M0 115 C150 18 244 166 392 92 S635 24 760 108 S910 158 1000 44"></path>
+      <circle class="result-thread-orb" cx="0" cy="115" r="3.6"></circle>
     </svg>
   </div>
 
@@ -76,8 +77,10 @@
       <figure class="sequence-character sequence-poster-character">
         <img class="sequence-character-silhouette" src="" alt="" aria-hidden="true">
         <img id="seqCharacter" src="" alt="관계 유형 캐릭터 일러스트">
+        <canvas class="result-reveal-canvas" role="button" tabindex="0" aria-label="그림을 쓸어 수채화 색을 발견하기"></canvas>
         <figcaption>FIG. 07 — TYPE SPECIMEN</figcaption>
       </figure>
+      <p class="result-discovery-hint"><span>그림을 천천히 쓸어보세요</span><b aria-hidden="true">↗</b></p>
       <p class="sequence-poster-meta">7가지 유형 중</p>
     </section>
 
@@ -558,7 +561,11 @@
       mixed: "기준"
     };
     var riskText = type.risk;
-    var riskKeyword = testKey === "give" ? riskKeywords[key] : "";
+    var genericRiskKeywords = ["번아웃", "소진", "피로", "죄책감", "불안", "손해", "희생", "부담", "경계", "거리감", "기준", "예민", "압박", "후회", "상처", "고립", "무시", "흔들", "지치"];
+    var fallbackRiskWords = riskText.match(/[가-힣A-Za-z]{2,}/g) || [];
+    var riskKeyword = testKey === "give" ? riskKeywords[key] : genericRiskKeywords.find(function(word){
+      return riskText.indexOf(word) !== -1;
+    }) || fallbackRiskWords.sort(function(a,b){ return b.length - a.length; })[0] || "";
     if (riskKeyword && riskText.indexOf(riskKeyword) !== -1) {
       var riskParts = riskText.split(riskKeyword);
       var riskNode = document.getElementById("seqRisk");
@@ -566,6 +573,9 @@
       var riskMark = document.createElement("mark");
       riskMark.className = "sequence-risk-keyword";
       riskMark.textContent = riskKeyword;
+      riskMark.tabIndex = 0;
+      riskMark.setAttribute("role", "button");
+      riskMark.setAttribute("aria-label", riskKeyword + " 위험 신호 살펴보기");
       riskNode.appendChild(riskMark);
       riskNode.appendChild(document.createTextNode(riskParts.join(riskKeyword)));
     } else {
@@ -666,6 +676,11 @@
           }, 2850);
         }
       }
+      document.dispatchEvent(new CustomEvent("result:slidechange", { detail: {
+        index: index,
+        total: slides.length,
+        slide: slides[index]
+      }}));
     }
 
     function next() {
