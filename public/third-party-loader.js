@@ -93,7 +93,7 @@
     }, 45000);
 
     afterInteractionOrDelay(function () {
-      if (config.ads !== false) loadAds();
+      if (config.ads === true) loadAds();
     }, 60000);
 
     afterInteractionOrDelay(function () {
