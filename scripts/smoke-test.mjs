@@ -21,7 +21,7 @@ const PAGES = [
   { path: '/selfless-otherish-test.html', label: '이타성' },
   { path: '/result-sequence.html', label: '결과 시퀀스' },
   { path: '/hogoo-test.html', label: '7일 챌린지 (React)', mount: '#root' },
-  { path: '/challenge-done.html', label: '챌린지 완주·변화 지도' },
+  { path: '/challenge-done.html', label: '챌린지 완주·변화 지도', seedComplete: true },
   { path: '/reviews.html', label: '후기' },
   { path: '/about.html', label: '브랜드 스토리' },
   { path: '/white-psychology.html', label: '선의 심리학' },
@@ -71,7 +71,7 @@ function startPreview() {
   })
 }
 
-async function checkPage(browser, { path, label, mount }) {
+async function checkPage(browser, { path, label, mount, seedComplete }) {
   const page = await browser.newPage({ viewport: MOBILE })
   const errors = []
 
@@ -80,6 +80,16 @@ async function checkPage(browser, { path, label, mount }) {
     const url = route.request().url()
     url.startsWith(BASE) ? route.continue() : route.abort()
   })
+
+  // 완주 화면은 미완주 상태로 접근 시 7일 챌린지로 리다이렉트되므로,
+  // 완주 화면 자체를 검증하려면 완주 상태를 시드해야 함
+  if (seedComplete) {
+    await page.addInitScript(() => {
+      localStorage.setItem('give_challenge_day', '7')
+      localStorage.setItem('give_challenge_started', '2026-7-12')
+      localStorage.setItem('give_challenge_last', '2026-7-19')
+    })
+  }
 
   page.on('pageerror', (err) => errors.push(`JS 예외: ${err.message.split('\n')[0]}`))
   page.on('requestfailed', (req) => {
@@ -185,6 +195,25 @@ async function checkFunnelContract(browser) {
   return errors
 }
 
+async function checkChallengeGate(browser) {
+  const page = await browser.newPage({ viewport: MOBILE })
+  const errors = []
+  await page.route('**/*', (route) => {
+    const url = route.request().url()
+    url.startsWith(BASE) ? route.continue() : route.abort()
+  })
+  try {
+    await page.goto(`${BASE}/challenge-done.html`, { waitUntil: 'load', timeout: 15000 })
+    const url = new URL(page.url())
+    if (url.pathname !== '/hogoo-test.html') errors.push(`미완주 상태에서 완주 화면이 그대로 노출됨 (${url.pathname})`)
+  } catch (error) {
+    errors.push(`완주 게이트 검사 실패: ${error.message.split('\n')[0]}`)
+  } finally {
+    await page.close()
+  }
+  return errors
+}
+
 // 1) 정적 린트
 const lint = lintHtmlFiles()
 if (lint.problems.length) {
@@ -217,6 +246,14 @@ try {
     failed++
     console.log('  ✗ 무료→유료 퍼널 데이터 계약')
     for (const error of funnelErrors) console.log(`      - ${error}`)
+  }
+  const gateErrors = await checkChallengeGate(browser)
+  if (gateErrors.length === 0) {
+    console.log('  ✓ 챌린지 완주 게이트 (미완주 접근 차단)')
+  } else {
+    failed++
+    console.log('  ✗ 챌린지 완주 게이트 (미완주 접근 차단)')
+    for (const error of gateErrors) console.log(`      - ${error}`)
   }
 } finally {
   await browser.close()

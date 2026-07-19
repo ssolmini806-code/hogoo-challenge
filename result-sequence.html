@@ -702,6 +702,12 @@
       }
     }
 
+    function completePosterDevelop() {
+      window.clearTimeout(posterTimer);
+      if (slides[index].hasAttribute("data-sequence-poster")) slides[index].classList.add("is-developed");
+      setNavigationLock(false);
+    }
+
     function render(nextIndex) {
       window.clearTimeout(posterTimer);
       setNavigationLock(false);
@@ -726,10 +732,7 @@
           slides[index].classList.add("is-developed");
         } else {
           setNavigationLock(true);
-          posterTimer = window.setTimeout(function(){
-            slides[index].classList.add("is-developed");
-            setNavigationLock(false);
-          }, 2850);
+          posterTimer = window.setTimeout(completePosterDevelop, 800);
         }
       }
       document.dispatchEvent(new CustomEvent("result:slidechange", { detail: {
@@ -760,10 +763,15 @@
       render(index - 1);
     }
 
+    function isDevelopingPoster() {
+      return navigationLocked && slides[index].hasAttribute("data-sequence-poster") && !slides[index].classList.contains("is-developed");
+    }
+
     nextButton.addEventListener("click", next);
     backButton.addEventListener("click", prev);
     document.addEventListener("click", function(event){
       if (event.target.closest("a,button")) return;
+      if (isDevelopingPoster()) { completePosterDevelop(); return; }
       if (event.clientX < window.innerWidth / 2) prev();
       else next();
     });
@@ -774,6 +782,7 @@
     }, { passive: true });
     document.addEventListener("touchend", function(event){
       var delta = event.changedTouches[0].clientX - startX;
+      if (isDevelopingPoster() && Math.abs(delta) > 10) { completePosterDevelop(); return; }
       if (delta < -40) next();
       if (delta > 40) prev();
     }, { passive: true });
