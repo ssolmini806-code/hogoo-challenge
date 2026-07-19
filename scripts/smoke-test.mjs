@@ -2,10 +2,14 @@
 // 사용법: npm run build && node scripts/smoke-test.mjs   (또는 npm run verify)
 // 외부 도메인(GA/AdSense/CDN 등) 요청은 차단해서 로컬 코드 문제만 검출한다.
 import { spawn } from 'node:child_process'
+import { readFileSync, readdirSync } from 'node:fs'
+import { join } from 'node:path'
 import { chromium } from 'playwright'
 
 const PORT = 4173
 const BASE = `http://localhost:${PORT}`
+const ROOT = new URL('..', import.meta.url).pathname
+const MOBILE = { width: 390, height: 844 }
 
 const PAGES = [
   { path: '/', label: '메인 랜딩' },
@@ -22,6 +26,25 @@ const PAGES = [
   { path: '/white-psychology.html', label: '선의 심리학' },
   { path: '/articles/index.html', label: '칼럼 목록' },
 ]
+
+// ── 정적 린트: CLAUDE.md 주요 규칙을 소스 HTML에서 자동 검사 ──
+function lintHtmlFiles() {
+  const files = [
+    ...readdirSync(ROOT).filter((f) => f.endsWith('.html')),
+    ...readdirSync(join(ROOT, 'articles')).map((f) => `articles/${f}`).filter((f) => f.endsWith('.html')),
+  ]
+  const problems = []
+  for (const file of files) {
+    const html = readFileSync(join(ROOT, file), 'utf8')
+    if (!/<html[^>]*lang="ko"/.test(html)) problems.push(`${file}: <html lang="ko"> 누락`)
+    if (!/<meta[^>]*name="viewport"/.test(html)) problems.push(`${file}: viewport 메타 누락`)
+    for (const m of html.matchAll(/property="og:image"[^>]*content="([^"]*)"|content="([^"]*)"[^>]*property="og:image"/g)) {
+      const url = m[1] ?? m[2]
+      if (url && !url.startsWith('https://')) problems.push(`${file}: og:image가 절대 URL 아님 (${url})`)
+    }
+  }
+  return { count: files.length, problems }
+}
 
 function startPreview() {
   return new Promise((resolvePromise, reject) => {
@@ -46,7 +69,7 @@ function startPreview() {
 }
 
 async function checkPage(browser, { path, label, mount }) {
-  const page = await browser.newPage()
+  const page = await browser.newPage({ viewport: MOBILE })
   const errors = []
 
   // 외부 요청 차단 → GA/AdSense/폰트 CDN 노이즈 제거, 로컬 문제만 검출
@@ -77,6 +100,11 @@ async function checkPage(browser, { path, label, mount }) {
     }
     const textLen = (await page.locator('body').innerText()).trim().length
     if (textLen < 40) errors.push(`본문이 비어 있음 (텍스트 ${textLen}자)`)
+
+    // 모바일 가로 오버플로: 페이지 자체가 옆으로 스크롤되면 레이아웃 깨짐
+    const overflow = await page.evaluate(() =>
+      document.documentElement.scrollWidth - document.documentElement.clientWidth)
+    if (overflow > 2) errors.push(`모바일(390px) 가로 오버플로 ${overflow}px`)
   } catch (e) {
     errors.push(`탐색 실패: ${e.message.split('\n')[0]}`)
   } finally {
@@ -85,6 +113,16 @@ async function checkPage(browser, { path, label, mount }) {
   return { path, label, errors }
 }
 
+// 1) 정적 린트
+const lint = lintHtmlFiles()
+if (lint.problems.length) {
+  console.log(`정적 린트: ${lint.problems.length}건 위반`)
+  for (const p of lint.problems) console.log(`  ✗ ${p}`)
+} else {
+  console.log(`정적 린트 통과 (HTML ${lint.count}개)`)
+}
+
+// 2) 브라우저 스모크 (모바일 390px 뷰포트)
 const preview = await startPreview()
 const browser = await chromium.launch()
 let failed = 0
@@ -105,7 +143,8 @@ try {
   preview.kill()
 }
 
-console.log(failed === 0
-  ? `\n스모크 테스트 통과 (${PAGES.length}개 페이지)`
-  : `\n스모크 테스트 실패: ${failed}/${PAGES.length}개 페이지에 문제`)
-process.exit(failed === 0 ? 0 : 1)
+const ok = failed === 0 && lint.problems.length === 0
+console.log(ok
+  ? `\n전체 통과 (린트 ${lint.count}개 파일 + 스모크 ${PAGES.length}개 페이지)`
+  : `\n실패: 린트 위반 ${lint.problems.length}건, 페이지 문제 ${failed}건`)
+process.exit(ok ? 0 : 1)
