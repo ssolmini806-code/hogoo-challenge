@@ -1,0 +1,99 @@
+:is(.hogoo-page,.refusal-page){
+  --quick-paper:#eee6d2;
+  --quick-paper-deep:#d8cfb4;
+  --quick-ink:#3f3020;
+  --quick-ink-soft:#6f5c47;
+  --quick-dark:#17130e;
+  --quick-terra:#c85f43;
+  --quick-terra-deep:#9f3223;
+  --quick-line:rgba(63,48,32,.22);
+  --hogoo-paper:var(--quick-paper);
+  --hogoo-green:var(--quick-ink);
+  --hogoo-amber:var(--quick-terra-deep);
+  --refusal-paper:var(--quick-paper);
+  --refusal-green:var(--quick-ink);
+  --refusal-amber:var(--quick-terra-deep);
+  background:var(--quick-paper);
+  color:var(--quick-ink);
+}
+
+/* Three quick checks are consecutive field notes in the same paper journey. */
+:is(.hogoo-page #intro-page,.risk-page #intro-page,.refusal-page #intro){
+  background:
+    linear-gradient(90deg,rgba(238,230,210,.98) 0 43%,rgba(238,230,210,.66) 62%,rgba(238,230,210,.1)),
+    url('/images/results/give-result-path-v2.webp') 63% center/cover no-repeat!important;
+}
+:is(.hogoo-page #intro-page,.refusal-page #intro) :is(.prologue-lab-bar,.badge,.test-badge){color:var(--quick-terra-deep)!important;}
+:is(.hogoo-page #intro-page,.refusal-page #intro) :is(.test-title,h1){color:var(--quick-ink)!important;}
+:is(.hogoo-page #intro-page,.refusal-page #intro) :is(.test-subtitle,h1+p){color:var(--quick-ink-soft)!important;}
+:is(.hogoo-page #intro-page .start-btn,.refusal-page #startTestBtn){
+  border-color:var(--quick-dark)!important;
+  background:var(--quick-dark)!important;
+  color:#eee5d2!important;
+  transition:transform .25s ease,background .25s ease,color .25s ease!important;
+}
+:is(.hogoo-page #intro-page .start-btn,.refusal-page #startTestBtn):hover,
+:is(.hogoo-page #intro-page .start-btn,.refusal-page #startTestBtn):focus-visible{
+  background:var(--quick-terra)!important;
+  color:var(--quick-dark)!important;
+  outline:2px solid var(--quick-terra)!important;
+  outline-offset:4px;
+}
+.risk-page #intro-page .start-btn{border-color:var(--quick-terra-deep)!important;background:transparent!important;color:var(--quick-terra-deep)!important;}
+.risk-page #intro-page .start-btn:hover,.risk-page #intro-page .start-btn:focus-visible{background:var(--quick-terra-deep)!important;color:#eee5d2!important;}
+
+:is(.hogoo-page #test-page,.risk-page #test-page,.refusal-page #test){
+  background:
+    linear-gradient(90deg,rgba(238,230,210,.98) 0 42%,rgba(238,230,210,.76) 64%,rgba(238,230,210,.28)),
+    url('/images/results/give-result-path-v2.webp') 64% center/cover no-repeat!important;
+}
+:is(.hogoo-page #test-page,.risk-page #test-page,.refusal-page #test)::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  background:repeating-linear-gradient(94deg,rgba(63,48,32,.018) 0 1px,transparent 1px 6px);
+  mix-blend-mode:multiply;
+}
+.quick-field-note{position:absolute;right:clamp(2rem,7vw,7rem);top:clamp(1.5rem,4vh,2.7rem);z-index:6;color:var(--quick-terra-deep);font-family:'Pretendard',sans-serif;font-size:.58rem;font-weight:850;letter-spacing:.18em;}
+
+:is(.hogoo-page,.refusal-page) :is(.progress-bar,.progress){background:var(--quick-line)!important;}
+:is(.hogoo-page,.refusal-page) :is(.progress-fill,.fill){background:var(--quick-terra)!important;}
+:is(.hogoo-page,.refusal-page) :is(.progress-fill,.fill)::after{border-color:var(--quick-terra)!important;background:var(--quick-paper)!important;}
+:is(.hogoo-page,.refusal-page) :is(.q-num-label,.refusal-question-no){color:var(--quick-terra-deep)!important;}
+:is(.hogoo-page,.refusal-page) :is(.q-text,.q){color:var(--quick-ink)!important;}
+:is(.hogoo-page,.refusal-page) :is(.answer-list,.answers){border-color:rgba(63,48,32,.28)!important;}
+:is(.hogoo-page,.refusal-page) :is(.ans-btn,.ans){border-color:var(--quick-line)!important;color:#4f3e2b!important;}
+:is(.hogoo-page,.refusal-page) :is(.ans-btn,.ans)::after{color:rgba(63,48,32,.42)!important;}
+:is(.hogoo-page,.refusal-page) :is(.ans-btn,.ans):hover,
+:is(.hogoo-page,.refusal-page) :is(.ans-btn,.ans):focus-visible{
+  background:linear-gradient(90deg,rgba(200,95,67,.14),rgba(200,95,67,.025),transparent)!important;
+  color:var(--quick-dark)!important;
+}
+:is(.hogoo-page,.refusal-page) :is(.ans-btn,.ans).is-chosen{
+  background:linear-gradient(90deg,rgba(159,50,35,.2),rgba(200,95,67,.04),transparent)!important;
+  color:var(--quick-terra-deep)!important;
+}
+
+.hogoo-ink-level{background:radial-gradient(ellipse at 60% 44%,rgba(200,95,67,calc(.04 + var(--hogoo-pressure) * .12)),rgba(63,48,32,calc(.035 + var(--hogoo-pressure) * .1)) 48%,transparent 72%)!important;}
+.hogoo-plant-shadow{background-image:url('/images/results/give-result-path-v2.webp')!important;}
+.hogoo-pressure-world svg{filter:drop-shadow(0 1px 4px rgba(63,48,32,.14))!important;}
+.hogoo-pressure-world path{stroke:rgba(200,95,67,.54)!important;}
+.refusal-print-world::before{background:radial-gradient(circle,rgba(200,95,67,calc(.03 + var(--refusal-progress) * .12)),transparent 68%)!important;}
+.refusal-imprint{color:rgba(159,50,35,.1)!important;}
+.risk-crack-world path{stroke:rgba(159,50,35,calc(.12 + var(--risk-strain) * .36))!important;filter:drop-shadow(0 1px 1px rgba(159,50,35,.14))!important;}
+.risk-recovery-light{background:radial-gradient(circle,rgba(200,95,67,.2),rgba(238,230,210,0) 68%)!important;}
+.risk-is-recovering .risk-crack-world path{stroke:rgba(238,230,210,.7)!important;}
+
+@media(max-width:719px){
+  :is(.hogoo-page #intro-page,.risk-page #intro-page,.refusal-page #intro){background:linear-gradient(180deg,rgba(238,230,210,.98) 0 48%,rgba(238,230,210,.48) 72%,rgba(238,230,210,.1)),url('/images/results/give-result-path-v2.webp') 67% center/auto 100% no-repeat!important;}
+  :is(.hogoo-page #test-page,.risk-page #test-page,.refusal-page #test){background:linear-gradient(180deg,rgba(238,230,210,.98) 0 62%,rgba(238,230,210,.5)),url('/images/results/give-result-path-v2.webp') 68% center/auto 100% no-repeat!important;}
+  .quick-field-note{display:none;}
+  :is(.hogoo-page,.refusal-page) :is(.ans-btn,.ans){background:rgba(238,230,210,.42)!important;backdrop-filter:blur(2px);}
+}
+
+@media(prefers-reduced-motion:reduce){
+  :is(.hogoo-page,.refusal-page) *{scroll-behavior:auto!important;}
+  :is(.hogoo-page,.refusal-page) :is(.ans-btn,.ans,.progress-fill,.fill){transition:none!important;}
+}

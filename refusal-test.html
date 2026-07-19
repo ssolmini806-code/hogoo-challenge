@@ -26,9 +26,13 @@
     <link rel="stylesheet" href="/give-theme.css">
     <link rel="stylesheet" href="/test-landing.css">
     <link rel="stylesheet" href="/refusal-world.css">
+    <link rel="stylesheet" href="/quick-check-world.css">
     <script src="/refusal-world.js" defer></script>
+    <script src="/site-bootstrap.js" data-third-party="ga" defer></script>
+    <script src="/third-party-loader.js" defer></script>
+    <script src="/quick-check-world.js" defer></script>
 </head>
-<body class="refusal-page">
+<body class="refusal-page" data-quick-check="refusal">
 <a class="skip" href="#intro">본문 바로가기</a>
 <main>
     <section id="intro" class="page">
@@ -40,7 +44,7 @@
                 </div>
                 <span class="badge">무료 심리 테스트</span>
                 <div class="test-intro-image">
-                    <img src="/images/tests/refusal-test-illustration-v3.webp" alt="상대에게 부드럽게 손을 들고 내 기준을 말하는 따뜻한 일러스트" loading="eager">
+                    <img src="/images/tests/refusal-test-illustration-v4.webp" alt="테라코타 붓선 안에서 상대에게 부드럽게 손을 들고 내 기준을 말하는 수채화" loading="eager" width="900" height="900">
                 </div>
                 <p class="test-intro-caption">거절은 차갑게 끊는 말이 아니라, 가능한 범위를 알려주는 말입니다.</p>
                 <h1>거절력 테스트</h1>
@@ -175,6 +179,7 @@
         </div>
     </section>
     <section id="test" class="page hidden">
+        <span class="quick-field-note">FIELD NOTE 03 · 경계 문장</span>
         <div class="refusal-print-world" id="refusalPrintWorld" aria-hidden="true"></div>
         <div class="inner">
             <div class="progress"><div class="fill" id="fill"></div></div>

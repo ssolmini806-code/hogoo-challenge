@@ -1,5 +1,5 @@
 .risk-page{--risk-strain:.2;}
-.risk-page #intro-page>.inner>div::before{background-image:url('/images/tests/relationship-risk-illustration-v3.webp');}
+.risk-page #intro-page>.inner>div::before{background-image:url('/images/tests/relationship-risk-illustration-v4.webp');}
 .risk-page #intro-page .test-title{max-width:7.2em;font-size:clamp(3.4rem,6.4vw,7rem);}
 .risk-page #intro-page .test-badge{color:var(--hogoo-amber);}
 .risk-page #intro-page .start-btn{background:var(--hogoo-paper);color:var(--hogoo-green);}

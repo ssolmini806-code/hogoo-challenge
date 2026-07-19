@@ -306,8 +306,8 @@
         label: "호구 테스트 결과",
         home: "/hogoo-check.html#result-page",
         retryUrl: "/hogoo-check.html",
-        cta: "거절력도 확인하기",
-        ctaUrl: "/refusal-test.html",
+        cta: "이 반응의 이유를 GIVE ID로 찾기",
+        ctaUrl: "/give-test.html?from=hogoo_result",
         paidCta: "GIVE ID 심화 리포트 보기 →",
         fallback: "middle",
         sequence: {
@@ -324,7 +324,7 @@
             body: "착한 마음 자체가 문제가 아니라, 부탁 앞에서 내 기준이 늦게 도착하는 순간이 반복될 때 지치기 쉽습니다. 선의 심리학은 그 기준을 다시 세우는 방법을 다룹니다.",
             linkText: "왜 착한 마음이 손해가 되는지 보기 →"
           },
-          final: ["좋은 사람인 것과", "다 해주는 사람은 달라요.", "이제 다음은 거절 문장 연습입니다."]
+          final: ["좋은 사람인 것과", "다 해주는 사람은 달라요.", "이제 반복되는 이유를 내 GIVE ID에서 찾아보세요."]
         },
         types: {
           hogoo: { name:"호구 만렙 자각형", tagline:"이제 패턴이 보이기 시작해요", strength:"강한 공감 능력과 따뜻한 마음으로 주변 사람들에게 신뢰를 받습니다.", risk:"반복적인 희생과 억눌린 감정이 쌓여 번아웃으로 이어질 수 있습니다.", advice:"마음은 도와주고 싶은데, 오늘은 제가 감당하기 어려워요.", character:"/images/types/hogoo-check/type-hogoo.webp" },
@@ -338,8 +338,8 @@
         label: "인간관계 위험도 결과",
         home: "/relationship-risk.html#result-page",
         retryUrl: "/relationship-risk.html",
-        cta: "GIVE ID로 패턴 보기",
-        ctaUrl: "/give-test.html",
+        cta: "내 GIVE ID로 반복 패턴 찾기",
+        ctaUrl: "/give-test.html?from=relationship_result",
         paidCta: "GIVE ID 심화 분석 받기 →",
         fallback: "ok",
         sequence: {
@@ -369,8 +369,8 @@
         label: "거절력 점검 결과",
         home: "/refusal-test.html#result",
         retryUrl: "/refusal-test.html",
-        cta: "관계 위험도도 보기",
-        ctaUrl: "/relationship-risk.html",
+        cta: "흔들리는 이유를 GIVE ID로 찾기",
+        ctaUrl: "/give-test.html?from=refusal_result",
         paidCta: "GIVE ID 심화 리포트 보기 →",
         fallback: "sprout",
         sequence: {
@@ -387,7 +387,7 @@
             body: "좋은 관계일수록 가능한 범위가 필요합니다. 선의 심리학은 공감은 남기고, 내 시간과 회복을 지키는 문장을 연습합니다.",
             linkText: "왜 착한 마음이 손해가 되는지 보기 →"
           },
-          final: ["거절은", "관계를 끝내는 말이 아니에요.", "다음은 관계 위험도를 함께 확인해보세요."]
+          final: ["거절은", "관계를 끝내는 말이 아니에요.", "다음은 내가 흔들리는 이유를 더 깊이 알아볼 차례예요."]
         },
         types: {
           sprout: { name:"Lv.1 거절 새싹", tagline:"아직 입이 잘 떨어지지 않아요", strength:"상대의 감정을 세심하게 읽는 힘이 있습니다.", risk:"부탁 앞에서 내 기준보다 상대 감정을 먼저 보며 소진될 수 있습니다.", advice:"\"지금 바로 답하기는 어려워. 내 일정 확인하고 오늘 저녁에 말해줄게.\"를 연습해보세요.", character:"/images/types/refusal-test/type-sprout.webp" },
@@ -549,7 +549,7 @@
       });
     });
     if (nextCta) nextCta.addEventListener("click", function(){
-      if (typeof window.trackEvent === "function") window.trackEvent("free_challenge_start", {
+      if (typeof window.trackEvent === "function") window.trackEvent(testKey === "give" ? "free_challenge_start" : "give_id_cross_sell_click", {
         placement: "result_final_path",
         test: testKey,
         result_type: key

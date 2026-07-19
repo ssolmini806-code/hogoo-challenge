@@ -28,7 +28,7 @@
   top:50%;
   width:min(61vw,54rem);
   aspect-ratio:1;
-  background:url('/images/tests/hogoo-check-illustration-v3-800w.webp') center/contain no-repeat;
+  background:url('/images/tests/hogoo-check-illustration-v4-800w.webp') center/contain no-repeat;
   transform:translateY(-50%);
   -webkit-mask-image:radial-gradient(circle,#000 52%,transparent 75%);
   mask-image:radial-gradient(circle,#000 52%,transparent 75%);
