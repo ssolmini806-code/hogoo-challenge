@@ -202,6 +202,55 @@ let scores = { burnout: 0, refusal: 0, reciprocity: 0, recovery: 0 };
 let answerLocked = false;
 let finalResult = null;
 let finalKey = null;
+let resumeNoticePending = false;
+
+const TEST_DRAFT_KEY = "give_test_draft_v1";
+const TEST_DRAFT_VERSION = 1;
+const TEST_DRAFT_TTL = 24 * 60 * 60 * 1000;
+
+function clearTestDraft() {
+    localStorage.removeItem(TEST_DRAFT_KEY);
+}
+
+function readTestDraft() {
+    try {
+        const draft = JSON.parse(localStorage.getItem(TEST_DRAFT_KEY) || "null");
+        const scoreKeys = ["burnout", "refusal", "reciprocity", "recovery"];
+        const draftAge = draft ? Date.now() - Number(draft.savedAt) : NaN;
+        const isFresh = Number.isFinite(draftAge) && draftAge >= 0 && draftAge <= TEST_DRAFT_TTL;
+        const hasValidCurrent = Number.isInteger(draft?.current) && draft.current > 0 && draft.current < questions.length;
+        const hasValidScores = scoreKeys.every((key) => Number.isFinite(draft?.scores?.[key]) && draft.scores[key] >= 0 && draft.scores[key] <= 16);
+        if (draft?.version !== TEST_DRAFT_VERSION || draft?.questionCount !== questions.length || !isFresh || !hasValidCurrent || !hasValidScores) {
+            clearTestDraft();
+            return null;
+        }
+        return {
+            current: draft.current,
+            scores: {
+                burnout: draft.scores.burnout,
+                refusal: draft.scores.refusal,
+                reciprocity: draft.scores.reciprocity,
+                recovery: draft.scores.recovery
+            }
+        };
+    } catch (_) {
+        clearTestDraft();
+        return null;
+    }
+}
+
+function saveTestDraft() {
+    if (current <= 0 || current >= questions.length) return;
+    try {
+        localStorage.setItem(TEST_DRAFT_KEY, JSON.stringify({
+            version: TEST_DRAFT_VERSION,
+            questionCount: questions.length,
+            current,
+            scores,
+            savedAt: Date.now()
+        }));
+    } catch (_) {}
+}
 
 const paidDetails = {
     angel: {
@@ -347,20 +396,25 @@ function setShareCardStat(prefix, value) {
     document.getElementById(`${prefix}Value`).textContent = value;
 }
 
-function startTest() {
+function startTest(options = {}) {
+    const resetDraft = options?.reset === true || new URLSearchParams(location.search).get("retry") === "1";
+    if (resetDraft) clearTestDraft();
+    const draft = resetDraft ? null : readTestDraft();
     localStorage.removeItem('give_test_result');
     localStorage.removeItem('give_test_scores');
-    current = 0;
-    scores = { burnout: 0, refusal: 0, reciprocity: 0, recovery: 0 };
+    current = draft?.current || 0;
+    scores = draft?.scores || { burnout: 0, refusal: 0, reciprocity: 0, recovery: 0 };
     finalResult = null;
     finalKey = null;
     answerLocked = false;
+    resumeNoticePending = Boolean(draft);
     document.body.classList.add("is-testing");
     document.getElementById("landing-page")?.classList.add("hidden");
     document.getElementById("result-page").classList.add("hidden");
     document.getElementById("test-page").classList.remove("hidden");
     window.scrollTo(0, 0);
     renderQuestion();
+    if (draft) trackEvent('give_test_resumed', { question_index: current + 1 });
 }
 
 function renderQuestion() {
@@ -373,7 +427,10 @@ function renderQuestion() {
     document.getElementById("qCount").textContent = `${current + 1} / ${questions.length}`;
     document.getElementById("qLabel").textContent = `Q${String(current + 1).padStart(2, "0")} · ${questionAxis}`;
     document.getElementById("qText").textContent = questionCopy;
-    document.getElementById("rewardText").textContent = getRewardText(current);
+    document.getElementById("rewardText").textContent = resumeNoticePending
+        ? `이어서 ${current + 1}번째 질문부터 시작할게요.`
+        : getRewardText(current);
+    resumeNoticePending = false;
 
     const list = document.getElementById("answerList");
     list.replaceChildren();
@@ -381,6 +438,8 @@ function renderQuestion() {
         const btn = document.createElement("button");
         btn.className = "answer-btn";
         btn.textContent = answer;
+        btn.setAttribute("aria-label", `${index + 1}번. ${answer}`);
+        btn.setAttribute("aria-keyshortcuts", String(index + 1));
         btn.onclick = () => selectAnswer(index + 1, btn);
         list.appendChild(btn);
     });
@@ -390,6 +449,7 @@ function renderQuestion() {
     card.classList.remove("question-card");
     void card.offsetWidth;
     card.classList.add("question-card");
+    window.requestAnimationFrame(() => document.getElementById("qText")?.focus({ preventScroll: true }));
 }
 
 function setQuestionProgress(answered, { complete = false } = {}) {
@@ -450,8 +510,10 @@ function selectAnswer(score, selectedButton) {
 
         current += 1;
         if (questions.length > current) {
+            saveTestDraft();
             renderQuestion();
         } else {
+            clearTestDraft();
             setQuestionProgress(questions.length, { complete: true });
             document.getElementById("rewardText").textContent = "네 개의 기록이 하나의 길로 이어졌어요.";
             if (reducedMotion) showResult();
@@ -504,6 +566,7 @@ function showResultFromKey(key) {
 function resetFreeTestResult() {
     localStorage.removeItem('give_test_result');
     localStorage.removeItem('give_test_scores');
+    clearTestDraft();
     const url = new URL(location.href);
     url.searchParams.delete("type");
     url.searchParams.delete("reviewed");
@@ -512,6 +575,15 @@ function resetFreeTestResult() {
     document.getElementById("completion").classList.remove("show");
     startTest();
 }
+
+document.addEventListener("keydown", (event) => {
+    if (!document.body.classList.contains("is-testing") || answerLocked || event.altKey || event.ctrlKey || event.metaKey) return;
+    if (!/^[1-4]$/.test(event.key)) return;
+    const answer = document.querySelectorAll("#answerList .answer-btn")[Number(event.key) - 1];
+    if (!answer || answer.disabled) return;
+    event.preventDefault();
+    answer.click();
+});
 
 function requestRetryTest() {
     window.dispatchEvent(new CustomEvent('free-test-retry-requested', {

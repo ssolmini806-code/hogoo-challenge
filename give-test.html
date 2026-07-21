@@ -78,12 +78,12 @@
                         <span id="qPercent">0%</span>
                     </div>
                     <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
-                    <div class="reward" id="rewardText">답할수록 나에게 이어지는 길이 선명해져요.</div>
+                    <div class="reward" id="rewardText" role="status" aria-live="polite">답할수록 나에게 이어지는 길이 선명해져요.</div>
                 </div>
                 <article class="question-card" id="questionCard">
                     <p class="q-label" id="qLabel">Q1</p>
-                    <h2 class="q-text" id="qText"></h2>
-                    <div class="answers" id="answerList"></div>
+                    <h2 class="q-text" id="qText" tabindex="-1"></h2>
+                    <div class="answers" id="answerList" role="group" aria-labelledby="qText"></div>
                 </article>
             </div>
         </section>
