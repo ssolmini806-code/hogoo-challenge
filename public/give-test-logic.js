@@ -365,15 +365,12 @@ function startTest() {
 
 function renderQuestion() {
     const q = questions[current];
-    const pct = Math.round((current / questions.length) * 100);
     const questionMatch = q.q.match(/^\[([^\]]+)\]\s*(.*)$/);
     const questionAxis = questionMatch ? questionMatch[1] : "관계 패턴";
     const questionCopy = questionMatch ? questionMatch[2] : q.q;
     answerLocked = false;
-    document.getElementById("test-page").style.setProperty("--question-progress", `${pct}%`);
+    setQuestionProgress(current);
     document.getElementById("qCount").textContent = `${current + 1} / ${questions.length}`;
-    document.getElementById("qPercent").textContent = `${pct}%`;
-    document.getElementById("progressFill").style.width = `${pct}%`;
     document.getElementById("qLabel").textContent = `Q${String(current + 1).padStart(2, "0")} · ${questionAxis}`;
     document.getElementById("qText").textContent = questionCopy;
     document.getElementById("rewardText").textContent = getRewardText(current);
@@ -393,6 +390,37 @@ function renderQuestion() {
     card.classList.remove("question-card");
     void card.offsetWidth;
     card.classList.add("question-card");
+}
+
+function setQuestionProgress(answered, { complete = false } = {}) {
+    const pct = Math.round((answered / questions.length) * 100);
+    const testPage = document.getElementById("test-page");
+    const thread = testPage?.querySelector(".question-thread");
+    const inkPath = document.getElementById("questionInkPath");
+    const inkTip = document.getElementById("questionInkTip");
+    const milestones = Array.from(document.querySelectorAll("#questionInkMilestones g"));
+
+    testPage?.style.setProperty("--question-progress", `${pct}%`);
+    document.getElementById("qPercent").textContent = `${pct}%`;
+    document.getElementById("progressFill").style.width = `${pct}%`;
+    if (!inkPath) return;
+
+    inkPath.style.strokeDashoffset = String(100 - pct);
+    const totalLength = inkPath.getTotalLength();
+    const tipPoint = inkPath.getPointAtLength(totalLength * pct / 100);
+    inkTip?.setAttribute("cx", String(tipPoint.x));
+    inkTip?.setAttribute("cy", String(tipPoint.y));
+
+    milestones.forEach((milestone) => {
+        const milestoneProgress = Number(milestone.dataset.progress || 0);
+        const point = inkPath.getPointAtLength(totalLength * milestoneProgress / 100);
+        milestone.setAttribute("transform", `translate(${point.x} ${point.y})`);
+        milestone.classList.toggle("is-reached", pct >= milestoneProgress);
+    });
+
+    thread?.classList.toggle("is-complete", complete);
+    thread?.classList.add("is-writing");
+    window.setTimeout(() => thread?.classList.remove("is-writing"), 420);
 }
 
 function getRewardText(idx) {
@@ -424,8 +452,10 @@ function selectAnswer(score, selectedButton) {
         if (questions.length > current) {
             renderQuestion();
         } else {
-            document.getElementById("progressFill").style.width = "100%";
-            showResult();
+            setQuestionProgress(questions.length, { complete: true });
+            document.getElementById("rewardText").textContent = "네 개의 기록이 하나의 길로 이어졌어요.";
+            if (reducedMotion) showResult();
+            else window.setTimeout(showResult, 720);
         }
     };
 

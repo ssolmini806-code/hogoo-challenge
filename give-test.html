@@ -58,7 +58,19 @@
                 <img src="/images/design-lab/give-prologue-path-v2.webp" alt="" draggable="false">
                 <span class="question-world-light"></span>
             </div>
-            <div class="question-thread" aria-hidden="true"></div>
+            <div class="question-thread" aria-hidden="true">
+                <svg class="question-ink-map" viewBox="0 0 1200 220" preserveAspectRatio="none" focusable="false">
+                    <path class="question-ink-shadow" d="M-40 166 C125 114 194 192 342 142 S590 45 730 104 S952 190 1240 44"></path>
+                    <path class="question-ink-path" id="questionInkPath" pathLength="100" d="M-40 166 C125 114 194 192 342 142 S590 45 730 104 S952 190 1240 44"></path>
+                    <g class="question-ink-milestones" id="questionInkMilestones">
+                        <g data-progress="25"><circle r="5"></circle><text>감지</text></g>
+                        <g data-progress="50"><circle r="5"></circle><text>경계</text></g>
+                        <g data-progress="75"><circle r="5"></circle><text>균형</text></g>
+                        <g data-progress="100"><circle r="5"></circle><text>회복</text></g>
+                    </g>
+                    <circle class="question-ink-tip" id="questionInkTip" r="6"></circle>
+                </svg>
+            </div>
             <div class="inner question-layout">
                 <div class="test-top">
                     <div class="progress-row">

@@ -25,8 +25,20 @@
 .question-world-art::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(238,230,210,.99) 0%,rgba(238,230,210,.94) 39%,rgba(238,230,210,.72) 58%,rgba(238,230,210,.16) 80%);}
 .question-world-art img{position:absolute;inset:-5% -4% -5% 26%;width:84%;height:110%;object-fit:cover;object-position:70% 50%;filter:saturate(.68) sepia(.08) contrast(.96);transform:scale(1.06);}
 .question-world-light{position:absolute;right:3%;top:20%;width:42%;height:68%;border-radius:50%;background:radial-gradient(ellipse,rgba(200,95,67,.12),transparent 68%);mix-blend-mode:multiply;animation:questionLight 5s ease-in-out infinite;}
-.question-thread{position:absolute;z-index:-1;left:-5vw;right:-5vw;bottom:clamp(5.8rem,11vh,8rem);height:1px;background:linear-gradient(90deg,transparent 0%,var(--question-mint) var(--question-progress),rgba(63,48,32,.13) var(--question-progress),transparent 100%);transform:rotate(-2deg);transform-origin:left;transition:background .55s cubic-bezier(.22,.8,.2,1);}
-.question-thread::after{content:"";position:absolute;left:var(--question-progress);top:50%;width:.62rem;height:.62rem;border:2px solid var(--question-mint);border-radius:50%;background:var(--question-bg);box-shadow:0 0 0 .32rem rgba(200,95,67,.12);transform:translate(-50%,-50%);transition:left .55s cubic-bezier(.22,.8,.2,1);}
+.question-thread{position:absolute;z-index:-1;left:-2vw;right:-2vw;bottom:clamp(1.6rem,4vh,3.4rem);height:clamp(8rem,22vh,13.75rem);pointer-events:none;opacity:.88;}
+.question-ink-map{display:block;width:100%;height:100%;overflow:visible;}
+.question-ink-shadow,.question-ink-path{fill:none;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke;}
+.question-ink-shadow{stroke:rgba(63,48,32,.14);stroke-width:1.2;stroke-dasharray:3 8;}
+.question-ink-path{stroke:var(--question-mint);stroke-width:1.8;stroke-dasharray:100;stroke-dashoffset:100;filter:drop-shadow(0 2px 3px rgba(159,50,35,.16));transition:stroke-dashoffset .72s cubic-bezier(.22,.8,.2,1);}
+.question-ink-tip{fill:var(--question-bg);stroke:var(--question-mint);stroke-width:2;vector-effect:non-scaling-stroke;filter:drop-shadow(0 0 5px rgba(159,50,35,.28));transition:r .26s ease,opacity .26s ease;}
+.question-thread.is-writing .question-ink-tip{r:9;}
+.question-ink-milestones g{opacity:.42;transition:opacity .45s ease;}
+.question-ink-milestones circle{fill:var(--question-bg);stroke:rgba(63,48,32,.42);stroke-width:1.2;vector-effect:non-scaling-stroke;transition:fill .45s ease,stroke .45s ease,r .45s cubic-bezier(.22,.8,.2,1);}
+.question-ink-milestones text{fill:rgba(63,48,32,.62);font-family:var(--question-sans);font-size:10px;font-weight:800;letter-spacing:.12em;transform:translate(0,-13px);text-anchor:middle;vector-effect:non-scaling-stroke;}
+.question-ink-milestones g.is-reached{opacity:1;}
+.question-ink-milestones g.is-reached circle{r:7;fill:var(--question-mint);stroke:var(--question-bg);}
+.question-thread.is-complete .question-ink-path{stroke-width:2.4;filter:drop-shadow(0 2px 5px rgba(159,50,35,.3));}
+.question-thread.is-complete .question-ink-tip{r:11;fill:var(--question-mint);stroke:var(--question-bg);}
 .give-test-page .question-layout{
   position:relative;
   width:min(calc(100% - 3rem),76rem);
@@ -97,11 +109,13 @@
   .give-test-page .answers{grid-column:1;grid-row:3;align-self:end;}
   .give-test-page .answer-btn{min-height:3.65rem;padding:.8rem 2rem .8rem 2.25rem;font-size:.82rem;line-height:1.35;background:rgba(238,230,210,.44);}
   .give-test-page .answer-btn:hover,.give-test-page .answer-btn:focus-visible{padding-left:2.55rem;}
-  .question-thread{bottom:4.4rem;}
+  .question-thread{left:-28vw;right:-28vw;top:clamp(13rem,27vh,14.25rem);bottom:auto;height:5.8rem;opacity:.82;}
+  .question-ink-milestones text{font-size:8px;}
 }
 
 @media(prefers-reduced-motion:reduce){
   .question-world-light{animation:none;}
   .give-test-page .question-card,.give-test-page .question-card.is-leaving{animation:none;}
   .give-test-page .answer-btn,.give-test-page .answer-btn::before,.give-test-page .answer-btn::after{transition:none;}
+  .question-ink-path,.question-ink-tip,.question-ink-milestones g,.question-ink-milestones circle{transition:none;}
 }
