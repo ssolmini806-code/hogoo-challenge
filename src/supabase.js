@@ -7,6 +7,7 @@ const createFallbackQuery = () => {
   const query = {
     select: () => query,
     eq: () => query,
+    is: () => query,
     order: () => query,
     limit: () => Promise.resolve({ data: [], error: null }),
     single: () => Promise.resolve({ data: null, error: null }),

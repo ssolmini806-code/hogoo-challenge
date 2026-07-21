@@ -138,6 +138,10 @@
       <a href="/give-test.html" class="sequence-sub-link" id="seqClashShare">이 사람한테도 테스트 보내보기</a>
     </section>
 
+    <section class="sequence-slide sequence-reward" id="slideReward" data-tone="reward" aria-label="보상 봉투">
+      <div id="result-reward-root"></div>
+    </section>
+
     <section class="sequence-slide sequence-path-final" data-tone="path" aria-label="결과에서 이어지는 길">
       <div class="sequence-path-intro">
         <span class="sequence-label">YOUR NEXT PATH</span>
@@ -494,8 +498,11 @@
     var giveOptionalSlideIds = ["seqIntroDetail", "seqPatternDetail", "slideWellMatched", "slideWatchOut"];
     allSlides.forEach(function(slide){
       var isOptionalGiveDetail = testKey === "give" && giveOptionalSlideIds.indexOf(slide.id) !== -1;
-      slide.hidden = isOptionalGiveDetail;
-      if (isOptionalGiveDetail) slide.inert = true;
+      // 보상 봉투 슬라이드는 GIVE ID 결과 전용이다.
+      var isNonGiveReward = slide.id === "slideReward" && testKey !== "give";
+      var shouldHide = isOptionalGiveDetail || isNonGiveReward;
+      slide.hidden = shouldHide;
+      if (shouldHide) slide.inert = true;
     });
     var slides = allSlides.filter(function(slide){ return !slide.hidden; });
     var dots = document.getElementById("sequenceDots");
@@ -783,12 +790,16 @@
     });
 
     var resumeAtPath = location.hash === "#next-path" && testKey === "give";
-    render(resumeAtPath ? slides.length - 1 : 0);
+    // 후기 작성 후 복귀(#reward)하면 결과를 처음부터 다시 보지 않고 보상 슬라이드로 바로 간다.
+    var rewardIndex = slides.findIndex(function(slide){ return slide.id === "slideReward"; });
+    var resumeAtReward = location.hash === "#reward" && rewardIndex !== -1;
+    render(resumeAtReward ? rewardIndex : resumeAtPath ? slides.length - 1 : 0);
     if (resumeAtPath && typeof window.trackEvent === "function") window.trackEvent("funnel_result_resumed", {
       result_type: key,
       destination: "next_path"
     });
   })();
   </script>
+  <script type="module" src="/src/result-reward-widget.jsx"></script>
 </body>
 </html>

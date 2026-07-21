@@ -129,6 +129,7 @@
 
     <script type="module">
         import { supabase } from './src/supabase.js';
+        import { sanitizeReturnPath } from './src/rewards/reward-return-url.js';
 
         const fallbackReviews = [
             {
@@ -213,22 +214,23 @@
             document.getElementById("reviewGrid").replaceChildren(...list.map(createReviewCard));
         }
 
+        // 동일 출처 + 허용된 내부 경로만 통과시킨다 (open redirect 방지).
         function getSafeReturnUrl(value) {
-            if (!value) return "";
-            try {
-                const url = new URL(value, window.location.origin);
-                if (url.origin !== window.location.origin) return "";
-                if (!["http:", "https:"].includes(url.protocol)) return "";
-                return `${url.pathname}${url.search}${url.hash}`;
-            } catch {
-                return "";
-            }
+            return sanitizeReturnPath(value, window.location.origin);
         }
 
         async function disableReviewReward(reviewContext) {
             if (!currentSession?.user?.id) return;
 
             const rewardContext = reviewContext || "seven_day_challenge";
+            // 무료 결과 보상은 결과별(result_id)로 나뉘는데 후기 row에는 result_id가 없다.
+            // 컨텍스트만으로 지우면 다른 유형에서 받은 보상까지 회수되므로 건드리지 않는다.
+            // (한 번 획득한 무료 보상은 영구 보존한다.)
+            if (rewardContext === 'free_test') {
+                localStorage.removeItem('free_test_reviewed');
+                return;
+            }
+
             await supabase
                 .from('user_rewards')
                 .update({ unlocked: false })
@@ -242,10 +244,6 @@
                 .eq('user_id', currentSession.user.id)
                 .eq('reward_context', rewardContext)
                 .eq('reward_type', 'both');
-
-            if (rewardContext === 'free_test') {
-                localStorage.removeItem('free_test_reviewed');
-            }
         }
 
         async function deleteOwnReview(reviewId) {
@@ -458,6 +456,8 @@
                         localStorage.setItem('free_test_reviewed', 'true');
                     }
 
+                    // 보상 조회·저장은 반드시 result_id까지 함께 본다.
+                    // result_id가 빠지면 다른 결과 유형의 보상 row를 덮어쓴다.
                     const rewardPayload = {
                         user_id: currentSession.user.id,
                         reward_context: reviewContext,
@@ -465,11 +465,12 @@
                         unlocked: true,
                         ...(resultId ? { result_id: resultId } : {}),
                     };
-                    const { data: existing } = await supabase.from('user_rewards').select('id')
+                    let lookup = supabase.from('user_rewards').select('id')
                         .eq('user_id', currentSession.user.id)
                         .eq('reward_context', reviewContext)
-                        .eq('reward_type', 'review')
-                        .limit(1);
+                        .eq('reward_type', 'review');
+                    lookup = resultId ? lookup.eq('result_id', resultId) : lookup.is('result_id', null);
+                    const { data: existing } = await lookup.limit(1);
                     if (existing?.[0]) {
                         await supabase.from('user_rewards').update({ unlocked: true }).eq('id', existing[0].id);
                     } else {

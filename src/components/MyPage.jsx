@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../supabase';
+import RewardArchive from '../../components/reward/RewardArchive';
 
 const BADGE_LABEL = { gold: '골드', silver: '실버' };
 const CONTEXT_LABEL = { giveid: 'GIVE ID', paid_30day: '30일 플랜' };
@@ -111,7 +112,9 @@ export default function MyPage({ session, onBack }) {
 
     Promise.allSettled([
       supabase.from('profiles').select('nickname, challenge_name').eq('id', uid).single(),
-      supabase.from('user_rewards').select('reward_type, reward_context, unlocked').eq('user_id', uid),
+      supabase.from('user_rewards')
+        .select('id, result_id, reward_type, reward_context, unlocked, generated_content, created_at')
+        .eq('user_id', uid),
       supabase.from('hall_of_fame').select('badge_level, completion_rate, created_at').eq('user_id', uid).single(),
       supabase.from('reviews').select('content, review_context, created_at').eq('user_id', uid).order('created_at', { ascending: false }),
       supabase.from('payment_orders').select('product_key, status, paid_at').eq('user_id', uid).order('paid_at', { ascending: false }),
@@ -128,8 +131,11 @@ export default function MyPage({ session, onBack }) {
   }, [session]);
 
   const rewardsByContext = rewards.filter(r => r.unlocked);
+  // free_test = 무료 GIVE ID 결과 보상 (실제 저장 컨텍스트). 아래 "나의 보상 봉투"에서 따로 보여준다.
+  const freeTestRewards = rewards.filter(r => r.reward_context === 'free_test');
   const giveidRewards = rewardsByContext.filter(r => r.reward_context === 'giveid');
   const paid30Rewards = rewardsByContext.filter(r => r.reward_context === 'paid_30day');
+  const otherRewards = giveidRewards.length + paid30Rewards.length;
 
   if (loading) {
     return (
@@ -187,9 +193,15 @@ export default function MyPage({ session, onBack }) {
               </div>
             </div>
           )}
-          {rewardsByContext.length === 0 && (
+          {otherRewards === 0 && (
             <p style={styles.emptyText}>아직 해금된 보상이 없어요</p>
           )}
+        </div>
+
+        {/* 나의 보상 봉투 (무료 GIVE ID 결과 보상) */}
+        <div style={styles.section}>
+          <div style={styles.sectionTitle}>나의 보상 봉투</div>
+          <RewardArchive rewards={freeTestRewards} />
         </div>
 
         {/* 명예의 전당 */}
