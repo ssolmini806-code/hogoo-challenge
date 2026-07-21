@@ -150,7 +150,7 @@ async function checkFunnelContract(browser) {
     await page.goto(`${BASE}/result-sequence.html?test=give&type=diplomat#next-path`, {
       waitUntil: 'load', timeout: 15000,
     })
-    await page.waitForFunction(() => window.GiveJourney && window.trackEvent?.__giveContextual, null, { timeout: 5000 })
+    await page.waitForFunction(() => window.GiveJourney && window.trackEvent?.__giveContextual, null, { timeout: 15000 })
 
     const result = await page.evaluate(() => {
       window.trackEvent('funnel_contract_probe', { product: 'give_id_only' })

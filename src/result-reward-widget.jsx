@@ -2,14 +2,14 @@
 // result-sequence.html은 순수 JS 슬라이드 엔진이라, 이 위젯은 슬라이드 안의
 // 컨테이너에만 마운트되고 슬라이드 탐색(이전/계속/스와이프/키보드)은 건드리지 않는다.
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { supabase } from './supabase';
 import LoginModal from './components/LoginModal';
 import ResultRewardEnvelope from '../components/reward/ResultRewardEnvelope';
 import { createRewardService } from './rewards/free-test-reward-service';
 import { buildResultId, normalizeTypeKey } from './rewards/result-id';
-import { buildGoodwillManual, buildBoundaryCard, buildRiskScenes } from './rewards/give-reward-content';
+import { buildGoodwillManual, buildBoundaryCard } from './rewards/give-reward-content';
 import { trackReward, trackRewardOnce } from './rewards/reward-analytics';
 
 const EMPTY_STATUS = { sns: false, review: false, both: false, bothContent: null };
@@ -24,31 +24,49 @@ function readScores() {
 
 function ResultRewardWidget({ typeKey }) {
   const [session, setSession] = useState(null);
-  const [sessionReady, setSessionReady] = useState(false);
   const [status, setStatus] = useState(EMPTY_STATUS);
   const [loginOpen, setLoginOpen] = useState(false);
   const [saving, setSaving] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  // 후기 복귀 연출 상태. 보상 권한이 아니라 안내 문구를 고르는 데만 쓴다.
+  const [reviewReturn, setReviewReturn] = useState('idle'); // idle | checking | confirmed | missing
 
   const service = useMemo(() => createRewardService(supabase), []);
   const resultId = useMemo(() => buildResultId(typeKey), [typeKey]);
   const scores = useMemo(() => readScores(), []);
   const userId = session?.user?.id ?? null;
+  const returnedFromReview = useRef(
+    new URLSearchParams(window.location.search).get('reward') === 'reviewed',
+  );
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      setSession(data.session);
-      setSessionReady(true);
-    });
+    supabase.auth.getSession().then(({ data }) => setSession(data.session));
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, next) => setSession(next));
     return () => subscription.unsubscribe();
   }, []);
 
-  // 같은 결과(result_id)의 보상 상태만 읽는다. A와 B가 모두 있으면 A+B를 만든다.
+  // reward_slide_view는 마운트가 아니라 보상 슬라이드가 실제로 보일 때 기록한다.
+  useEffect(() => {
+    const record = () => trackRewardOnce(
+      'reward_slide_view',
+      { result_type: typeKey, logged_in: Boolean(userId) },
+      typeKey,
+    );
+    const onSlideChange = (event) => {
+      if (event.detail?.slide?.id === 'slideReward') record();
+    };
+    document.addEventListener('result:slidechange', onSlideChange);
+    // #reward로 바로 복귀해 마운트 시점에 이미 활성 상태일 수 있다
+    if (document.getElementById('slideReward')?.classList.contains('active')) record();
+    return () => document.removeEventListener('result:slidechange', onSlideChange);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [typeKey]);
+
+  // 같은 결과(result_id)의 보상 상태만 DB에서 읽는다. 해금 근거는 오직 DB row다.
   const refresh = useCallback(async () => {
     if (!userId) {
       setStatus(EMPTY_STATUS);
-      return;
+      return EMPTY_STATUS;
     }
     try {
       let next = await service.fetchRewardStatus(userId, resultId);
@@ -67,40 +85,43 @@ function ResultRewardWidget({ typeKey }) {
       }
       setStatus(next);
       setErrorMessage('');
+      return next;
     } catch (error) {
       console.error('보상 상태를 불러오지 못했습니다:', error);
       setErrorMessage('보상 상태를 불러오지 못했어요. 잠시 후 다시 시도해주세요.');
+      return null;
     }
   }, [resultId, scores, service, typeKey, userId]);
 
-  useEffect(() => { refresh(); }, [refresh]);
-
-  // 후기 작성 후 돌아온 경우: B 보상을 저장하고 해금 순간을 보여준다.
   useEffect(() => {
-    if (!sessionReady || !userId) return;
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('reward') !== 'reviewed') return;
-
     let cancelled = false;
+
     (async () => {
-      try {
-        await service.saveReward(userId, resultId, 'review', buildRiskScenes(typeKey, scores));
-        trackRewardOnce('review_complete', { result_type: typeKey, reward_type: 'review', logged_in: true }, resultId);
-        trackRewardOnce('reward_b_unlocked', { result_type: typeKey, reward_type: 'review', logged_in: true }, resultId);
-        if (!cancelled) await refresh();
-      } catch (error) {
-        console.error('후기 보상 저장 실패:', error);
-        if (!cancelled) setErrorMessage('후기 보상 저장에 실패했어요. 새로고침하면 다시 시도합니다.');
+      const next = await refresh();
+      if (cancelled || !returnedFromReview.current) return;
+
+      // reward=reviewed는 "후기를 쓰고 돌아왔다"는 연출 신호일 뿐이다.
+      // 실제 해금 여부는 위에서 읽은 DB 상태로만 판단한다.
+      if (!userId) {
+        setReviewReturn('missing');
         return;
       }
-      // 새로고침해도 중복 저장/중복 이벤트가 나지 않도록 파라미터를 지운다
+      if (next?.review) {
+        setReviewReturn('confirmed');
+        trackRewardOnce('review_complete', { result_type: typeKey, reward_type: 'review', logged_in: true }, resultId);
+        trackRewardOnce('reward_b_unlocked', { result_type: typeKey, reward_type: 'review', logged_in: true }, resultId);
+      } else if (next) {
+        setReviewReturn('missing');
+      }
+
+      returnedFromReview.current = false;
       const url = new URL(window.location.href);
       url.searchParams.delete('reward');
       window.history.replaceState(null, '', url.toString());
     })();
 
     return () => { cancelled = true; };
-  }, [refresh, resultId, scores, service, sessionReady, typeKey, userId]);
+  }, [refresh, resultId, typeKey, userId]);
 
   const handleConfirmShare = useCallback(async (channel) => {
     if (!userId) {
@@ -121,6 +142,12 @@ function ResultRewardWidget({ typeKey }) {
     }
   }, [refresh, resultId, saving, service, status.sns, typeKey, userId]);
 
+  const reviewNotice = reviewReturn === 'confirmed'
+    ? '후기가 등록됐어요. 위험 장면 3개가 열렸습니다.'
+    : reviewReturn === 'missing'
+      ? '후기 완료 상태를 확인하지 못했어요. 후기가 저장됐는지 확인한 뒤 다시 시도해주세요.'
+      : '';
+
   return (
     <>
       <ResultRewardEnvelope
@@ -132,6 +159,8 @@ function ResultRewardWidget({ typeKey }) {
         onConfirmShare={handleConfirmShare}
         saving={saving}
         errorMessage={errorMessage}
+        reviewNotice={reviewNotice}
+        reviewNoticeTone={reviewReturn === 'missing' ? 'warn' : 'info'}
       />
       <LoginModal
         isOpen={loginOpen}
@@ -145,8 +174,19 @@ function ResultRewardWidget({ typeKey }) {
   );
 }
 
+// GIVE ID 결과에서만 마운트한다.
+// 다른 테스트에서는 Supabase auth / 보상 DB / 분석 호출이 한 건도 나가면 안 된다.
+function shouldMount(container) {
+  if (!container) return false;
+  const params = new URLSearchParams(window.location.search);
+  if ((params.get('test') || 'give') !== 'give') return false;
+  const slide = container.closest('.sequence-slide') || document.getElementById('slideReward');
+  if (!slide || slide.hidden) return false;
+  return true;
+}
+
 const container = document.getElementById('result-reward-root');
-if (container && !container.hidden) {
+if (shouldMount(container)) {
   // 슬라이드 엔진은 document 레벨에서 클릭/키를 듣고 페이지를 넘긴다.
   // 보상 UI 안에서의 상호작용이 슬라이드를 넘기지 않도록 여기서 막는다.
   ['click', 'pointerdown', 'keydown', 'touchstart', 'touchend'].forEach((name) => {

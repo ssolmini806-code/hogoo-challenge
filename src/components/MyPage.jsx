@@ -170,7 +170,8 @@ export default function MyPage({ session, onBack }) {
           </div>
         </div>
 
-        {/* 보상 현황 */}
+        {/* 보상 현황 — 챌린지·유료 보상. 무료 결과 보상은 아래 '나의 보상 봉투'에서 따로 보여준다. */}
+        {otherRewards > 0 && (
         <div style={styles.section}>
           <div style={styles.sectionTitle}>보상 현황</div>
           {giveidRewards.length > 0 && (
@@ -193,10 +194,8 @@ export default function MyPage({ session, onBack }) {
               </div>
             </div>
           )}
-          {otherRewards === 0 && (
-            <p style={styles.emptyText}>아직 해금된 보상이 없어요</p>
-          )}
         </div>
+        )}
 
         {/* 나의 보상 봉투 (무료 GIVE ID 결과 보상) */}
         <div style={styles.section}>

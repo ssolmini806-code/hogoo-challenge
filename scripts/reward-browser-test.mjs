@@ -47,7 +47,8 @@ const KEY = '__fake_supabase_store__';
 function load() {
   try { return JSON.parse(localStorage.getItem(KEY)) || null; } catch { return null; }
 }
-const store = load() || { rows: [], session: null, deletes: 0 };
+const store = load() || { rows: [], reviews: [], session: null, deletes: 0, failRewardWrites: false };
+if (!store.reviews) store.reviews = [];
 function persist() { try { localStorage.setItem(KEY, JSON.stringify(store)); } catch {} }
 globalThis.__rewardStore = store;
 globalThis.__persistStore = persist;
@@ -68,7 +69,15 @@ function makeQuery(table) {
     then(res) { return Promise.resolve(run()).then(res); },
   };
   function run() {
+    if (table === 'challenge_reviews') {
+      if (mode === 'insert') { store.reviews.push(payload); persist(); }
+      return { data: [], error: null };
+    }
     if (table !== 'user_rewards') return { data: [], error: null };
+    // 보상 쓰기 실패를 재현한다 (읽기는 정상 동작)
+    if (store.failRewardWrites && mode !== 'select') {
+      return { data: null, error: { message: 'reward write failed (test)' } };
+    }
     const match = (r) => Object.entries(filters).every(([k, v]) => r[k] === v)
       && nulls.every((k) => r[k] == null);
     if (mode === 'insert') {
@@ -125,6 +134,24 @@ async function makeContext(browser, viewport, opts = {}) {
     await route.continue();
   });
   return context;
+}
+
+// site-bootstrap.js가 나중에 window.trackEvent를 덮어쓰므로,
+// 단순 스텁 대신 접근자를 심어 이후 할당까지 가로채 기록한다.
+async function installEventRecorder(page) {
+  await page.addInitScript(() => {
+    window.__events = [];
+    let inner = null;
+    const recorder = (name, params) => {
+      window.__events.push({ name, params });
+      if (typeof inner === 'function') { try { inner(name, params); } catch {} }
+    };
+    Object.defineProperty(window, 'trackEvent', {
+      configurable: true,
+      get: () => recorder,
+      set: (fn) => { inner = fn; },
+    });
+  });
 }
 
 async function gotoReward(page, type = 'diplomat', extra = '') {
@@ -308,6 +335,168 @@ async function run() {
     await otherPage.waitForTimeout(500);
     check('다른 사용자에게 보상이 섞이지 않는다', (await otherPage.textContent('.reward-progress strong')) === '0/2');
     await context2.close();
+
+    // ── 회귀 R1. reward=reviewed 수동 입력 + DB row 없음 → B 잠김 ──
+    console.log('\n[회귀 검사]');
+    {
+      const ctx = await makeContext(browser, MOBILE);
+      const p = await ctx.newPage();
+      const errs = await gotoReward(p, 'diplomat', '&reward=reviewed');
+      await p.evaluate(() => window.__login('user-forge'));
+      await p.waitForTimeout(700);
+
+      check('reward=reviewed를 수동 입력해도 B가 열리지 않는다',
+        (await p.textContent('.reward-progress strong')) === '0/2');
+      check('보상 row가 생성되지 않는다',
+        (await p.evaluate(() => globalThis.__rewardStore.rows.length)) === 0);
+      check('A+B 버튼이 잠긴 상태로 남는다', await p.isDisabled('button:has-text("아직 잠겨 있어요")'));
+      check('후기 확인 실패 안내가 표시된다',
+        (await p.textContent('.reward-slide-inner')).includes('후기 완료 상태를 확인하지 못했어요'));
+      check('수동 입력 경로에서 콘솔 오류 없음', errs.length === 0, errs.join(' | '));
+      await ctx.close();
+    }
+
+    // ── 회귀 R2. 실제 review row가 DB에 있으면 B 해금 ──
+    {
+      const ctx = await makeContext(browser, MOBILE);
+      const p = await ctx.newPage();
+      await p.addInitScript(() => window.localStorage.setItem('__fake_supabase_store__', JSON.stringify({
+        rows: [{
+          id: 'r1', user_id: 'user-real', result_id: 'give-test:diplomat',
+          reward_context: 'free_test', reward_type: 'review', unlocked: true,
+          generated_content: { kind: 'risk_scenes' }, created_at: '2026-07-21T00:00:00Z',
+        }],
+        session: { user: { id: 'user-real', email: 'tester@example.test' } },
+        deletes: 0,
+      })));
+      await gotoReward(p, 'diplomat', '&reward=reviewed');
+      await p.waitForTimeout(700);
+      check('실제 review row가 있으면 B가 해금된다',
+        (await p.textContent('.reward-progress strong')) === '1/2');
+      check('후기 등록 완료 안내가 표시된다',
+        (await p.textContent('.reward-slide-inner')).includes('후기가 등록됐어요'));
+      await ctx.close();
+    }
+
+    // ── 회귀 R3. 보상 DB insert 오류 → 성공 문구·리다이렉트 금지 ──
+    {
+      const ctx = await makeContext(browser, MOBILE);
+      const p = await ctx.newPage();
+      await p.addInitScript(() => window.localStorage.setItem('__fake_supabase_store__', JSON.stringify({
+        rows: [], session: { user: { id: 'user-err', email: 'tester@example.test' } }, deletes: 0,
+        failRewardWrites: true,
+      })));
+      await p.goto(`${BASE}/reviews.html?context=free_test&rid=give-test%3Adiplomat&result_type=diplomat&return=%2Fresult-sequence.html%3Ftest%3Dgive%26type%3Ddiplomat%26reward%3Dreviewed%23reward`, { waitUntil: 'networkidle' });
+      await p.waitForSelector('#formContent', { timeout: 8000 });
+      await p.fill('#formContent', '보상 저장 실패를 확인하기 위한 후기 내용입니다.');
+      await p.click('#formSubmit');
+      await p.waitForTimeout(1500);
+
+      check('보상 저장 실패 시 성공 문구를 표시하지 않는다',
+        !(await p.textContent('#formMsg')).includes('등록됐습니다'),
+        await p.textContent('#formMsg'));
+      check('보상 저장 실패 시 결과 화면으로 이동하지 않는다', p.url().includes('reviews.html'));
+      check('보상 저장 실패가 사용자에게 안내된다',
+        (await p.textContent('#formMsg')).includes('보상 저장에 실패'));
+      const reviewRows = await p.evaluate(() => globalThis.__rewardStore.reviews?.length ?? 0);
+      check('후기 자체는 저장돼 있다', reviewRows === 1, String(reviewRows));
+
+      // ── 회귀 R4. 후기 재등록 없이 보상 저장만 재시도 ──
+      await p.evaluate(() => { globalThis.__rewardStore.failRewardWrites = false; globalThis.__persistStore(); });
+      await p.click('#formSubmit');
+      await p.waitForURL(/result-sequence\.html/, { timeout: 10000 });
+      const after = await p.evaluate(() => ({
+        reviews: globalThis.__rewardStore.reviews?.length ?? 0,
+        rewards: globalThis.__rewardStore.rows.length,
+      }));
+      check('재시도 시 후기는 다시 등록되지 않는다', after.reviews === 1, JSON.stringify(after));
+      check('재시도로 보상만 저장된다', after.rewards === 1, JSON.stringify(after));
+      const saved = await p.evaluate(() => globalThis.__rewardStore.rows[0]);
+      check('후기 보상에 위험 장면 콘텐츠가 함께 저장된다',
+        saved.generated_content?.kind === 'risk_scenes' && saved.result_id === 'give-test:diplomat',
+        JSON.stringify(saved.generated_content?.kind));
+      await ctx.close();
+    }
+
+    // ── 회귀 R5. 비-GIVE 결과에서는 위젯·DB·이벤트 0건 ──
+    {
+      const ctx = await makeContext(browser, MOBILE);
+      const p = await ctx.newPage();
+      await installEventRecorder(p);
+      await p.goto(`${BASE}/result-sequence.html?test=hogoo&type=mid#reward`, { waitUntil: 'networkidle' });
+      await p.waitForTimeout(900);
+      const nonGive = await p.evaluate(() => ({
+        rendered: (document.getElementById('result-reward-root')?.innerHTML || '').length,
+        slideHidden: document.getElementById('slideReward')?.hidden,
+        supabaseTouched: typeof globalThis.__rewardStore !== 'undefined'
+          ? globalThis.__rewardStore.rows.length : -1,
+        rewardEvents: (window.__events || []).filter((e) => /^reward_|^share_|^review_/.test(e.name)).length,
+      }));
+      check('비-GIVE 결과에서 보상 슬라이드가 숨겨진다', nonGive.slideHidden === true);
+      check('비-GIVE 결과에서 위젯이 마운트되지 않는다', nonGive.rendered === 0, String(nonGive.rendered));
+      check('비-GIVE 결과에서 보상 DB 호출 0건', nonGive.supabaseTouched <= 0, String(nonGive.supabaseTouched));
+      check('비-GIVE 결과에서 보상 분석 이벤트 0건', nonGive.rewardEvents === 0, String(nonGive.rewardEvents));
+      await ctx.close();
+    }
+
+    // ── 회귀 R6~R8. reward_slide_view는 실제 노출 시점에만, 세션당 1회 ──
+    {
+      const ctx = await makeContext(browser, MOBILE);
+      const p = await ctx.newPage();
+      await installEventRecorder(p);
+      const countViews = () => p.evaluate(() =>
+        (window.__events || []).filter((e) => e.name === 'reward_slide_view').length);
+
+      // 첫 슬라이드만 보고 이탈 (#reward 없이 진입)
+      await p.goto(`${BASE}/result-sequence.html?test=give&type=diplomat`, { waitUntil: 'networkidle' });
+      await p.waitForTimeout(800);
+      check('첫 결과 슬라이드만 보면 reward_slide_view 0', (await countViews()) === 0, String(await countViews()));
+
+      // 보상 슬라이드까지 실제로 넘어간다
+      for (let i = 0; i < 12; i += 1) {
+        if (await p.evaluate(() => document.getElementById('slideReward')?.classList.contains('active'))) break;
+        await p.click('#sequenceNext');
+        await p.waitForTimeout(150);
+      }
+      await p.waitForTimeout(400);
+      check('보상 슬라이드에 실제 진입하면 reward_slide_view 1', (await countViews()) === 1, String(await countViews()));
+
+      // 앞뒤로 오가도 1회
+      await p.click('#sequenceBack');
+      await p.waitForTimeout(200);
+      await p.click('#sequenceNext');
+      await p.waitForTimeout(300);
+      check('슬라이드를 오가도 reward_slide_view는 1회', (await countViews()) === 1, String(await countViews()));
+
+      // 새로고침해도 세션 dedupe 유지
+      await p.reload({ waitUntil: 'networkidle' });
+      await p.waitForTimeout(700);
+      check('새로고침해도 reward_slide_view가 다시 발화하지 않는다 (세션 dedupe)',
+        (await countViews()) === 0, '재적재 후 새 이벤트 수: ' + (await countViews()));
+      await ctx.close();
+    }
+
+    // ── 회귀 R9. pending intent는 유형별로 격리된다 ──
+    {
+      const ctx = await makeContext(browser, MOBILE);
+      const p = await ctx.newPage();
+      await gotoReward(p, 'diplomat');
+      await p.click('.reward-share-grid button:has-text("링크 복사")');
+      await p.waitForSelector('[role="dialog"]');
+      const stored = await p.evaluate(() => window.sessionStorage.getItem('give_reward_pending_intent_v1'));
+      check('pending intent가 유형과 함께 저장된다',
+        JSON.parse(stored).typeKey === 'diplomat' && JSON.parse(stored).intent === 'share', String(stored));
+
+      await p.goto(`${BASE}/result-sequence.html?test=give&type=angel#reward`, { waitUntil: 'networkidle' });
+      await p.waitForSelector('#slideReward.active .reward-headline');
+      await p.evaluate(() => window.__login('user-intent'));
+      await p.waitForTimeout(500);
+      check('diplomat의 pending intent가 angel 결과에서 복원되지 않는다',
+        !(await p.isVisible('.reward-resume:has-text("공유 계속하기")')));
+      check('불일치한 pending intent는 즉시 삭제된다',
+        (await p.evaluate(() => window.sessionStorage.getItem('give_reward_pending_intent_v1'))) === null);
+      await ctx.close();
+    }
 
     // ── 18~20. 뷰포트별 오버플로 ──
     console.log('\n[뷰포트 검사]');

@@ -603,10 +603,11 @@ export default function App() {
         .eq('reward_context', 'seven_day_challenge')
         .eq('reward_type', 'review');
 
-      // A+B(both) 보상은 A(sns)로 다운그레이드
+      // A+B(both)는 잠금만 내린다. A(sns) row는 그대로 남아 있으므로
+      // reward_type을 바꿔 다운그레이드하면 sns 중복 row가 생긴다.
       await supabase
         .from('user_rewards')
-        .update({ reward_type: 'sns' })
+        .update({ unlocked: false })
         .eq('user_id', session.user.id)
         .eq('reward_context', 'seven_day_challenge')
         .eq('reward_type', 'both');

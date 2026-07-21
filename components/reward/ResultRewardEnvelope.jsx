@@ -12,18 +12,36 @@ const PENDING_INTENT_KEY = 'give_reward_pending_intent_v1';
 // 사용자가 직접 확인하는 버튼을 연다. "실제 검증"이 아님을 문구로 분명히 한다.
 const SELF_CONFIRM_DELAY_MS = 4000;
 
-function readPendingIntent() {
+function clearPendingIntent() {
   try {
-    return window.sessionStorage.getItem(PENDING_INTENT_KEY) || '';
+    window.sessionStorage.removeItem(PENDING_INTENT_KEY);
   } catch {
-    return '';
+    /* 지우지 못해도 흐름은 계속된다 */
   }
 }
 
-function writePendingIntent(value) {
+/**
+ * 하려던 행동은 결과 유형과 함께 저장한다.
+ * 다른 유형의 결과 화면에서 복원되면 안 되기 때문이다.
+ */
+function readPendingIntent(typeKey) {
+  let parsed;
   try {
-    if (value) window.sessionStorage.setItem(PENDING_INTENT_KEY, value);
-    else window.sessionStorage.removeItem(PENDING_INTENT_KEY);
+    parsed = JSON.parse(window.sessionStorage.getItem(PENDING_INTENT_KEY) || 'null');
+  } catch {
+    parsed = null;
+  }
+  const valid = parsed
+    && (parsed.intent === 'share' || parsed.intent === 'review')
+    && parsed.typeKey === typeKey;
+  if (parsed && !valid) clearPendingIntent(); // 불일치·잘못된 값은 즉시 삭제
+  return valid ? parsed.intent : '';
+}
+
+function writePendingIntent(typeKey, intent) {
+  try {
+    if (intent) window.sessionStorage.setItem(PENDING_INTENT_KEY, JSON.stringify({ typeKey, intent }));
+    else clearPendingIntent();
   } catch {
     /* 저장 못 해도 흐름은 계속된다 */
   }
@@ -38,13 +56,15 @@ export default function ResultRewardEnvelope({
   onConfirmShare,
   saving,
   errorMessage,
+  reviewNotice,
+  reviewNoticeTone = 'info',
 }) {
   const [panel, setPanel] = useState('');
   const [manualPage, setManualPage] = useState(0);
   const [shareStage, setShareStage] = useState('idle'); // idle | waiting | confirmable
   const [shareChannel, setShareChannel] = useState('');
   const [toast, setToast] = useState('');
-  const [pendingIntent, setPendingIntent] = useState(() => readPendingIntent());
+  const [pendingIntent, setPendingIntent] = useState(() => readPendingIntent(typeKey));
   const confirmTimer = useRef(null);
   const toastTimer = useRef(null);
 
@@ -54,6 +74,10 @@ export default function ResultRewardEnvelope({
 
   const unlockedCount = (status.sns ? 1 : 0) + (status.review ? 1 : 0);
   const shareUrl = useMemo(() => buildResultShareUrl(window.location.origin, typeKey), [typeKey]);
+
+  useEffect(() => {
+    setPendingIntent(readPendingIntent(typeKey));
+  }, [typeKey]);
 
   useEffect(() => () => {
     if (confirmTimer.current) clearTimeout(confirmTimer.current);
@@ -68,11 +92,6 @@ export default function ResultRewardEnvelope({
     }
   }, [isLoggedIn, pendingIntent, typeKey]);
 
-  useEffect(() => {
-    trackRewardOnce('reward_slide_view', { result_type: typeKey, logged_in: isLoggedIn }, typeKey);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [typeKey]);
-
   const showToast = useCallback((message) => {
     setToast(message);
     if (toastTimer.current) clearTimeout(toastTimer.current);
@@ -80,12 +99,12 @@ export default function ResultRewardEnvelope({
   }, []);
 
   const clearIntent = useCallback(() => {
-    writePendingIntent('');
+    writePendingIntent(typeKey, '');
     setPendingIntent('');
-  }, []);
+  }, [typeKey]);
 
   const requireLogin = useCallback((intent) => {
-    writePendingIntent(intent);
+    writePendingIntent(typeKey, intent);
     setPendingIntent(intent);
     trackReward('reward_login_open', {
       result_type: typeKey,
@@ -206,6 +225,12 @@ export default function ResultRewardEnvelope({
           <button type="button" className="reward-link-btn" onClick={pendingIntent === 'share' ? () => share(navigator.share ? 'native' : 'copy') : startReview}>
             {resumeLabel}
           </button>
+        </p>
+      ) : null}
+
+      {reviewNotice ? (
+        <p className={reviewNoticeTone === 'warn' ? 'reward-error' : 'reward-resume'} role="status">
+          {reviewNotice}
         </p>
       ) : null}
 

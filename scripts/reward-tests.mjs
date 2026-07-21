@@ -391,3 +391,109 @@ test('보상 서비스에는 삭제 경로가 없다 (재검사가 DB 보상을 
   assert.equal(client.state.deletes, 0);
   assert.equal(client.state.rows.length, 3, '기존 보상이 그대로 남아 있어야 한다');
 });
+
+// ── 회귀: 후기 보상은 DB row로만 판정된다 ──────────────────────────
+test('review row가 없으면 both를 만들지 않는다 (URL 파라미터로 해금 불가)', async () => {
+  // reward=reviewed를 수동 입력해도 위젯은 saveReward('review')를 하지 않는다.
+  // 서비스 관점에서는 "sns만 있는 상태"이므로 both가 열리면 안 된다.
+  const client = createFakeClient([baseRow({ reward_type: 'sns' })]);
+  const service = createRewardService(client);
+  const status = await service.fetchRewardStatus('user-1', 'give-test:diplomat');
+  assert.equal(status.review, false);
+  const both = await service.ensureBothReward('user-1', 'give-test:diplomat', () => ({}));
+  assert.equal(both.unlocked, false);
+  assert.equal(client.state.rows.length, 1, 'row가 새로 생기면 안 된다');
+});
+
+test('실제 review row가 있으면 B가 해금되고 both가 열린다', async () => {
+  const client = createFakeClient([
+    baseRow({ reward_type: 'sns' }),
+    baseRow({ reward_type: 'review' }),
+  ]);
+  const service = createRewardService(client);
+  const status = await service.fetchRewardStatus('user-1', 'give-test:diplomat');
+  assert.equal(status.review, true);
+  assert.equal((await service.ensureBothReward('user-1', 'give-test:diplomat', () => ({ ok: 1 }))).unlocked, true);
+});
+
+test('보상 저장 오류는 삼켜지지 않고 호출자에게 전달된다', async () => {
+  const denied = { data: null, error: { message: 'rls denied' } };
+  const failing = {
+    from: () => ({
+      select() { return this; },
+      eq() { return this; },
+      limit() { return Promise.resolve(denied); },
+      then(resolve) { return Promise.resolve(denied).then(resolve); },
+    }),
+  };
+  const service = createRewardService(failing);
+  await assert.rejects(
+    () => service.saveReward('user-1', 'give-test:angel', 'review'),
+    (err) => err.message === 'rls denied',
+  );
+  await assert.rejects(() => service.fetchRewardStatus('user-1', 'give-test:angel'));
+});
+
+test('보상 저장만 재시도해도 후기 row는 건드리지 않는다', async () => {
+  // reviews.html은 후기 저장(challenge_reviews)과 보상 저장을 분리한다.
+  // 보상 저장 재시도는 user_rewards만 건드려야 한다.
+  const client = createFakeClient([]);
+  const service = createRewardService(client);
+  await service.saveReward('user-1', 'give-test:angel', 'review', { kind: 'risk_scenes' });
+  const touched = new Set(client.state.rows.map((r) => r.reward_context));
+  assert.deepEqual([...touched], ['free_test']);
+  assert.equal(client.state.rows.length, 1);
+  // 재시도해도 중복 생성되지 않는다
+  await service.saveReward('user-1', 'give-test:angel', 'review', { kind: 'risk_scenes' });
+  assert.equal(client.state.rows.length, 1);
+});
+
+test('rid는 result_type으로 만든 result_id와 일치해야 한다', () => {
+  // reviews.html이 저장 전에 검증하는 규칙
+  assert.equal(buildResultId('diplomat'), 'give-test:diplomat');
+  assert.notEqual(buildResultId('angel'), 'give-test:diplomat');
+  // 위조된 rid는 result_type과 어긋나므로 저장이 거부된다
+  const forged = 'give-test:guardian';
+  assert.notEqual(forged, buildResultId('diplomat'));
+});
+
+// ── 회귀: 후기 삭제가 보상 row를 중복 생성하지 않는다 ──────────────
+// 예전 코드는 both row의 reward_type을 'sns'로 바꿔 "다운그레이드"했다.
+// A+B를 받았다면 sns row는 반드시 존재하므로, 이 update는 sns 중복 row를 만들고
+// A+B용 generated_content까지 잃는다. 잠금(unlocked)만 내려야 한다.
+test('후기 삭제 경로는 reward_type을 다시 쓰지 않는다', async () => {
+  const { readFileSync } = await import('node:fs');
+  const { fileURLToPath } = await import('node:url');
+  const root = fileURLToPath(new URL('..', import.meta.url));
+  for (const file of ['reviews.html', 'App.jsx']) {
+    const source = readFileSync(root + file, 'utf8');
+    assert.ok(
+      !/update\(\s*\{\s*reward_type\s*:/.test(source),
+      `${file}: reward_type을 update하면 보상 row가 중복된다`,
+    );
+  }
+});
+
+// ── 회귀: 마이페이지 빈 상태 모순 ──────────────────────────────────
+// MyPage는 로그인 뒤에만 렌더되어 브라우저 테스트로 넣기 어렵다.
+// "무료 보상이 있는데 '아직 해금된 보상이 없어요'가 같이 뜨는" 모순만 소스 수준에서 고정한다.
+test('마이페이지에 무료 보상과 빈 보상 문구가 동시에 표시되지 않는다', async () => {
+  const { readFileSync } = await import('node:fs');
+  const source = readFileSync(new URL('../src/components/MyPage.jsx', import.meta.url), 'utf8');
+  assert.ok(
+    !source.includes('아직 해금된 보상이 없어요'),
+    '무료 보상 봉투와 모순되는 빈 상태 문구가 남아 있다',
+  );
+  assert.ok(
+    source.includes('{otherRewards > 0 && ('),
+    '보상 현황 섹션은 챌린지·유료 보상이 있을 때만 렌더돼야 한다',
+  );
+  assert.ok(
+    source.includes('<RewardArchive rewards={freeTestRewards} />'),
+    '무료 결과 보상은 보상 봉투 섹션에서 렌더돼야 한다',
+  );
+  assert.ok(
+    source.includes("reward_context === 'free_test'"),
+    'free_test 컨텍스트로 무료 보상을 골라야 한다',
+  );
+});
