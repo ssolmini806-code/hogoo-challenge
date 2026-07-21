@@ -82,6 +82,7 @@
   }
 
   function decoratePaidLink(link) {
+    if (link.dataset.noPaidDecorate === "true") return;
     var product = link.dataset.product;
     var current;
     try { current = new URL(link.href, location.origin); } catch (_) { return; }

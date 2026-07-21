@@ -146,24 +146,11 @@
         <p class="sequence-line is-soft" id="seqFinalC">발견한 패턴에서 다음 길이 이어집니다.</p>
       </div>
       <div class="sequence-path-choices" aria-label="다음 길 선택">
-        <p class="sequence-path-fork-hint" aria-hidden="true">손끝을 가까이 대면, 잉크 길이 먼저 움직여요</p>
-        <svg class="sequence-path-fork" viewBox="0 0 600 120" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-          <path class="sequence-path-fork-trunk" d="M300 0V38"></path>
-          <path class="sequence-path-fork-report" d="M300 38C300 69 150 55 150 120"></path>
-          <path class="sequence-path-fork-challenge" d="M300 38C300 69 450 55 450 120"></path>
-          <circle class="sequence-path-fork-seed" cx="300" cy="38" r="5"></circle>
-        </svg>
-        <a href="https://givecosystem.com/start?product=give_id_only" target="_blank" rel="noopener noreferrer" class="sequence-path-choice" id="seq-paid-report" data-product="give_id_only">
-          <small>더 정확히 알고 싶다면</small>
-          <strong>심화 결과 보기</strong>
-          <span>관계별 반응과 반복되는 순서를 읽어요</span>
-          <b>5,900원 <i aria-hidden="true">→</i></b>
-        </a>
-        <a href="https://givecosystem.com/start?product=give_id_challenge" target="_blank" rel="noopener noreferrer" class="sequence-path-choice is-primary" id="seq-paid-cta" data-product="give_id_challenge">
-          <small>지금부터 바꾸고 싶다면</small>
-          <strong>첫 번째 길 시작하기</strong>
-          <span>내 결과에서 이어지는 30일 변화를 시작해요</span>
-          <b>29,900원 <i aria-hidden="true">→</i></b>
+        <a href="https://givecosystem.com/start" target="_blank" rel="noopener noreferrer" class="sequence-path-choice is-primary is-diagnosis" id="seq-paid-cta" data-no-paid-decorate="true">
+          <small>나를 더 깊이 알고 싶다면?</small>
+          <strong>내가 왜 이러는지 알아보기</strong>
+          <span>64문항과 AI 대화로, 무료 결과만으로는 보이지 않던 반복의 이유를 새롭게 살펴봐요</span>
+          <b>결제 없이 검사 시작하기 <i aria-hidden="true">→</i></b>
         </a>
         <a href="/hogoo-test.html?from=give_result" class="sequence-path-free" id="seq-cta-next">아직 고민된다면, 7일 동안 무료로 먼저 걸어보기</a>
       </div>
@@ -532,31 +519,29 @@
     var configuredPaidUrl = window.__PAID_SITE_URL && !String(window.__PAID_SITE_URL).includes("%VITE_")
       ? window.__PAID_SITE_URL
       : "https://givecosystem.com/";
-    function paidProductUrl(product) {
+    function diagnosisStartUrl() {
       try {
         var url = new URL(configuredPaidUrl, window.location.origin);
         url.pathname = "/start";
         url.search = "";
-        url.searchParams.set("product", product);
         url.searchParams.set("utm_source", "hogoo_free");
         url.searchParams.set("utm_medium", "give_result");
-        url.searchParams.set("utm_campaign", "first_path");
+        url.searchParams.set("utm_campaign", "give_id_diagnosis");
         return url.toString();
       } catch (_) {
-        return "https://givecosystem.com/start?product=" + encodeURIComponent(product);
+        return "https://givecosystem.com/start?utm_source=hogoo_free&utm_medium=give_result&utm_campaign=give_id_diagnosis";
       }
     }
-    document.querySelectorAll("[data-product]").forEach(function(link){
-      link.href = paidProductUrl(link.dataset.product);
-      link.addEventListener("click", function(){
-        if (typeof window.trackEvent === "function") window.trackEvent("paid_cta_click", {
-          product: link.dataset.product,
+    var diagnosisCta = document.getElementById("seq-paid-cta");
+    if (diagnosisCta) {
+      diagnosisCta.href = diagnosisStartUrl();
+      diagnosisCta.addEventListener("click", function(){
+        if (typeof window.trackEvent === "function") window.trackEvent("diagnosis_handoff_click", {
           placement: "result_final_path",
-          test: testKey,
-          result_type: key
+          test: testKey
         });
       });
-    });
+    }
     if (nextCta) nextCta.addEventListener("click", function(){
       if (typeof window.trackEvent === "function") window.trackEvent(testKey === "give" ? "free_challenge_start" : "give_id_cross_sell_click", {
         placement: "result_final_path",

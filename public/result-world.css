@@ -52,6 +52,7 @@
 .sequence-path-choice{position:relative;display:flex;min-height:clamp(16rem,34vh,21rem);flex-direction:column;padding:clamp(1.35rem,2.6vw,2.2rem);border:1px solid rgba(63,48,32,.34);background:rgba(238,230,210,.58);color:#3f3020;text-decoration:none;transition:transform .28s ease,background .28s ease,border-color .28s ease;}
 .sequence-path-choice:hover,.sequence-path-choice:focus-visible{z-index:2;transform:translateY(-.45rem) rotate(-.35deg);border-color:#9f3223;background:#eee6d2;outline:none;}
 .sequence-path-choice.is-primary{margin-top:clamp(1.3rem,3vh,2.5rem);border-color:#17130e;background:#17130e;color:#eee5d2;}
+.sequence-path-choice.is-diagnosis{grid-column:1/-1;width:min(100%,38rem);min-height:clamp(14rem,30vh,18rem);margin-inline:auto;}
 .sequence-path-choice.is-primary:hover,.sequence-path-choice.is-primary:focus-visible{background:#211a13;}
 .sequence-path-choice small{color:#9f3223;font-size:.61rem;font-weight:850;letter-spacing:.12em;}
 .sequence-path-choice strong{display:block;margin-top:auto;font-family:'Hahmlet',serif;font-size:clamp(1.35rem,2.3vw,2.1rem);font-weight:650;line-height:1.2;letter-spacing:-.04em;}
