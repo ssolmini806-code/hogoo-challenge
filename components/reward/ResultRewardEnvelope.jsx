@@ -174,7 +174,13 @@ export default function ResultRewardEnvelope({
     const target = channel === 'kakao'
       ? `https://sharer.kakao.com/talk/friends/picker/link?url=${encodeURIComponent(shareUrl)}`
       : `https://twitter.com/intent/tweet?text=${encodeURIComponent(buildShareText(typeKey))}&url=${encodeURIComponent(shareUrl)}`;
-    window.open(target, '_blank', 'noopener,noreferrer,width=600,height=520');
+    const opened = window.open(target, '_blank', 'noopener,noreferrer,width=600,height=520');
+    if (!opened) {
+      // 팝업이 막혔는데 확인 단계를 열면 공유하지 않고도 해금된다
+      showToast('공유창이 열리지 않았어요. 팝업 차단을 해제하거나 링크 복사를 사용해주세요.');
+      setShareStage('idle');
+      return;
+    }
     armSelfConfirm(channel, false);
   }, [armSelfConfirm, clearIntent, isLoggedIn, requireLogin, shareUrl, showToast, typeKey]);
 
@@ -263,7 +269,7 @@ export default function ResultRewardEnvelope({
               <button type="button" className="reward-btn" onClick={() => share('copy')}>링크 복사</button>
             </div>
           ) : (
-            <div className="reward-confirm">
+            <div className="reward-confirm" role="status" aria-live="polite">
               <p className="reward-confirm-note">
                 공유했는지는 저희가 확인할 수 없어요. 직접 눌러 알려주세요.
               </p>

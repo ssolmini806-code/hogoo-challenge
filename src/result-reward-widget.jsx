@@ -24,6 +24,9 @@ function readScores() {
 
 function ResultRewardWidget({ typeKey }) {
   const [session, setSession] = useState(null);
+  // getSession은 비동기다. 응답 전에는 로그인 여부를 "모른다"로 다뤄야
+  // 이미 로그인한 사용자에게 logged_in=false가 먼저 확정되지 않는다.
+  const [sessionReady, setSessionReady] = useState(false);
   const [status, setStatus] = useState(EMPTY_STATUS);
   const [loginOpen, setLoginOpen] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -39,28 +42,53 @@ function ResultRewardWidget({ typeKey }) {
     new URLSearchParams(window.location.search).get('reward') === 'reviewed',
   );
 
+  // 리스너를 매번 다시 등록하지 않으면서 최신 로그인 상태를 읽기 위해 ref를 쓴다.
+  const loggedInRef = useRef(false);
+  const sessionReadyRef = useRef(false);
+  const pendingSlideViewRef = useRef(false);
+
+  useEffect(() => { loggedInRef.current = Boolean(userId); }, [userId]);
+
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => setSession(data.session));
+    supabase.auth.getSession().then(({ data }) => {
+      setSession(data.session);
+      sessionReadyRef.current = true;
+      setSessionReady(true);
+    });
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, next) => setSession(next));
     return () => subscription.unsubscribe();
   }, []);
 
   // reward_slide_view는 마운트가 아니라 보상 슬라이드가 실제로 보일 때 기록한다.
-  useEffect(() => {
-    const record = () => trackRewardOnce(
+  // 로그인 상태를 아직 모르면 기록을 미뤘다가 getSession 응답 후에 확정한다.
+  const recordSlideView = useCallback(() => {
+    if (!sessionReadyRef.current) {
+      pendingSlideViewRef.current = true;
+      return;
+    }
+    trackRewardOnce(
       'reward_slide_view',
-      { result_type: typeKey, logged_in: Boolean(userId) },
+      { result_type: typeKey, logged_in: loggedInRef.current },
       typeKey,
     );
+  }, [typeKey]);
+
+  useEffect(() => {
     const onSlideChange = (event) => {
-      if (event.detail?.slide?.id === 'slideReward') record();
+      if (event.detail?.slide?.id === 'slideReward') recordSlideView();
     };
     document.addEventListener('result:slidechange', onSlideChange);
     // #reward로 바로 복귀해 마운트 시점에 이미 활성 상태일 수 있다
-    if (document.getElementById('slideReward')?.classList.contains('active')) record();
+    if (document.getElementById('slideReward')?.classList.contains('active')) recordSlideView();
     return () => document.removeEventListener('result:slidechange', onSlideChange);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [typeKey]);
+  }, [recordSlideView]);
+
+  // getSession이 끝난 뒤, 미뤄둔 노출 기록을 올바른 로그인 상태로 확정한다.
+  useEffect(() => {
+    if (!sessionReady || !pendingSlideViewRef.current) return;
+    pendingSlideViewRef.current = false;
+    recordSlideView();
+  }, [sessionReady, recordSlideView]);
 
   // 같은 결과(result_id)의 보상 상태만 DB에서 읽는다. 해금 근거는 오직 DB row다.
   const refresh = useCallback(async () => {

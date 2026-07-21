@@ -95,7 +95,11 @@ function makeQuery(table) {
 const listeners = [];
 const supabase = {
   auth: {
-    getSession: () => Promise.resolve({ data: { session: store.session }, error: null }),
+    getSession: () => new Promise((resolve) => {
+      const delay = Number(store.authDelayMs) || 0;
+      const done = () => resolve({ data: { session: store.session }, error: null });
+      if (delay > 0) setTimeout(done, delay); else done();
+    }),
     getUser: () => Promise.resolve({ data: { user: store.session?.user ?? null }, error: null }),
     onAuthStateChange: (cb) => { listeners.push(cb); return { data: { subscription: { unsubscribe() {} } } }; },
     signOut: () => Promise.resolve({ error: null }),
@@ -495,6 +499,85 @@ async function run() {
         !(await p.isVisible('.reward-resume:has-text("공유 계속하기")')));
       check('불일치한 pending intent는 즉시 삭제된다',
         (await p.evaluate(() => window.sessionStorage.getItem('give_reward_pending_intent_v1'))) === null);
+      await ctx.close();
+    }
+
+    // ── 회귀 R10. reward_slide_view의 logged_in 값이 실제 로그인 상태와 일치한다 ──
+    console.log('\n[reward_slide_view 로그인 상태]');
+    {
+      // (1) 비로그인 진입 → logged_in=false
+      const ctx = await makeContext(browser, MOBILE);
+      const p = await ctx.newPage();
+      await installEventRecorder(p);
+      await gotoReward(p, 'diplomat');
+      await p.waitForTimeout(600);
+      const anon = await p.evaluate(() =>
+        (window.__events || []).filter((e) => e.name === 'reward_slide_view'));
+      check('비로그인 진입은 logged_in=false로 기록된다',
+        anon.length === 1 && anon[0].params.logged_in === false, JSON.stringify(anon));
+      check('reward_slide_view에 result_type과 placement가 담긴다',
+        anon[0]?.params.result_type === 'diplomat'
+        && anon[0]?.params.placement === 'result_reward_slide', JSON.stringify(anon[0]?.params));
+      await ctx.close();
+    }
+
+    {
+      // (2) 이미 로그인한 사용자 → logged_in=true
+      const ctx = await makeContext(browser, MOBILE);
+      const p = await ctx.newPage();
+      await installEventRecorder(p);
+      await p.addInitScript(() => window.localStorage.setItem('__fake_supabase_store__', JSON.stringify({
+        rows: [], reviews: [], deletes: 0,
+        session: { user: { id: 'user-loggedin', email: 'tester@example.test' } },
+      })));
+      await gotoReward(p, 'diplomat');
+      await p.waitForTimeout(700);
+      const authed = await p.evaluate(() =>
+        (window.__events || []).filter((e) => e.name === 'reward_slide_view'));
+      check('로그인 사용자의 진입은 logged_in=true로 기록된다',
+        authed.length === 1 && authed[0].params.logged_in === true, JSON.stringify(authed));
+      await ctx.close();
+    }
+
+    {
+      // (3) getSession이 늦게 응답해도 잘못된 false가 먼저 확정되지 않는다
+      const ctx = await makeContext(browser, MOBILE);
+      const p = await ctx.newPage();
+      await installEventRecorder(p);
+      await p.addInitScript(() => window.localStorage.setItem('__fake_supabase_store__', JSON.stringify({
+        rows: [], reviews: [], deletes: 0, authDelayMs: 1500,
+        session: { user: { id: 'user-slow', email: 'tester@example.test' } },
+      })));
+      await p.goto(`${BASE}/result-sequence.html?test=give&type=diplomat#reward`, { waitUntil: 'domcontentloaded' });
+      await p.waitForSelector('#slideReward.active .reward-headline', { timeout: 10000 });
+
+      // 슬라이드는 이미 활성인데 getSession은 아직 응답 전
+      const early = await p.evaluate(() =>
+        (window.__events || []).filter((e) => e.name === 'reward_slide_view'));
+      check('getSession 응답 전에는 reward_slide_view를 확정하지 않는다',
+        early.length === 0, JSON.stringify(early));
+
+      await p.waitForTimeout(2200);
+      const late = await p.evaluate(() =>
+        (window.__events || []).filter((e) => e.name === 'reward_slide_view'));
+      check('getSession 응답 후 logged_in=true로 한 번만 기록된다',
+        late.length === 1 && late[0].params.logged_in === true, JSON.stringify(late));
+
+      // (4) 앞뒤 이동해도 세션당 1회
+      await p.click('#sequenceBack');
+      await p.waitForTimeout(250);
+      await p.click('#sequenceNext');
+      await p.waitForTimeout(400);
+      const afterNav = await p.evaluate(() =>
+        (window.__events || []).filter((e) => e.name === 'reward_slide_view').length);
+      check('지연 로그인 경로에서도 앞뒤 이동 시 1회 유지', afterNav === 1, String(afterNav));
+
+      // (5) 새로고침해도 dedupe 계약 유지
+      await p.reload({ waitUntil: 'networkidle' });
+      await p.waitForTimeout(2200);
+      const afterReload = await p.evaluate(() =>
+        (window.__events || []).filter((e) => e.name === 'reward_slide_view').length);
+      check('새로고침 후에도 reward_slide_view가 다시 발화하지 않는다', afterReload === 0, String(afterReload));
       await ctx.close();
     }
 

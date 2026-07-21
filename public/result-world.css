@@ -440,7 +440,12 @@
    수채화 종이 위에 놓인 편지 한 통. 테라코타는 봉인과 진행 상태에만 쓴다.
    페이지 세로 스크롤을 만들지 않고 한 화면 안에서 끝난다. */
 .sequence-slide.sequence-reward{
-  justify-content:center;
+  /* 작은 화면(360×640 등)에서는 한 화면에 안 들어간다.
+     flex 중앙 정렬만 쓰면 넘친 위쪽이 잘려서 스크롤로도 못 닿으므로,
+     정렬은 margin:auto로 넘기고 슬라이드 자체를 스크롤 가능하게 둔다. */
+  justify-content:flex-start;
+  overflow-y:auto;
+  overscroll-behavior:contain;
   padding:clamp(1.5rem,4vh,3rem) clamp(1rem,4vw,3rem) clamp(6.5rem,12vh,7.5rem);
   background:
     radial-gradient(120% 90% at 78% 12%,rgba(238,230,210,.96) 0%,rgba(224,214,190,.9) 55%,rgba(210,199,172,.92) 100%),
@@ -449,11 +454,10 @@
   text-align:left;
 }
 /* React 마운트 컨테이너가 flex 아이템이라 폭을 지정하지 않으면 내용만큼만 줄어든다 */
-#result-reward-root{align-self:stretch;width:100%;display:flex;justify-content:center;}
+#result-reward-root{align-self:stretch;width:100%;display:flex;justify-content:center;margin:auto 0;}
 .reward-slide-inner{
   display:flex;
   width:min(100%,58rem);
-  max-height:100%;
   flex-direction:column;
   align-items:stretch;
   gap:clamp(.5rem,1.4vh,1rem);
@@ -539,13 +543,14 @@
   margin:0;color:#3f3020;
   font-family:'Hahmlet',serif;font-size:clamp(.92rem,1.9vw,1.12rem);
   font-weight:650;line-height:1.35;letter-spacing:-.02em;
+  overflow-wrap:anywhere;word-break:keep-all;
 }
-.reward-card-copy{margin:0;color:#6f5c47;font-size:.72rem;font-weight:550;line-height:1.6;}
-.reward-card-hint{display:block;margin-top:.25rem;color:#8a7460;font-style:italic;}
+.reward-card-copy{margin:0;color:#6f5c47;font-size:.78rem;font-weight:550;line-height:1.6;}
+.reward-card-hint{display:block;margin-top:.25rem;color:#6f5c47;font-style:italic;}
 
-.reward-share-grid{display:grid;grid-template-columns:1fr 1fr;gap:.4rem;margin-top:auto;}
+.reward-share-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:.4rem;margin-top:auto;}
 .reward-confirm{display:flex;flex-direction:column;gap:.4rem;margin-top:auto;}
-.reward-confirm-note{margin:0;color:#8a7460;font-size:.65rem;font-weight:600;line-height:1.5;}
+.reward-confirm-note{margin:0;color:#6f5c47;font-size:.74rem;font-weight:600;line-height:1.5;}
 
 .reward-btn{
   display:inline-flex;align-items:center;justify-content:center;
@@ -564,7 +569,7 @@
   color:#9f3223;font-family:inherit;font-size:.72rem;font-weight:750;
   text-decoration:underline;cursor:pointer;
 }
-.reward-skip{margin:0;color:#8a7460;font-size:.66rem;font-weight:600;line-height:1.5;}
+.reward-skip{margin:0;color:#6f5c47;font-size:.76rem;font-weight:600;line-height:1.5;}
 .reward-toast{
   position:fixed;left:50%;bottom:clamp(7rem,14vh,9rem);z-index:60;
   margin:0;padding:.6rem 1rem;transform:translateX(-50%);
@@ -596,6 +601,7 @@
   margin:0;color:#3f3020;
   font-family:'Hahmlet',serif;font-size:clamp(1rem,2.4vw,1.32rem);
   font-weight:650;line-height:1.35;letter-spacing:-.02em;
+  overflow-wrap:anywhere;word-break:keep-all;
 }
 .reward-panel-title:focus-visible{outline:2px solid #9f3223;outline-offset:3px;}
 .reward-panel-close{
@@ -641,10 +647,10 @@
   .reward-envelope{width:3.1rem;}
   .reward-cards{grid-template-columns:1fr;gap:.45rem;}
   .reward-card{padding:.6rem .7rem;gap:.3rem;}
-  .reward-card-copy{font-size:.68rem;line-height:1.5;}
-  .reward-share-grid{grid-template-columns:repeat(2,1fr);}
+  .reward-card-copy{font-size:.78rem;line-height:1.55;}
+  .reward-share-grid{grid-template-columns:repeat(auto-fit,minmax(84px,1fr));}
   .reward-btn{min-height:44px;font-size:.7rem;}
-  .reward-skip{font-size:.62rem;}
+  .reward-skip{font-size:.75rem;}
 }
 
 @media(prefers-reduced-motion:reduce){

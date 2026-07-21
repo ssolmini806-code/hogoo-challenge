@@ -39,8 +39,6 @@
     </nav>
 
     <main id="main" class="review-shell">
-        <div id="writeSection" hidden></div>
-
         <section class="review-hero">
             <span class="pill">Challenge Reviews</span>
             <h1>호구 탈출 챌린지 후기</h1>
@@ -51,6 +49,9 @@
                 <div class="stat"><strong id="missionCount">0</strong><span>후기 작성자 완료 미션</span></div>
             </div>
         </section>
+
+        <!-- 후기 작성 폼. h1 뒤에 와야 헤딩 순서가 뒤집히지 않는다. -->
+        <div id="writeSection" hidden></div>
 
         <section class="review-grid" id="reviewGrid">
             <div class="empty">후기를 불러오는 중입니다.</div>
@@ -335,7 +336,7 @@
             deleteOwnReview(button.dataset.reviewId);
         });
 
-        function renderAuthNotice(container) {
+        function renderAuthNotice(container, returnUrl) {
             const notice = document.createElement("div");
             notice.className = "auth-notice";
             const title = document.createElement("strong");
@@ -344,6 +345,14 @@
             link.href = "hogoo-test.html";
             link.textContent = "챌린지 앱에서 로그인 후 다시 시도해주세요";
             notice.append(title, link);
+            // 로그인하러 나가면 return 파라미터가 사라져 왕복이 끊긴다.
+            // 결과로 직접 돌아갈 수 있는 링크를 함께 남긴다.
+            if (returnUrl) {
+                const back = document.createElement("a");
+                back.href = returnUrl;
+                back.textContent = "← 내 결과로 돌아가기";
+                notice.append(back);
+            }
             container.replaceChildren(notice);
         }
 
@@ -356,11 +365,19 @@
             return field;
         }
 
-        function renderWriteForm(container) {
+        function renderWriteForm(container, options) {
+            const isFreeTest = options?.context === 'free_test';
             const card = document.createElement("div");
             card.className = "write-card";
             const title = document.createElement("h2");
-            title.textContent = "후기 작성";
+            title.textContent = isFreeTest ? "후기를 남기고 보상 B 열기" : "후기 작성";
+
+            // 무료 결과에서 넘어온 경우, 무엇을 위해 쓰는 후기인지 밝힌다.
+            const lead = document.createElement("p");
+            lead.className = "write-lead";
+            if (isFreeTest) {
+                lead.textContent = "이 후기를 등록하면 결과 화면의 보상 B — 내가 흔들리기 쉬운 위험 장면 3개 — 가 열립니다. 등록 후 자동으로 결과로 돌아갑니다.";
+            }
 
             const nameInput = document.createElement("input");
             nameInput.type = "text";
@@ -382,7 +399,9 @@
 
             const textarea = document.createElement("textarea");
             textarea.id = "formContent";
-            textarea.placeholder = "변화, 느낀 점을 자유롭게 남겨주세요.";
+            textarea.placeholder = isFreeTest
+                ? "결과를 보고 어떤 점이 와닿았는지 자유롭게 남겨주세요."
+                : "변화, 느낀 점을 자유롭게 남겨주세요.";
 
             const submit = document.createElement("button");
             submit.className = "submit-btn";
@@ -393,14 +412,22 @@
             message.className = "form-msg";
             message.id = "formMsg";
 
+            card.append(title);
+            if (isFreeTest) card.append(lead);
             card.append(
-                title,
                 createField("닉네임 (선택)", nameInput),
                 createField("평점", starRow),
                 createField("후기 내용 (10자 이상)", textarea),
                 submit,
                 message
             );
+            if (isFreeTest && options?.returnUrl) {
+                const back = document.createElement("a");
+                back.className = "write-back";
+                back.href = options.returnUrl;
+                back.textContent = "← 후기 없이 결과로 돌아가기";
+                card.append(back);
+            }
             container.replaceChildren(card);
         }
 
@@ -424,11 +451,11 @@
             container.hidden = false;
 
             if (!currentSession) {
-                renderAuthNotice(container);
+                renderAuthNotice(container, returnUrl);
                 return;
             }
 
-            renderWriteForm(container);
+            renderWriteForm(container, { context: reviewContext, returnUrl });
 
             let rating = 5;
             document.querySelectorAll('.star-btn').forEach(btn => {
