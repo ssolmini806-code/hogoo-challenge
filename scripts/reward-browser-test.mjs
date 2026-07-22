@@ -259,6 +259,9 @@ async function run() {
     await page.keyboard.press('Space');
     check('패널이 열려 있을 때 스페이스로 슬라이드가 넘어가지 않는다', await page.isVisible('#slideReward.active'));
     await page.keyboard.press('Escape');
+    // 패널이 열려 있는 동안 배경 슬라이드는 inert다. 닫힘을 기다리지 않고 다음 버튼을
+    // 누르면 inert 상태의 버튼을 눌러 아무 일도 일어나지 않는다.
+    await page.waitForSelector('.reward-panel', { state: 'detached' });
 
     check('콘솔 오류·리소스 404 없음 (비로그인~A 해금)', errors.length === 0, errors.join(' | '));
 
@@ -311,6 +314,7 @@ async function run() {
     check('진단 CTA에 product/result_type/가격이 없다',
       cta.includes('/start') && !/product|result_type|price/i.test(cta), cta);
     await page.keyboard.press('Escape');
+    await page.waitForSelector('.reward-panel', { state: 'detached' });
 
     // ── 13. 다른 유형에서는 보상이 섞이지 않는다 ──
     let page3 = await context.newPage();

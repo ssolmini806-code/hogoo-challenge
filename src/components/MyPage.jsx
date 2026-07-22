@@ -1,9 +1,14 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../supabase';
 import RewardArchive from '../../components/reward/RewardArchive';
+import {
+  mergeMyReviews,
+  reviewContextLabel,
+  CHALLENGE_REVIEW_COLUMNS,
+  LEGACY_REVIEW_COLUMNS,
+} from '../rewards/my-reviews';
 
 const BADGE_LABEL = { gold: '골드', silver: '실버' };
-const CONTEXT_LABEL = { giveid: 'GIVE ID', paid_30day: '30일 플랜' };
 const REWARD_LABEL = { sns: 'SNS 공유', review: '후기 작성', both: 'SNS + 후기' };
 const ORDER_STATUS_LABEL = { paid: '결제 완료', refunded: '환불됨', pending: '처리 중' };
 const SUB_STATUS_LABEL = { active: '구독 중', cancelled: '취소됨', expired: '만료됨' };
@@ -116,14 +121,22 @@ export default function MyPage({ session, onBack }) {
         .select('id, result_id, reward_type, reward_context, unlocked, generated_content, created_at')
         .eq('user_id', uid),
       supabase.from('hall_of_fame').select('badge_level, completion_rate, created_at').eq('user_id', uid).single(),
-      supabase.from('reviews').select('content, review_context, created_at').eq('user_id', uid).order('created_at', { ascending: false }),
+      // 현재 후기는 challenge_reviews에 저장된다 (7일 챌린지 + 무료 GIVE ID 후기).
+      // RLS가 허용하는 컬럼만 고르고, 항상 본인 user_id로 걸러 남의 후기가 섞이지 않게 한다.
+      supabase.from('challenge_reviews').select(CHALLENGE_REVIEW_COLUMNS)
+        .eq('user_id', uid).order('created_at', { ascending: false }),
+      // 레거시 reviews 테이블. 없을 수도 있어서 실패해도 화면이 깨지지 않아야 한다.
+      supabase.from('reviews').select(LEGACY_REVIEW_COLUMNS)
+        .eq('user_id', uid).order('created_at', { ascending: false }),
       supabase.from('payment_orders').select('product_key, status, paid_at').eq('user_id', uid).order('paid_at', { ascending: false }),
       supabase.from('user_subscriptions').select('product_key, status').eq('user_id', uid),
-    ]).then(([profileRes, rewardsRes, hofRes, reviewsRes, ordersRes, subsRes]) => {
+    ]).then(([profileRes, rewardsRes, hofRes, reviewsRes, legacyReviewsRes, ordersRes, subsRes]) => {
       if (profileRes.status === 'fulfilled') setProfile(profileRes.value.data);
       if (rewardsRes.status === 'fulfilled') setRewards(rewardsRes.value.data ?? []);
       if (hofRes.status === 'fulfilled') setHallOfFame(hofRes.value.data);
-      if (reviewsRes.status === 'fulfilled') setMyReviews(reviewsRes.value.data ?? []);
+      const challengeRows = reviewsRes.status === 'fulfilled' ? reviewsRes.value.data : null;
+      const legacyRows = legacyReviewsRes.status === 'fulfilled' ? legacyReviewsRes.value.data : null;
+      setMyReviews(mergeMyReviews(challengeRows, legacyRows));
       if (ordersRes.status === 'fulfilled') setOrders(ordersRes.value.data ?? []);
       if (subsRes.status === 'fulfilled') setSubscriptions(subsRes.value.data ?? []);
       setLoading(false);
@@ -234,7 +247,9 @@ export default function MyPage({ session, onBack }) {
           {myReviews.length > 0 ? myReviews.map((r, i) => (
             <div key={i} style={styles.reviewCard}>
               <div style={{ fontSize: 12, color: 'var(--ink-faint)', marginBottom: 6 }}>
-                {CONTEXT_LABEL[r.review_context] || r.review_context} · {formatDate(r.created_at)}
+                {reviewContextLabel(r.context)} · {formatDate(r.createdAt)}
+                {r.rating ? ` · ${'★'.repeat(Math.max(1, Math.min(5, r.rating)))}` : ''}
+                {r.isLegacy ? ' · 이전 기록' : ''}
               </div>
               <p style={{ margin: 0, fontSize: 15, color: 'var(--ink-sub)', lineHeight: 1.6 }}>{r.content}</p>
             </div>
