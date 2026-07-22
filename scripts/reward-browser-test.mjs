@@ -69,8 +69,9 @@ const KEY = '__fake_supabase_store__';
 function load() {
   try { return JSON.parse(localStorage.getItem(KEY)) || null; } catch { return null; }
 }
-const store = load() || { rows: [], reviews: [], session: null, deletes: 0, failRewardWrites: false };
+const store = load() || { rows: [], reviews: [], session: null, deletes: 0, functionCalls: [], failRewardWrites: false };
 if (!store.reviews) store.reviews = [];
+if (!store.functionCalls) store.functionCalls = [];
 function persist() { try { localStorage.setItem(KEY, JSON.stringify(store)); } catch {} }
 globalThis.__rewardStore = store;
 globalThis.__persistStore = persist;
@@ -81,6 +82,7 @@ function makeQuery(table) {
   const q = {
     select() { mode = 'select'; return q; },
     insert(v) { mode = 'insert'; payload = v; return q; },
+    upsert(v) { mode = 'upsert'; payload = v; return q; },
     update(v) { mode = 'update'; payload = v; return q; },
     delete() { mode = 'delete'; return q; },
     eq(c, v) { filters[c] = v; return q; },
@@ -107,6 +109,14 @@ function makeQuery(table) {
       persist();
       return { data: null, error: null };
     }
+    if (mode === 'upsert') {
+      const identity = ['user_id', 'reward_context', 'result_id', 'reward_type'];
+      const existing = store.rows.find((row) => identity.every((key) => (row[key] ?? null) === (payload[key] ?? null)));
+      if (existing) Object.assign(existing, payload);
+      else store.rows.push({ id: 'r' + (store.rows.length + 1), created_at: new Date().toISOString(), ...payload });
+      persist();
+      return { data: null, error: null };
+    }
     if (mode === 'update') { store.rows.filter(match).forEach((r) => Object.assign(r, payload)); persist(); return { data: null, error: null }; }
     if (mode === 'delete') { store.deletes++; store.rows = store.rows.filter((r) => !match(r)); persist(); return { data: null, error: null }; }
     return { data: store.rows.filter(match).slice(0, cap), error: null };
@@ -124,10 +134,18 @@ const supabase = {
     }),
     getUser: () => Promise.resolve({ data: { user: store.session?.user ?? null }, error: null }),
     onAuthStateChange: (cb) => { listeners.push(cb); return { data: { subscription: { unsubscribe() {} } } }; },
-    signOut: () => Promise.resolve({ error: null }),
+    signOut: () => { store.session = null; persist(); listeners.forEach((cb) => cb('SIGNED_OUT', null)); return Promise.resolve({ error: null }); },
     signInWithPassword: () => Promise.resolve({ data: {}, error: null }),
   },
   from: (t) => makeQuery(t),
+  functions: {
+    invoke: (name, options) => {
+      store.functionCalls.push({ name, body: options?.body || null });
+      persist();
+      try { localStorage.setItem('__delete_function_call__', JSON.stringify(store.functionCalls.at(-1))); } catch {}
+      return Promise.resolve({ data: { success: true }, error: null });
+    },
+  },
 };
 
 globalThis.__login = (userId) => {
@@ -143,6 +161,11 @@ async function makeContext(browser, viewport, opts = {}) {
   // supabase 모듈 요청을 가짜 구현으로 바꾼다
   await context.route('**/*', async (route) => {
     const url = route.request().url();
+    if (url === `${BASE}/mypage`) {
+      const response = await route.fetch({ url: `${BASE}/hogoo-test.html` });
+      await route.fulfill({ response });
+      return;
+    }
     if (/\/assets\/supabase-[^/]*\.js$/.test(url)) {
       // 번들이 export 이름을 축약하므로(export{t as s}) 원본에서 내보내는 이름을 읽어
       // 같은 이름으로 가짜 클라이언트를 내보낸다.
@@ -316,7 +339,7 @@ async function run() {
 
     check('후기 완료 후 원래 결과의 보상 슬라이드로 복귀한다', await page.isVisible('#slideReward.active'));
     check('B 보상이 해금되고 A+B가 자동으로 열린다', (await page.textContent('.reward-progress strong')) === '2/2');
-    check('A+B 설명서 버튼이 활성화된다', await page.isEnabled('button:has-text("설명서 열어보기")'));
+    check('A+B 설명서 버튼이 활성화된다', await page.isEnabled('button:has-text("마지막 편지 열어보기")'));
 
     const rowsAfterBoth = await page.evaluate(() => globalThis.__rewardStore.rows.map((r) => `${r.result_id}|${r.reward_type}|${r.unlocked}`));
     check('A/B/A+B가 모두 같은 result_id로 저장된다',
@@ -325,7 +348,7 @@ async function run() {
     check('보상이 한 번도 삭제되지 않았다', (await page.evaluate(() => globalThis.__rewardStore.deletes)) === 0);
 
     // A+B 콘텐츠가 실제로 열리는지 + 페이지 넘김
-    await page.click('button:has-text("설명서 열어보기")');
+    await page.click('button:has-text("마지막 편지 열어보기")');
     await page.waitForSelector('.reward-panel');
     const manualText = await page.textContent('.reward-panel-body');
     check('A+B 콘텐츠가 실제로 열린다', manualText.includes('내 GIVE ID 유형') && manualText.includes('거절 곤란'));
@@ -379,7 +402,7 @@ async function run() {
         (await p.textContent('.reward-progress strong')) === '0/2');
       check('보상 row가 생성되지 않는다',
         (await p.evaluate(() => globalThis.__rewardStore.rows.length)) === 0);
-      check('A+B 버튼이 잠긴 상태로 남는다', await p.isDisabled('button:has-text("아직 잠겨 있어요")'));
+      check('A+B 버튼이 잠긴 상태로 남는다', await p.isDisabled('.reward-card.is-final button'));
       check('후기 확인 실패 안내가 표시된다',
         (await p.textContent('.reward-slide-inner')).includes('후기 완료 상태를 확인하지 못했어요'));
       check('수동 입력 경로에서 콘솔 오류 없음', errs.length === 0, errs.join(' | '));
@@ -653,12 +676,49 @@ async function run() {
       await rpage.isVisible('.reward-progress') && await rpage.isVisible('.reward-cards'));
     await rctx.close();
 
+    // ── 마이페이지 계정 삭제 안전 흐름 ──
+    console.log('\n[마이페이지 계정 삭제]');
+    for (const [label, viewport] of [['mobile', MOBILE], ['desktop', DESKTOP]]) {
+      const mctx = await makeContext(browser, viewport);
+      const mpage = await mctx.newPage();
+      await mpage.addInitScript(() => {
+        localStorage.setItem('__fake_supabase_store__', JSON.stringify({
+          rows: [], reviews: [], functionCalls: [], deletes: 0,
+          session: { access_token: 'test-token', user: { id: 'user-delete', email: 'delete@example.test' } },
+        }));
+      });
+      await mpage.goto(`${BASE}/mypage`, { waitUntil: 'networkidle' });
+      await mpage.waitForSelector('text=계정 관리');
+      check(`${label}: 마이페이지 계정 삭제 진입점 노출`, await mpage.isVisible('button:has-text("계정 삭제하기")'));
+      check(`${label}: 마이페이지 가로 오버플로 없음`, await mpage.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
+      await mpage.locator('text=계정 관리').scrollIntoViewIfNeeded();
+      await mpage.screenshot({ path: `/tmp/reward-mypage-delete-${label}.png` });
+      await mpage.click('button:has-text("계정 삭제하기")');
+      check(`${label}: 확인 문구 전 영구 삭제 비활성화`, await mpage.isDisabled('button:has-text("영구 삭제")'));
+      await mpage.fill('input[aria-label="계정 삭제 확인 문구"]', '계정 삭제');
+      check(`${label}: 정확한 확인 문구 후 영구 삭제 활성화`, await mpage.isEnabled('button:has-text("영구 삭제")'));
+      await mpage.click('button:has-text("영구 삭제")');
+      await mpage.waitForURL(`${BASE}/?account=deleted`);
+      const deleteCall = await mpage.evaluate(() => JSON.parse(localStorage.getItem('__delete_function_call__') || 'null'));
+      check(
+        `${label}: delete-account 함수에 정확한 확인값 전달`,
+        deleteCall?.name === 'delete-account' && deleteCall?.body?.confirmation === '계정 삭제',
+        JSON.stringify(deleteCall),
+      );
+      await mctx.close();
+    }
+
     // ── 데스크톱 + 모바일 스크린샷 ──
     for (const [label, viewport] of [['mobile-390x844', MOBILE], ['desktop-1280x800', DESKTOP]]) {
       const ctx = await makeContext(browser, viewport);
       const p = await ctx.newPage();
       await gotoReward(p, 'diplomat');
       await p.waitForTimeout(600);
+      const lockedSlideScroll = await p.evaluate(() => {
+        const slide = document.getElementById('slideReward');
+        return slide ? getComputedStyle(slide).overflowY : 'missing';
+      });
+      check(`${label}: 잠긴 보상 슬라이드 내부 스크롤 없음`, lockedSlideScroll === 'hidden', String(lockedSlideScroll));
       await p.screenshot({ path: `/tmp/reward-${label}.png` });
       // 해금 상태 스크린샷
       await p.evaluate(() => {
@@ -669,6 +729,13 @@ async function run() {
         window.__login('user-A');
       });
       await p.waitForTimeout(700);
+      const unlockedSlideScroll = await p.evaluate(() => {
+        const slide = document.getElementById('slideReward');
+        if (!slide) return 'missing';
+        slide.scrollTop = 0;
+        return getComputedStyle(slide).overflowY;
+      });
+      check(`${label}: 열린 보상 슬라이드 내부 스크롤 없음`, unlockedSlideScroll === 'hidden', String(unlockedSlideScroll));
       await p.screenshot({ path: `/tmp/reward-${label}-unlocked.png` });
       await ctx.close();
     }

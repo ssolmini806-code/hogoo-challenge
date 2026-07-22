@@ -284,27 +284,9 @@ export default function App() {
       ...(generatedContent ? { generated_content: generatedContent } : {}),
     };
 
-    const { data: existingRewards, error: findError } = await supabase
-      .from('user_rewards')
-      .select('id')
-      .eq('user_id', session.user.id)
-      .eq('reward_context', 'seven_day_challenge')
-      .eq('reward_type', rewardType)
-      .limit(1);
-
-    if (findError) throw findError;
-
-    if (existingRewards?.[0]?.id) {
-      const { error } = await supabase
-        .from('user_rewards')
-        .update(payload)
-        .eq('id', existingRewards[0].id);
-      if (error) throw error;
-      trackEvent('challenge_reward_unlocked', { reward_type: rewardType });
-      return;
-    }
-
-    const { error } = await supabase.from('user_rewards').insert(payload);
+    const { error } = await supabase.from('user_rewards').upsert(payload, {
+      onConflict: 'user_id,reward_context,result_id,reward_type',
+    });
     if (error) throw error;
     trackEvent('challenge_reward_unlocked', { reward_type: rewardType });
   };

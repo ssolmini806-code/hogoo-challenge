@@ -15,6 +15,9 @@ export default function RewardEnvelope({ unlockedCount }) {
           <circle cx="60" cy="50" r="11" />
           <path className="reward-envelope-seal-crack" d="M60 39v22" />
         </g>
+        <path className="reward-envelope-thread" d="M18 67c22-13 63-13 86 0" />
+        <circle className="reward-envelope-mark is-a" cx="38" cy="62" r="3.2" />
+        <circle className="reward-envelope-mark is-b" cx="82" cy="62" r="3.2" />
       </svg>
     </div>
   );

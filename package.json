@@ -5,12 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "generate:type-catalog": "node scripts/generate-give-type-catalog.mjs",
+    "prebuild": "npm run generate:type-catalog",
     "build": "vite build",
     "postbuild": "node scripts/purgecss.mjs",
     "preview": "vite preview",
     "smoke": "node scripts/smoke-test.mjs",
     "test:unit": "node --test scripts/reward-tests.mjs",
-    "verify": "npm run build && node --test scripts/reward-tests.mjs && node scripts/content-quality.mjs && node scripts/smoke-test.mjs"
+    "verify": "npm run build && node --test scripts/reward-tests.mjs && node scripts/reward-funnel-contract.mjs && node scripts/content-quality.mjs && node scripts/smoke-test.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.104.1",

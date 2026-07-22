@@ -95,6 +95,15 @@ const styles = {
     justifyContent: 'space-between',
     alignItems: 'flex-start',
   },
+  dangerSection: {
+    background: 'rgba(159,50,35,.035)', border: '1px solid rgba(159,50,35,.22)',
+    borderRadius: 16, padding: 20, marginBottom: 16,
+  },
+  dangerButton: {
+    minHeight: 44, padding: '10px 14px', borderRadius: 10,
+    border: '1px solid #9f3223', background: 'transparent', color: '#9f3223',
+    fontFamily: 'inherit', fontSize: 14, fontWeight: 800, cursor: 'pointer',
+  },
 };
 
 function formatDate(iso) {
@@ -110,6 +119,16 @@ export default function MyPage({ session, onBack }) {
   const [orders, setOrders] = useState([]);
   const [subscriptions, setSubscriptions] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [deleteText, setDeleteText] = useState('');
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [deleteError, setDeleteError] = useState('');
+
+  useEffect(() => {
+    if (typeof window?.trackEvent === 'function') {
+      window.trackEvent('reward_archive_view', { placement: 'mypage_reward_archive', logged_in: true });
+    }
+  }, []);
 
   useEffect(() => {
     if (!session?.user?.id) { setLoading(false); return; }
@@ -149,6 +168,31 @@ export default function MyPage({ session, onBack }) {
   const giveidRewards = rewardsByContext.filter(r => r.reward_context === 'giveid');
   const paid30Rewards = rewardsByContext.filter(r => r.reward_context === 'paid_30day');
   const otherRewards = giveidRewards.length + paid30Rewards.length;
+
+  const deleteAccount = async () => {
+    if (deleteText !== '계정 삭제' || deleteLoading) return;
+    setDeleteLoading(true);
+    setDeleteError('');
+    window.trackEvent?.('account_delete_started', { placement: 'mypage' });
+    try {
+      const { error } = await supabase.functions.invoke('delete-account', {
+        body: { confirmation: deleteText },
+        headers: { Authorization: `Bearer ${session.access_token}` },
+      });
+      if (error) throw error;
+      window.trackEvent?.('account_delete_completed', { placement: 'mypage' });
+      await supabase.auth.signOut();
+      ['give_reward_pending_intent_v1', 'free_test_reviewed'].forEach((key) => {
+        try { window.localStorage.removeItem(key); window.sessionStorage.removeItem(key); } catch { /* noop */ }
+      });
+      window.location.replace('/?account=deleted');
+    } catch (error) {
+      console.error('Account deletion failed:', error);
+      window.trackEvent?.('account_delete_failed', { placement: 'mypage' });
+      setDeleteError('삭제를 완료하지 못했어요. 로그인 상태를 확인한 뒤 다시 시도해주세요.');
+      setDeleteLoading(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -292,6 +336,40 @@ export default function MyPage({ session, onBack }) {
           ) : subscriptions.length === 0 ? (
             <p style={styles.emptyText}>구매 내역이 없어요</p>
           ) : null}
+        </div>
+
+        <div style={styles.dangerSection}>
+          <div style={{ ...styles.sectionTitle, color: '#9f3223' }}>계정 관리</div>
+          {!deleteOpen ? (
+            <>
+              <p style={{ margin: '0 0 14px', color: 'var(--ink-sub)', fontSize: 14, lineHeight: 1.65 }}>
+                계정과 저장된 검사·보상·후기 기록을 삭제할 수 있어요. 삭제 후에는 복구할 수 없습니다.
+              </p>
+              <button type="button" style={styles.dangerButton} onClick={() => setDeleteOpen(true)}>계정 삭제하기</button>
+            </>
+          ) : (
+            <div role="group" aria-labelledby="delete-account-title">
+              <p id="delete-account-title" style={{ margin: '0 0 10px', color: 'var(--ink)', fontSize: 14, fontWeight: 700, lineHeight: 1.6 }}>
+                계속하려면 아래에 <strong>계정 삭제</strong>를 입력하세요.
+              </p>
+              <input
+                value={deleteText}
+                onChange={(event) => setDeleteText(event.target.value)}
+                aria-label="계정 삭제 확인 문구"
+                autoComplete="off"
+                style={{ boxSizing: 'border-box', width: '100%', minHeight: 44, padding: '10px 12px', border: '1px solid var(--line)', borderRadius: 8, background: 'var(--surface)', color: 'var(--ink)', font: 'inherit' }}
+              />
+              {deleteError ? <p role="alert" style={{ margin: '10px 0 0', color: '#9f3223', fontSize: 13 }}>{deleteError}</p> : null}
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 12 }}>
+                <button type="button" style={{ ...styles.dangerButton, opacity: deleteText === '계정 삭제' && !deleteLoading ? 1 : .45 }} disabled={deleteText !== '계정 삭제' || deleteLoading} onClick={deleteAccount}>
+                  {deleteLoading ? '삭제 중…' : '영구 삭제'}
+                </button>
+                <button type="button" style={{ ...styles.dangerButton, borderColor: 'var(--line)', color: 'var(--ink-sub)' }} disabled={deleteLoading} onClick={() => { setDeleteOpen(false); setDeleteText(''); setDeleteError(''); }}>
+                  취소
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

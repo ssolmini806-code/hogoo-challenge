@@ -1,10 +1,9 @@
 // 보상 콘텐츠의 원천 데이터.
-// 유형 문구(name/tagline/strength/risk/advice)와 축 정의는 public/give-test-logic.js의
-// results / axisDefinitions에서 그대로 가져온 검증된 카피다.
+// 유형 문구(name/tagline/strength/risk/advice)와 축 정의의 유일한 편집 원본이다.
 // 새로운 임상적 주장이나 통계는 추가하지 않는다.
 //
-// give-test-logic.js는 classic script(모듈 아님)라 import할 수 없어 값을 복제한다.
-// 유형 문구를 고칠 때는 두 파일을 함께 수정해야 한다.
+// classic script 검사 화면은 prebuild가 만든 public/give-type-catalog.generated.js를 읽는다.
+// 생성 파일을 직접 고치지 말고 이 파일만 수정한다.
 
 export const TYPES = {
   angel: {

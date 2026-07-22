@@ -376,7 +376,7 @@
             const lead = document.createElement("p");
             lead.className = "write-lead";
             if (isFreeTest) {
-                lead.textContent = "이 후기를 등록하면 결과 화면의 보상 B — 내가 흔들리기 쉬운 위험 장면 3개 — 가 열립니다. 등록 후 자동으로 결과로 돌아갑니다.";
+                lead.textContent = "이 후기를 등록하면 내 위험 신호가 켜지는 순간과, 그때 바로 꺼내 쓸 대답이 열립니다. 등록 후 자동으로 결과로 돌아갑니다.";
             }
 
             const nameInput = document.createElement("input");
@@ -474,27 +474,15 @@
 
             async function saveReviewReward() {
                 if (reviewContext !== 'free_test') {
-                    // 챌린지 후기 등 다른 컨텍스트는 기존 방식을 유지한다 (result_id 없음).
-                    const { data: existing, error: findError } = await supabase.from('user_rewards').select('id')
-                        .eq('user_id', currentSession.user.id)
-                        .eq('reward_context', reviewContext)
-                        .eq('reward_type', 'review')
-                        .is('result_id', null)
-                        .limit(1);
-                    if (findError) throw findError;
-                    if (existing?.[0]) {
-                        const { error } = await supabase.from('user_rewards')
-                            .update({ unlocked: true }).eq('id', existing[0].id);
-                        if (error) throw error;
-                    } else {
-                        const { error } = await supabase.from('user_rewards').insert({
-                            user_id: currentSession.user.id,
-                            reward_context: reviewContext,
-                            reward_type: 'review',
-                            unlocked: true,
-                        });
-                        if (error) throw error;
-                    }
+                    // result_id가 없는 챌린지 보상도 DB 유니크 인덱스와 원자적 upsert를 쓴다.
+                    const { error } = await supabase.from('user_rewards').upsert({
+                        user_id: currentSession.user.id,
+                        reward_context: reviewContext,
+                        result_id: null,
+                        reward_type: 'review',
+                        unlocked: true,
+                    }, { onConflict: 'user_id,reward_context,result_id,reward_type' });
+                    if (error) throw error;
                     return;
                 }
 

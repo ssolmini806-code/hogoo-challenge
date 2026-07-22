@@ -211,7 +211,7 @@ export default function ResultRewardEnvelope({
   return (
     <div className="reward-slide-inner">
       <p className="reward-eyebrow">A NOTE FOR YOU</p>
-      <h2 className="reward-headline">결과를 남기면,<br />당신을 위한 한 장이 더 열려요</h2>
+      <h2 className="reward-headline">두 개의 흔적이 모이면,<br />당신만의 편지가 열려요</h2>
 
       <div className="reward-envelope-row">
         <RewardEnvelope unlockedCount={unlockedCount} />
@@ -244,8 +244,8 @@ export default function ResultRewardEnvelope({
 
       <div className="reward-cards">
         {/* 보상 A — 공유 */}
-        <article className={`reward-card${status.sns ? ' is-unlocked' : ''}`}>
-          <p className="reward-card-tag">보상 A · SNS 공유</p>
+        <article className={`reward-card is-letter-a${status.sns ? ' is-unlocked' : ''}`}>
+          <p className="reward-card-tag"><span>A</span> 결과 나누기</p>
           <h3 className="reward-card-title">내 유형의 경계 문장 카드</h3>
           {status.sns ? (
             <p className="reward-card-copy">{boundaryCard.situation}</p>
@@ -289,13 +289,13 @@ export default function ResultRewardEnvelope({
         </article>
 
         {/* 보상 B — 후기 */}
-        <article className={`reward-card${status.review ? ' is-unlocked' : ''}`}>
-          <p className="reward-card-tag">보상 B · 후기 작성</p>
-          <h3 className="reward-card-title">내가 흔들리기 쉬운 위험 장면 3개</h3>
+        <article className={`reward-card is-letter-b${status.review ? ' is-unlocked' : ''}`}>
+          <p className="reward-card-tag"><span>B</span> 경험 남기기</p>
+          <h3 className="reward-card-title">내가 흔들리는 순간과 대답</h3>
           <p className="reward-card-copy">
             {status.review
               ? `${riskScenes.axisTitle} 축에서 반복되기 쉬운 장면과 대응 문장을 정리했어요.`
-              : '가장 높게 나온 위험 축을 기준으로, 당신이 흔들리기 쉬운 장면 세 개를 준비해뒀어요.'}
+              : '후기를 남기면, 내 위험 신호가 켜지는 순간과 바로 꺼내 쓸 문장을 보여드려요.'}
           </p>
           {status.review ? (
             <button type="button" className="reward-btn is-primary" onClick={() => openPanel('scenes')}>
@@ -307,13 +307,15 @@ export default function ResultRewardEnvelope({
         </article>
 
         {/* A+B */}
-        <article className={`reward-card is-final${status.both ? ' is-unlocked' : ''}`}>
-          <p className="reward-card-tag">A + B</p>
+        <article className={`reward-card is-final${status.both ? ' is-unlocked' : ' is-locked'}`}>
+          <p className="reward-card-tag"><span>A+B</span> 봉투 속 마지막 편지</p>
           <h3 className="reward-card-title">나의 선의 사용 설명서</h3>
           <p className="reward-card-copy">
             {status.both
-              ? '내 유형과 위험 축을 하나로 묶은 일곱 장의 정리예요.'
-              : '두 가지를 모두 남기면, 유형과 위험 축을 묶은 한 장이 열려요.'}
+              ? '내 호의가 힘이 되는 때와 멈춰야 할 때를 한 흐름으로 정리했어요.'
+              : unlockedCount === 1
+                ? '한 흔적만 더 남기면, 내 유형과 위험 신호를 함께 읽는 설명서가 열려요.'
+                : '두 흔적이 모이면, 내 호의를 오래 지키는 방법이 한 통의 편지로 완성돼요.'}
           </p>
           <button
             type="button"
@@ -321,7 +323,7 @@ export default function ResultRewardEnvelope({
             onClick={() => openPanel('manual')}
             disabled={!status.both}
           >
-            {status.both ? '설명서 열어보기' : '아직 잠겨 있어요'}
+            {status.both ? '마지막 편지 열어보기' : unlockedCount === 1 ? '한 흔적 남았어요' : '두 흔적을 기다리는 중'}
           </button>
         </article>
       </div>

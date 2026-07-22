@@ -47,7 +47,7 @@ export function createRewardService(client) {
   }
 
   /**
-   * 보상을 해금 저장한다. 같은 (user, result, type) row가 있으면 update, 없으면 insert.
+   * 보상을 원자적으로 해금 저장한다. DB 유니크 인덱스와 upsert가 다중 탭 경쟁도 막는다.
    * 기존 row를 삭제하지 않는다.
    * @param {string} userId
    * @param {string} resultId
@@ -56,17 +56,6 @@ export function createRewardService(client) {
    */
   async function saveReward(userId, resultId, rewardType, generatedContent) {
     if (!userId || !resultId) throw new Error('saveReward requires userId and resultId');
-
-    const { data: existing, error: findError } = await client
-      .from('user_rewards')
-      .select('id')
-      .eq('user_id', userId)
-      .eq('reward_context', REWARD_CONTEXT)
-      .eq('result_id', resultId)
-      .eq('reward_type', rewardType)
-      .limit(1);
-
-    if (findError) throw findError;
 
     const payload = {
       user_id: userId,
@@ -77,15 +66,11 @@ export function createRewardService(client) {
       ...(generatedContent === undefined ? {} : { generated_content: generatedContent }),
     };
 
-    if (existing?.[0]?.id) {
-      const { error } = await client.from('user_rewards').update(payload).eq('id', existing[0].id);
-      if (error) throw error;
-      return 'updated';
-    }
-
-    const { error } = await client.from('user_rewards').insert(payload);
+    const { error } = await client.from('user_rewards').upsert(payload, {
+      onConflict: 'user_id,reward_context,result_id,reward_type',
+    });
     if (error) throw error;
-    return 'inserted';
+    return 'saved';
   }
 
   /**
