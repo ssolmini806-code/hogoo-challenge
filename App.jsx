@@ -66,6 +66,7 @@ function openLoginModal(setFn, trigger) {
 
 export default function App() {
   const [session, setSession] = useState(null);
+  const [authReady, setAuthReady] = useState(false);
   const [adminMode, setAdminMode] = useState(() => isAdminModeEnabled());
   const [currentDay, setCurrentDay] = useState(0);
   const [activeTab, setActiveTab] = useState("day");
@@ -117,10 +118,12 @@ export default function App() {
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
-    });
+      setAuthReady(true);
+    }).catch(() => setAuthReady(true));
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       setSession(session);
+      setAuthReady(true);
       if (event === 'PASSWORD_RECOVERY') {
         setShowPasswordReset(true);
       }
@@ -619,24 +622,59 @@ export default function App() {
     }
   };
 
-  if (loading) {
-    return (
-      <div style={{ background: "#FAF8F3", minHeight: "100vh", display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#5C635E' }}>
-        거의 다 왔어요, 잠시만요…
-      </div>
-    );
-  }
-
   const pathname = typeof window !== 'undefined' ? window.location.pathname : '/';
   if (pathname === '/mypage') {
+    if (!authReady) {
+      return (
+        <div style={{ background: "#FAF8F3", minHeight: "100vh", display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#5C635E' }}>
+          계정을 확인하고 있어요…
+        </div>
+      );
+    }
+
+    if (!session) {
+      return (
+        <div style={{ background: '#EEE6D2', minHeight: '100vh', color: '#3F3020', display: 'grid', placeItems: 'center', padding: 24 }}>
+          <main style={{ width: 'min(100%, 460px)', padding: 'clamp(28px, 7vw, 44px)', border: '1px solid rgba(63,48,32,.2)', borderRadius: 16, background: '#F4EDDC', textAlign: 'center' }}>
+            <p style={{ margin: '0 0 12px', color: '#9F3223', fontSize: 12, fontWeight: 800, letterSpacing: '.14em' }}>MY REWARD ARCHIVE</p>
+            <h1 style={{ margin: 0, fontFamily: 'Hahmlet, serif', fontSize: 'clamp(1.8rem, 7vw, 2.5rem)', lineHeight: 1.25 }}>내 보상 봉투를 다시 열어볼까요?</h1>
+            <p style={{ margin: '18px 0 26px', color: '#6F5C47', lineHeight: 1.7 }}>보상을 저장한 계정으로 로그인하면 이전에 열어둔 문장과 사용 설명서를 다시 볼 수 있어요.</p>
+            <button
+              type="button"
+              onClick={() => openLoginModal(setLoginModalOpen, 'mypage')}
+              style={{ width: '100%', minHeight: 48, border: 0, borderRadius: 10, background: '#9F3223', color: '#FFF8EC', font: 'inherit', fontWeight: 800, cursor: 'pointer' }}
+            >
+              로그인하고 보상 보기
+            </button>
+            <a href="/" style={{ display: 'inline-block', marginTop: 18, color: '#6F5C47', fontSize: 14 }}>처음 화면으로 돌아가기</a>
+          </main>
+          <Suspense fallback={null}>
+            <LoginModal
+              isOpen={loginModalOpen}
+              onClose={() => setLoginModalOpen(false)}
+              onSuccess={() => setLoginModalOpen(false)}
+            />
+          </Suspense>
+        </div>
+      );
+    }
+
     return (
-      <Suspense fallback={<div style={{ background: "#FAF8F3", minHeight: "100vh", display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#5C635E' }}>거의 다 왔어요, 잠시만요…</div>}>
+      <Suspense fallback={<div style={{ background: "#FAF8F3", minHeight: "100vh", display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#5C635E' }}>보상 봉투를 불러오고 있어요…</div>}>
         <MyPage
           session={session}
           challenge="seven_day_challenge"
           onBack={() => { window.location.href = '/'; }}
         />
       </Suspense>
+    );
+  }
+
+  if (loading) {
+    return (
+      <div style={{ background: "#FAF8F3", minHeight: "100vh", display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#5C635E' }}>
+        거의 다 왔어요, 잠시만요…
+      </div>
     );
   }
 

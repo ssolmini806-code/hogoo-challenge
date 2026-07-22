@@ -214,6 +214,43 @@ async function checkChallengeGate(browser) {
   return errors
 }
 
+async function checkMyPageRoute(browser) {
+  const page = await browser.newPage({ viewport: MOBILE })
+  const errors = []
+  const redirects = readFileSync(join(ROOT, 'public/_redirects'), 'utf8')
+  if (!/^\/mypage\s+\/hogoo-test\.html\s+200$/m.test(redirects)) {
+    errors.push('/mypage Cloudflare rewrite 누락')
+  }
+
+  await page.route('**/*', (route) => {
+    const url = route.request().url()
+    url.startsWith(BASE) ? route.continue() : route.abort()
+  })
+  // Vite preview는 Cloudflare의 _redirects를 해석하지 않는다. 같은 엔트리를 연 뒤
+  // 앱 스크립트보다 먼저 공개 경로를 주입해 실제 rewrite 이후의 렌더를 재현한다.
+  await page.addInitScript(() => window.history.replaceState(null, '', '/mypage'))
+  page.on('pageerror', (err) => errors.push(`JS 예외: ${err.message.split('\n')[0]}`))
+
+  try {
+    const response = await page.goto(`${BASE}/hogoo-test.html`, { waitUntil: 'load', timeout: 15000 })
+    if (!response || response.status() >= 400) errors.push(`앱 엔트리 응답 ${response ? response.status() : '없음'}`)
+    await page.getByRole('heading', { name: '내 보상 봉투를 다시 열어볼까요?' }).waitFor({ timeout: 5000 })
+    if (new URL(page.url()).pathname !== '/mypage') errors.push('공개 경로 /mypage가 유지되지 않음')
+    if (!await page.getByRole('button', { name: '로그인하고 보상 보기' }).isVisible()) {
+      errors.push('비로그인 로그인 게이트가 보이지 않음')
+    }
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)
+    if (overflow > 2) errors.push(`마이페이지 게이트 모바일 가로 오버플로 ${overflow}px`)
+    await page.getByRole('button', { name: '로그인하고 보상 보기' }).click()
+    if (!await page.getByRole('dialog').isVisible()) errors.push('로그인 CTA가 로그인 모달을 열지 않음')
+  } catch (error) {
+    errors.push(`마이페이지 경로 검사 실패: ${error.message.split('\n')[0]}`)
+  } finally {
+    await page.close()
+  }
+  return errors
+}
+
 // 1) 정적 린트
 const lint = lintHtmlFiles()
 if (lint.problems.length) {
@@ -254,6 +291,14 @@ try {
     failed++
     console.log('  ✗ 챌린지 완주 게이트 (미완주 접근 차단)')
     for (const error of gateErrors) console.log(`      - ${error}`)
+  }
+  const myPageErrors = await checkMyPageRoute(browser)
+  if (myPageErrors.length === 0) {
+    console.log('  ✓ 마이페이지 공개 경로·비로그인 인증 게이트')
+  } else {
+    failed++
+    console.log('  ✗ 마이페이지 공개 경로·비로그인 인증 게이트')
+    for (const error of myPageErrors) console.log(`      - ${error}`)
   }
 } finally {
   await browser.close()

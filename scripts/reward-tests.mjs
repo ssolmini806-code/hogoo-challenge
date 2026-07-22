@@ -583,3 +583,20 @@ test('후기 조회 컬럼이 RLS grant 범위 안에 있다', async () => {
     ['content', 'review_context', 'created_at'],
   );
 });
+
+test('마이페이지 공개 경로는 챌린지 React 엔트리로 정확히 rewrite된다', async () => {
+  const { readFileSync } = await import('node:fs');
+  const redirects = readFileSync(new URL('../public/_redirects', import.meta.url), 'utf8');
+  assert.match(redirects, /^\/mypage\s+\/hogoo-test\.html\s+200$/m);
+});
+
+test('보상 화면에는 실제 마이페이지 링크가 있고 비로그인 접근은 인증으로 막힌다', async () => {
+  const { readFileSync } = await import('node:fs');
+  const reward = readFileSync(new URL('../components/reward/ResultRewardEnvelope.jsx', import.meta.url), 'utf8');
+  const app = readFileSync(new URL('../App.jsx', import.meta.url), 'utf8');
+  assert.ok(reward.includes('href="/mypage"'), '보상 화면에 /mypage 링크가 없다');
+  assert.ok(app.includes("pathname === '/mypage'"), '앱이 /mypage 경로를 판정하지 않는다');
+  assert.ok(app.includes('if (!authReady)'), '인증 확인 전 상태를 구분하지 않는다');
+  assert.ok(app.includes('if (!session)'), '비로그인 마이페이지 게이트가 없다');
+  assert.ok(app.includes('로그인하고 보상 보기'), '로그인 CTA가 없다');
+});

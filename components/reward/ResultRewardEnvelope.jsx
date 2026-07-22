@@ -326,7 +326,9 @@ export default function ResultRewardEnvelope({
         </article>
       </div>
 
-      <p className="reward-skip">보상은 나중에 마이페이지에서도 볼 수 있어요. ‘계속’을 눌러 넘어가도 괜찮아요.</p>
+      <p className="reward-skip">
+        보상은 나중에 <a href="/mypage" className="reward-mypage-link" onClick={() => trackReward('reward_archive_open', { result_type: typeKey, logged_in: isLoggedIn })}>마이페이지</a>에서도 다시 볼 수 있어요.
+      </p>
 
       {toast ? <p className="reward-toast" role="status">{toast}</p> : null}
 

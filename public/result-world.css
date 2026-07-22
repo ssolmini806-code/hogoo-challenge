@@ -570,6 +570,8 @@
   text-decoration:underline;cursor:pointer;
 }
 .reward-skip{margin:0;color:#6f5c47;font-size:.76rem;font-weight:600;line-height:1.5;}
+.reward-mypage-link{display:inline-flex;min-height:44px;align-items:center;color:#9f3223;font-weight:800;text-underline-offset:.18em;vertical-align:middle;}
+.reward-mypage-link:hover,.reward-mypage-link:focus-visible{text-decoration-thickness:2px;}
 .reward-toast{
   position:fixed;left:50%;bottom:clamp(7rem,14vh,9rem);z-index:60;
   margin:0;padding:.6rem 1rem;transform:translateX(-50%);

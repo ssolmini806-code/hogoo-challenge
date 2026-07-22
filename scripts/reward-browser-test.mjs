@@ -7,7 +7,8 @@
 import { spawn } from 'node:child_process';
 import { chromium } from 'playwright';
 
-const PORT = 4174;
+const requestedPort = Number.parseInt(process.env.REWARD_TEST_PORT || '4174', 10);
+const PORT = Number.isInteger(requestedPort) && requestedPort > 0 ? requestedPort : 4174;
 const BASE = `http://127.0.0.1:${PORT}`;
 const MOBILE = { width: 390, height: 844 };
 const DESKTOP = { width: 1280, height: 800 };
@@ -20,22 +21,43 @@ function check(name, ok, detail = '') {
 
 function startPreview() {
   return new Promise((resolve, reject) => {
-    const proc = spawn('npx', ['vite', 'preview', '--host', '127.0.0.1', '--port', String(PORT), '--strictPort'], {
+    // npx를 부모로 띄우면 종료 시 실제 Vite 자식이 포트를 붙잡고 남을 수 있다.
+    // 로컬 Vite 실행 파일을 Node로 직접 띄워 proc.kill()이 서버 자체를 종료하게 한다.
+    const viteBin = new URL('../node_modules/vite/bin/vite.js', import.meta.url).pathname;
+    const proc = spawn(process.execPath, [viteBin, 'preview', '--host', '127.0.0.1', '--port', String(PORT), '--strictPort'], {
       cwd: new URL('..', import.meta.url).pathname,
       stdio: ['ignore', 'pipe', 'pipe'],
     });
     let ready = false;
-    proc.stdout.on('data', (buf) => {
-      if (!ready && buf.toString().includes(String(PORT))) { ready = true; resolve(proc); }
-    });
-    proc.stderr.on('data', () => {});
+    let stderr = '';
+    proc.stderr.on('data', (buf) => { stderr += buf.toString(); });
     // 테스트가 중단돼도 preview 서버가 포트를 붙잡고 남지 않게 한다
     const kill = () => { try { proc.kill('SIGKILL'); } catch {} };
     process.on('exit', kill);
     process.on('SIGINT', () => { kill(); process.exit(130); });
     process.on('SIGTERM', () => { kill(); process.exit(143); });
+    proc.on('exit', (code) => {
+      if (!ready) reject(new Error(`preview 서버 종료 (exit ${code})${stderr ? ` — ${stderr.trim()}` : ''}`));
+    });
+    // Vite의 출력은 실행 환경에 따라 여러 청크로 나뉠 수 있으므로 문자열 대신
+    // 실제 HTTP 응답으로 준비 상태를 확인한다.
+    const poll = setInterval(async () => {
+      if (ready) return;
+      try {
+        const response = await fetch(BASE);
+        if (!response.ok) return;
+        ready = true;
+        clearInterval(poll);
+        resolve(proc);
+      } catch {
+        // 아직 기동 중
+      }
+    }, 150);
     setTimeout(() => {
-      if (!ready) reject(new Error(`preview 서버 기동 실패 (포트 ${PORT}이 이미 사용 중일 수 있습니다)`));
+      if (ready) return;
+      clearInterval(poll);
+      kill();
+      reject(new Error(`preview 서버 기동 실패 (포트 ${PORT})${stderr ? ` — ${stderr.trim()}` : ''}`));
     }, 25000);
   });
 }

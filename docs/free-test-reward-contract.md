@@ -89,6 +89,19 @@ where result_id is not null;
 이 저장소의 개발 환경에는 Supabase 자격 증명이 없어 실 DB 검증을 수행하지 못했다.
 재개하려면 아래를 준비한 뒤 절차대로 실행한다.
 
+### 2026-07-22 배포 설정 감사
+
+- 로컬 `.env`: `CLOUDFLARE_API_TOKEN`만 존재한다.
+- Cloudflare Pages production 설정: `VITE_SUPABASE_URL`과
+  `VITE_SUPABASE_ANON_KEY` 이름은 등록돼 있으나, 현재 production 번들에는
+  Supabase 호스트와 공개 키가 포함되지 않았다.
+- Cloudflare Pages preview 설정: 두 변수가 모두 없다.
+
+따라서 현재 배포·미리보기는 `src/supabase.js`의 fallback 클라이언트를 사용한다.
+두 값을 **Vite 빌드 시점 환경 변수**로 production과 preview 양쪽에 제공한 뒤 새 빌드를
+만들어야 실제 E2E를 시작할 수 있다. anon 키는 브라우저 공개용 값이며 service-role 키와
+혼동하면 안 된다. 값 자체는 이 문서나 로그에 기록하지 않는다.
+
 ### 필요한 것
 
 | 항목 | 위치 | 비고 |
