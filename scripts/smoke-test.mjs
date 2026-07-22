@@ -218,7 +218,7 @@ async function checkMyPageRoute(browser) {
   const page = await browser.newPage({ viewport: MOBILE })
   const errors = []
   const redirects = readFileSync(join(ROOT, 'public/_redirects'), 'utf8')
-  if (!/^\/mypage\s+\/hogoo-test\.html\s+200$/m.test(redirects)) {
+  if (!/^\/mypage\s+\/hogoo-test\s+200$/m.test(redirects)) {
     errors.push('/mypage Cloudflare rewrite 누락')
   }
 

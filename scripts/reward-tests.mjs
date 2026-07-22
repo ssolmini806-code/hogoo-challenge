@@ -587,7 +587,7 @@ test('후기 조회 컬럼이 RLS grant 범위 안에 있다', async () => {
 test('마이페이지 공개 경로는 챌린지 React 엔트리로 정확히 rewrite된다', async () => {
   const { readFileSync } = await import('node:fs');
   const redirects = readFileSync(new URL('../public/_redirects', import.meta.url), 'utf8');
-  assert.match(redirects, /^\/mypage\s+\/hogoo-test\.html\s+200$/m);
+  assert.match(redirects, /^\/mypage\s+\/hogoo-test\s+200$/m);
 });
 
 test('보상 화면에는 실제 마이페이지 링크가 있고 비로그인 접근은 인증으로 막힌다', async () => {
