@@ -84,10 +84,10 @@ where result_id is not null;
 
 중복이 있으면 삭제하지 말고 가장 오래된 row를 남기는 병합 계획을 따로 세울 것.
 
-## 실제 Supabase E2E 검증 절차 (미실행)
+## 실제 Supabase E2E 검증 절차
 
-이 저장소의 개발 환경에는 Supabase 자격 증명이 없어 실 DB 검증을 수행하지 못했다.
-재개하려면 아래를 준비한 뒤 절차대로 실행한다.
+로컬 자격 증명 없이도 Cloudflare Preview가 실제 Supabase 공개 설정으로 빌드된 뒤,
+폐기용 확인 계정을 사용해 아래 절차를 검증할 수 있다.
 
 ### 2026-07-22 배포 설정 감사
 
@@ -97,10 +97,20 @@ where result_id is not null;
   Supabase 호스트와 공개 키가 포함되지 않았다.
 - Cloudflare Pages preview 설정: 두 변수가 모두 없다.
 
-따라서 현재 배포·미리보기는 `src/supabase.js`의 fallback 클라이언트를 사용한다.
-두 값을 **Vite 빌드 시점 환경 변수**로 production과 preview 양쪽에 제공한 뒤 새 빌드를
-만들어야 실제 E2E를 시작할 수 있다. anon 키는 브라우저 공개용 값이며 service-role 키와
-혼동하면 안 된다. 값 자체는 이 문서나 로그에 기록하지 않는다.
+감사 당시 배포·미리보기는 `src/supabase.js`의 fallback 클라이언트를 사용했다. 이후
+두 값을 Preview의 **Vite 빌드 시점 환경 변수**에도 추가하고 새 빌드를 만들어 실제 E2E를
+진행했다. anon 키는 브라우저 공개용 값이며 service-role 키와 혼동하면 안 된다. 값 자체는
+이 문서나 로그에 기록하지 않는다.
+
+### 2026-07-22 실제 E2E 결과
+
+- 대상: Cloudflare Preview, 소스 커밋 `3fa7603`
+- 결과: 20/20 통과
+- 확인: 이메일 확인 로그인, 공유 A, 후기 B, A+B, 새로고침 유지, 마이페이지 재열람,
+  다른 유형 미상속·원래 유형 복구, `generated_content`, 중복 row 없음
+- 정리: 이번 검증이 만든 `user_rewards`·`challenge_reviews` row와 임시 메일함 삭제
+- 잔존: 폐기용 Supabase Auth 계정 2개(첫 브라우저 시도 1개 + 최종 검증 1개)
+- 미사용: service-role 키, 기존 사용자 계정·데이터, DB migration
 
 ### 필요한 것
 
