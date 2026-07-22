@@ -1,3 +1,6 @@
+/* React가 준비되는 동안 아래 SEO 본문이 첫 화면에 올라왔다가 밀리지 않도록 앱 높이를 선점한다. */
+#root{min-height:100vh;}
+
 body:has(.challenge-world){--green:#3f3020;--surface:#eee6d2;--ink:#3f3020;--ink-sub:#6f5c47;--line:rgba(63,48,32,.22);background:#eee6d2 url('/images/results/give-result-path-v2.webp') 62% top/cover fixed no-repeat;}
 .challenge-world{
   background:linear-gradient(90deg,rgba(238,230,210,.96),rgba(238,230,210,.68) 62%,rgba(238,230,210,.24))!important;

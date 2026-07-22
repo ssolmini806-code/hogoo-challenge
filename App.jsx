@@ -684,7 +684,7 @@ export default function App() {
   }
 
   return (
-    <div className="challenge-world" style={{
+    <main className="challenge-world" style={{
       fontFamily: '"Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", name, sans-serif',
       background: "linear-gradient(180deg, #E9F2EC 0%, #FAF8F3 42%, #FFFFFF 100%)",
       minHeight: "100vh", 
@@ -991,6 +991,7 @@ export default function App() {
             오늘 내가 실제로 한 말 / 행동
           </div>
           <textarea
+            aria-label="오늘 내가 실제로 한 말 또는 행동"
             rows={3}
             value={notes[`${currentDay}`] || ""}
             onChange={e => setNotes(prev => ({ ...prev, [`${currentDay}`]: e.target.value }))}
@@ -1171,6 +1172,7 @@ export default function App() {
             <form onSubmit={submitReview} style={{ background: "#FAF8F3", border: "1px solid #E7E1D5", borderRadius: 12, padding: 14, marginBottom: 16 }}>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 104px", gap: 10, marginBottom: 10 }}>
                 <input
+                  aria-label="후기에 표시할 이름"
                   value={reviewForm.displayName}
                   onChange={e => setReviewForm(prev => ({ ...prev, displayName: e.target.value }))}
                   placeholder="표시 이름 (선택)"
@@ -1181,6 +1183,7 @@ export default function App() {
                   }}
                 />
                 <select
+                  aria-label="후기 평점"
                   value={reviewForm.rating}
                   onChange={e => setReviewForm(prev => ({ ...prev, rating: e.target.value }))}
                   style={{
@@ -1196,6 +1199,7 @@ export default function App() {
                 </select>
               </div>
               <textarea
+                aria-label="챌린지 후기 내용"
                 rows={4}
                 value={reviewForm.content}
                 onChange={e => setReviewForm(prev => ({ ...prev, content: e.target.value }))}
@@ -1379,6 +1383,7 @@ export default function App() {
               style={{ display: 'flex', flexDirection: 'column', gap: 12 }}
             >
               <input
+                aria-label="새 비밀번호"
                 type="password"
                 placeholder="새 비밀번호 (6자 이상)"
                 value={newPassword}
@@ -1414,6 +1419,6 @@ export default function App() {
           onSuccess={() => setLoginModalOpen(false)}
         />
       </Suspense>
-    </div>
+    </main>
   );
 }

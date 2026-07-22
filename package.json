@@ -15,7 +15,7 @@
     "verify": "npm run build && node --test scripts/reward-tests.mjs && node scripts/reward-funnel-contract.mjs && node scripts/content-quality.mjs && node scripts/smoke-test.mjs"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.104.1",
+    "@supabase/supabase-js": "^2.110.8",
     "html-to-image": "^1.11.13",
     "lucide-react": "^0.400.0",
     "react": "^18.3.1",

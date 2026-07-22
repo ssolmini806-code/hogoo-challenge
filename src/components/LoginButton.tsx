@@ -291,6 +291,7 @@ export default function LoginButton() {
                   </p>
                   <form onSubmit={handleInvite} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                     <input
+                      aria-label="초대할 친구 이메일 주소"
                       type="email"
                       placeholder="친구 이메일 주소"
                       value={inviteEmail}
@@ -373,6 +374,7 @@ export default function LoginButton() {
                   </p>
                   <form onSubmit={handleEmailChange} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                     <input
+                      aria-label="변경할 새 이메일 주소"
                       type="email"
                       placeholder="새 이메일 주소"
                       value={newEmail}

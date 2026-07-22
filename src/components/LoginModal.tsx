@@ -167,6 +167,7 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: Props) {
               </p>
               <form onSubmit={handleForgotPassword} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                 <input
+                  aria-label="비밀번호 재설정 이메일"
                   type="email"
                   placeholder="이메일"
                   value={email}
@@ -215,6 +216,7 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: Props) {
 
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
               <input
+                aria-label="이메일"
                 type="email"
                 placeholder="이메일"
                 value={email}
@@ -226,6 +228,7 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: Props) {
                 }}
               />
               <input
+                aria-label="비밀번호"
                 type="password"
                 placeholder="비밀번호"
                 value={password}

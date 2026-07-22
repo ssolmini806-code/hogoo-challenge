@@ -253,6 +253,10 @@ async function run() {
 
     await page.click('.reward-share-grid button:has-text("링크 복사")');
     check('비로그인 공유 CTA는 로그인 모달을 연다', await page.isVisible('[role="dialog"]'), '');
+    const unnamedLoginFields = await page.locator('[role="dialog"] input:visible').evaluateAll((fields) =>
+      fields.filter((field) => !(field.getAttribute('aria-label') || field.getAttribute('aria-labelledby')
+        || (field.id && document.querySelector(`label[for="${CSS.escape(field.id)}"]`)) || field.closest('label'))).length);
+    check('로그인 모달 입력은 스크린리더용 이름을 가진다', unnamedLoginFields === 0, `${unnamedLoginFields}개 누락`);
 
     // ── 4~7. 로그인 → 공유 의도 복구 → 확인 → A 해금 → 새로고침 유지 ──
     await page.keyboard.press('Escape');

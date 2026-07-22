@@ -3,10 +3,25 @@
 // 외부 도메인(GA/AdSense/CDN 등) 요청은 차단해서 로컬 코드 문제만 검출한다.
 import { spawn } from 'node:child_process'
 import { readFileSync, readdirSync } from 'node:fs'
+import { createServer } from 'node:net'
 import { join } from 'node:path'
 import { chromium } from 'playwright'
 
-const PORT = 4173
+async function findOpenPort() {
+  return new Promise((resolvePort, reject) => {
+    const server = createServer()
+    server.unref()
+    server.on('error', reject)
+    server.listen(0, '127.0.0.1', () => {
+      const address = server.address()
+      const port = typeof address === 'object' && address ? address.port : 0
+      server.close(() => resolvePort(port))
+    })
+  })
+}
+
+const requestedPort = Number.parseInt(process.env.SMOKE_TEST_PORT || '', 10)
+const PORT = Number.isInteger(requestedPort) && requestedPort > 0 ? requestedPort : await findOpenPort()
 const BASE = `http://127.0.0.1:${PORT}`
 const ROOT = new URL('..', import.meta.url).pathname
 const MOBILE = { width: 390, height: 844 }
@@ -25,8 +40,20 @@ const PAGES = [
   { path: '/reviews.html', label: '후기' },
   { path: '/about.html', label: '브랜드 스토리' },
   { path: '/white-psychology.html', label: '선의 심리학' },
+  { path: '/privacy.html', label: '개인정보처리방침' },
+  { path: '/terms.html', label: '이용약관' },
+  { path: '/affiliate.html', label: '문의 및 제휴' },
   { path: '/articles/index.html', label: '칼럼 목록' },
   { path: '/articles/giver-burnout.html', label: '근거 기반 칼럼' },
+  { path: '/articles/setting-boundaries.html', label: '경계선 칼럼' },
+  { path: '/articles/taker-signals.html', label: '관계 신호 칼럼' },
+  { path: '/articles/smart-giver-guide.html', label: '스마트 기버 칼럼' },
+  { path: '/articles/loss-aversion-relationships.html', label: '손실 회피 칼럼' },
+  { path: '/articles/curiosity-gap-patterns.html', label: '호기심 갭 칼럼' },
+  { path: '/articles/lace-refusal-framework.html', label: 'LACE 거절 칼럼' },
+  { path: '/articles/korean-cultural-pressure.html', label: '문화적 압력 칼럼' },
+  { path: '/articles/refusal-is-not-selfish.html', label: '거절과 이기심 칼럼' },
+  { path: '/articles/not-kindness-burnout.html', label: '친절과 번아웃 칼럼' },
   { path: '/editorial-policy.html', label: '편집 원칙' },
 ]
 
@@ -51,23 +78,39 @@ function lintHtmlFiles() {
 
 function startPreview() {
   return new Promise((resolvePromise, reject) => {
-    const proc = spawn('npx', ['vite', 'preview', '--host', '127.0.0.1', '--port', String(PORT), '--strictPort'], {
+    const viteBin = new URL('../node_modules/vite/bin/vite.js', import.meta.url).pathname
+    const proc = spawn(process.execPath, [viteBin, 'preview', '--host', '127.0.0.1', '--port', String(PORT), '--strictPort'], {
       cwd: new URL('..', import.meta.url).pathname,
       stdio: ['ignore', 'pipe', 'pipe'],
     })
     let ready = false
-    const onData = (buf) => {
-      if (!ready && buf.toString().includes(String(PORT))) {
-        ready = true
-        resolvePromise(proc)
-      }
-    }
-    proc.stdout.on('data', onData)
-    proc.stderr.on('data', onData)
+    let stderr = ''
+    proc.stderr.on('data', (buffer) => { stderr += buffer.toString() })
+    const kill = () => { try { proc.kill('SIGKILL') } catch {} }
+    process.on('exit', kill)
+    process.on('SIGINT', () => { kill(); process.exit(130) })
+    process.on('SIGTERM', () => { kill(); process.exit(143) })
     proc.on('exit', (code) => {
-      if (!ready) reject(new Error(`vite preview 시작 실패 (exit ${code}) — dist/가 있는지 확인 (npm run build 먼저)`))
+      if (!ready) reject(new Error(`vite preview 시작 실패 (exit ${code})${stderr ? ` — ${stderr.trim()}` : ''}`))
     })
-    setTimeout(() => { if (!ready) reject(new Error('vite preview 시작 타임아웃(15s)')) }, 15000)
+    const poll = setInterval(async () => {
+      if (ready) return
+      try {
+        const response = await fetch(BASE)
+        if (!response.ok) return
+        ready = true
+        clearInterval(poll)
+        resolvePromise(proc)
+      } catch {
+        // 아직 기동 중
+      }
+    }, 150)
+    setTimeout(() => {
+      if (ready) return
+      clearInterval(poll)
+      kill()
+      reject(new Error(`vite preview 시작 타임아웃(15s)${stderr ? ` — ${stderr.trim()}` : ''}`))
+    }, 15000)
   })
 }
 
@@ -121,6 +164,24 @@ async function checkPage(browser, { path, label, mount, seedComplete }) {
     const overflow = await page.evaluate(() =>
       document.documentElement.scrollWidth - document.documentElement.clientWidth)
     if (overflow > 2) errors.push(`모바일(390px) 가로 오버플로 ${overflow}px`)
+
+    const unlabeledFields = await page.evaluate(() => {
+      const visible = (element) => {
+        const style = getComputedStyle(element)
+        const rect = element.getBoundingClientRect()
+        return style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 0 && rect.height > 0
+      }
+      return Array.from(document.querySelectorAll('input:not([type="hidden"]), textarea, select'))
+        .filter(visible)
+        .filter((element) => {
+          const id = element.id
+          return !(element.getAttribute('aria-label')
+            || element.getAttribute('aria-labelledby')
+            || (id && document.querySelector(`label[for="${CSS.escape(id)}"]`))
+            || element.closest('label'))
+        }).length
+    })
+    if (unlabeledFields > 0) errors.push(`접근 가능한 이름이 없는 입력 컨트롤 ${unlabeledFields}개`)
   } catch (e) {
     errors.push(`탐색 실패: ${e.message.split('\n')[0]}`)
   } finally {
@@ -302,7 +363,7 @@ try {
   }
 } finally {
   await browser.close()
-  preview.kill()
+  preview.kill('SIGKILL')
 }
 
 const ok = failed === 0 && lint.problems.length === 0
