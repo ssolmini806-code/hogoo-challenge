@@ -9,6 +9,7 @@
   <meta name="robots" content="noindex, follow">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="image" href="/images/results/give-result-path-v2.webp" fetchpriority="high">
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,1,400;9..144,1,500&family=Hahmlet:wght@400;500;600;700;800&family=Pretendard:wght@400;450;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/give-theme.css">
   <link rel="stylesheet" href="/result-world.css">
@@ -461,7 +462,9 @@
       }
       function fillCharacter(imgId, matchType) {
         var img = document.getElementById(imgId);
-        img.src = matchType.character;
+        img.dataset.src = matchType.character;
+        img.loading = "lazy";
+        img.fetchPriority = "low";
         img.alt = matchType.name + " 캐릭터";
         img.addEventListener("error", function(){
           img.hidden = true;
@@ -505,6 +508,13 @@
       if (shouldHide) slide.inert = true;
     });
     var slides = allSlides.filter(function(slide){ return !slide.hidden; });
+    function loadSlideImages(slide) {
+      if (!slide) return;
+      slide.querySelectorAll("img[data-src]").forEach(function(img){
+        img.src = img.dataset.src;
+        img.removeAttribute("data-src");
+      });
+    }
     var dots = document.getElementById("sequenceDots");
     var nextButton = document.getElementById("sequenceNext");
     var backButton = document.getElementById("sequenceBack");
@@ -712,6 +722,9 @@
       document.body.style.setProperty("--result-scene-x", ((index % 5) - 2) * .55 + "%");
       document.body.style.setProperty("--result-progress", slides.length > 1 ? index / (slides.length - 1) : 1);
       slides[index].classList.add("active");
+      loadSlideImages(slides[index]);
+      var nextSlide = slides[index + 1];
+      window.setTimeout(function(){ loadSlideImages(nextSlide); }, 250);
       slides[index].setAttribute("aria-hidden", "false");
       slides[index].inert = false;
       dotItems[index].classList.add("is-active");
