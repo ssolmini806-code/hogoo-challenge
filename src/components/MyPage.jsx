@@ -189,7 +189,14 @@ export default function MyPage({ session, onBack }) {
     } catch (error) {
       console.error('Account deletion failed:', error);
       window.trackEvent?.('account_delete_failed', { placement: 'mypage' });
-      setDeleteError('삭제를 완료하지 못했어요. 로그인 상태를 확인한 뒤 다시 시도해주세요.');
+      let message = '삭제를 완료하지 못했어요. 로그인 상태를 확인한 뒤 다시 시도해주세요.';
+      try {
+        const body = await error?.context?.json?.();
+        if (body?.code === 'SHARED_ACCOUNT') {
+          message = '연결된 GIVE 서비스 기록이 있어 여기서는 계정 전체를 삭제할 수 없어요. 개인정보 문의를 이용해주세요.';
+        }
+      } catch { /* 응답 본문을 읽지 못하면 일반 안내를 유지한다 */ }
+      setDeleteError(message);
       setDeleteLoading(false);
     }
   };
@@ -360,6 +367,9 @@ export default function MyPage({ session, onBack }) {
                 style={{ boxSizing: 'border-box', width: '100%', minHeight: 44, padding: '10px 12px', border: '1px solid var(--line)', borderRadius: 8, background: 'var(--surface)', color: 'var(--ink)', font: 'inherit' }}
               />
               {deleteError ? <p role="alert" style={{ margin: '10px 0 0', color: '#9f3223', fontSize: 13 }}>{deleteError}</p> : null}
+              {deleteError.includes('개인정보 문의') ? (
+                <a href="/affiliate.html" style={{ display: 'inline-block', marginTop: 8, color: '#9f3223', fontSize: 13, fontWeight: 800 }}>개인정보 문의하기</a>
+              ) : null}
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 12 }}>
                 <button type="button" style={{ ...styles.dangerButton, opacity: deleteText === '계정 삭제' && !deleteLoading ? 1 : .45 }} disabled={deleteText !== '계정 삭제' || deleteLoading} onClick={deleteAccount}>
                   {deleteLoading ? '삭제 중…' : '영구 삭제'}

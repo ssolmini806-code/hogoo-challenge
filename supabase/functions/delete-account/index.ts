@@ -31,6 +31,13 @@ function isMissingTable(error: { code?: string; message?: string } | null) {
     || /does not exist|schema cache/i.test(error?.message || '');
 }
 
+async function hasRows(admin: ReturnType<typeof createClient>, table: string, column: string, userId: string) {
+  const { data, error } = await admin.from(table).select(column).eq(column, userId).limit(1);
+  if (error && isMissingTable(error)) return false;
+  if (error) throw error;
+  return Boolean(data?.length);
+}
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: cors(req) });
   if (req.method !== 'POST') return json(req, { error: '허용되지 않은 요청입니다.' }, 405);
@@ -56,6 +63,30 @@ Deno.serve(async (req) => {
     // 네트워크 검증을 거친 현재 사용자만 자기 계정을 지울 수 있다.
     const { data: { user }, error: userError } = await userClient.auth.getUser();
     if (userError || !user) return json(req, { error: '로그인 상태를 다시 확인해주세요.' }, 401);
+
+    // 같은 Auth 계정을 쓰는 연결 서비스 기록이 있으면 무료 사이트가 계정 전체를 지우지 않는다.
+    const sharedTables = ['give_id_results', 'challenge_bases', 'challenge_days', 'give_flow_logs', 'user_subscriptions'];
+    for (const table of sharedTables) {
+      if (await hasRows(admin, table, 'user_id', user.id)) {
+        return json(req, {
+          error: '연결된 GIVE 서비스 기록이 있어 이 화면에서 계정 전체를 삭제할 수 없어요.',
+          code: 'SHARED_ACCOUNT',
+        }, 409);
+      }
+    }
+
+    const { data: rewardContexts, error: rewardContextError } = await admin
+      .from('user_rewards')
+      .select('reward_context')
+      .eq('user_id', user.id);
+    if (rewardContextError && !isMissingTable(rewardContextError)) throw rewardContextError;
+    const freeContexts = new Set(['free_test', 'seven_day_challenge']);
+    if ((rewardContexts || []).some((row) => !freeContexts.has(row.reward_context))) {
+      return json(req, {
+        error: '연결된 GIVE 서비스 보상이 있어 이 화면에서 계정 전체를 삭제할 수 없어요.',
+        code: 'SHARED_ACCOUNT',
+      }, 409);
+    }
 
     // 공개 후기까지 포함해 이 서비스에서 만든 개인 활동 기록을 제거한다.
     const tables = ['user_rewards', 'user_progress', 'challenge_reviews', 'reviews', 'hall_of_fame', 'profiles'];
