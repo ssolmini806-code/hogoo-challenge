@@ -152,10 +152,10 @@
       </div>
       <div class="sequence-path-choices" aria-label="다음 길 선택">
         <a href="https://givecosystem.com/start" target="_blank" rel="noopener noreferrer" class="sequence-path-choice is-primary is-diagnosis" id="seq-paid-cta" data-no-paid-decorate="true">
-          <small>나를 더 깊이 알고 싶다면?</small>
-          <strong>내가 왜 이러는지 알아보기</strong>
-          <span>64문항과 AI 대화로, 무료 결과만으로는 보이지 않던 반복의 이유를 새롭게 살펴봐요</span>
-          <b>결제 없이 검사 시작하기 <i aria-hidden="true">→</i></b>
+          <small>지금 결과는 패턴의 입구예요</small>
+          <strong>반복되는 이유까지, 심화 리포트</strong>
+          <span>무료 결과가 신호를 보여줬다면, 심화 리포트는 이 패턴이 반복되는 관계, 바로 쓸 수 있는 경계 문장, 30일 회복 루틴까지 정리해요. 64문항 자가점검은 결제 없이 시작할 수 있어요.</span>
+          <b>결제 없이 자가점검 시작하기 <i aria-hidden="true">→</i></b>
         </a>
         <a href="/hogoo-test.html?from=give_result" class="sequence-path-free" id="seq-cta-next">아직 고민된다면, 7일 동안 무료로 먼저 걸어보기</a>
       </div>
@@ -528,8 +528,15 @@
     if (score) resultUrl = homeParts[0] + "?type=" + encodeURIComponent(key) + "&score=" + encodeURIComponent(score) + (homeParts[1] ? "#" + homeParts[1] : "");
     var nextCta = document.getElementById("seq-cta-next");
     if (nextCta) {
-      if (testKey !== "give") nextCta.textContent = test.cta;
-      nextCta.href = test.ctaUrl;
+      // give 결과: '7일 무료로 먼저 걸어보기'는 유료 CTA와 의미가 다른 별도 경로 → 유지.
+      // 그 외 결과: '이 반응의 이유를 GIVE ID로 찾기'는 유료 CTA와 의미가 겹쳐 경쟁하고
+      // 무료 사이트 안에서 루프를 돌게 하므로 제거한다(주 CTA를 유료 하나로).
+      if (testKey === "give") {
+        nextCta.href = test.ctaUrl;
+      } else {
+        nextCta.remove();
+        nextCta = null;
+      }
     }
     var retryCta = document.getElementById("seq-retry");
     if (retryCta) retryCta.href = test.retryUrl || homeParts[0];

@@ -1583,3 +1583,14 @@ html { scroll-behavior: smooth; }
   .sequence-risk.active .sequence-risk-outro{opacity:1;transform:none;animation:none!important;}
   .sequence-risk.active .sequence-risk-diagonal{transform:rotate(var(--risk-angle)) scaleX(1);animation:none!important;}
 }
+
+/* ── 유료(givecosystem) 진입 배너 — 콘텐츠/랜딩 공용. 각 페이지 토큰에 맞춰 렌더 ── */
+.paid-entry{margin:44px 0;padding:26px 24px;border:1px solid var(--line);border-radius:var(--r,14px);background:linear-gradient(180deg,var(--surface),var(--green-soft));}
+.paid-entry.is-mid{margin:32px 0;}
+.paid-entry-kicker{margin:0 0 9px;color:var(--mint-ink);font-size:.72rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;}
+.paid-entry-title{margin:0 0 10px;font-family:var(--serif);font-size:1.24rem;font-weight:800;line-height:1.38;color:var(--green);}
+.paid-entry-copy{margin:0 0 18px;color:var(--ink-sub);font-size:.95rem;line-height:1.7;}
+.paid-entry-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:10px;background:var(--green);color:#fff;font-weight:800;font-size:.95rem;text-decoration:none;box-shadow:0 10px 24px rgba(17,75,60,.16);}
+.paid-entry-btn span{transition:transform .25s ease;}
+.paid-entry-btn:hover span,.paid-entry-btn:focus-visible span{transform:translateX(4px);}
+@media(max-width:520px){.paid-entry{padding:22px 18px;}.paid-entry-title{font-size:1.12rem;}.paid-entry-btn{width:100%;justify-content:center;}}
