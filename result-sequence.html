@@ -83,7 +83,7 @@
         <canvas class="result-reveal-canvas" role="button" tabindex="0" aria-label="그림을 쓸어 수채화 색을 발견하기"></canvas>
         <figcaption>FIG. 07 — TYPE SPECIMEN</figcaption>
       </figure>
-      <p class="result-discovery-hint"><span>그림을 천천히 쓸어보세요</span><b aria-hidden="true">↗</b></p>
+      <p class="result-discovery-hint"><b class="result-discovery-hand" aria-hidden="true">✋</b><span class="result-discovery-main">캐릭터를 만져보세요</span><span class="result-discovery-sub">천천히 쓸어내면 내 유형이 나타나요</span></p>
       <p class="sequence-poster-meta">7가지 유형 중</p>
     </section>
 
@@ -756,6 +756,12 @@
 
     function next() {
       if (navigationLocked) return;
+      var current = slides[index];
+      // 아직 캐릭터를 열지 않았으면, 넘기기 전에 결과를 먼저 펼쳐 보여준다(만지지 않아도 유형을 놓치지 않게).
+      if (current.hasAttribute("data-sequence-poster") && current.classList.contains("is-developed") && !current.classList.contains("is-discovered")) {
+        current.classList.add("is-discovered");
+        return;
+      }
       if (index >= slides.length - 1) {
         return;
       }

@@ -295,7 +295,7 @@ export default function ResultRewardEnvelope({
           <p className="reward-card-copy">
             {status.review
               ? `${riskScenes.axisTitle} 축에서 반복되기 쉬운 장면과 대응 문장을 정리했어요.`
-              : '후기를 남기면, 내 위험 신호가 켜지는 순간과 바로 꺼내 쓸 문장을 보여드려요.'}
+              : `당신이 가장 흔들리기 쉬운 «${riskScenes.axisTitle}» 축. 그 신호가 켜지는 3가지 순간과 바로 꺼내 쓸 대답이, 후기 한 줄 뒤에 준비돼 있어요.`}
           </p>
           {status.review ? (
             <button type="button" className="reward-btn is-primary" onClick={() => openPanel('scenes')}>
@@ -314,8 +314,8 @@ export default function ResultRewardEnvelope({
             {status.both
               ? '내 호의가 힘이 되는 때와 멈춰야 할 때를 한 흐름으로 정리했어요.'
               : unlockedCount === 1
-                ? '한 흔적만 더 남기면, 내 유형과 위험 신호를 함께 읽는 설명서가 열려요.'
-                : '두 흔적이 모이면, 내 호의를 오래 지키는 방법이 한 통의 편지로 완성돼요.'}
+                ? '한 흔적만 더 남기면, 내 유형·위험 축·경계 문장이 7단계로 이어지는 «선의 사용 설명서»가 열려요.'
+                : '두 흔적이 모이면, 내 호의를 오래 지키는 법이 7단계 «선의 사용 설명서» 한 통으로 완성돼요.'}
           </p>
           <button
             type="button"
