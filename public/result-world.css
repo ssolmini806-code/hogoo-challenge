@@ -174,6 +174,13 @@
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-line strong{color:var(--result-green);font-weight:820;}
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-line.is-soft{max-width:24em;margin-top:.2rem;color:#796853;font-size:clamp(1rem,1.6vw,1.3rem);font-weight:550;line-height:1.6;letter-spacing:-.02em;}
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-copy{max-width:31rem;margin-top:1rem;color:#6f5c47;font-size:clamp(.9rem,1.25vw,1.05rem);font-weight:570;line-height:1.72;text-align:left;}
+/* 장면 인식 슬라이드: 유형 설명 대신 '내 얘기'로 읽히는 구체적 순간들 */
+:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-scenes .sequence-line:not(.is-soft){max-width:12em;font-size:clamp(1.7rem,3.4vw,3.2rem);}
+:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-scene-list{width:min(100%,34rem);margin:clamp(1.2rem,3vh,1.8rem) 0 0;padding:0;list-style:none;text-align:left;}
+:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-scene-list li{position:relative;padding:.85rem 0 .95rem 1.5rem;border-top:1px solid rgba(63,48,32,.18);color:#5c4b38;font-size:clamp(.92rem,1.3vw,1.08rem);font-weight:580;line-height:1.62;letter-spacing:-.01em;}
+:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-scene-list li:last-child{border-bottom:1px solid rgba(63,48,32,.18);}
+:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-scenes .sequence-line.is-soft{margin-top:1.15rem;}
+:is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-scene-list li::before{content:"—";position:absolute;left:0;top:.85rem;color:var(--result-green);font-family:'Hahmlet',serif;font-weight:700;line-height:1.62;}
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-rule{width:clamp(3rem,6vw,5rem);height:1px;margin:clamp(1rem,2.5vh,1.7rem) 0;background:rgba(63,48,32,.72);}
 :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-label{
   width:max-content;
@@ -408,6 +415,10 @@
   :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-copy{max-width:21rem;font-size:.8rem;line-height:1.62;}
   :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-label{margin-bottom:.9rem;}
   :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-rule{margin:1rem 0;}
+  :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-scenes .sequence-line:not(.is-soft){max-width:10.5em;font-size:clamp(1.7rem,7.8vw,2.4rem);}
+  :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-scene-list{margin-top:1rem;}
+  :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-scene-list li{padding:.7rem 0 .75rem 1.2rem;font-size:.83rem;line-height:1.58;}
+  :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-scene-list li::before{top:.7rem;line-height:1.58;}
   :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-action{margin-top:1rem;padding:1rem 0 1rem 1rem;}
   :is(.sequence-test-give,.sequence-test-hogoo,.sequence-test-relationship,.sequence-test-refusal,.sequence-test-selfless) .sequence-action p{font-size:1rem;}
 

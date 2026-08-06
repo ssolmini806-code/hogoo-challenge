@@ -60,6 +60,10 @@
 .give-test-page .reward{grid-column:1/-1;margin:.25rem 0 0;padding:0;border:0;border-radius:0;background:transparent;color:rgba(63,48,32,.62);font-size:.67rem;font-weight:700;letter-spacing:.025em;}
 .give-test-page .question-card{grid-column:1/-1;grid-row:2;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;width:100%;max-width:min(48rem,56%);animation:questionIn .72s cubic-bezier(.22,.8,.2,1) both;}
 .give-test-page .q-label{margin:0 0 1rem;color:var(--question-mint);font-family:var(--question-sans);font-size:.68rem;font-weight:850;letter-spacing:.12em;}
+/* qText는 문항이 바뀔 때마다 스크린리더 안내용으로 프로그램적 포커스를 받는다.
+   첫 문항에서만 브라우저 기본 포커스 링이 사각형으로 보이므로 제거한다. */
+.give-test-page .q-text:focus,
+.give-test-page .q-text:focus-visible{outline:none;}
 .give-test-page .q-text{margin:0 0 clamp(1.7rem,4.2vh,2.8rem);max-width:15em;color:#3f3020;font-family:var(--question-serif);font-size:clamp(2rem,3.5vw,3.5rem);font-weight:700;line-height:1.15;letter-spacing:-.045em;text-wrap:balance;}
 .give-test-page .answers{width:100%;max-width:34rem;display:grid;gap:0;counter-reset:answer;}
 .give-test-page .answer-btn{
