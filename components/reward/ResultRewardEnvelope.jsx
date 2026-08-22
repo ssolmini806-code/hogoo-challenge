@@ -62,6 +62,8 @@ export default function ResultRewardEnvelope({
 }) {
   const [panel, setPanel] = useState('');
   const [manualPage, setManualPage] = useState(0);
+  const [scenePage, setScenePage] = useState(0);
+  const [boundaryPage, setBoundaryPage] = useState(0);
   const [shareStage, setShareStage] = useState('idle'); // idle | waiting | confirmable
   const [shareChannel, setShareChannel] = useState('');
   const [toast, setToast] = useState('');
@@ -118,6 +120,8 @@ export default function ResultRewardEnvelope({
   const openPanel = useCallback((name) => {
     setPanel(name);
     setManualPage(0);
+    setScenePage(0);
+    setBoundaryPage(0);
     const rewardType = name === 'boundary' ? 'sns' : name === 'scenes' ? 'review' : 'both';
     const unlocked = name === 'boundary' ? status.sns : name === 'scenes' ? status.review : status.both;
     trackReward(unlocked ? 'reward_reopened' : 'reward_preview_open', {
@@ -337,23 +341,33 @@ export default function ResultRewardEnvelope({
 
       {panel === 'boundary' ? (
         <RewardDetailPanel eyebrow="보상 A" title={boundaryCard.title} onClose={() => setPanel('')}>
-          <div className="reward-export-card is-boundary" id="rewardBoundaryCard">
-            <p className="reward-export-kicker">GIVE ID · BOUNDARY CARD</p>
+          <div className="reward-export-card is-boundary" id="rewardBoundaryCard" data-folio="A">
+            <p className="reward-export-kicker">GIVE ID · BOUNDARY CARD · {boundaryPage + 1}/3</p>
             <h4>{boundaryCard.title}</h4>
             <blockquote className="reward-quote">{boundaryCard.sentence}</blockquote>
-            <p className="reward-panel-copy">{boundaryCard.situation}</p>
-            <div className="reward-variant-list">
-              {boundaryCard.variants.map((variant) => (
-                <div key={variant.context}><span>{variant.context}</span><p>“{variant.sentence}”</p></div>
-              ))}
+            <div className="reward-boundary-variant">
+              <span>{boundaryCard.variants[boundaryPage].context}에서</span>
+              <p>“{boundaryCard.variants[boundaryPage].sentence}”</p>
             </div>
             <small>GIVE ECOSYSTEM · 나를 지키며 관계를 이어가는 문장</small>
           </div>
+          <div className="reward-scene-pager" aria-label="상황별 경계 문장 카드 선택">
+            {boundaryCard.variants.map((variant, index) => (
+              <button
+                type="button"
+                key={variant.context}
+                className={boundaryPage === index ? 'is-active' : ''}
+                onClick={() => setBoundaryPage(index)}
+                aria-label={`${variant.context} 문장 카드`}
+                aria-pressed={boundaryPage === index}
+              >{index + 1}</button>
+            ))}
+          </div>
           <RewardExportActions
             targetId="rewardBoundaryCard"
-            filename={`give-id-${typeKey}-boundary.png`}
-            shareText={boundaryCard.sentence}
-            copyText={boundaryCard.sentence}
+            filename={`give-id-${typeKey}-boundary-${boundaryPage + 1}.png`}
+            shareText={boundaryCard.variants[boundaryPage].sentence}
+            copyText={boundaryCard.variants[boundaryPage].sentence}
             rewardType="sns"
             typeKey={typeKey}
           />
@@ -362,29 +376,39 @@ export default function ResultRewardEnvelope({
 
       {panel === 'scenes' ? (
         <RewardDetailPanel eyebrow="보상 B" title={riskScenes.title} onClose={() => setPanel('')}>
-          <div className="reward-export-card is-scenes" id="rewardScenesCard">
-            <p className="reward-export-kicker">GIVE ID · RISK SCENES</p>
-            <h4>{riskScenes.axisTitle}에서 멈춰 볼 세 장면</h4>
-            <p className="reward-panel-copy">{riskScenes.intro}</p>
-            <ol className="reward-scene-list">
-              {riskScenes.scenes.map((scene, index) => (
-                <li key={index}>
-                  <p className="reward-scene-title">{scene.scene}</p>
-                  <p className="reward-scene-signal"><span>알아차릴 신호</span>{scene.signal}</p>
-                  <div className="reward-response-tones">
-                    <p><span>부드럽게</span>“{scene.gentleResponse}”</p>
-                    <p><span>단호하게</span>“{scene.firmResponse}”</p>
-                  </div>
-                </li>
-              ))}
-            </ol>
-            <p className="reward-panel-note">{riskScenes.note}</p>
+          <div className="reward-export-card is-scenes" id="rewardScenesCard" data-folio="B">
+            <p className="reward-export-kicker">GIVE ID · RISK SCENE · {scenePage + 1}/3</p>
+            <span className="reward-scene-number" aria-hidden="true">0{scenePage + 1}</span>
+            <h4>{riskScenes.axisTitle}에서<br />멈춰 볼 장면</h4>
+            <p className="reward-scene-title">{riskScenes.scenes[scenePage].scene}</p>
+            <div className="reward-scene-signal-card">
+              <span>알아차릴 신호</span>
+              <p>{riskScenes.scenes[scenePage].signal}</p>
+            </div>
+            <div className="reward-response-tones">
+              <p><span>부드럽게</span>“{riskScenes.scenes[scenePage].gentleResponse}”</p>
+              <p><span>단호하게</span>“{riskScenes.scenes[scenePage].firmResponse}”</p>
+            </div>
+            <small>GIVE ECOSYSTEM · 알아차리고 선택하는 장면 연습</small>
+          </div>
+          <p className="reward-panel-note reward-scene-note">{riskScenes.note}</p>
+          <div className="reward-scene-pager" aria-label="위험 장면 카드 선택">
+            {riskScenes.scenes.map((_, index) => (
+              <button
+                type="button"
+                key={index}
+                className={scenePage === index ? 'is-active' : ''}
+                onClick={() => setScenePage(index)}
+                aria-label={`${index + 1}번 장면 카드`}
+                aria-pressed={scenePage === index}
+              >{index + 1}</button>
+            ))}
           </div>
           <RewardExportActions
             targetId="rewardScenesCard"
-            filename={`give-id-${typeKey}-${riskScenes.axis}-scenes.png`}
-            shareText={`${riskScenes.axisTitle}에서 멈춰 볼 세 장면`}
-            copyText={riskScenes.scenes[0].gentleResponse}
+            filename={`give-id-${typeKey}-${riskScenes.axis}-scene-${scenePage + 1}.png`}
+            shareText={`${riskScenes.axisTitle}에서 멈춰 볼 장면 ${scenePage + 1}`}
+            copyText={riskScenes.scenes[scenePage].gentleResponse}
             rewardType="review"
             typeKey={typeKey}
           />
@@ -429,7 +453,7 @@ export default function ResultRewardEnvelope({
             </div>
           }
         >
-          <div className="reward-export-card is-manual" id="rewardManualCard">
+          <div className="reward-export-card is-manual" id="rewardManualCard" data-folio="A+B">
             <p className="reward-export-kicker">GIVE ID · GOODWILL MANUAL · {manualPage + 1}/{manual.pages.length}</p>
             <h4>{manual.title} — {manual.pages[manualPage].label}</h4>
             {manual.pages[manualPage].sectionIds.map((id) => {

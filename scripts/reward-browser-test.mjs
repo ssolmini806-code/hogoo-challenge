@@ -317,11 +317,23 @@ async function run() {
     check('해금된 경계 문장 전문이 보인다', quote.includes('확인하고 다시 말할게요'), quote);
     check('보상 문장이 결과 슬라이드의 "오늘의 조언"과 동일하지 않다',
       !quote.includes('일정 확인하고 가능한 범위만'), quote);
-    check('A에 직장·가족·친구 상황별 문장 3종이 있다', (await page.locator('.reward-variant-list>div').count()) === 3);
-    check('A 4:5 카드 내용이 잘리지 않는다', await page.evaluate(() => {
-      const card = document.getElementById('rewardBoundaryCard');
-      return card.scrollHeight <= card.clientHeight + 1;
-    }));
+    const boundaryCards = [];
+    let allBoundaryCardsFit = true;
+    for (let index = 0; index < 3; index += 1) {
+      await page.click(`.reward-scene-pager button:nth-child(${index + 1})`);
+      boundaryCards.push(await page.textContent('#rewardBoundaryCard'));
+      allBoundaryCardsFit = allBoundaryCardsFit && await page.evaluate(() => {
+        const card = document.getElementById('rewardBoundaryCard');
+        const bounds = card.getBoundingClientRect();
+        return [...card.children].every((child) => {
+          const rect = child.getBoundingClientRect();
+          return rect.top >= bounds.top - 1 && rect.bottom <= bounds.bottom + 1;
+        });
+      });
+    }
+    check('A에 직장·가족·친구 상황별 문장 카드 3종이 있다', boundaryCards.length === 3 && new Set(boundaryCards).size === 3);
+    check('A 4:5 카드 3장이 모두 잘리지 않는다', allBoundaryCardsFit);
+    await page.click('.reward-scene-pager button:nth-child(1)');
     const boundaryDownloadWait = page.waitForEvent('download');
     await page.click('button:has-text("이미지 저장·공유")');
     const boundaryDownload = await boundaryDownloadWait;
@@ -385,12 +397,27 @@ async function run() {
     // B 장면 카드: 강도별 문장과 이미지 출력
     await page.click('button:has-text("위험 장면 열어보기")');
     await page.waitForSelector('#rewardScenesCard');
-    const scenesText = await page.textContent('#rewardScenesCard');
-    check('B의 세 장면마다 부드러운·단호한 대응을 제공한다', (scenesText.match(/부드럽게/g) || []).length === 3 && (scenesText.match(/단호하게/g) || []).length === 3);
-    check('B 4:5 카드 내용이 잘리지 않는다', await page.evaluate(() => {
-      const card = document.getElementById('rewardScenesCard');
-      return card.scrollHeight <= card.clientHeight + 1;
-    }));
+    const sceneCards = [];
+    let allSceneCardsFit = true;
+    for (let index = 0; index < 3; index += 1) {
+      await page.click(`.reward-scene-pager button:nth-child(${index + 1})`);
+      sceneCards.push(await page.textContent('#rewardScenesCard'));
+      allSceneCardsFit = allSceneCardsFit && await page.evaluate(() => {
+        const card = document.getElementById('rewardScenesCard');
+        const bounds = card.getBoundingClientRect();
+        const childrenFit = [...card.children].every((child) => {
+          const rect = child.getBoundingClientRect();
+          return rect.top >= bounds.top - 1 && rect.bottom <= bounds.bottom + 1;
+        });
+        const responses = card.querySelector('.reward-response-tones')?.getBoundingClientRect();
+        const footer = card.querySelector('small')?.getBoundingClientRect();
+        return childrenFit && responses && footer && responses.bottom <= footer.top - 3;
+      });
+    }
+    check('B의 세 장면을 각각 읽기 쉬운 카드로 제공한다', sceneCards.length === 3 && new Set(sceneCards).size === 3);
+    check('B의 세 카드마다 부드러운·단호한 대응을 제공한다', sceneCards.every((text) => text.includes('부드럽게') && text.includes('단호하게')));
+    check('B 4:5 카드 3장이 모두 잘리지 않는다', allSceneCardsFit);
+    await page.click('.reward-scene-pager button:nth-child(1)');
     const scenesDownloadWait = page.waitForEvent('download');
     await page.click('button:has-text("이미지 저장·공유")');
     const scenesDownload = await scenesDownloadWait;
@@ -407,7 +434,11 @@ async function run() {
     check('"곧 제공 예정" 같은 문구가 없다', !manualText.includes('곧 제공') && !manualText.includes('준비 중'));
     check('A+B 4:5 첫 장 내용이 잘리지 않는다', await page.evaluate(() => {
       const card = document.getElementById('rewardManualCard');
-      return card.scrollHeight <= card.clientHeight + 1;
+      const bounds = card.getBoundingClientRect();
+      return [...card.children].every((child) => {
+        const rect = child.getBoundingClientRect();
+        return rect.top >= bounds.top - 1 && rect.bottom <= bounds.bottom + 1;
+      });
     }));
     const manualDownloadWait = page.waitForEvent('download');
     await page.click('button:has-text("이미지 저장·공유")');
