@@ -665,18 +665,24 @@ export default function App() {
           background: "#FFFFFF", border: "1px dashed #E7E1D5", borderRadius: 16,
           padding: "40px 24px", color: "#5C635E", fontSize: 14
         }}>
-          수료증 이미지 준비 중입니다
+          완주 기념 이미지를 준비하고 있습니다
         </div>
       );
     }
     return (
-      <img
-        className="challenge-reward-illustration"
-        src="/images/tests/hogoo-check-illustration-v3-400w.webp"
-        alt="7일 챌린지 완료 이미지"
-        onError={() => setError(true)}
-        style={{ width: "100%", borderRadius: 16, display: "block" }}
-      />
+      <figure className="challenge-reward-keepsake">
+        <img
+          className="challenge-reward-illustration"
+          src="/images/rewards/seven-day-keepsake-bg-v1.webp"
+          alt="일곱 개의 이정표를 지나 빛나는 문에 도착하는 7일 챌린지 완주 그림"
+          onError={() => setError(true)}
+        />
+        <figcaption>
+          <span>7-DAY PRACTICE · COMPLETED</span>
+          <strong>친절함을 지키는<br />나만의 기준이 생겼다</strong>
+          <small>{completedMissions}/21 MISSIONS</small>
+        </figcaption>
+      </figure>
     );
   }
 

@@ -710,12 +710,12 @@ test('인증서는 서버 발급번호와 공개 검증 경로를 사용한다',
   const { readFileSync } = await import('node:fs');
   const migration = readFileSync(new URL('../supabase/migrations/20260822000000_secure_reward_claims.sql', import.meta.url), 'utf8');
   const edge = readFileSync(new URL('../supabase/functions/challenge-certificate/index.ts', import.meta.url), 'utf8');
-  const component = readFileSync(new URL('../components/reward/ChallengeRewardSection.tsx', import.meta.url), 'utf8');
+  const rewardImage = readFileSync(new URL('../src/rewards/challenge-reward-images.js', import.meta.url), 'utf8');
   assert.match(migration, /create table if not exists public\.challenge_certificates/i);
   assert.match(migration, /revoke all on public\.challenge_certificates from anon, authenticated/i);
   assert.ok(edge.includes("body?.action === 'verify'"));
   assert.ok(edge.includes("body?.action !== 'issue'"));
-  assert.ok(component.includes('certificate.html?code=${certificate.code}'));
+  assert.ok(rewardImage.includes('certificate.html?code=${certificate.code}'));
 });
 
 test('계정 삭제는 서버 함수에서 사용자 JWT를 검증하고 관리자 키를 브라우저에 노출하지 않는다', async () => {

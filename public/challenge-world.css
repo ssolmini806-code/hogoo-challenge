@@ -56,7 +56,13 @@ body:has(.challenge-world){--green:#3f3020;--surface:#eee6d2;--ink:#3f3020;--ink
 /* Completion reward: one unfolding path instead of stacked cards. */
 .challenge-world .challenge-reward-view{display:grid;grid-template-columns:minmax(13rem,20rem) minmax(0,1fr);gap:clamp(2.5rem,7vw,7rem);align-items:start;}
 .challenge-world .challenge-reward-visual{position:sticky;top:2rem;margin:0!important;}
-.challenge-world .challenge-reward-illustration{width:100%!important;aspect-ratio:1;object-fit:cover;border-radius:50%!important;box-shadow:none;-webkit-mask-image:radial-gradient(circle,#000 56%,transparent 76%);mask-image:radial-gradient(circle,#000 56%,transparent 76%);}
+.challenge-world .challenge-reward-keepsake{position:relative;margin:0;aspect-ratio:3/4;overflow:hidden;border:1px solid rgba(63,48,32,.32);background:#f6ecd6;box-shadow:0 1.8rem 4rem rgba(63,48,32,.16);}
+.challenge-world .challenge-reward-keepsake::after{content:"";position:absolute;inset:.7rem;border:1px solid rgba(159,50,35,.45);pointer-events:none;}
+.challenge-world .challenge-reward-illustration{width:100%!important;height:100%!important;object-fit:cover;border-radius:0!important;box-shadow:none;-webkit-mask-image:none;mask-image:none;}
+.challenge-world .challenge-reward-keepsake figcaption{position:absolute;inset:0;display:flex;flex-direction:column;align-items:flex-start;padding:11% 10%;color:#3f3020;text-align:left;}
+.challenge-world .challenge-reward-keepsake figcaption span{color:#9f3223;font-size:.55rem;font-weight:900;letter-spacing:.13em;}
+.challenge-world .challenge-reward-keepsake figcaption strong{margin-top:9%;font-family:'Give Hahmlet','Hahmlet',serif;font-size:clamp(1rem,2vw,1.55rem);font-weight:700;line-height:1.42;letter-spacing:-.035em;}
+.challenge-world .challenge-reward-keepsake figcaption small{margin-top:auto;padding:.35rem .55rem;background:#3f3020;color:#eee6d2;font-size:.55rem;font-weight:850;letter-spacing:.06em;}
 .challenge-world .challenge-reward-hold{display:none;}
 .challenge-world .challenge-reward{padding:1.5rem 0!important;background:transparent!important;color:#18211d!important;}
 .challenge-world .challenge-reward-inner{max-width:none!important;}
@@ -88,6 +94,34 @@ body:has(.challenge-world){--green:#3f3020;--surface:#eee6d2;--ink:#3f3020;--ink
 .challenge-world .challenge-reward-memoir-days span,.challenge-world .challenge-reward-memoir-days small{margin-top:.2rem;color:#6f5c47;font-size:.72rem;line-height:1.55;}
 .challenge-world .challenge-reward-memoir-days p{margin:.4rem 0 0;color:#30443a;font-size:.82rem;line-height:1.6;}
 .challenge-world .challenge-reward-next-action{margin:.8rem 0 0;padding-top:.8rem;border-top:1px solid rgba(63,48,32,.18);color:#30443a;font-size:.8rem;line-height:1.65;}
+.challenge-world .challenge-share-preview{position:relative;min-height:26rem;margin:1.4rem 0;padding:2rem 1.7rem;overflow:hidden;border:1px solid rgba(63,48,32,.3);background:#f5ead2 url('/images/rewards/seven-day-keepsake-bg-v1.webp') center/cover no-repeat;box-shadow:0 1.2rem 2.8rem rgba(63,48,32,.12);}
+.challenge-world .challenge-share-preview::before{content:"";position:absolute;inset:1rem 1rem auto;height:63%;border-radius:.2rem;background:rgba(247,238,219,.86);box-shadow:0 0 3rem rgba(247,238,219,.6);}
+.challenge-world .challenge-share-preview>*{position:relative;z-index:1;}
+.challenge-world .challenge-share-preview>p{margin:0;color:#9f3223;font-size:.63rem;font-weight:900;letter-spacing:.12em;}
+.challenge-world .challenge-share-preview>strong{display:block;margin-top:1.2rem;font-family:'Give Hahmlet','Hahmlet',serif;font-size:clamp(1.55rem,3.8vw,2.25rem);font-weight:700;line-height:1.46;letter-spacing:-.035em;color:#3f3020;}
+.challenge-world .challenge-share-preview>strong em{color:#9f3223;font-style:normal;}
+.challenge-world .challenge-share-preview blockquote{max-width:85%;margin:1.2rem 0 0;font-family:'Give Hahmlet','Hahmlet',serif;font-size:.86rem;font-weight:700;line-height:1.75;color:#3f3020;}
+.challenge-world .challenge-share-preview dl{position:absolute;z-index:2;left:1.7rem;right:1.7rem;bottom:1.5rem;display:grid;grid-template-columns:repeat(3,1fr);margin:0;padding:1rem;background:rgba(47,36,25,.92);color:#f7eedb;}
+.challenge-world .challenge-share-preview dl div+div{border-left:1px solid rgba(247,238,219,.25);}
+.challenge-world .challenge-share-preview dt,.challenge-world .challenge-share-preview dd{margin:0;text-align:center;}
+.challenge-world .challenge-share-preview dt{font-size:1.05rem;font-weight:900;}
+.challenge-world .challenge-share-preview dd{margin-top:.15rem;color:#cdbda6;font-size:.62rem;font-weight:700;}
+.challenge-world .challenge-reward-certificate-status{margin:.75rem 0 0;color:#6f5c47;font-size:.75rem;line-height:1.55;}
+.challenge-world .challenge-memoir{padding:0!important;overflow:hidden;border:1px solid rgba(63,48,32,.26)!important;background:rgba(247,238,219,.66)!important;}
+.challenge-world .challenge-memoir-cover{min-height:16rem;padding:1.8rem;background:#34291f url('/images/rewards/seven-day-keepsake-bg-v1.webp') center bottom/cover no-repeat;background-blend-mode:multiply;color:#f7eedb;}
+.challenge-world .challenge-memoir-cover span{color:#d98b70;font-size:.62rem;font-weight:900;letter-spacing:.14em;}
+.challenge-world .challenge-memoir-cover p{margin:1rem 0 .4rem!important;color:#d5c6b2!important;font-size:.76rem!important;font-weight:700;}
+.challenge-world .challenge-memoir-cover strong{display:block;font-family:'Give Hahmlet','Hahmlet',serif;font-size:clamp(1.4rem,3.4vw,2rem);font-weight:700;line-height:1.55;letter-spacing:-.025em;}
+.challenge-world .challenge-memoir-summary,.challenge-world .challenge-memoir>.challenge-reward-quote,.challenge-world .challenge-memoir>.challenge-reward-memoir-days{margin-left:1.25rem!important;margin-right:1.25rem!important;}
+.challenge-world .challenge-memoir-summary{margin-top:1.2rem!important;color:#6f5c47!important;font-size:.74rem!important;}
+.challenge-world .challenge-reward-quote small{display:block;margin-bottom:.35rem;color:#9f3223;font-family:inherit;font-size:.62rem;font-weight:900;letter-spacing:.05em;}
+.challenge-world .challenge-reward-memoir-days{margin-bottom:1.25rem!important;counter-reset:memoir-day;}
+.challenge-world .challenge-reward-memoir-days li{position:relative;padding:.95rem 0 .95rem 2.5rem;counter-increment:memoir-day;}
+.challenge-world .challenge-reward-memoir-days li::before{content:counter(memoir-day,decimal-leading-zero);position:absolute;left:0;top:.95rem;color:#9f3223;font-family:'Hahmlet',serif;font-size:.85rem;}
+.challenge-world .challenge-fit-card{position:relative;overflow:hidden;padding:1.5rem!important;border:1px solid rgba(63,48,32,.3)!important;border-left:1px solid rgba(63,48,32,.3)!important;background:linear-gradient(145deg,rgba(247,238,219,.96),rgba(220,203,171,.72))!important;box-shadow:0 1rem 2.4rem rgba(63,48,32,.1);}
+.challenge-world .challenge-fit-card::after{content:"30";position:absolute;right:-.15rem;top:-1.8rem;color:rgba(159,50,35,.09);font-family:'Hahmlet',serif;font-size:10rem;font-weight:800;line-height:1;pointer-events:none;}
+.challenge-world .challenge-fit-kicker{position:relative;z-index:1;color:#9f3223;font-size:.62rem;font-weight:900;letter-spacing:.14em;}
+.challenge-world .challenge-fit-title{position:relative;z-index:1;max-width:78%;margin-top:.75rem!important;font-family:'Give Hahmlet','Hahmlet',serif;font-size:clamp(1.15rem,2.8vw,1.55rem)!important;font-weight:700!important;line-height:1.52;color:#3f3020!important;}
 
 .challenge-world .login-modal-backdrop{background:rgba(23,19,14,.72)!important;backdrop-filter:blur(8px);}
 .challenge-world .login-modal-sheet{border:1px solid rgba(63,48,32,.28)!important;border-radius:0!important;background:#eee6d2 url('/images/results/give-result-path-v2.webp') 70% center/cover no-repeat!important;box-shadow:0 2rem 6rem rgba(23,19,14,.26);}
@@ -115,11 +149,14 @@ body:has(.challenge-world){--green:#3f3020;--surface:#eee6d2;--ink:#3f3020;--ink
   .challenge-world-scores button{width:2.25rem!important;height:2.25rem!important;}
   .challenge-world-analysis{padding:1.4rem 0!important;}
   .challenge-world .challenge-reward-view{display:block;}
-  .challenge-world .challenge-reward-visual{position:relative;top:auto;width:9rem;margin:0 auto 1.2rem!important;}
+  .challenge-world .challenge-reward-visual{position:relative;top:auto;width:min(17rem,78vw);margin:0 auto 2.4rem!important;}
   .challenge-world .challenge-reward-intro p:last-child{display:none;}
   .challenge-world .challenge-reward-step{padding:1.6rem 0 1.6rem 2.7rem!important;}
   .challenge-world .challenge-reward-step::before{top:1.6rem;font-size:.95rem;}
   .challenge-world .challenge-reward-actions{grid-template-columns:1fr;}
+  .challenge-world .challenge-share-preview{min-height:24rem;margin-left:-2.7rem;padding:1.5rem 1.25rem;}
+  .challenge-world .challenge-share-preview::before{inset:.7rem .7rem auto;height:64%;}
+  .challenge-world .challenge-share-preview dl{left:1rem;right:1rem;bottom:1rem;}
 }
 
 @media(prefers-reduced-motion:reduce){.challenge-world *{transition:none!important;scroll-behavior:auto!important;}}

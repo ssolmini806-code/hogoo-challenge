@@ -12,6 +12,11 @@ import {
   Share2,
   Sparkles,
 } from 'lucide-react';
+import {
+  createChallengeCertificate,
+  createChallengeShareCard,
+  downloadRewardImage,
+} from '../../src/rewards/challenge-reward-images.js';
 
 const DEFAULT_SHARE_MESSAGE =
   '7일 호구 탈출 챌린지 완주! 🎉 7일 동안 해냈어. 나처럼 해봐!';
@@ -25,7 +30,7 @@ type ChallengeRewardSectionProps = {
   userId: string | null;
   completionDays: number;
   onLoginRequired: () => void;
-  onShareComplete: () => void;
+  onShareComplete: () => void | Promise<void>;
   onReviewClick: () => void;
   onBothComplete: (diagnosisResult: ChallengeDiagnosisResult) => void;
   isShared: boolean;
@@ -88,6 +93,7 @@ export default function ChallengeRewardSection({
   );
   const [diagnosisVisible, setDiagnosisVisible] = useState(bothCompleted);
   const [shareMessage, setShareMessage] = useState(DEFAULT_SHARE_MESSAGE);
+  const [shareStatus, setShareStatus] = useState('');
   const [certificateStatus, setCertificateStatus] = useState('');
 
   useEffect(() => {
@@ -104,13 +110,32 @@ export default function ChallengeRewardSection({
     onBothComplete(diagnosisResult);
   }, [bothCompleted, diagnosisResult, onBothComplete]);
 
-  const handleShareComplete = () => {
+  const handleShareComplete = async () => {
     if (!userId) {
       onLoginRequired();
       return;
     }
 
-    onShareComplete();
+    setShareStatus('나만의 완주 카드를 만들고 있어요…');
+    try {
+      const blob = await createChallengeShareCard({ memoir, completionDays: safeCompletionDays });
+      const file = new File([blob], '나의-7일-경계연습.png', { type: 'image/png' });
+      if (navigator.share && navigator.canShare?.({ files: [file] })) {
+        await navigator.share({ files: [file], title: '나의 7일 경계 연습', text: shareMessage });
+        setShareStatus('완주 카드를 공유했어요. 인증서가 열렸습니다.');
+      } else {
+        downloadRewardImage(blob, file.name);
+        setShareStatus('공유용 완주 카드를 저장했어요. 인증서가 열렸습니다.');
+      }
+      await onShareComplete();
+    } catch (error) {
+      if (error instanceof DOMException && error.name === 'AbortError') {
+        setShareStatus('공유를 취소했어요. 카드는 언제든 다시 만들 수 있어요.');
+        return;
+      }
+      console.error('Share card creation failed:', error);
+      setShareStatus('공유 카드를 만들지 못했어요. 잠시 후 다시 시도해주세요.');
+    }
   };
 
   const handleReviewClick = () => {
@@ -135,57 +160,18 @@ export default function ChallengeRewardSection({
       return;
     }
 
-    const canvas = document.createElement('canvas');
-    canvas.width = 1200;
-    canvas.height = 1600;
-
-    const context = canvas.getContext('2d');
-    if (!context) return;
-
-    const background = context.createLinearGradient(0, 0, 1200, 1600);
-    background.addColorStop(0, '#f8f1df');
-    background.addColorStop(1, '#eee1c4');
-    context.fillStyle = background;
-    context.fillRect(0, 0, canvas.width, canvas.height);
-    context.strokeStyle = '#3f3020';
-    context.lineWidth = 4;
-    context.strokeRect(70, 70, 1060, 1460);
-    context.strokeStyle = '#9f3223';
-    context.lineWidth = 2;
-    context.strokeRect(88, 88, 1024, 1424);
-    context.fillStyle = '#9f3223';
-    context.textAlign = 'center';
-    context.font = '700 26px sans-serif';
-    context.fillText('GIVE ECOSYSTEM · 7-DAY PRACTICE', 600, 230);
-    context.fillStyle = '#1f241f';
-    context.font = '700 72px sans-serif';
-    context.fillText('7일 경계 연습', 600, 430);
-    context.font = '800 96px sans-serif';
-    context.fillText('완주 인증서', 600, 575);
-    context.font = '500 42px sans-serif';
-    context.fillText(`${safeCompletionDays}/7일 · 미션 ${certificate.completedMissions}/21 완료`, 600, 745);
-    context.font = '600 40px sans-serif';
-    context.fillText('내 선의를 지키는 기준을 끝까지 기록했습니다', 600, 900);
-    context.beginPath();
-    context.arc(600, 1080, 78, 0, Math.PI * 2);
-    context.fillStyle = '#9f3223';
-    context.fill();
-    context.fillStyle = '#f8f1df';
-    context.font = '800 30px sans-serif';
-    context.fillText('7 DAYS', 600, 1091);
-    context.fillStyle = '#1f241f';
-    context.font = '400 27px monospace';
-    context.fillText(`발급번호 ${certificate.code}`, 600, 1270);
-    context.font = '400 25px sans-serif';
-    context.fillText(new Date(certificate.issuedAt).toLocaleDateString('ko-KR'), 600, 1330);
-    context.font = '400 22px sans-serif';
-    context.fillText(`검증: hogoo-challenge.pages.dev/certificate.html?code=${certificate.code}`, 600, 1410);
-
-    const link = document.createElement('a');
-    link.download = '7day-challenge-certificate.png';
-    link.href = canvas.toDataURL('image/png');
-    link.click();
-    setCertificateStatus('검증 가능한 인증서를 다운로드했어요.');
+    try {
+      const blob = await createChallengeCertificate({
+        certificate,
+        completionDays: safeCompletionDays,
+        memoir,
+      });
+      downloadRewardImage(blob, '나의-7일-경계연습-완주인증서.png');
+      setCertificateStatus('내 기록과 검증번호가 담긴 완주 인증서를 저장했어요.');
+    } catch (error) {
+      console.error('Certificate image creation failed:', error);
+      setCertificateStatus('인증서 이미지를 만들지 못했어요. 잠시 후 다시 시도해주세요.');
+    }
   };
 
   return (
@@ -214,6 +200,17 @@ export default function ChallengeRewardSection({
               </div>
             </div>
 
+            <div className="challenge-share-preview" aria-label="공유 카드 미리보기">
+              <p>7-DAY BOUNDARY PRACTICE · COMPLETED</p>
+              <strong>나는 7일 동안,<br />자동 수락 대신<br /><em>내 기준을 연습했다.</em></strong>
+              <blockquote>“{memoir.anchor}”</blockquote>
+              <dl>
+                <div><dt>{safeCompletionDays}/7</dt><dd>완주</dd></div>
+                <div><dt>{memoir.completedMissions}/21</dt><dd>미션</dd></div>
+                <div><dt>{memoir.noteCount}</dt><dd>기록</dd></div>
+              </dl>
+            </div>
+
             <label className="mt-4 block text-sm font-semibold text-gray-800" htmlFor="share-message">
               카카오 공유 문구
             </label>
@@ -232,7 +229,7 @@ export default function ChallengeRewardSection({
                 className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-gray-950 px-4 text-sm font-bold text-white transition hover:bg-gray-800"
               >
                 {isShared ? <Check className="h-4 w-4" aria-hidden="true" /> : null}
-                공유했어요 ✓
+                {isShared ? '완주 카드 다시 받기' : '완주 카드 저장·공유'}
               </button>
               <button
                 type="button"
@@ -249,10 +246,12 @@ export default function ChallengeRewardSection({
               </button>
             </div>
 
+            {shareStatus ? <p className="challenge-reward-certificate-status" role="status">{shareStatus}</p> : null}
+
             {isShared ? (
               <p className="challenge-reward-status mt-3 flex items-start gap-2 text-sm font-medium text-emerald-700">
                 <Award className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
-                후기 게시판에 닉네임 옆 배지가 표시돼요 🏅
+                공유 카드, 검증 가능한 완주 인증서, 후기 배지가 모두 열렸어요.
               </p>
             ) : null}
             {certificateStatus ? <p className="challenge-reward-certificate-status" role="status">{certificateStatus}</p> : null}
@@ -283,14 +282,18 @@ export default function ChallengeRewardSection({
             </button>
 
             {isReviewed ? (
-              <div className="challenge-reward-status mt-4 rounded-lg border border-dashed border-amber-200 bg-amber-50 p-4">
-                <p className="text-sm font-bold text-amber-900">{memoir.title}</p>
-                <p className="mt-1 text-sm leading-6 text-amber-800">
+              <div className="challenge-reward-status challenge-memoir mt-4 rounded-lg border border-dashed border-amber-200 bg-amber-50 p-4">
+                <div className="challenge-memoir-cover">
+                  <span>MY SEVEN DAYS</span>
+                  <p>{memoir.title}</p>
+                  <strong>친절함을 버리지 않고<br />나를 지킨 기록</strong>
+                </div>
+                <p className="challenge-memoir-summary mt-1 text-sm leading-6 text-amber-800">
                   미션 {memoir.completedMissions}/21 · 행동 메모 {memoir.noteCount}개
                   {memoir.anxietyAverage !== null ? ` · 평균 불안 ${memoir.anxietyAverage}/10` : ''}
                   {memoir.guiltAverage !== null ? ` · 평균 죄책감 ${memoir.guiltAverage}/10` : ''}
                 </p>
-                <blockquote className="challenge-reward-quote">“{memoir.anchor}”</blockquote>
+                <blockquote className="challenge-reward-quote"><small>앞으로 가져갈 한 문장</small>“{memoir.anchor}”</blockquote>
                 <ol className="challenge-reward-memoir-days">
                   {memoir.daily.map((entry) => (
                     <li key={entry.day}>
@@ -319,8 +322,9 @@ export default function ChallengeRewardSection({
             </div>
 
             {diagnosisVisible ? (
-              <div className="challenge-reward-unlock mt-4 rounded-lg bg-indigo-50 p-4">
-                <p className="flex items-center gap-2 text-sm font-bold text-indigo-950">
+              <div className="challenge-reward-unlock challenge-fit-card mt-4 rounded-lg bg-indigo-50 p-4">
+                <span className="challenge-fit-kicker">YOUR NEXT 30 DAYS</span>
+                <p className="challenge-fit-title flex items-center gap-2 text-sm font-bold text-indigo-950">
                   <Sparkles className="h-4 w-4" aria-hidden="true" />
                   {fitCard.label}
                 </p>
