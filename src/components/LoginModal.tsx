@@ -11,6 +11,7 @@ type Props = {
 export default function LoginModal({ isOpen, onClose, onSuccess }: Props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordTouched, setPasswordTouched] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isForgotPassword, setIsForgotPassword] = useState(false);
@@ -89,6 +90,10 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: Props) {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (isSignUp && password.length < 6) {
+      setPasswordTouched(true);
+      return;
+    }
     setLoading(true);
     try {
       if (isSignUp) {
@@ -229,16 +234,31 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: Props) {
               />
               <input
                 aria-label="비밀번호"
+                aria-describedby={isSignUp && passwordTouched && password.length < 6 ? 'password-requirement' : undefined}
+                aria-invalid={isSignUp && passwordTouched && password.length < 6}
                 type="password"
                 placeholder="비밀번호"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  setPasswordTouched(true);
+                }}
+                minLength={isSignUp ? 6 : undefined}
                 required
                 style={{
                   padding: '13px 14px', borderRadius: 10, border: '1px solid var(--line)',
                   background: 'var(--surface)', color: 'var(--ink)', outline: 'none', fontSize: 15,
                 }}
               />
+              {isSignUp && passwordTouched && password.length < 6 && (
+                <p
+                  id="password-requirement"
+                  role="alert"
+                  style={{ margin: '-4px 2px 0', color: '#C2413B', fontSize: 13, lineHeight: 1.4 }}
+                >
+                  비밀번호는 6자 이상 입력해주세요.
+                </p>
+              )}
               <button
                 type="submit"
                 disabled={loading}
@@ -267,7 +287,10 @@ export default function LoginModal({ isOpen, onClose, onSuccess }: Props) {
             )}
 
             <button
-              onClick={() => setIsSignUp((v) => !v)}
+              onClick={() => {
+                setIsSignUp((v) => !v);
+                setPasswordTouched(false);
+              }}
               style={{
                 marginTop: 8, minHeight: 44, background: 'none', border: 'none',
                 color: 'var(--ink-sub)', cursor: 'pointer', fontSize: 15,

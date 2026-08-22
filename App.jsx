@@ -1384,6 +1384,8 @@ export default function App() {
             >
               <input
                 aria-label="새 비밀번호"
+                aria-describedby={newPassword.length > 0 && newPassword.length < 6 ? 'new-password-requirement' : undefined}
+                aria-invalid={newPassword.length > 0 && newPassword.length < 6}
                 type="password"
                 placeholder="새 비밀번호 (6자 이상)"
                 value={newPassword}
@@ -1395,6 +1397,15 @@ export default function App() {
                   background: '#FAF8F3', color: '#1A1F1C', outline: 'none', fontSize: 14,
                 }}
               />
+              {newPassword.length > 0 && newPassword.length < 6 && (
+                <p
+                  id="new-password-requirement"
+                  role="alert"
+                  style={{ margin: '-4px 2px 0', color: '#C2413B', fontSize: 13, lineHeight: 1.4 }}
+                >
+                  비밀번호는 6자 이상 입력해주세요.
+                </p>
+              )}
               <button
                 type="submit"
                 disabled={passwordResetLoading}
