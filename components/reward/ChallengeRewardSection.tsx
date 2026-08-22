@@ -15,6 +15,7 @@ import {
 import {
   createChallengeCertificate,
   createChallengeShareCard,
+  downloadChallengeMemoirPdf,
   downloadRewardImage,
 } from '../../src/rewards/challenge-reward-images.js';
 
@@ -41,6 +42,11 @@ type ChallengeRewardSectionProps = {
     noteCount: number;
     anxietyAverage: number | null;
     guiltAverage: number | null;
+    anxietyChange: { start: number; end: number; change: number; startDay: number; endDay: number } | null;
+    guiltChange: { start: number; end: number; change: number; startDay: number; endDay: number } | null;
+    anxietySeries: Array<{ day: number; score: number }>;
+    guiltSeries: Array<{ day: number; score: number }>;
+    recordedScoreDays: number;
     anchor: string;
     daily: Array<{
       day: number;
@@ -56,6 +62,34 @@ type ChallengeRewardSectionProps = {
   paidChallengeUrl: string;
   onCertificateIssue: () => Promise<{ code: string; issuedAt: string; completedMissions: number }>;
 };
+
+function trendSegments(series: Array<{ day: number; score: number }>) {
+  const segments: Array<Array<{ day: number; score: number }>> = [];
+  for (const entry of series) {
+    const current = segments[segments.length - 1];
+    if (!current || entry.day - current[current.length - 1].day !== 1) segments.push([entry]);
+    else current.push(entry);
+  }
+  return segments;
+}
+
+function MemoirTrendChart({ memoir }: { memoir: ChallengeRewardSectionProps['memoir'] }) {
+  const point = (entry: { day: number; score: number }) => `${8 + ((entry.day - 1) / 6) * 84},${92 - entry.score * 8}`;
+  return (
+    <div className="challenge-memoir-chart">
+      <svg viewBox="0 0 100 108" role="img" aria-label="7일 불안과 죄책감 기록 변화">
+        {[0, 2, 4, 6, 8, 10].map((score) => <line key={score} x1="8" x2="92" y1={92 - score * 8} y2={92 - score * 8} />)}
+        {trendSegments(memoir.anxietySeries).map((segment, index) => <polyline className="is-anxiety" key={`a-${index}`} points={segment.map(point).join(' ')} />)}
+        {trendSegments(memoir.guiltSeries).map((segment, index) => <polyline className="is-guilt" key={`g-${index}`} points={segment.map(point).join(' ')} />)}
+        {memoir.anxietySeries.map((entry) => <circle className="is-anxiety" key={`ap-${entry.day}`} cx={8 + ((entry.day - 1) / 6) * 84} cy={92 - entry.score * 8} r="2.2" />)}
+        {memoir.guiltSeries.map((entry) => <circle className="is-guilt" key={`gp-${entry.day}`} cx={8 + ((entry.day - 1) / 6) * 84} cy={92 - entry.score * 8} r="2.2" />)}
+        {Array.from({ length: 7 }, (_, index) => <text key={index} x={8 + (index / 6) * 84} y="104">{index + 1}</text>)}
+      </svg>
+      <div className="challenge-memoir-legend"><span className="is-anxiety">불안</span><span className="is-guilt">죄책감</span></div>
+      <p>점이 없는 날은 기록하지 않은 날이며, 빈 구간은 추정해 연결하지 않았어요.</p>
+    </div>
+  );
+}
 
 function getDiagnosisLabel(completionDays: number) {
   if (completionDays >= 7) return '30일 준비 완료 유형';
@@ -95,6 +129,8 @@ export default function ChallengeRewardSection({
   const [shareMessage, setShareMessage] = useState(DEFAULT_SHARE_MESSAGE);
   const [shareStatus, setShareStatus] = useState('');
   const [certificateStatus, setCertificateStatus] = useState('');
+  const [memoirPage, setMemoirPage] = useState(0);
+  const [memoirPdfStatus, setMemoirPdfStatus] = useState('');
 
   useEffect(() => {
     if (!bothCompleted) {
@@ -171,6 +207,17 @@ export default function ChallengeRewardSection({
     } catch (error) {
       console.error('Certificate image creation failed:', error);
       setCertificateStatus('인증서 이미지를 만들지 못했어요. 잠시 후 다시 시도해주세요.');
+    }
+  };
+
+  const handleMemoirPdf = async () => {
+    setMemoirPdfStatus('4장 회고록을 편집하고 있어요…');
+    try {
+      await downloadChallengeMemoirPdf(memoir);
+      setMemoirPdfStatus('실제 기록으로 만든 4장 회고록 PDF를 저장했어요.');
+    } catch (error) {
+      console.error('Memoir PDF creation failed:', error);
+      setMemoirPdfStatus('회고록 PDF를 만들지 못했어요. 잠시 후 다시 시도해주세요.');
     }
   };
 
@@ -283,27 +330,53 @@ export default function ChallengeRewardSection({
 
             {isReviewed ? (
               <div className="challenge-reward-status challenge-memoir mt-4 rounded-lg border border-dashed border-amber-200 bg-amber-50 p-4">
-                <div className="challenge-memoir-cover">
-                  <span>MY SEVEN DAYS</span>
-                  <p>{memoir.title}</p>
-                  <strong>친절함을 버리지 않고<br />나를 지킨 기록</strong>
+                <div className="challenge-memoir-pages" aria-live="polite">
+                  {memoirPage === 0 ? (
+                    <div className="challenge-memoir-cover">
+                      <span>MY SEVEN DAYS · 1/4</span>
+                      <p>{memoir.title}</p>
+                      <strong>친절함을 버리지 않고<br />나를 지킨 일곱 번의 선택</strong>
+                      <dl><div><dt>{memoir.completedMissions}/21</dt><dd>미션</dd></div><div><dt>{memoir.noteCount}</dt><dd>메모</dd></div><div><dt>{memoir.recordedScoreDays}</dt><dd>감정 기록일</dd></div></dl>
+                    </div>
+                  ) : null}
+                  {memoirPage === 1 ? (
+                    <div className="challenge-memoir-chart-page">
+                      <span>MY EMOTIONAL TRACE · 2/4</span>
+                      <h3>내 감정 기록의 흐름</h3>
+                      <MemoirTrendChart memoir={memoir} />
+                      <dl>
+                        <div><dt>불안</dt><dd>{memoir.anxietyChange ? `Day ${memoir.anxietyChange.startDay} ${memoir.anxietyChange.start} → Day ${memoir.anxietyChange.endDay} ${memoir.anxietyChange.end}` : '기록 없음'}</dd></div>
+                        <div><dt>죄책감</dt><dd>{memoir.guiltChange ? `Day ${memoir.guiltChange.startDay} ${memoir.guiltChange.start} → Day ${memoir.guiltChange.endDay} ${memoir.guiltChange.end}` : '기록 없음'}</dd></div>
+                      </dl>
+                    </div>
+                  ) : null}
+                  {memoirPage >= 2 ? (
+                    <div className="challenge-memoir-days-page">
+                      <span>{memoirPage === 2 ? 'DAY 1—4 · 3/4' : 'DAY 5—7 · 4/4'}</span>
+                      <h3>{memoirPage === 2 ? '멈추고 기준 세우기' : '내 방식으로 이어가기'}</h3>
+                      <ol className="challenge-reward-memoir-days">
+                        {memoir.daily.slice(memoirPage === 2 ? 0 : 4, memoirPage === 2 ? 4 : 7).map((entry) => (
+                          <li key={entry.day}>
+                            <strong>Day {entry.day}. {entry.title}</strong>
+                            <span>미션 {entry.completedMissions}/3{entry.anxiety !== null ? ` · 불안 ${entry.anxiety}` : ''}{entry.guilt !== null ? ` · 죄책감 ${entry.guilt}` : ''}</span>
+                            <p>{entry.note || '이 날은 행동 메모를 남기지 않았어요.'}</p>
+                            {entry.phrase ? <small>남긴 문장 · “{entry.phrase}”</small> : null}
+                          </li>
+                        ))}
+                      </ol>
+                      {memoirPage === 3 ? <blockquote className="challenge-reward-quote"><small>다음 7일에 가져갈 한 문장</small>“{memoir.anchor}”</blockquote> : null}
+                    </div>
+                  ) : null}
                 </div>
-                <p className="challenge-memoir-summary mt-1 text-sm leading-6 text-amber-800">
-                  미션 {memoir.completedMissions}/21 · 행동 메모 {memoir.noteCount}개
-                  {memoir.anxietyAverage !== null ? ` · 평균 불안 ${memoir.anxietyAverage}/10` : ''}
-                  {memoir.guiltAverage !== null ? ` · 평균 죄책감 ${memoir.guiltAverage}/10` : ''}
-                </p>
-                <blockquote className="challenge-reward-quote"><small>앞으로 가져갈 한 문장</small>“{memoir.anchor}”</blockquote>
-                <ol className="challenge-reward-memoir-days">
-                  {memoir.daily.map((entry) => (
-                    <li key={entry.day}>
-                      <strong>Day {entry.day}. {entry.title}</strong>
-                      <span>미션 {entry.completedMissions}/3</span>
-                      {entry.note ? <p>{entry.note}</p> : null}
-                      {entry.phrase ? <small>남긴 문장 · “{entry.phrase}”</small> : null}
-                    </li>
-                  ))}
-                </ol>
+                <div className="challenge-memoir-pager">
+                  <button type="button" onClick={() => setMemoirPage((page) => Math.max(0, page - 1))} disabled={memoirPage === 0}>이전 장</button>
+                  <span>{memoirPage + 1} / 4</span>
+                  <button type="button" onClick={() => setMemoirPage((page) => Math.min(3, page + 1))} disabled={memoirPage === 3}>다음 장</button>
+                </div>
+                <button type="button" className="challenge-memoir-download" onClick={handleMemoirPdf}>
+                  <Download className="h-4 w-4" aria-hidden="true" /> 4장 회고록 PDF 저장
+                </button>
+                {memoirPdfStatus ? <p className="challenge-reward-certificate-status" role="status">{memoirPdfStatus}</p> : null}
               </div>
             ) : null}
           </article>

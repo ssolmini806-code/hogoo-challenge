@@ -152,6 +152,10 @@ test('7일 회고록은 실제 기록만 사용하고 없는 값을 지어내지
   assert.equal(memoir.noteCount, 2);
   assert.equal(memoir.anxietyAverage, 4);
   assert.equal(memoir.guiltAverage, 4);
+  assert.deepEqual(memoir.anxietyChange, { start: 6, end: 2, change: -4, startDay: 1, endDay: 7 });
+  assert.deepEqual(memoir.guiltChange, { start: 5, end: 3, change: -2, startDay: 1, endDay: 7 });
+  assert.equal(memoir.recordedScoreDays, 2);
+  assert.deepEqual(memoir.anxietySeries, [{ day: 1, score: 6 }, { day: 7, score: 2 }]);
   assert.equal(memoir.daily[1].note, '');
   assert.ok(memoir.anchor.includes('자동으로 수락'));
   const card = buildChallengeFitCard(memoir);
@@ -729,6 +733,18 @@ test('7일 완주 배지는 후기와 마이페이지 보관함에서 영구 보
   assert.ok(myPage.includes('<ChallengeRewardArchive rewards={sevenDayRewards} />'));
   assert.ok(reviews.includes('finisher-review-badge'));
   assert.ok(reviews.includes('7일 경계 연습 완주자'));
+});
+
+test('7일 회고록은 4장 캐러셀·실제 변화 그래프·PDF로 제공된다', async () => {
+  const { readFileSync } = await import('node:fs');
+  const component = readFileSync(new URL('../components/reward/ChallengeRewardSection.tsx', import.meta.url), 'utf8');
+  const images = readFileSync(new URL('../src/rewards/challenge-reward-images.js', import.meta.url), 'utf8');
+  assert.ok(component.includes('challenge-memoir-pager'));
+  assert.ok(component.includes('<MemoirTrendChart memoir={memoir} />'));
+  assert.ok(component.includes('4장 회고록 PDF 저장'));
+  assert.ok(images.includes("import('jspdf')"));
+  assert.ok(images.includes("entry.day - previous.day === 1"), '기록이 빈 날짜를 추정해 선으로 이어서는 안 된다');
+  assert.ok(images.includes('이 날은 행동 메모를 남기지 않았어요.'));
 });
 
 test('계정 삭제는 서버 함수에서 사용자 JWT를 검증하고 관리자 키를 브라우저에 노출하지 않는다', async () => {

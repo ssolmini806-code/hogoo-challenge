@@ -108,16 +108,47 @@ body:has(.challenge-world){--green:#3f3020;--surface:#eee6d2;--ink:#3f3020;--ink
 .challenge-world .challenge-share-preview dd{margin-top:.15rem;color:#cdbda6;font-size:.62rem;font-weight:700;}
 .challenge-world .challenge-reward-certificate-status{margin:.75rem 0 0;color:#6f5c47;font-size:.75rem;line-height:1.55;}
 .challenge-world .challenge-memoir{padding:0!important;overflow:hidden;border:1px solid rgba(63,48,32,.26)!important;background:rgba(247,238,219,.66)!important;}
+.challenge-world .challenge-memoir-pages{min-height:35rem;}
 .challenge-world .challenge-memoir-cover{min-height:16rem;padding:1.8rem;background:#34291f url('/images/rewards/seven-day-keepsake-bg-v1.webp') center bottom/cover no-repeat;background-blend-mode:multiply;color:#f7eedb;}
 .challenge-world .challenge-memoir-cover span{color:#d98b70;font-size:.62rem;font-weight:900;letter-spacing:.14em;}
 .challenge-world .challenge-memoir-cover p{margin:1rem 0 .4rem!important;color:#d5c6b2!important;font-size:.76rem!important;font-weight:700;}
 .challenge-world .challenge-memoir-cover strong{display:block;font-family:'Give Hahmlet','Hahmlet',serif;font-size:clamp(1.4rem,3.4vw,2rem);font-weight:700;line-height:1.55;letter-spacing:-.025em;}
+.challenge-world .challenge-memoir-cover dl{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin:9rem 0 0;padding:1rem 0 0;border-top:1px solid rgba(247,238,219,.35);}
+.challenge-world .challenge-memoir-cover dt,.challenge-world .challenge-memoir-cover dd{margin:0;}
+.challenge-world .challenge-memoir-cover dt{font-size:1.05rem;font-weight:900;}
+.challenge-world .challenge-memoir-cover dd{color:#c9b8a2;font-size:.63rem;font-weight:700;}
+.challenge-world .challenge-memoir-chart-page,.challenge-world .challenge-memoir-days-page{padding:1.5rem;}
+.challenge-world .challenge-memoir-chart-page>span,.challenge-world .challenge-memoir-days-page>span{color:#9f3223;font-size:.61rem;font-weight:900;letter-spacing:.13em;}
+.challenge-world .challenge-memoir-chart-page>h3,.challenge-world .challenge-memoir-days-page>h3{margin:.5rem 0 1.2rem;font-family:'Give Hahmlet','Hahmlet',serif;font-size:1.45rem;font-weight:700;color:#3f3020;}
+.challenge-world .challenge-memoir-chart{padding:.8rem;border:1px solid rgba(63,48,32,.18);background:rgba(255,255,255,.34);}
+.challenge-world .challenge-memoir-chart svg{display:block;width:100%;height:auto;overflow:visible;}
+.challenge-world .challenge-memoir-chart line{stroke:rgba(63,48,32,.14);stroke-width:.35;}
+.challenge-world .challenge-memoir-chart polyline{fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
+.challenge-world .challenge-memoir-chart .is-anxiety{stroke:#9f3223;fill:#9f3223;}
+.challenge-world .challenge-memoir-chart .is-guilt{stroke:#9a762e;fill:#9a762e;}
+.challenge-world .challenge-memoir-chart text{fill:#897762;font-size:4px;text-anchor:middle;}
+.challenge-world .challenge-memoir-legend{display:flex;gap:1rem;margin:.5rem 0 0;font-size:.68rem;font-weight:850;}
+.challenge-world .challenge-memoir-legend span::before{content:"";display:inline-block;width:.55rem;height:.55rem;margin-right:.3rem;border-radius:50%;vertical-align:-.03rem;}
+.challenge-world .challenge-memoir-legend .is-anxiety{color:#9f3223;}.challenge-world .challenge-memoir-legend .is-anxiety::before{background:#9f3223;}
+.challenge-world .challenge-memoir-legend .is-guilt{color:#80601e;}.challenge-world .challenge-memoir-legend .is-guilt::before{background:#9a762e;}
+.challenge-world .challenge-memoir-chart>p{margin:.55rem 0 0;color:#78644f;font-size:.62rem;line-height:1.5;}
+.challenge-world .challenge-memoir-chart-page>dl{display:grid;gap:.55rem;margin:1rem 0 0;}
+.challenge-world .challenge-memoir-chart-page>dl div{display:grid;grid-template-columns:4rem 1fr;padding:.65rem 0;border-top:1px solid rgba(63,48,32,.16);}
+.challenge-world .challenge-memoir-chart-page dt{color:#9f3223;font-weight:900;}.challenge-world .challenge-memoir-chart-page dd{margin:0;color:#3f3020;font-size:.76rem;}
 .challenge-world .challenge-memoir-summary,.challenge-world .challenge-memoir>.challenge-reward-quote,.challenge-world .challenge-memoir>.challenge-reward-memoir-days{margin-left:1.25rem!important;margin-right:1.25rem!important;}
 .challenge-world .challenge-memoir-summary{margin-top:1.2rem!important;color:#6f5c47!important;font-size:.74rem!important;}
 .challenge-world .challenge-reward-quote small{display:block;margin-bottom:.35rem;color:#9f3223;font-family:inherit;font-size:.62rem;font-weight:900;letter-spacing:.05em;}
 .challenge-world .challenge-reward-memoir-days{margin-bottom:1.25rem!important;counter-reset:memoir-day;}
 .challenge-world .challenge-reward-memoir-days li{position:relative;padding:.95rem 0 .95rem 2.5rem;counter-increment:memoir-day;}
 .challenge-world .challenge-reward-memoir-days li::before{content:counter(memoir-day,decimal-leading-zero);position:absolute;left:0;top:.95rem;color:#9f3223;font-family:'Hahmlet',serif;font-size:.85rem;}
+.challenge-world .challenge-memoir-days-page .challenge-reward-memoir-days{margin:0!important;}
+.challenge-world .challenge-memoir-days-page .challenge-reward-quote{margin:1rem 0 0;}
+.challenge-world .challenge-memoir-pager{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:.5rem;padding:.9rem 1.25rem;border-top:1px solid rgba(63,48,32,.2);}
+.challenge-world .challenge-memoir-pager span{color:#78644f;font-size:.7rem;font-weight:850;text-align:center;}
+.challenge-world .challenge-memoir-pager button{min-height:44px!important;margin:0!important;background:transparent!important;}
+.challenge-world .challenge-memoir-pager button:last-child{justify-self:stretch;}
+.challenge-world .challenge-memoir-download{width:calc(100% - 2.5rem)!important;margin:0 1.25rem 1rem!important;border-color:#3f3020!important;background:#3f3020!important;color:#f7eedb!important;}
+.challenge-world .challenge-memoir>.challenge-reward-certificate-status{margin:0 1.25rem 1rem;}
 .challenge-world .challenge-fit-card{position:relative;overflow:hidden;padding:1.5rem!important;border:1px solid rgba(63,48,32,.3)!important;border-left:1px solid rgba(63,48,32,.3)!important;background:linear-gradient(145deg,rgba(247,238,219,.96),rgba(220,203,171,.72))!important;box-shadow:0 1rem 2.4rem rgba(63,48,32,.1);}
 .challenge-world .challenge-fit-card::after{content:"30";position:absolute;right:-.15rem;top:-1.8rem;color:rgba(159,50,35,.09);font-family:'Hahmlet',serif;font-size:10rem;font-weight:800;line-height:1;pointer-events:none;}
 .challenge-world .challenge-fit-kicker{position:relative;z-index:1;color:#9f3223;font-size:.62rem;font-weight:900;letter-spacing:.14em;}

@@ -16,6 +16,19 @@ function average(entries) {
   return Math.round((entries.reduce((sum, entry) => sum + entry.score, 0) / entries.length) * 10) / 10;
 }
 
+function scoreChange(entries) {
+  if (!entries.length) return null;
+  const first = entries[0];
+  const last = entries[entries.length - 1];
+  return {
+    start: first.score,
+    end: last.score,
+    change: Math.round((last.score - first.score) * 10) / 10,
+    startDay: first.day,
+    endDay: last.day,
+  };
+}
+
 export function buildChallengeMemoir({ missions, notes, selectedPhrase, anxiety, guilt }) {
   const anxietyEntries = scoreEntries(anxiety);
   const guiltEntries = scoreEntries(guilt);
@@ -42,6 +55,11 @@ export function buildChallengeMemoir({ missions, notes, selectedPhrase, anxiety,
     noteCount: daily.filter((entry) => entry.note).length,
     anxietyAverage: average(anxietyEntries),
     guiltAverage: average(guiltEntries),
+    anxietyChange: scoreChange(anxietyEntries),
+    guiltChange: scoreChange(guiltEntries),
+    anxietySeries: anxietyEntries,
+    guiltSeries: guiltEntries,
+    recordedScoreDays: new Set([...anxietyEntries, ...guiltEntries].map((entry) => entry.day)).size,
     strongestDay: strongest?.day ?? null,
     anchor,
     daily,
