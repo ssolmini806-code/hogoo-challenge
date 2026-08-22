@@ -752,6 +752,39 @@ footer{padding:54px 0 44px;border-top:1px solid var(--line);margin-top:48px;text
 .name{display:flex;align-items:center;gap:8px;min-width:0;font-weight:900;}
 .name span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .own-review-badge{display:inline-flex;flex:0 0 auto;min-height:22px;align-items:center;border-radius:var(--r-pill);background:var(--green-soft);color:var(--green);padding:0 8px;font-size:.72rem;font-weight:950;}
+.finisher-review-badge{display:inline-flex;flex:0 0 auto;min-height:26px;align-items:center;gap:5px;padding:2px 9px 2px 3px;border:1px solid rgba(159,50,35,.34);border-radius:999px;background:#f4e6cf;color:#6f3b2d;font-size:.66rem;font-weight:900;vertical-align:middle;box-shadow:inset 0 0 0 1px rgba(255,255,255,.5);}
+.finisher-review-badge b{display:grid;width:20px;height:20px;place-items:center;border-radius:50%;background:#9f3223;color:#f8edd9;font-family:'Give Hahmlet','Hahmlet',serif;font-size:.68rem;}
+.finisher-review-badge span{white-space:nowrap;}
+
+/* 마이페이지 7일 완주 컬렉션 */
+.challenge-archive{display:grid;gap:14px;}
+.challenge-finisher-card{position:relative;display:grid;grid-template-columns:84px minmax(0,1fr);gap:16px;align-items:center;overflow:hidden;padding:20px;border:1px solid rgba(63,48,32,.28);background:linear-gradient(145deg,#f7eedb,#e8d9bc);color:#3f3020;box-shadow:0 16px 34px rgba(63,48,32,.1);}
+.challenge-finisher-card::after{content:"7";position:absolute;right:-8px;top:-38px;color:rgba(159,50,35,.07);font-family:'Give Hahmlet','Hahmlet',serif;font-size:10rem;font-weight:700;line-height:1;}
+.challenge-finisher-seal{position:relative;z-index:1;display:grid;width:78px;height:78px;place-content:center;border:2px solid #9f3223;border-radius:50%;background:#9f3223;color:#f7eedb;text-align:center;box-shadow:0 0 0 5px #f0dfc2,0 0 0 6px #9f3223;}
+.challenge-finisher-seal span{font-family:'Give Hahmlet','Hahmlet',serif;font-size:2.05rem;font-weight:700;line-height:.9;}
+.challenge-finisher-seal small{margin-top:4px;font-size:.52rem;font-weight:900;letter-spacing:.14em;}
+.challenge-finisher-card>div:last-child{position:relative;z-index:1;min-width:0;}
+.challenge-finisher-card p{margin:0 0 5px;color:#9f3223;font-size:.57rem;font-weight:900;letter-spacing:.11em;}
+.challenge-finisher-card h3{margin:0;font-family:'Give Hahmlet','Hahmlet',serif;font-size:1.2rem;font-weight:700;line-height:1.35;letter-spacing:-.025em;}
+.challenge-finisher-card h3+span{display:block;margin-top:6px;color:#6f5c47;font-size:.72rem;line-height:1.55;}
+.challenge-finisher-card time{display:block;margin-top:8px;color:#897762;font-size:.63rem;font-weight:750;}
+.challenge-archive-progress{display:grid;border-top:1px solid var(--line);}
+.challenge-archive-progress>div{display:flex;align-items:center;gap:10px;padding:11px 2px;border-bottom:1px solid var(--line);color:var(--ink-faint);}
+.challenge-archive-progress>div>span{display:grid;flex:0 0 auto;width:27px;height:27px;place-items:center;border:1px solid var(--line);border-radius:50%;font-size:.7rem;font-weight:900;}
+.challenge-archive-progress p,.challenge-archive-progress strong,.challenge-archive-progress small{display:block;margin:0;}
+.challenge-archive-progress strong{font-size:.79rem;}
+.challenge-archive-progress small{margin-top:2px;font-size:.67rem;line-height:1.4;}
+.challenge-archive-progress .is-earned{color:#3f3020;}
+.challenge-archive-progress .is-earned>span{border-color:#9f3223;background:#9f3223;color:#f7eedb;}
+.challenge-archive-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.challenge-archive-actions a,.challenge-archive-empty a{display:flex;min-height:44px;align-items:center;justify-content:center;padding:8px 12px;border:1px solid rgba(63,48,32,.32);color:#3f3020;font-size:.73rem;font-weight:850;text-align:center;text-decoration:none;}
+.challenge-archive-actions a:first-child{background:#3f3020;color:#f7eedb;}
+.challenge-archive-note{margin:0;color:var(--ink-faint);font-size:.67rem;line-height:1.55;}
+.challenge-archive-empty{padding:20px 4px;text-align:center;}
+.challenge-archive-empty strong{display:block;color:var(--ink);font-family:'Give Hahmlet','Hahmlet',serif;font-size:1.05rem;}
+.challenge-archive-empty p{margin:8px auto 14px;color:var(--ink-faint);font-size:.78rem;line-height:1.6;}
+.challenge-archive-empty a{width:max-content;max-width:100%;margin:auto;}
+@media(max-width:480px){.challenge-finisher-card{grid-template-columns:68px minmax(0,1fr);gap:13px;padding:17px 14px}.challenge-finisher-seal{width:62px;height:62px}.challenge-finisher-seal span{font-size:1.65rem}.challenge-finisher-card h3{font-size:1.05rem}.challenge-archive-actions{grid-template-columns:1fr}}
 .stars{color:var(--amber-accent);font-size:.92rem;flex:0 0 auto;}
 .content{color:var(--ink);font-size:.96rem;font-weight:650;line-height:1.7;text-wrap:pretty;}
 .meta{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px;color:var(--ink-sub);font-size:.8rem;font-weight:800;}

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../supabase';
 import RewardArchive from '../../components/reward/RewardArchive';
+import ChallengeRewardArchive from '../../components/reward/ChallengeRewardArchive';
 import {
   mergeMyReviews,
   reviewContextLabel,
@@ -165,6 +166,7 @@ export default function MyPage({ session, onBack }) {
   const rewardsByContext = rewards.filter(r => r.unlocked);
   // free_test = 무료 GIVE ID 결과 보상 (실제 저장 컨텍스트). 아래 "나의 보상 봉투"에서 따로 보여준다.
   const freeTestRewards = rewards.filter(r => r.reward_context === 'free_test');
+  const sevenDayRewards = rewardsByContext.filter(r => r.reward_context === 'seven_day_challenge');
   const giveidRewards = rewardsByContext.filter(r => r.reward_context === 'giveid');
   const paid30Rewards = rewardsByContext.filter(r => r.reward_context === 'paid_30day');
   const otherRewards = giveidRewards.length + paid30Rewards.length;
@@ -260,6 +262,12 @@ export default function MyPage({ session, onBack }) {
           )}
         </div>
         )}
+
+        {/* 나의 보상 봉투 (무료 GIVE ID 결과 보상) */}
+        <div style={styles.section}>
+          <div style={styles.sectionTitle}>7일 완주 컬렉션</div>
+          <ChallengeRewardArchive rewards={sevenDayRewards} />
+        </div>
 
         {/* 나의 보상 봉투 (무료 GIVE ID 결과 보상) */}
         <div style={styles.section}>

@@ -189,8 +189,9 @@
             }
             if (review.reward_badge === 'seven_day_finisher') {
                 const badge = document.createElement("span");
-                badge.className = "own-review-badge";
-                badge.textContent = "🏅 7일 완주";
+                badge.className = "finisher-review-badge";
+                badge.setAttribute("aria-label", "7일 경계 연습 완주자");
+                badge.innerHTML = '<b>7</b><span>일 완주</span>';
                 name.append(badge);
             }
 

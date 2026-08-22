@@ -513,6 +513,13 @@ export default function App() {
     }
   }, [adminMode, completedDays]);
 
+  useEffect(() => {
+    if (!isChallengeCompleted || typeof window === 'undefined') return;
+    if (new URLSearchParams(window.location.search).get('reward') === 'archive') {
+      setActiveTab('reward');
+    }
+  }, [isChallengeCompleted]);
+
   const getCertText = () => {
     const phrase = (selectedPhrase[`${currentDay}`] !== undefined && selectedPhrase[`${currentDay}`] !== null)
       ? day.phrases[selectedPhrase[`${currentDay}`]]

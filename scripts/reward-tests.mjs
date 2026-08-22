@@ -718,6 +718,19 @@ test('인증서는 서버 발급번호와 공개 검증 경로를 사용한다',
   assert.ok(rewardImage.includes('certificate.html?code=${certificate.code}'));
 });
 
+test('7일 완주 배지는 후기와 마이페이지 보관함에서 영구 보상으로 표시된다', async () => {
+  const { readFileSync } = await import('node:fs');
+  const archive = readFileSync(new URL('../components/reward/ChallengeRewardArchive.jsx', import.meta.url), 'utf8');
+  const myPage = readFileSync(new URL('../src/components/MyPage.jsx', import.meta.url), 'utf8');
+  const reviews = readFileSync(new URL('../reviews.html', import.meta.url), 'utf8');
+  assert.ok(archive.includes('7일 경계 연습 완주자'));
+  assert.ok(archive.includes('후기를 삭제하거나 챌린지를 다시 시작해도 유지'));
+  assert.ok(myPage.includes("r.reward_context === 'seven_day_challenge'"));
+  assert.ok(myPage.includes('<ChallengeRewardArchive rewards={sevenDayRewards} />'));
+  assert.ok(reviews.includes('finisher-review-badge'));
+  assert.ok(reviews.includes('7일 경계 연습 완주자'));
+});
+
 test('계정 삭제는 서버 함수에서 사용자 JWT를 검증하고 관리자 키를 브라우저에 노출하지 않는다', async () => {
   const { readFileSync } = await import('node:fs');
   const edge = readFileSync(new URL('../supabase/functions/delete-account/index.ts', import.meta.url), 'utf8');

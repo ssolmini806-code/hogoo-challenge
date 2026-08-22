@@ -45,6 +45,11 @@ try {
     const context = await browser.newContext({ viewport, acceptDownloads: true });
     await context.route('**/*', async (route) => {
       const url = route.request().url();
+      if (url === `${BASE}/mypage`) {
+        const response = await route.fetch({ url: `${BASE}/hogoo-test.html` });
+        await route.fulfill({ response });
+        return;
+      }
       if (/\/assets\/supabase-[^/]*\.js$/.test(url)) {
         const original = await (await route.fetch()).text();
         const names = [...original.matchAll(/export\s*\{([^}]*)\}/g)].flatMap((match) => match[1].split(','))
@@ -92,6 +97,16 @@ try {
     check(`${name}: 터치 타깃 44px 이상`, layout.small === 0, String(layout.small));
     check(`${name}: 콘솔 오류 없음`, errors.length === 0, errors.join(' | '));
     await page.screenshot({ path: `/tmp/challenge-reward-${name}-secured.png`, fullPage: true });
+
+    await page.goto(`${BASE}/reviews.html`, { waitUntil: 'networkidle' });
+    check(`${name}: 후기 게시판에 전용 완주 배지 표시`, (await page.textContent('body')).includes('7일 완주'));
+
+    await page.goto(`${BASE}/mypage`, { waitUntil: 'networkidle' });
+    await page.waitForSelector('.challenge-finisher-card');
+    const archiveText = await page.textContent('.challenge-archive');
+    check(`${name}: 마이페이지에 완주 인장 보관`, archiveText.includes('7일 경계 연습 완주자'));
+    check(`${name}: A/B/A+B 획득 상태 보관`, archiveText.includes('완주 인장') && archiveText.includes('7일 회고록') && archiveText.includes('30일 적합도'));
+    await page.screenshot({ path: `/tmp/challenge-archive-${name}.png`, fullPage: false });
     await context.close();
   }
 
