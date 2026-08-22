@@ -32,6 +32,10 @@ export default function ChallengeRewardArchive({ rewards }) {
 
   const badgeReward = earned.get('sns');
   const completedCount = ['sns', 'review', 'both'].filter((type) => earned.has(type)).length;
+  const trackReopen = () => window.trackEvent?.('challenge_reward_reopened', {
+    placement: 'mypage_reward_archive',
+    unlocked_count: completedCount,
+  });
 
   return (
     <div className="challenge-archive">
@@ -61,7 +65,7 @@ export default function ChallengeRewardArchive({ rewards }) {
       </div>
 
       <div className="challenge-archive-actions">
-        <a href="/hogoo-test.html?reward=archive">인증서·보상 다시 열기</a>
+        <a href="/hogoo-test.html?reward=archive" onClick={trackReopen}>인증서·보상 다시 열기</a>
         <a href="/reviews.html">완주자 후기 보기</a>
       </div>
       <p className="challenge-archive-note">획득한 완주 인장과 보상은 후기를 삭제하거나 챌린지를 다시 시작해도 유지됩니다.</p>

@@ -109,6 +109,11 @@ function clampCompletionDays(completionDays: number) {
   return Math.min(7, Math.max(0, completionDays));
 }
 
+function trackChallengeReward(name: string, params: Record<string, unknown> = {}) {
+  if (typeof window === 'undefined' || typeof window.trackEvent !== 'function') return;
+  window.trackEvent(name, { placement: 'seven_day_reward', ...params });
+}
+
 export default function ChallengeRewardSection({
   userId,
   completionDays,
@@ -146,6 +151,20 @@ export default function ChallengeRewardSection({
       : '/hogoo-test.html?day=1';
 
   useEffect(() => {
+    const key = `challenge_reward_view:${safeCompletionDays}:${isShared ? 1 : 0}:${isReviewed ? 1 : 0}`;
+    try {
+      if (window.sessionStorage.getItem(key)) return;
+      window.sessionStorage.setItem(key, '1');
+    } catch {
+      /* 저장소를 못 써도 노출 이벤트는 보낸다. */
+    }
+    trackChallengeReward('challenge_reward_view', {
+      completion_days: safeCompletionDays,
+      unlocked_count: Number(isShared) + Number(isReviewed),
+    });
+  }, [isReviewed, isShared, safeCompletionDays]);
+
+  useEffect(() => {
     if (!bothCompleted) {
       hasCalledBothComplete.current = false;
       setDiagnosisVisible(false);
@@ -172,9 +191,11 @@ export default function ChallengeRewardSection({
       if (navigator.share && navigator.canShare?.({ files: [file] })) {
         await navigator.share({ files: [file], title: '나의 7일 경계 연습', text: shareMessage });
         setShareStatus('완주 카드를 공유했어요. 인증서가 열렸습니다.');
+        trackChallengeReward('challenge_reward_export', { asset: 'share_card', method: 'native_share' });
       } else {
         downloadRewardImage(blob, file.name);
         setShareStatus('공유용 완주 카드를 저장했어요. 인증서가 열렸습니다.');
+        trackChallengeReward('challenge_reward_export', { asset: 'share_card', method: 'download' });
       }
       await onShareComplete();
     } catch (error) {
@@ -217,6 +238,7 @@ export default function ChallengeRewardSection({
       });
       downloadRewardImage(blob, '나의-7일-경계연습-완주인증서.png');
       setCertificateStatus('내 기록과 검증번호가 담긴 완주 인증서를 저장했어요.');
+      trackChallengeReward('challenge_reward_export', { asset: 'certificate', method: 'download' });
     } catch (error) {
       console.error('Certificate image creation failed:', error);
       setCertificateStatus('인증서 이미지를 만들지 못했어요. 잠시 후 다시 시도해주세요.');
@@ -228,6 +250,7 @@ export default function ChallengeRewardSection({
     try {
       await downloadChallengeMemoirPdf(memoir);
       setMemoirPdfStatus('실제 기록으로 만든 4장 회고록 PDF를 저장했어요.');
+      trackChallengeReward('challenge_reward_export', { asset: 'memoir_pdf', method: 'download' });
     } catch (error) {
       console.error('Memoir PDF creation failed:', error);
       setMemoirPdfStatus('회고록 PDF를 만들지 못했어요. 잠시 후 다시 시도해주세요.');
@@ -440,6 +463,10 @@ export default function ChallengeRewardSection({
                   href={fitHref}
                   target={fitCard.ctaKind === 'paid' ? '_blank' : undefined}
                   rel={fitCard.ctaKind === 'paid' ? 'noopener noreferrer' : undefined}
+                  onClick={() => trackChallengeReward('challenge_30day_handoff_click', {
+                    decision: fitCard.decision,
+                    cta_kind: fitCard.ctaKind,
+                  })}
                 >
                   {fitCard.ctaLabel}
                 </a>

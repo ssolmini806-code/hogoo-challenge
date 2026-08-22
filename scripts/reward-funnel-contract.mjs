@@ -4,6 +4,9 @@ const sources = await Promise.all([
   readFile(new URL('../components/reward/ResultRewardEnvelope.jsx', import.meta.url), 'utf8'),
   readFile(new URL('../src/result-reward-widget.jsx', import.meta.url), 'utf8'),
   readFile(new URL('../src/components/MyPage.jsx', import.meta.url), 'utf8'),
+  readFile(new URL('../components/reward/RewardExportActions.jsx', import.meta.url), 'utf8'),
+  readFile(new URL('../components/reward/ChallengeRewardSection.tsx', import.meta.url), 'utf8'),
+  readFile(new URL('../components/reward/ChallengeRewardArchive.jsx', import.meta.url), 'utf8'),
 ]);
 const combined = sources.join('\n');
 const requiredEvents = [
@@ -18,12 +21,18 @@ const requiredEvents = [
   'reward_archive_open',
   'reward_archive_view',
   'diagnosis_handoff_click',
+  'reward_export',
+  'reward_reopened',
+  'challenge_reward_view',
+  'challenge_reward_export',
+  'challenge_reward_reopened',
+  'challenge_30day_handoff_click',
 ];
 
 const missing = requiredEvents.filter((event) => !combined.includes(`'${event}'`));
 if (missing.length) throw new Error(`보상 퍼널 이벤트 누락: ${missing.join(', ')}`);
 
-const analyticsSource = await readFile(new URL('../src/rewards/reward-analytics.js', import.meta.url), 'utf8');
+const analyticsSource = combined + await readFile(new URL('../src/rewards/reward-analytics.js', import.meta.url), 'utf8');
 for (const forbidden of ['email:', 'user_id:', 'review_content:', 'answers:', 'scores:']) {
   if (analyticsSource.includes(forbidden)) throw new Error(`분석 이벤트에 금지 필드 발견: ${forbidden}`);
 }

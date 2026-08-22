@@ -32,6 +32,8 @@ const FAKE = `
 const KEY='__challenge_reward_test__';
 const initial={session:{user:{id:'challenge-user',email:'challenge@example.test'},access_token:'test-token'},rewards:[],reviews:[],progress:Array.from({length:7},(_,day_index)=>({user_id:'challenge-user',day_index,missions:[0,1,2],selected_phrase:day_index%3,note:'Day '+(day_index+1)+'에 실제로 경계 문장을 연습했습니다.',anxiety:Math.max(4,9-day_index),guilt:Math.max(4,8-day_index)}))};
 const store=JSON.parse(localStorage.getItem(KEY)||'null')||initial; globalThis.__challengeStore=store;
+globalThis.__challengeEvents=JSON.parse(sessionStorage.getItem('__challenge_events__')||'[]');
+globalThis.trackEvent=(name,params={})=>{globalThis.__challengeEvents.push({name,params});sessionStorage.setItem('__challenge_events__',JSON.stringify(globalThis.__challengeEvents));};
 const persist=()=>localStorage.setItem(KEY,JSON.stringify(store));
 function rows(table){return table==='user_rewards'?store.rewards:table==='challenge_reviews'?store.reviews:table==='user_progress'?store.progress:[]}
 function query(table){let mode='select',payload=null,filters={},nulls=[],cap=Infinity;const q={select(){return q},insert(v){mode='insert';payload=v;return q},upsert(v){mode='upsert';payload=v;return q},update(v){mode='update';payload=v;return q},delete(){mode='delete';return q},eq(k,v){filters[k]=v;return q},is(k,v){if(v===null)nulls.push(k);return q},order(){return q},limit(n){cap=n;return q},single(){const result=run();return Promise.resolve({...result,data:Array.isArray(result.data)?result.data[0]||null:result.data})},maybeSingle(){return q.single()},then(resolve){return Promise.resolve(run()).then(resolve)}};function match(r){return Object.entries(filters).every(([k,v])=>r[k]===v)&&nulls.every(k=>r[k]==null)}function run(){let list=rows(table);if(mode==='select')return{data:list.filter(match).slice(0,cap),error:null};if(mode==='insert'){const item={id:'item-'+(list.length+1),created_at:new Date().toISOString(),...payload};list.push(item);persist();return{data:item,error:null}}if(mode==='upsert'){const keys=table==='user_rewards'?['user_id','reward_context','result_id','reward_type']:['user_id','day_index'];let item=list.find(r=>keys.every(k=>(r[k]??null)===(payload[k]??null)));if(item)Object.assign(item,payload);else{item={id:'item-'+(list.length+1),created_at:new Date().toISOString(),...payload};list.push(item)}persist();return{data:item,error:null}}if(mode==='update'){list.filter(match).forEach(r=>Object.assign(r,payload));persist();return{data:null,error:null}}if(mode==='delete'){const kept=list.filter(r=>!match(r));if(table==='challenge_reviews')store.reviews=kept;persist();return{data:null,error:null}}}return q}
@@ -98,9 +100,18 @@ try {
     const memoirDownload = await memoirDownloadWait;
     await memoirDownload.saveAs(`/tmp/challenge-memoir-${name}.pdf`);
     check(`${name}: 4장 회고록 PDF 생성`, memoirDownload.suggestedFilename().endsWith('.pdf'));
+    const funnelEvents = await page.evaluate(() => globalThis.__challengeEvents);
+    check(`${name}: 보상 노출 이벤트 기록`, funnelEvents.some((event) => event.name === 'challenge_reward_view'));
+    check(`${name}: 공유카드·인증서·회고록 저장 이벤트 기록`, ['share_card', 'certificate', 'memoir_pdf'].every((asset) => funnelEvents.some((event) => event.name === 'challenge_reward_export' && event.params.asset === asset)), JSON.stringify(funnelEvents));
+    check(`${name}: 분석 이벤트에 개인정보·기록 원문 없음`, funnelEvents.every((event) => !['email', 'user_id', 'review_content', 'answers', 'scores', 'note'].some((key) => Object.hasOwn(event.params, key))));
     check(`${name}: A+B 4축 근거와 다음 행동 표시`, rewardText.includes('실행 지속성') && rewardText.includes('자기 관찰력') && rewardText.includes('경계 적용력') && rewardText.includes('반복 필요성') && rewardText.includes('30일 동안 매주 한 번'));
     const paidHref = await page.getAttribute('a:has-text("내 기록을 이어 30일 시작하기")', 'href');
     check(`${name}: 30일 CTA가 실제 시작 URL에 연결`, /\/start\?.*product=challenge_30day/.test(paidHref || ''), paidHref || '');
+    await page.locator('a:has-text("내 기록을 이어 30일 시작하기")').evaluate((link) => {
+      link.addEventListener('click', (event) => event.preventDefault(), { once: true });
+      link.click();
+    });
+    check(`${name}: 30일 이동 클릭 이벤트 기록`, await page.evaluate(() => globalThis.__challengeEvents.some((event) => event.name === 'challenge_30day_handoff_click' && event.params.decision === 'expand')));
     const layout = await page.evaluate(() => ({ overflow: document.documentElement.scrollWidth > innerWidth + 1, small: [...document.querySelectorAll('.challenge-reward button,.challenge-reward a')].filter((el) => el.offsetParent && el.getBoundingClientRect().height < 43.5).length }));
     check(`${name}: 가로 오버플로 없음`, !layout.overflow);
     check(`${name}: 터치 타깃 44px 이상`, layout.small === 0, String(layout.small));
@@ -115,6 +126,11 @@ try {
     const archiveText = await page.textContent('.challenge-archive');
     check(`${name}: 마이페이지에 완주 인장 보관`, archiveText.includes('7일 경계 연습 완주자'));
     check(`${name}: A/B/A+B 획득 상태 보관`, archiveText.includes('완주 인장') && archiveText.includes('7일 회고록') && archiveText.includes('30일 적합도'));
+    await page.locator('a:has-text("인증서·보상 다시 열기")').evaluate((link) => {
+      link.addEventListener('click', (event) => event.preventDefault(), { once: true });
+      link.click();
+    });
+    check(`${name}: 마이페이지 보상 재열기 이벤트 기록`, await page.evaluate(() => globalThis.__challengeEvents.some((event) => event.name === 'challenge_reward_reopened')));
     await page.screenshot({ path: `/tmp/challenge-archive-${name}.png`, fullPage: false });
     await context.close();
   }

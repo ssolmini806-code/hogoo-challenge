@@ -2,6 +2,30 @@ import { useState } from 'react';
 import { toPng } from 'html-to-image';
 import { trackReward } from '../../src/rewards/reward-analytics';
 
+let brushFontCssPromise;
+
+function blobToDataUrl(blob) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(reader.error);
+    reader.onload = () => resolve(reader.result);
+    reader.readAsDataURL(blob);
+  });
+}
+
+function getBrushFontCss() {
+  if (!brushFontCssPromise) {
+    brushFontCssPromise = fetch('/fonts/jeongmeokbawi.woff')
+      .then((response) => {
+        if (!response.ok) throw new Error(`Brush font request failed: ${response.status}`);
+        return response.blob();
+      })
+      .then(blobToDataUrl)
+      .then((dataUrl) => `@font-face{font-family:'Give Brush';src:url('${dataUrl}') format('woff');font-style:normal;font-weight:400;}`);
+  }
+  return brushFontCssPromise;
+}
+
 function download(dataUrl, filename) {
   const link = document.createElement('a');
   link.href = dataUrl;
@@ -18,13 +42,14 @@ export default function RewardExportActions({ targetId, filename, shareText, cop
     setStatus('카드를 만들고 있어요…');
     try {
       if (document.fonts?.ready) await document.fonts.ready;
+      const fontEmbedCSS = await getBrushFontCss();
       const dataUrl = await toPng(target, {
         cacheBust: true,
         pixelRatio: Math.min(window.devicePixelRatio || 2, 3),
         backgroundColor: '#f7eedb',
-        // Computed styles already carry the loaded local fallback fonts. Skipping
-        // stylesheet embedding prevents cross-origin Google Fonts access errors.
-        skipFonts: true,
+        // Embed only the self-hosted display face. This keeps the exported image
+        // faithful without asking html-to-image to read cross-origin font CSS.
+        fontEmbedCSS,
       });
       const blob = await (await fetch(dataUrl)).blob();
       const file = new File([blob], filename, { type: 'image/png' });

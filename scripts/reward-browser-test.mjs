@@ -311,6 +311,11 @@ async function run() {
     // 보상 A 상세 열람 + 키보드 접근성
     await page.click('button:has-text("경계 문장 카드 열어보기")');
     await page.waitForSelector('.reward-panel');
+    check('카드 제목에 자체 포함 붓글씨 폰트가 적용된다', await page.evaluate(async () => {
+      await document.fonts.ready;
+      const title = document.querySelector('#rewardBoundaryCard h4');
+      return getComputedStyle(title).fontFamily.includes('Give Brush') && document.fonts.check('32px "Give Brush"');
+    }));
     check('상세 패널을 열면 포커스가 패널 제목으로 이동한다',
       (await page.evaluate(() => document.activeElement?.id)) === 'rewardPanelTitle');
     const quote = await page.textContent('.reward-quote');
