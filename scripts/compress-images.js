@@ -2,6 +2,8 @@ const sharp = require('sharp');
 const fs = require('fs');
 const path = require('path');
 
+// 원본 PNG 마스터는 배포에서 제외하려고 public/ 밖의 assets-src/ 에 보관한다.
+// 여기서는 public/images 에 새로 올린 png/jpg 만 webp 로 변환한다.
 const INPUT_DIR = path.resolve(__dirname, '../public/images');
 const MAX_WIDTH = 1200;
 const QUALITY = 80;
@@ -13,7 +15,6 @@ async function convertToWebp(dir) {
     const fullPath = path.join(dir, entry.name);
 
     if (entry.isDirectory()) {
-      if (entry.name === 'originals') continue;
       await convertToWebp(fullPath);
       continue;
     }
