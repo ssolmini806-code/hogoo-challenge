@@ -58,7 +58,15 @@ type ChallengeRewardSectionProps = {
       guilt: number | null;
     }>;
   };
-  fitCard: { label: string; reason: string; nextAction: string };
+  fitCard: {
+    label: string;
+    reason: string;
+    nextAction: string;
+    decision: 'expand' | 'repeat' | 'practice';
+    ctaKind: 'paid' | 'review' | 'practice';
+    ctaLabel: string;
+    dimensions: Array<{ key: string; label: string; score: number | null; evidence: string }>;
+  };
   paidChallengeUrl: string;
   onCertificateIssue: () => Promise<{ code: string; issuedAt: string; completedMissions: number }>;
 };
@@ -131,6 +139,11 @@ export default function ChallengeRewardSection({
   const [certificateStatus, setCertificateStatus] = useState('');
   const [memoirPage, setMemoirPage] = useState(0);
   const [memoirPdfStatus, setMemoirPdfStatus] = useState('');
+  const fitHref = fitCard.ctaKind === 'paid'
+    ? paidChallengeUrl
+    : fitCard.ctaKind === 'practice'
+      ? '/articles/setting-boundaries.html'
+      : '/hogoo-test.html?day=1';
 
   useEffect(() => {
     if (!bothCompleted) {
@@ -404,15 +417,33 @@ export default function ChallengeRewardSection({
                 <p className="mt-2 text-sm leading-6 text-indigo-800">
                   {fitCard.reason}
                 </p>
+                <div className="challenge-fit-dimensions">
+                  {fitCard.dimensions.map((dimension) => (
+                    <div key={dimension.key}>
+                      <p><strong>{dimension.label}</strong><span>{dimension.score === null ? '판단 보류' : `${dimension.score}%`}</span></p>
+                      <div
+                        className={dimension.score === null ? 'is-unknown' : ''}
+                        role="meter"
+                        aria-label={dimension.label}
+                        aria-valuemin={0}
+                        aria-valuemax={100}
+                        aria-valuenow={dimension.score ?? undefined}
+                        aria-valuetext={dimension.score === null ? '기록 부족으로 판단 보류' : `${dimension.score}%`}
+                      ><span style={{ width: `${dimension.score ?? 0}%` }} /></div>
+                      <small>{dimension.evidence}</small>
+                    </div>
+                  ))}
+                </div>
                 <p className="challenge-reward-next-action">{fitCard.nextAction}</p>
                 <a
                   className="mt-4 inline-flex h-11 w-full items-center justify-center rounded-lg bg-indigo-700 px-4 text-sm font-bold text-white transition hover:bg-indigo-800"
-                  href={paidChallengeUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href={fitHref}
+                  target={fitCard.ctaKind === 'paid' ? '_blank' : undefined}
+                  rel={fitCard.ctaKind === 'paid' ? 'noopener noreferrer' : undefined}
                 >
-                  30일 챌린지 시작하기
+                  {fitCard.ctaLabel}
                 </a>
+                <p className="challenge-fit-caveat">자가 기록을 정리한 안내이며 의학적·심리학적 진단이 아닙니다.</p>
               </div>
             ) : (
               <div className="challenge-reward-unlock mt-4 rounded-lg bg-gray-50 p-4 text-sm leading-6 text-gray-600">

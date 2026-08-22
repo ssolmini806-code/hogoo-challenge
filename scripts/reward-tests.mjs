@@ -160,8 +160,44 @@ test('7일 회고록은 실제 기록만 사용하고 없는 값을 지어내지
   assert.ok(memoir.anchor.includes('자동으로 수락'));
   const card = buildChallengeFitCard(memoir);
   assert.equal(card.kind, 'challenge_fit_card');
-  assert.ok(card.reason.includes('행동 메모 2개'));
-  assert.ok(card.nextAction.includes(memoir.anchor));
+  assert.ok(card.reason.includes('행동 메모 2일'));
+  assert.equal(card.decision, 'repeat');
+  assert.equal(card.dimensions.length, 4);
+  assert.deepEqual(card.dimensions.map((dimension) => dimension.key), ['execution', 'observation', 'boundary', 'repetition']);
+});
+
+test('30일 적합도는 근거에 따라 확장·기록 보강·실전 적용을 솔직하게 구분한다', () => {
+  const base = {
+    completedMissions: 21,
+    noteCount: 7,
+    recordedScoreDays: 7,
+    anchor: '확인하고 답할게.',
+    daily: Array.from({ length: 7 }, (_, index) => ({ day: index + 1, note: '기록', phrase: '문장', anxiety: 5, guilt: 4 })),
+    anxietyChange: { start: 8, end: 5, change: -3, startDay: 1, endDay: 7 },
+    guiltChange: { start: 7, end: 4, change: -3, startDay: 1, endDay: 7 },
+  };
+  const expand = buildChallengeFitCard(base);
+  assert.equal(expand.decision, 'expand');
+  assert.equal(expand.ctaKind, 'paid');
+  assert.ok(expand.dimensions.every((dimension) => dimension.score !== undefined));
+
+  const practice = buildChallengeFitCard({
+    ...base,
+    anxietyChange: { ...base.anxietyChange, end: 2 },
+    guiltChange: { ...base.guiltChange, end: 2 },
+  });
+  assert.equal(practice.decision, 'practice');
+  assert.equal(practice.ctaKind, 'practice');
+  assert.ok(practice.reason.includes('유료 확장이 꼭 필요하다고 보기는 어려워요'));
+
+  const sparse = buildChallengeFitCard({
+    ...base,
+    noteCount: 1,
+    recordedScoreDays: 1,
+    daily: base.daily.map((entry, index) => ({ ...entry, note: index ? '' : '기록', phrase: index ? '' : '문장' })),
+  });
+  assert.equal(sparse.decision, 'repeat');
+  assert.equal(sparse.ctaKind, 'review');
 });
 
 // ── 5. 점수 누락 fallback ──────────────────────────────────────────

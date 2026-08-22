@@ -153,6 +153,14 @@ body:has(.challenge-world){--green:#3f3020;--surface:#eee6d2;--ink:#3f3020;--ink
 .challenge-world .challenge-fit-card::after{content:"30";position:absolute;right:-.15rem;top:-1.8rem;color:rgba(159,50,35,.09);font-family:'Hahmlet',serif;font-size:10rem;font-weight:800;line-height:1;pointer-events:none;}
 .challenge-world .challenge-fit-kicker{position:relative;z-index:1;color:#9f3223;font-size:.62rem;font-weight:900;letter-spacing:.14em;}
 .challenge-world .challenge-fit-title{position:relative;z-index:1;max-width:78%;margin-top:.75rem!important;font-family:'Give Hahmlet','Hahmlet',serif;font-size:clamp(1.15rem,2.8vw,1.55rem)!important;font-weight:700!important;line-height:1.52;color:#3f3020!important;}
+.challenge-world .challenge-fit-dimensions{position:relative;z-index:1;display:grid;gap:.9rem;margin-top:1.2rem;padding:1rem 0;border-top:1px solid rgba(63,48,32,.18);border-bottom:1px solid rgba(63,48,32,.18);}
+.challenge-world .challenge-fit-dimensions>div>p{display:flex;justify-content:space-between;gap:1rem;margin:0;color:#3f3020;font-size:.72rem;}
+.challenge-world .challenge-fit-dimensions>div>p span{color:#9f3223;font-weight:900;}
+.challenge-world .challenge-fit-dimensions [role="meter"]{height:6px;margin:.38rem 0;background:rgba(63,48,32,.12);overflow:hidden;}
+.challenge-world .challenge-fit-dimensions [role="meter"]>span{display:block;height:100%;background:linear-gradient(90deg,#9f3223,#c85f43);}
+.challenge-world .challenge-fit-dimensions [role="meter"].is-unknown{background:repeating-linear-gradient(90deg,rgba(63,48,32,.12) 0 6px,transparent 6px 10px);}
+.challenge-world .challenge-fit-dimensions small{display:block;color:#78644f;font-size:.63rem;line-height:1.45;}
+.challenge-world .challenge-fit-caveat{position:relative;z-index:1;margin:.75rem 0 0;color:#897762;font-size:.61rem;line-height:1.5;text-align:center;}
 
 .challenge-world .login-modal-backdrop{background:rgba(23,19,14,.72)!important;backdrop-filter:blur(8px);}
 .challenge-world .login-modal-sheet{border:1px solid rgba(63,48,32,.28)!important;border-radius:0!important;background:#eee6d2 url('/images/results/give-result-path-v2.webp') 70% center/cover no-repeat!important;box-shadow:0 2rem 6rem rgba(23,19,14,.26);}

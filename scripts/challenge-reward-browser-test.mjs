@@ -30,7 +30,7 @@ function startPreview() {
 
 const FAKE = `
 const KEY='__challenge_reward_test__';
-const initial={session:{user:{id:'challenge-user',email:'challenge@example.test'},access_token:'test-token'},rewards:[],reviews:[],progress:Array.from({length:7},(_,day_index)=>({user_id:'challenge-user',day_index,missions:[0,1,2],selected_phrase:day_index%3,note:'Day '+(day_index+1)+'에 실제로 경계 문장을 연습했습니다.',anxiety:Math.max(1,7-day_index),guilt:Math.max(1,6-day_index)}))};
+const initial={session:{user:{id:'challenge-user',email:'challenge@example.test'},access_token:'test-token'},rewards:[],reviews:[],progress:Array.from({length:7},(_,day_index)=>({user_id:'challenge-user',day_index,missions:[0,1,2],selected_phrase:day_index%3,note:'Day '+(day_index+1)+'에 실제로 경계 문장을 연습했습니다.',anxiety:Math.max(4,9-day_index),guilt:Math.max(4,8-day_index)}))};
 const store=JSON.parse(localStorage.getItem(KEY)||'null')||initial; globalThis.__challengeStore=store;
 const persist=()=>localStorage.setItem(KEY,JSON.stringify(store));
 function rows(table){return table==='user_rewards'?store.rewards:table==='challenge_reviews'?store.reviews:table==='user_progress'?store.progress:[]}
@@ -98,8 +98,8 @@ try {
     const memoirDownload = await memoirDownloadWait;
     await memoirDownload.saveAs(`/tmp/challenge-memoir-${name}.pdf`);
     check(`${name}: 4장 회고록 PDF 생성`, memoirDownload.suggestedFilename().endsWith('.pdf'));
-    check(`${name}: A+B 적합도 근거와 다음 행동 표시`, rewardText.includes('행동 메모 7개') && rewardText.includes('30일 동안 매주 한 번'));
-    const paidHref = await page.getAttribute('a:has-text("30일 챌린지 시작하기")', 'href');
+    check(`${name}: A+B 4축 근거와 다음 행동 표시`, rewardText.includes('실행 지속성') && rewardText.includes('자기 관찰력') && rewardText.includes('경계 적용력') && rewardText.includes('반복 필요성') && rewardText.includes('30일 동안 매주 한 번'));
+    const paidHref = await page.getAttribute('a:has-text("내 기록을 이어 30일 시작하기")', 'href');
     check(`${name}: 30일 CTA가 실제 시작 URL에 연결`, /\/start\?.*product=challenge_30day/.test(paidHref || ''), paidHref || '');
     const layout = await page.evaluate(() => ({ overflow: document.documentElement.scrollWidth > innerWidth + 1, small: [...document.querySelectorAll('.challenge-reward button,.challenge-reward a')].filter((el) => el.offsetParent && el.getBoundingClientRect().height < 43.5).length }));
     check(`${name}: 가로 오버플로 없음`, !layout.overflow);
