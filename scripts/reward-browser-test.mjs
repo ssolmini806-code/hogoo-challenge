@@ -317,6 +317,16 @@ async function run() {
     check('해금된 경계 문장 전문이 보인다', quote.includes('확인하고 다시 말할게요'), quote);
     check('보상 문장이 결과 슬라이드의 "오늘의 조언"과 동일하지 않다',
       !quote.includes('일정 확인하고 가능한 범위만'), quote);
+    check('A에 직장·가족·친구 상황별 문장 3종이 있다', (await page.locator('.reward-variant-list>div').count()) === 3);
+    check('A 4:5 카드 내용이 잘리지 않는다', await page.evaluate(() => {
+      const card = document.getElementById('rewardBoundaryCard');
+      return card.scrollHeight <= card.clientHeight + 1;
+    }));
+    const boundaryDownloadWait = page.waitForEvent('download');
+    await page.click('button:has-text("이미지 저장·공유")');
+    const boundaryDownload = await boundaryDownloadWait;
+    await boundaryDownload.saveAs('/tmp/give-reward-boundary.png');
+    check('A 경계 문장 카드 PNG 저장', boundaryDownload.suggestedFilename().endsWith('.png'));
     await page.keyboard.press('Escape');
     await page.waitForSelector('.reward-panel', { state: 'detached' });
     check('Escape로 패널이 닫히고 보상 슬라이드로 돌아온다', await page.isVisible('#slideReward.active'));
@@ -372,12 +382,38 @@ async function run() {
       JSON.stringify(rowsAfterBoth));
     check('보상이 한 번도 삭제되지 않았다', (await page.evaluate(() => globalThis.__rewardStore.deletes)) === 0);
 
+    // B 장면 카드: 강도별 문장과 이미지 출력
+    await page.click('button:has-text("위험 장면 열어보기")');
+    await page.waitForSelector('#rewardScenesCard');
+    const scenesText = await page.textContent('#rewardScenesCard');
+    check('B의 세 장면마다 부드러운·단호한 대응을 제공한다', (scenesText.match(/부드럽게/g) || []).length === 3 && (scenesText.match(/단호하게/g) || []).length === 3);
+    check('B 4:5 카드 내용이 잘리지 않는다', await page.evaluate(() => {
+      const card = document.getElementById('rewardScenesCard');
+      return card.scrollHeight <= card.clientHeight + 1;
+    }));
+    const scenesDownloadWait = page.waitForEvent('download');
+    await page.click('button:has-text("이미지 저장·공유")');
+    const scenesDownload = await scenesDownloadWait;
+    await scenesDownload.saveAs('/tmp/give-reward-scenes.png');
+    check('B 위험 장면 카드 PNG 저장', scenesDownload.suggestedFilename().endsWith('.png'));
+    await page.keyboard.press('Escape');
+    await page.waitForSelector('.reward-panel', { state: 'detached' });
+
     // A+B 콘텐츠가 실제로 열리는지 + 페이지 넘김
     await page.click('button:has-text("마지막 편지 열어보기")');
     await page.waitForSelector('.reward-panel');
     const manualText = await page.textContent('.reward-panel-body');
     check('A+B 콘텐츠가 실제로 열린다', manualText.includes('내 GIVE ID 유형') && manualText.includes('거절 곤란'));
     check('"곧 제공 예정" 같은 문구가 없다', !manualText.includes('곧 제공') && !manualText.includes('준비 중'));
+    check('A+B 4:5 첫 장 내용이 잘리지 않는다', await page.evaluate(() => {
+      const card = document.getElementById('rewardManualCard');
+      return card.scrollHeight <= card.clientHeight + 1;
+    }));
+    const manualDownloadWait = page.waitForEvent('download');
+    await page.click('button:has-text("이미지 저장·공유")');
+    const manualDownload = await manualDownloadWait;
+    await manualDownload.saveAs('/tmp/give-reward-manual.png');
+    check('A+B 현재 설명서 장 PNG 저장', manualDownload.suggestedFilename().endsWith('.png'));
     await page.click('button:has-text("다음 장")');
     await page.click('button:has-text("다음 장")');
     const cta = await page.getAttribute('a:has-text("결제 없이 64문항")', 'href');

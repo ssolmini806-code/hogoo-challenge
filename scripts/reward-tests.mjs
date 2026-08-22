@@ -67,6 +67,20 @@ test('A 보상은 결정적이다 (같은 입력 → 같은 출력)', () => {
   assert.deepEqual(buildBoundaryCard('angel'), buildBoundaryCard('angel'));
 });
 
+test('A 보상은 모든 유형에 직장·가족·친구 문장 3종을 제공한다', () => {
+  const allSentences = new Set();
+  for (const key of TYPE_KEYS) {
+    const card = buildBoundaryCard(key);
+    assert.deepEqual(card.variants.map((variant) => variant.context), ['직장', '가족', '친구·연인']);
+    assert.equal(card.variants.length, 3);
+    card.variants.forEach((variant) => {
+      assert.ok(variant.sentence.length > 12);
+      allSentences.add(variant.sentence);
+    });
+  }
+  assert.equal(allSentences.size, TYPE_KEYS.length * 3, '유형×상황 문장이 중복되면 안 된다');
+});
+
 // ── 3. 축별 B 콘텐츠 ───────────────────────────────────────────────
 test('B 보상은 가장 높은 축을 골라 장면 3개를 만든다', () => {
   const scores = { burnout: 5, refusal: 15, reciprocity: 8, recovery: 6 };
@@ -95,6 +109,18 @@ test('모든 축이 장면 3개를 갖는다', () => {
     const result = buildRiskScenes('mixed', scores);
     assert.equal(result.axis, axis);
     assert.equal(result.scenes.length, 3);
+  }
+});
+
+test('B의 모든 장면은 부드러운·단호한 두 강도 대응을 갖는다', () => {
+  for (const axis of AXIS_KEYS) {
+    const scores = Object.fromEntries(AXIS_KEYS.map((key) => [key, key === axis ? 16 : 4]));
+    const result = buildRiskScenes('diplomat', scores);
+    result.scenes.forEach((scene) => {
+      assert.ok(scene.gentleResponse.length > 10);
+      assert.ok(scene.firmResponse.length > 10);
+      assert.notEqual(scene.gentleResponse, scene.firmResponse);
+    });
   }
 });
 
@@ -781,6 +807,18 @@ test('7일 회고록은 4장 캐러셀·실제 변화 그래프·PDF로 제공�
   assert.ok(images.includes("import('jspdf')"));
   assert.ok(images.includes("entry.day - previous.day === 1"), '기록이 빈 날짜를 추정해 선으로 이어서는 안 된다');
   assert.ok(images.includes('이 날은 행동 메모를 남기지 않았어요.'));
+});
+
+test('GIVE ID A/B/A+B는 각각 저장·공유 가능한 이미지 카드다', async () => {
+  const { readFileSync } = await import('node:fs');
+  const envelope = readFileSync(new URL('../components/reward/ResultRewardEnvelope.jsx', import.meta.url), 'utf8');
+  const exporter = readFileSync(new URL('../components/reward/RewardExportActions.jsx', import.meta.url), 'utf8');
+  for (const target of ['rewardBoundaryCard', 'rewardScenesCard', 'rewardManualCard']) {
+    assert.ok(envelope.includes(target));
+  }
+  assert.ok(exporter.includes("navigator.canShare?.({ files: [file] })"));
+  assert.ok(exporter.includes("trackReward('reward_export'"));
+  assert.ok(exporter.includes("trackReward('reward_copy'"));
 });
 
 test('계정 삭제는 서버 함수에서 사용자 JWT를 검증하고 관리자 키를 브라우저에 노출하지 않는다', async () => {

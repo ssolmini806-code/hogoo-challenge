@@ -6,6 +6,63 @@ import { AXIS_KEYS, FALLBACK_AXIS_KEY, AXIS_SCORE_MIN, AXIS_SCORE_MAX } from './
 import { normalizeTypeKey } from './result-id.js';
 import { TYPES, AXES, AXIS_SCENES } from './give-type-data.js';
 
+const BOUNDARY_VARIANTS = {
+  angel: [
+    ['직장', '지금 일정으로는 맡기 어려워요. 가능해지면 제가 먼저 말씀드릴게요.'],
+    ['가족', '도와주고 싶은 마음은 있지만 지금은 어려워. 가능해지면 내가 먼저 말할게.'],
+    ['친구·연인', '네 마음은 이해하지만 지금은 어려워. 괜찮아지면 내가 먼저 이야기할게.'],
+  ],
+  diplomat: [
+    ['직장', '지금 바로 확답하기는 어렵습니다. 확인한 뒤 가능한 범위를 말씀드릴게요.'],
+    ['가족', '지금 바로 답하지 않을게. 확인하고 내가 할 수 있는 만큼 말해줄게.'],
+    ['친구·연인', '분위기 때문에 서두르고 싶지 않아. 생각한 뒤 다시 말할게.'],
+  ],
+  architect: [
+    ['직장', '이번 업무를 제가 맡기는 어렵습니다. 필요한 방법은 함께 정리할 수 있어요.'],
+    ['가족', '이번에는 내가 맡지 않을게. 대신 방법을 찾는 건 같이 해볼 수 있어.'],
+    ['친구·연인', '내가 대신 하지는 않을게. 네가 해볼 방법은 같이 생각해보자.'],
+  ],
+  guardian: [
+    ['직장', '이 범위까지는 가능하지만 그 이상은 맡기 어렵습니다.'],
+    ['가족', '여기까지는 도울게. 그다음은 네가 맡아줘.'],
+    ['친구·연인', '내가 할 수 있는 건 여기까지야. 그 이상은 어렵다고 말할게.'],
+  ],
+  burnout: [
+    ['직장', '오늘은 추가 요청을 맡기 어렵습니다. 회복한 뒤 다시 말씀드릴게요.'],
+    ['가족', '오늘은 쉬어야 해서 어렵겠어. 회복하고 다시 이야기할게.'],
+    ['친구·연인', '지금은 내 여유를 먼저 돌봐야 해. 오늘은 여기서 멈출게.'],
+  ],
+  blocker: [
+    ['직장', '그 방식으로는 어렵습니다. 범위를 줄인다면 검토해볼게요.'],
+    ['가족', '그 부탁 전체는 어렵고, 이 작은 부분까지만 할게.'],
+    ['친구·연인', '그 방식에는 동의하기 어려워. 다만 이 정도는 같이 해볼 수 있어.'],
+  ],
+  mixed: [
+    ['직장', '이번에 제가 맡을 수 있는 기준은 여기까지입니다.'],
+    ['가족', '이번에는 여기까지가 내가 도울 수 있는 기준이야.'],
+    ['친구·연인', '상황마다 바꾸지 않고 이번 기준은 여기까지로 할게.'],
+  ],
+};
+
+const RESPONSE_TONES = {
+  burnout: {
+    gentle: '지금은 여유가 부족해서 이번에는 어렵겠어요.',
+    firm: '이번 요청은 맡지 않겠습니다.',
+  },
+  refusal: {
+    gentle: '확인하고 가능한 범위를 다시 말씀드릴게요.',
+    firm: '지금은 답하지 않겠습니다. 정리되면 제가 먼저 연락할게요.',
+  },
+  reciprocity: {
+    gentle: '이번에는 역할을 나눠서 진행하면 가능해요.',
+    firm: '역할 분담이 없는 방식에는 참여하지 않겠습니다.',
+  },
+  recovery: {
+    gentle: '지금은 회복 시간이 필요해서 다음에 이야기할게요.',
+    firm: '오늘은 여기서 멈추겠습니다.',
+  },
+};
+
 /** give-test-logic.js의 axisLevel과 동일한 기준 */
 export function axisLevel(score) {
   if (score >= 13) return 'high';
@@ -72,6 +129,7 @@ export function buildBoundaryCard(typeKey) {
     title: `${plainName(type.name)}의 첫 문장`,
     sentence: type.boundarySentence,
     situation: type.boundaryScene,
+    variants: BOUNDARY_VARIANTS[key].map(([context, sentence]) => ({ context, sentence })),
     // 결과 슬라이드에서 이미 보여준 '오늘의 조언' 전문 (대조용)
     fromAdvice: type.advice,
     // 공유 전 미리보기: 문장 전체 대신 앞부분만 보여준다 (과도한 blur 대신 자연스러운 생략)
@@ -99,6 +157,8 @@ export function buildRiskScenes(typeKey, rawScores) {
     scene: scene.scene,
     signal: scene.signal,
     response: index === 2 ? type.boundarySentence : scene.response,
+    gentleResponse: index === 2 ? BOUNDARY_VARIANTS[key][2][1] : RESPONSE_TONES[axis].gentle,
+    firmResponse: index === 2 ? type.boundarySentence : RESPONSE_TONES[axis].firm,
   }));
 
   return {

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import RewardEnvelope from './RewardEnvelope';
 import RewardDetailPanel from './RewardDetailPanel';
+import RewardExportActions from './RewardExportActions';
 import { buildBoundaryCard, buildRiskScenes, buildGoodwillManual } from '../../src/rewards/give-reward-content';
 import { buildResultShareUrl, buildShareText, buildDiagnosisUrl } from '../../src/rewards/share-url';
 import { buildReviewStartUrl } from '../../src/rewards/reward-return-url';
@@ -336,24 +337,57 @@ export default function ResultRewardEnvelope({
 
       {panel === 'boundary' ? (
         <RewardDetailPanel eyebrow="보상 A" title={boundaryCard.title} onClose={() => setPanel('')}>
-          <blockquote className="reward-quote">{boundaryCard.sentence}</blockquote>
-          <p className="reward-panel-copy">{boundaryCard.situation}</p>
+          <div className="reward-export-card is-boundary" id="rewardBoundaryCard">
+            <p className="reward-export-kicker">GIVE ID · BOUNDARY CARD</p>
+            <h4>{boundaryCard.title}</h4>
+            <blockquote className="reward-quote">{boundaryCard.sentence}</blockquote>
+            <p className="reward-panel-copy">{boundaryCard.situation}</p>
+            <div className="reward-variant-list">
+              {boundaryCard.variants.map((variant) => (
+                <div key={variant.context}><span>{variant.context}</span><p>“{variant.sentence}”</p></div>
+              ))}
+            </div>
+            <small>GIVE ECOSYSTEM · 나를 지키며 관계를 이어가는 문장</small>
+          </div>
+          <RewardExportActions
+            targetId="rewardBoundaryCard"
+            filename={`give-id-${typeKey}-boundary.png`}
+            shareText={boundaryCard.sentence}
+            copyText={boundaryCard.sentence}
+            rewardType="sns"
+            typeKey={typeKey}
+          />
         </RewardDetailPanel>
       ) : null}
 
       {panel === 'scenes' ? (
         <RewardDetailPanel eyebrow="보상 B" title={riskScenes.title} onClose={() => setPanel('')}>
-          <p className="reward-panel-copy">{riskScenes.intro}</p>
-          <ol className="reward-scene-list">
-            {riskScenes.scenes.map((scene, index) => (
-              <li key={index}>
-                <p className="reward-scene-title">{scene.scene}</p>
-                <p className="reward-scene-signal"><span>알아차릴 신호</span>{scene.signal}</p>
-                <p className="reward-scene-response"><span>바로 쓸 한 문장</span>“{scene.response}”</p>
-              </li>
-            ))}
-          </ol>
-          <p className="reward-panel-note">{riskScenes.note}</p>
+          <div className="reward-export-card is-scenes" id="rewardScenesCard">
+            <p className="reward-export-kicker">GIVE ID · RISK SCENES</p>
+            <h4>{riskScenes.axisTitle}에서 멈춰 볼 세 장면</h4>
+            <p className="reward-panel-copy">{riskScenes.intro}</p>
+            <ol className="reward-scene-list">
+              {riskScenes.scenes.map((scene, index) => (
+                <li key={index}>
+                  <p className="reward-scene-title">{scene.scene}</p>
+                  <p className="reward-scene-signal"><span>알아차릴 신호</span>{scene.signal}</p>
+                  <div className="reward-response-tones">
+                    <p><span>부드럽게</span>“{scene.gentleResponse}”</p>
+                    <p><span>단호하게</span>“{scene.firmResponse}”</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+            <p className="reward-panel-note">{riskScenes.note}</p>
+          </div>
+          <RewardExportActions
+            targetId="rewardScenesCard"
+            filename={`give-id-${typeKey}-${riskScenes.axis}-scenes.png`}
+            shareText={`${riskScenes.axisTitle}에서 멈춰 볼 세 장면`}
+            copyText={riskScenes.scenes[0].gentleResponse}
+            rewardType="review"
+            typeKey={typeKey}
+          />
         </RewardDetailPanel>
       ) : null}
 
@@ -363,47 +397,60 @@ export default function ResultRewardEnvelope({
           title={manual.title}
           onClose={() => setPanel('')}
           footer={
-            <div className="reward-panel-pager">
-              <button type="button" className="reward-btn" onClick={() => setManualPage((p) => Math.max(0, p - 1))} disabled={manualPage === 0}>
-                이전 장
-              </button>
-              {manualPage < manual.pages.length - 1 ? (
-                <button type="button" className="reward-btn is-primary" onClick={() => setManualPage((p) => p + 1)}>
-                  다음 장
+            <div className="reward-manual-footer">
+              <div className="reward-panel-pager">
+                <button type="button" className="reward-btn" onClick={() => setManualPage((p) => Math.max(0, p - 1))} disabled={manualPage === 0}>
+                  이전 장
                 </button>
-              ) : (
-                <a
-                  className="reward-btn is-primary"
-                  href={diagnosisUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => trackReward('diagnosis_handoff_click', { result_type: typeKey, reward_type: 'both', logged_in: isLoggedIn })}
-                >
-                  결제 없이 64문항 검사 시작하기
-                </a>
-              )}
+                {manualPage < manual.pages.length - 1 ? (
+                  <button type="button" className="reward-btn is-primary" onClick={() => setManualPage((p) => p + 1)}>
+                    다음 장
+                  </button>
+                ) : (
+                  <a
+                    className="reward-btn is-primary"
+                    href={diagnosisUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => trackReward('diagnosis_handoff_click', { result_type: typeKey, reward_type: 'both', logged_in: isLoggedIn })}
+                  >
+                    결제 없이 64문항 검사 시작하기
+                  </a>
+                )}
+              </div>
+              <RewardExportActions
+                targetId="rewardManualCard"
+                filename={`give-id-${typeKey}-manual-${manualPage + 1}.png`}
+                shareText={`${manual.title} ${manualPage + 1}/${manual.pages.length}`}
+                copyText={manual.sections.find((section) => section.id === 'sentence')?.body || ''}
+                rewardType="both"
+                typeKey={typeKey}
+              />
             </div>
           }
         >
-          {manual.pages[manualPage].sectionIds.map((id) => {
-            const section = manual.sections.find((s) => s.id === id);
-            return (
-              <section className="reward-manual-section" key={id}>
-                <h4 className="reward-manual-heading">{section.heading}</h4>
-                {Array.isArray(section.body) ? (
-                  <ul className="reward-manual-list">
-                    {section.body.map((line, i) => <li key={i}>{line}</li>)}
-                  </ul>
-                ) : (
-                  <p className="reward-manual-body">{section.body}</p>
-                )}
-                {section.detail ? <p className="reward-manual-detail">{section.detail}</p> : null}
-              </section>
-            );
-          })}
-          {manualPage === manual.pages.length - 1 ? (
-            <p className="reward-panel-note">{manual.note}</p>
-          ) : null}
+          <div className="reward-export-card is-manual" id="rewardManualCard">
+            <p className="reward-export-kicker">GIVE ID · GOODWILL MANUAL · {manualPage + 1}/{manual.pages.length}</p>
+            <h4>{manual.title} — {manual.pages[manualPage].label}</h4>
+            {manual.pages[manualPage].sectionIds.map((id) => {
+              const section = manual.sections.find((s) => s.id === id);
+              return (
+                <section className="reward-manual-section" key={id}>
+                  <h5 className="reward-manual-heading">{section.heading}</h5>
+                  {Array.isArray(section.body) ? (
+                    <ul className="reward-manual-list">
+                      {section.body.map((line, i) => <li key={i}>{line}</li>)}
+                    </ul>
+                  ) : (
+                    <p className="reward-manual-body">{section.body}</p>
+                  )}
+                  {section.detail ? <p className="reward-manual-detail">{section.detail}</p> : null}
+                </section>
+              );
+            })}
+            {manualPage === manual.pages.length - 1 ? <p className="reward-panel-note">{manual.note}</p> : null}
+            <small>GIVE ECOSYSTEM · 내 선의를 오래 쓰기 위한 개인 설명서</small>
+          </div>
         </RewardDetailPanel>
       ) : null}
     </div>
