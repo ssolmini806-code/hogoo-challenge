@@ -394,7 +394,11 @@ function renderQuestion() {
     card.classList.remove("question-card");
     void card.offsetWidth;
     card.classList.add("question-card");
-    window.requestAnimationFrame(() => document.getElementById("qText")?.focus({ preventScroll: true }));
+    // 시작 버튼에서 첫 문항으로 진입할 때는 현재 포커스를 유지한다.
+    // 답변 이후에는 새 질문 제목으로 포커스를 옮겨 스크린리더가 변화를 알 수 있게 한다.
+    if (current > 0) {
+        window.requestAnimationFrame(() => document.getElementById("qText")?.focus({ preventScroll: true }));
+    }
 }
 
 function setQuestionProgress(answered, { complete = false } = {}) {

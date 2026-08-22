@@ -275,6 +275,37 @@ async function checkChallengeGate(browser) {
   return errors
 }
 
+async function checkGiveQuestionFocus(browser) {
+  const page = await browser.newPage({ viewport: { width: 1280, height: 800 } })
+  const errors = []
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.route('**/*', (route) => {
+    const url = route.request().url()
+    url.startsWith(BASE) ? route.continue() : route.abort()
+  })
+
+  try {
+    await page.goto(`${BASE}/give-test.html?start=1`, { waitUntil: 'load', timeout: 15000 })
+    await page.locator('#qText').waitFor({ state: 'visible', timeout: 5000 })
+
+    const firstQuestion = await page.evaluate(() => ({
+      activeId: document.activeElement?.id || '',
+      outlineStyle: getComputedStyle(document.getElementById('qText')).outlineStyle,
+    }))
+    if (firstQuestion.activeId === 'qText') errors.push('첫 문항 제목에 불필요한 자동 포커스가 적용됨')
+    if (firstQuestion.outlineStyle !== 'none') errors.push(`질문 제목 포커스 외곽선이 남아 있음 (${firstQuestion.outlineStyle})`)
+
+    await page.locator('#answerList .answer-btn').first().click()
+    await page.waitForFunction(() => document.getElementById('qCount')?.textContent?.startsWith('2 /'))
+    await page.waitForFunction(() => document.activeElement?.id === 'qText')
+  } catch (error) {
+    errors.push(`GIVE 질문 포커스 검사 실패: ${error.message.split('\n')[0]}`)
+  } finally {
+    await page.close()
+  }
+  return errors
+}
+
 async function checkMyPageRoute(browser) {
   const page = await browser.newPage({ viewport: MOBILE })
   const errors = []
@@ -352,6 +383,14 @@ try {
     failed++
     console.log('  ✗ 챌린지 완주 게이트 (미완주 접근 차단)')
     for (const error of gateErrors) console.log(`      - ${error}`)
+  }
+  const questionFocusErrors = await checkGiveQuestionFocus(browser)
+  if (questionFocusErrors.length === 0) {
+    console.log('  ✓ GIVE 질문 포커스·외곽선 회귀')
+  } else {
+    failed++
+    console.log('  ✗ GIVE 질문 포커스·외곽선 회귀')
+    for (const error of questionFocusErrors) console.log(`      - ${error}`)
   }
   const myPageErrors = await checkMyPageRoute(browser)
   if (myPageErrors.length === 0) {
