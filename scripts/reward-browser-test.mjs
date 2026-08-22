@@ -143,6 +143,27 @@ const supabase = {
       store.functionCalls.push({ name, body: options?.body || null });
       persist();
       try { localStorage.setItem('__delete_function_call__', JSON.stringify(store.functionCalls.at(-1))); } catch {}
+      if (name === 'claim-reward') {
+        if (store.failRewardWrites) return Promise.resolve({ data: null, error: { message: 'reward write failed (test)' } });
+        const body = options?.body || {};
+        const payload = {
+          user_id: store.session?.user?.id,
+          reward_context: body.context,
+          result_id: body.resultId ?? null,
+          reward_type: body.rewardType,
+          unlocked: true,
+          generated_content: body.generatedContent ?? null,
+        };
+        const identity = ['user_id', 'reward_context', 'result_id', 'reward_type'];
+        const existing = store.rows.find((row) => identity.every((key) => (row[key] ?? null) === (payload[key] ?? null)));
+        if (existing) Object.assign(existing, payload);
+        else store.rows.push({ id: 'r' + (store.rows.length + 1), created_at: new Date().toISOString(), ...payload });
+        persist();
+        return Promise.resolve({ data: { reward: payload }, error: null });
+      }
+      if (name === 'challenge-certificate') {
+        return Promise.resolve({ data: { certificate: { code: '00000000-0000-4000-8000-000000000001', completedMissions: 21, issuedAt: new Date().toISOString() } }, error: null });
+      }
       return Promise.resolve({ data: { success: true }, error: null });
     },
   },

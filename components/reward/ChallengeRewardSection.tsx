@@ -30,6 +30,26 @@ type ChallengeRewardSectionProps = {
   onBothComplete: (diagnosisResult: ChallengeDiagnosisResult) => void;
   isShared: boolean;
   isReviewed: boolean;
+  memoir: {
+    title: string;
+    completedMissions: number;
+    noteCount: number;
+    anxietyAverage: number | null;
+    guiltAverage: number | null;
+    anchor: string;
+    daily: Array<{
+      day: number;
+      title: string;
+      completedMissions: number;
+      phrase: string;
+      note: string;
+      anxiety: number | null;
+      guilt: number | null;
+    }>;
+  };
+  fitCard: { label: string; reason: string; nextAction: string };
+  paidChallengeUrl: string;
+  onCertificateIssue: () => Promise<{ code: string; issuedAt: string; completedMissions: number }>;
 };
 
 function getDiagnosisLabel(completionDays: number) {
@@ -51,6 +71,10 @@ export default function ChallengeRewardSection({
   onBothComplete,
   isShared,
   isReviewed,
+  memoir,
+  fitCard,
+  paidChallengeUrl,
+  onCertificateIssue,
 }: ChallengeRewardSectionProps) {
   const bothCompleted = isShared && isReviewed;
   const hasCalledBothComplete = useRef(false);
@@ -58,12 +82,13 @@ export default function ChallengeRewardSection({
   const diagnosisResult = useMemo(
     () => ({
       completionDays: safeCompletionDays,
-      label: getDiagnosisLabel(safeCompletionDays),
+      label: fitCard?.label || getDiagnosisLabel(safeCompletionDays),
     }),
-    [safeCompletionDays],
+    [fitCard, safeCompletionDays],
   );
   const [diagnosisVisible, setDiagnosisVisible] = useState(bothCompleted);
   const [shareMessage, setShareMessage] = useState(DEFAULT_SHARE_MESSAGE);
+  const [certificateStatus, setCertificateStatus] = useState('');
 
   useEffect(() => {
     if (!bothCompleted) {
@@ -97,8 +122,18 @@ export default function ChallengeRewardSection({
     onReviewClick();
   };
 
-  const handleCertificateDownload = () => {
+  const handleCertificateDownload = async () => {
     if (!isShared || typeof document === 'undefined') return;
+
+    setCertificateStatus('인증서를 발급하고 있어요…');
+    let certificate;
+    try {
+      certificate = await onCertificateIssue();
+    } catch (error) {
+      console.error('Certificate issue failed:', error);
+      setCertificateStatus('인증서를 발급하지 못했어요. 잠시 후 다시 시도해주세요.');
+      return;
+    }
 
     const canvas = document.createElement('canvas');
     canvas.width = 1200;
@@ -107,25 +142,50 @@ export default function ChallengeRewardSection({
     const context = canvas.getContext('2d');
     if (!context) return;
 
-    context.fillStyle = '#fff7ed';
+    const background = context.createLinearGradient(0, 0, 1200, 1600);
+    background.addColorStop(0, '#f8f1df');
+    background.addColorStop(1, '#eee1c4');
+    context.fillStyle = background;
     context.fillRect(0, 0, canvas.width, canvas.height);
-    context.fillStyle = '#111827';
+    context.strokeStyle = '#3f3020';
+    context.lineWidth = 4;
+    context.strokeRect(70, 70, 1060, 1460);
+    context.strokeStyle = '#9f3223';
+    context.lineWidth = 2;
+    context.strokeRect(88, 88, 1024, 1424);
+    context.fillStyle = '#9f3223';
     context.textAlign = 'center';
+    context.font = '700 26px sans-serif';
+    context.fillText('GIVE ECOSYSTEM · 7-DAY PRACTICE', 600, 230);
+    context.fillStyle = '#1f241f';
     context.font = '700 72px sans-serif';
-    context.fillText('7일 호구 탈출 챌린지', 600, 420);
+    context.fillText('7일 경계 연습', 600, 430);
     context.font = '800 96px sans-serif';
-    context.fillText('완주 인증서', 600, 560);
+    context.fillText('완주 인증서', 600, 575);
     context.font = '500 42px sans-serif';
-    context.fillText(`${safeCompletionDays}/7일 동안 해냈어요`, 600, 720);
+    context.fillText(`${safeCompletionDays}/7일 · 미션 ${certificate.completedMissions}/21 완료`, 600, 745);
     context.font = '600 40px sans-serif';
-    context.fillText('후기 게시판 배지 지급 대상', 600, 980);
-    context.font = '400 30px sans-serif';
-    context.fillText(new Date().toLocaleDateString('ko-KR'), 600, 1220);
+    context.fillText('내 선의를 지키는 기준을 끝까지 기록했습니다', 600, 900);
+    context.beginPath();
+    context.arc(600, 1080, 78, 0, Math.PI * 2);
+    context.fillStyle = '#9f3223';
+    context.fill();
+    context.fillStyle = '#f8f1df';
+    context.font = '800 30px sans-serif';
+    context.fillText('7 DAYS', 600, 1091);
+    context.fillStyle = '#1f241f';
+    context.font = '400 27px monospace';
+    context.fillText(`발급번호 ${certificate.code}`, 600, 1270);
+    context.font = '400 25px sans-serif';
+    context.fillText(new Date(certificate.issuedAt).toLocaleDateString('ko-KR'), 600, 1330);
+    context.font = '400 22px sans-serif';
+    context.fillText(`검증: hogoo-challenge.pages.dev/certificate.html?code=${certificate.code}`, 600, 1410);
 
     const link = document.createElement('a');
     link.download = '7day-challenge-certificate.png';
     link.href = canvas.toDataURL('image/png');
     link.click();
+    setCertificateStatus('검증 가능한 인증서를 다운로드했어요.');
   };
 
   return (
@@ -195,6 +255,7 @@ export default function ChallengeRewardSection({
                 후기 게시판에 닉네임 옆 배지가 표시돼요 🏅
               </p>
             ) : null}
+            {certificateStatus ? <p className="challenge-reward-certificate-status" role="status">{certificateStatus}</p> : null}
           </article>
 
           <article className="challenge-reward-step rounded-lg border border-gray-200 p-4 shadow-sm">
@@ -223,10 +284,23 @@ export default function ChallengeRewardSection({
 
             {isReviewed ? (
               <div className="challenge-reward-status mt-4 rounded-lg border border-dashed border-amber-200 bg-amber-50 p-4">
-                <p className="text-sm font-bold text-amber-900">7일 회고록</p>
+                <p className="text-sm font-bold text-amber-900">{memoir.title}</p>
                 <p className="mt-1 text-sm leading-6 text-amber-800">
-                  API에서 생성된 회고록 내용이 여기에 표시됩니다.
+                  미션 {memoir.completedMissions}/21 · 행동 메모 {memoir.noteCount}개
+                  {memoir.anxietyAverage !== null ? ` · 평균 불안 ${memoir.anxietyAverage}/10` : ''}
+                  {memoir.guiltAverage !== null ? ` · 평균 죄책감 ${memoir.guiltAverage}/10` : ''}
                 </p>
+                <blockquote className="challenge-reward-quote">“{memoir.anchor}”</blockquote>
+                <ol className="challenge-reward-memoir-days">
+                  {memoir.daily.map((entry) => (
+                    <li key={entry.day}>
+                      <strong>Day {entry.day}. {entry.title}</strong>
+                      <span>미션 {entry.completedMissions}/3</span>
+                      {entry.note ? <p>{entry.note}</p> : null}
+                      {entry.phrase ? <small>남긴 문장 · “{entry.phrase}”</small> : null}
+                    </li>
+                  ))}
+                </ol>
               </div>
             ) : null}
           </article>
@@ -248,18 +322,20 @@ export default function ChallengeRewardSection({
               <div className="challenge-reward-unlock mt-4 rounded-lg bg-indigo-50 p-4">
                 <p className="flex items-center gap-2 text-sm font-bold text-indigo-950">
                   <Sparkles className="h-4 w-4" aria-hidden="true" />
-                  {diagnosisResult.label}
+                  {fitCard.label}
                 </p>
                 <p className="mt-2 text-sm leading-6 text-indigo-800">
-                  완료 기록 {safeCompletionDays}/7을 기준으로 30일 챌린지 적합도를
-                  확인했어요.
+                  {fitCard.reason}
                 </p>
-                <button
-                  type="button"
+                <p className="challenge-reward-next-action">{fitCard.nextAction}</p>
+                <a
                   className="mt-4 inline-flex h-11 w-full items-center justify-center rounded-lg bg-indigo-700 px-4 text-sm font-bold text-white transition hover:bg-indigo-800"
+                  href={paidChallengeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   30일 챌린지 시작하기
-                </button>
+                </a>
               </div>
             ) : (
               <div className="challenge-reward-unlock mt-4 rounded-lg bg-gray-50 p-4 text-sm leading-6 text-gray-600">

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, lazy, Suspense } from "react";
+import { useState, useEffect, useRef, useMemo, lazy, Suspense } from "react";
 import { CheckCircle, Circle, ChevronRight, ChevronLeft, Award, Flame, Copy, Check, MessageSquare, Send, Star, Trash2 } from "lucide-react";
 
 const PAID_SITE_URL = import.meta.env.VITE_PAID_SITE_URL ?? 'https://givecosystem.com/';
@@ -35,6 +35,7 @@ import { supabase } from "./src/supabase";
 import LoginButton from "./src/components/LoginButton";
 import { initializeAdminModeFromUrl, isAdminModeEnabled } from "./src/utils/adminMode";
 import { getMascotLine } from "./src/mascotVoices";
+import { buildChallengeMemoir, buildChallengeFitCard } from "./src/rewards/challenge-reward-content";
 
 const LoginModal = lazy(() => import('./src/components/LoginModal'));
 const ChallengeRewardSection = lazy(() => import('./components/reward/ChallengeRewardSection'));
@@ -180,7 +181,7 @@ export default function App() {
     try {
       const { data: publicReviews, error } = await supabase
         .from('challenge_reviews')
-        .select('id, display_name, rating, content, completed_missions, created_at')
+        .select('id, display_name, rating, content, completed_missions, reward_badge, created_at')
         .eq('is_public', true)
         .order('created_at', { ascending: false })
         .limit(6);
@@ -191,7 +192,7 @@ export default function App() {
       if (session?.user?.id) {
         const { data: ownReviews, error: ownError } = await supabase
           .from('challenge_reviews')
-          .select('id, display_name, rating, content, completed_missions, created_at')
+          .select('id, display_name, rating, content, completed_missions, reward_badge, created_at')
           .eq('user_id', session.user.id)
           .order('created_at', { ascending: false })
           .limit(6);
@@ -275,17 +276,15 @@ export default function App() {
 
   const saveReward = async (rewardType, generatedContent) => {
     if (adminMode) return;
+    if (!session?.user?.id) throw new Error('로그인이 필요합니다.');
 
-    const payload = {
-      user_id: session.user.id,
-      reward_context: 'seven_day_challenge',
-      reward_type: rewardType,
-      unlocked: true,
-      ...(generatedContent ? { generated_content: generatedContent } : {}),
-    };
-
-    const { error } = await supabase.from('user_rewards').upsert(payload, {
-      onConflict: 'user_id,reward_context,result_id,reward_type',
+    const { error } = await supabase.functions.invoke('claim-reward', {
+      body: {
+        context: 'seven_day_challenge',
+        rewardType,
+        ...(generatedContent ? { generatedContent } : {}),
+      },
+      headers: session.access_token ? { Authorization: `Bearer ${session.access_token}` } : undefined,
     });
     if (error) throw error;
     trackEvent('challenge_reward_unlocked', { reward_type: rewardType });
@@ -342,15 +341,24 @@ export default function App() {
       const canUnlock = await canUnlockBothReward();
       if (!canUnlock) return;
 
-      const content = {
-        completionRate,
-        completedMissions,
-        totalMissions: DAYS.length * 3,
-      };
-      await saveReward('both', content);
+      await saveReward('both', challengeFitCard);
     } catch (err) {
       console.warn('Failed to save both reward:', err);
     }
+  };
+
+  const issueChallengeCertificate = async () => {
+    if (adminMode) {
+      return { code: 'ADMIN-PREVIEW', issuedAt: new Date().toISOString(), completedMissions: 21 };
+    }
+    if (!session?.user?.id) throw new Error('로그인이 필요합니다.');
+    const { data, error } = await supabase.functions.invoke('challenge-certificate', {
+      body: { action: 'issue' },
+      headers: session.access_token ? { Authorization: `Bearer ${session.access_token}` } : undefined,
+    });
+    if (error) throw error;
+    if (!data?.certificate?.code) throw new Error('인증서 발급번호를 받지 못했습니다.');
+    return data.certificate;
   };
 
   const saveProgress = async (dayIdx, updates) => {
@@ -358,14 +366,10 @@ export default function App() {
     if (!session) return;
 
     try {
-      const { error } = await supabase
-        .from('user_progress')
-        .upsert({
-          user_id: session.user.id,
-          day_index: dayIdx,
-          ...updates,
-          updated_at: new Date().toISOString(),
-        }, { onConflict: 'user_id, day_index' });
+      const { error } = await supabase.functions.invoke('save-challenge-progress', {
+        body: { dayIndex: dayIdx, updates },
+        headers: session.access_token ? { Authorization: `Bearer ${session.access_token}` } : undefined,
+      });
 
       if (error) throw error;
     } catch (error) {
@@ -478,6 +482,14 @@ export default function App() {
   const dayMissions = missions[`${currentDay}`] || [];
   const allMissionsDone = adminMode || dayMissions.length === 3;
   const isChallengeCompleted = adminMode || completedDays === DAYS.length;
+  const challengeMemoir = useMemo(() => buildChallengeMemoir({
+    missions,
+    notes,
+    selectedPhrase,
+    anxiety,
+    guilt,
+  }), [missions, notes, selectedPhrase, anxiety, guilt]);
+  const challengeFitCard = useMemo(() => buildChallengeFitCard(challengeMemoir), [challengeMemoir]);
 
   const prevDayRef = useRef(null);
   useEffect(() => {
@@ -547,6 +559,8 @@ export default function App() {
       content: content.slice(0, 500),
       challenge_day: currentDay + 1,
       completed_missions: completedMissions,
+      review_context: 'seven_day_challenge',
+      reward_result_id: null,
       is_public: true
     };
     try {
@@ -557,11 +571,11 @@ export default function App() {
         .single();
       if (error) throw error;
       setReviews(prev => [{ ...data, is_own: true }, ...prev].slice(0, 6));
-      setReviewStatus("후기가 등록됐습니다.");
+      await saveReward('review');
+      setReviewStatus("후기가 등록되고 보상 B가 열렸습니다.");
       setReviewForm({ displayName: "", rating: 5, content: "" });
       setShowReviewForm(false);
       setIsReviewed(true);
-      await saveReward('review');
     } catch (error) {
       console.error('Review insert failed:', error);
       setReviewStatus("후기 등록에 실패했습니다. 잠시 후 다시 시도해주세요.");
@@ -580,24 +594,7 @@ export default function App() {
 
       setReviews(prev => prev.filter(r => r.id !== reviewId));
 
-      // B 보상(review) 비활성화
-      await supabase
-        .from('user_rewards')
-        .update({ unlocked: false })
-        .eq('user_id', session.user.id)
-        .eq('reward_context', 'seven_day_challenge')
-        .eq('reward_type', 'review');
-
-      // A+B(both)는 잠금만 내린다. A(sns) row는 그대로 남아 있으므로
-      // reward_type을 바꿔 다운그레이드하면 sns 중복 row가 생긴다.
-      await supabase
-        .from('user_rewards')
-        .update({ unlocked: false })
-        .eq('user_id', session.user.id)
-        .eq('reward_context', 'seven_day_challenge')
-        .eq('reward_type', 'both');
-
-      setIsReviewed(false);
+      // 획득한 보상은 후기 삭제와 별개로 보존한다. 브라우저에는 보상 UPDATE 권한이 없다.
     } catch (error) {
       console.error('Delete review failed:', error);
       alert('삭제에 실패했습니다. 잠시 후 다시 시도해주세요.');
@@ -826,6 +823,10 @@ export default function App() {
                 completionDays={adminMode ? DAYS.length : completedDays}
                 isShared={adminMode || isShared}
                 isReviewed={adminMode || isReviewed}
+                memoir={challengeMemoir}
+                fitCard={challengeFitCard}
+                paidChallengeUrl={paidProductUrl('challenge_30day', 'seven_day_reward')}
+                onCertificateIssue={issueChallengeCertificate}
                 onLoginRequired={() => {
                   if (!adminMode) openLoginModal(setLoginModalOpen, 'challenge_reward');
                 }}
@@ -1248,6 +1249,12 @@ export default function App() {
                             background: "#E2F4EE", color: "#114B3C", fontSize: 10,
                             fontWeight: 800, padding: "2px 7px", borderRadius: 20, flexShrink: 0
                           }}>내 후기</span>
+                        )}
+                        {review.reward_badge === 'seven_day_finisher' && (
+                          <span style={{
+                            background: "#F6ECD8", color: "#7A4E12", fontSize: 10,
+                            fontWeight: 800, padding: "2px 7px", borderRadius: 20, flexShrink: 0
+                          }}>🏅 7일 완주</span>
                         )}
                         <strong style={{ color: "#1A1F1C", fontSize: 14, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                           {review.display_name || "익명 참가자"}

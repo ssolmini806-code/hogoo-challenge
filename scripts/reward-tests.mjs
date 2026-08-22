@@ -24,6 +24,7 @@ import {
   FORBIDDEN_SHARE_PARAMS,
 } from '../src/rewards/share-url.js';
 import { createRewardService } from '../src/rewards/free-test-reward-service.js';
+import { buildChallengeMemoir, buildChallengeFitCard } from '../src/rewards/challenge-reward-content.js';
 
 const ORIGIN = 'https://hogoo-challenge.pages.dev';
 
@@ -137,6 +138,26 @@ test('A+B에 가격·구매 유도 문구가 없다', () => {
     }
     assert.ok(!/결제(?!\s*없이)/.test(text), `${key}: "결제 없이" 외의 결제 문구가 있다`);
   }
+});
+
+test('7일 회고록은 실제 기록만 사용하고 없는 값을 지어내지 않는다', () => {
+  const memoir = buildChallengeMemoir({
+    missions: Object.fromEntries(Array.from({ length: 7 }, (_, day) => [day, [0, 1, 2]])),
+    notes: { 0: '즉답 전에 에너지를 확인했다.', 6: '앞으로는 확인 후 답한다.' },
+    selectedPhrase: { 0: 1, 6: 0 },
+    anxiety: { 0: 6, 6: 2 },
+    guilt: { 0: 5, 6: 3 },
+  });
+  assert.equal(memoir.completedMissions, 21);
+  assert.equal(memoir.noteCount, 2);
+  assert.equal(memoir.anxietyAverage, 4);
+  assert.equal(memoir.guiltAverage, 4);
+  assert.equal(memoir.daily[1].note, '');
+  assert.ok(memoir.anchor.includes('자동으로 수락'));
+  const card = buildChallengeFitCard(memoir);
+  assert.equal(card.kind, 'challenge_fit_card');
+  assert.ok(card.reason.includes('행동 메모 2개'));
+  assert.ok(card.nextAction.includes(memoir.anchor));
 });
 
 // ── 5. 점수 누락 fallback ──────────────────────────────────────────
@@ -293,7 +314,26 @@ function createFakeClient(rows = []) {
     return query;
   }
 
-  return { state, from: (table) => makeQuery(table) };
+  return {
+    state,
+    from: (table) => makeQuery(table),
+    functions: {
+      async invoke(name, options) {
+        if (name !== 'claim-reward') return { data: null, error: { message: 'unknown function' } };
+        const body = options?.body || {};
+        const payload = {
+          user_id: 'user-1',
+          reward_context: body.context,
+          result_id: body.resultId ?? null,
+          reward_type: body.rewardType,
+          unlocked: true,
+          generated_content: body.generatedContent ?? null,
+        };
+        const result = makeQuery('user_rewards').upsert(payload).run();
+        return { data: { reward: payload }, error: result.error };
+      },
+    },
+  };
 }
 
 const baseRow = (over) => ({
@@ -434,6 +474,7 @@ test('실제 review row가 있으면 B가 해금되고 both가 열린다', async
 test('보상 저장 오류는 삼켜지지 않고 호출자에게 전달된다', async () => {
   const denied = { data: null, error: { message: 'rls denied' } };
   const failing = {
+    functions: { invoke: () => Promise.resolve(denied) },
     from: () => ({
       select() { return this; },
       upsert() { return Promise.resolve(denied); },
@@ -634,14 +675,47 @@ test('classic 검사와 React 보상은 같은 유형·축 카탈로그를 사�
   assert.doesNotMatch(logic, /const legacyAxisDefinitions/);
 });
 
-test('user_rewards는 DB 유니크 식별자와 원자적 upsert를 함께 쓴다', async () => {
+test('user_rewards는 DB 유니크 식별자와 서버 발급 함수의 원자적 upsert를 함께 쓴다', async () => {
   const { readFileSync } = await import('node:fs');
   const migration = readFileSync(new URL('../supabase/migrations/20260722000000_user_rewards_unique_identity.sql', import.meta.url), 'utf8');
   const service = readFileSync(new URL('../src/rewards/free-test-reward-service.js', import.meta.url), 'utf8');
+  const edge = readFileSync(new URL('../supabase/functions/claim-reward/index.ts', import.meta.url), 'utf8');
+  const secureMigration = readFileSync(new URL('../supabase/migrations/20260822000000_secure_reward_claims.sql', import.meta.url), 'utf8');
   assert.match(migration, /nulls not distinct/i);
   assert.match(migration, /user_id, reward_context, result_id, reward_type/);
-  assert.match(service, /\.upsert\(payload/);
-  assert.ok(service.includes("onConflict: 'user_id,reward_context,result_id,reward_type'"));
+  assert.ok(service.includes("functions.invoke('claim-reward'"));
+  assert.match(edge, /\.upsert\(payload/);
+  assert.ok(edge.includes("onConflict: 'user_id,reward_context,result_id,reward_type'"));
+  assert.match(secureMigration, /revoke all on public\.user_rewards from anon, authenticated/i);
+  assert.ok(secureMigration.includes("reward_context in ('giveid', 'paid_30day')"));
+  assert.doesNotMatch(secureMigration, /reward_context in \('free_test', 'seven_day_challenge'\)[\s\S]{0,120}create own non-free/i);
+});
+
+test('서버 보상 발급은 무료 컨텍스트만 허용하고 후기·완주·A+B 조건을 검사한다', async () => {
+  const { readFileSync } = await import('node:fs');
+  const edge = readFileSync(new URL('../supabase/functions/claim-reward/index.ts', import.meta.url), 'utf8');
+  const progressEdge = readFileSync(new URL('../supabase/functions/save-challenge-progress/index.ts', import.meta.url), 'utf8');
+  const reviews = readFileSync(new URL('../reviews.html', import.meta.url), 'utf8');
+  assert.ok(edge.includes("const CONTEXTS = new Set(['free_test', 'seven_day_challenge'])"));
+  assert.ok(edge.includes("code: 'CHALLENGE_INCOMPLETE'"));
+  assert.ok(edge.includes("code: 'REVIEW_REQUIRED'"));
+  assert.ok(edge.includes("code: 'PREREQUISITES_REQUIRED'"));
+  assert.ok(progressEdge.includes("const FIELDS = new Set(['missions', 'selected_phrase', 'note', 'anxiety', 'guilt'])"));
+  assert.ok(progressEdge.includes('미션은 한 번에 하나씩 변경해주세요.'));
+  assert.ok(reviews.includes("!['free_test', 'seven_day_challenge'].includes(reviewContext)"));
+  assert.doesNotMatch(reviews, /from\(['"]user_rewards['"]\)\.upsert/);
+});
+
+test('인증서는 서버 발급번호와 공개 검증 경로를 사용한다', async () => {
+  const { readFileSync } = await import('node:fs');
+  const migration = readFileSync(new URL('../supabase/migrations/20260822000000_secure_reward_claims.sql', import.meta.url), 'utf8');
+  const edge = readFileSync(new URL('../supabase/functions/challenge-certificate/index.ts', import.meta.url), 'utf8');
+  const component = readFileSync(new URL('../components/reward/ChallengeRewardSection.tsx', import.meta.url), 'utf8');
+  assert.match(migration, /create table if not exists public\.challenge_certificates/i);
+  assert.match(migration, /revoke all on public\.challenge_certificates from anon, authenticated/i);
+  assert.ok(edge.includes("body?.action === 'verify'"));
+  assert.ok(edge.includes("body?.action !== 'issue'"));
+  assert.ok(component.includes('certificate.html?code=${certificate.code}'));
 });
 
 test('계정 삭제는 서버 함수에서 사용자 JWT를 검증하고 관리자 키를 브라우저에 노출하지 않는다', async () => {

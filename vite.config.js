@@ -24,6 +24,7 @@ export default defineConfig({
         terms: resolve(__dirname, 'terms.html'),
         affiliate: resolve(__dirname, 'affiliate.html'),
         'editorial-policy': resolve(__dirname, 'editorial-policy.html'),
+        certificate: resolve(__dirname, 'certificate.html'),
         // Articles
         'articles-index': resolve(__dirname, 'articles/index.html'),
         'article-burnout': resolve(__dirname, 'articles/giver-burnout.html'),

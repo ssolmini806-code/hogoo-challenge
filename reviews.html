@@ -187,6 +187,12 @@
                 badge.textContent = "내 후기";
                 name.append(badge);
             }
+            if (review.reward_badge === 'seven_day_finisher') {
+                const badge = document.createElement("span");
+                badge.className = "own-review-badge";
+                badge.textContent = "🏅 7일 완주";
+                name.append(badge);
+            }
 
             const nameText = document.createElement("span");
             nameText.textContent = review.display_name || "익명 참가자";
@@ -237,33 +243,8 @@
         }
 
         async function disableReviewReward(reviewContext) {
-            if (!currentSession?.user?.id) return;
-
-            const rewardContext = reviewContext || "seven_day_challenge";
-            // 무료 결과 보상은 결과별(result_id)로 나뉘는데 후기 row에는 result_id가 없다.
-            // 컨텍스트만으로 지우면 다른 유형에서 받은 보상까지 회수되므로 건드리지 않는다.
-            // (한 번 획득한 무료 보상은 영구 보존한다.)
-            if (rewardContext === 'free_test') {
-                localStorage.removeItem('free_test_reviewed');
-                return;
-            }
-
-            await supabase
-                .from('user_rewards')
-                .update({ unlocked: false })
-                .eq('user_id', currentSession.user.id)
-                .eq('reward_context', rewardContext)
-                .eq('reward_type', 'review');
-
-            // A+B는 잠금만 내린다. reward_type을 'sns'로 바꾸면 이미 있는 sns row와
-            // 중복 row가 생기고(A+B를 받았다면 sns row는 반드시 존재한다),
-            // A+B로 만들어둔 generated_content도 함께 잃는다.
-            await supabase
-                .from('user_rewards')
-                .update({ unlocked: false })
-                .eq('user_id', currentSession.user.id)
-                .eq('reward_context', rewardContext)
-                .eq('reward_type', 'both');
+            // 획득한 보상은 후기 삭제와 별개로 보존한다. 브라우저에는 보상 UPDATE 권한이 없다.
+            if (reviewContext === 'free_test') localStorage.removeItem('free_test_reviewed');
         }
 
         async function deleteOwnReview(reviewId) {
@@ -293,7 +274,7 @@
 
         async function loadReviews() {
             try {
-                const publicColumns = 'id, display_name, rating, content, completed_missions, review_context, created_at';
+                const publicColumns = 'id, display_name, rating, content, completed_missions, review_context, reward_badge, created_at';
                 const ownColumns = `${publicColumns}, user_id`;
                 const { data: publicReviews, error } = await supabase
                     .from('challenge_reviews')
@@ -456,6 +437,26 @@
             const container = document.getElementById('writeSection');
             container.hidden = false;
 
+            if (!['free_test', 'seven_day_challenge'].includes(reviewContext)) {
+                container.replaceChildren();
+                const warning = document.createElement('p');
+                warning.className = 'form-msg error';
+                warning.textContent = '허용되지 않은 후기 경로입니다.';
+                container.append(warning);
+                return;
+            }
+
+            const normalizedResultType = reviewContext === 'free_test' ? normalizeTypeKey(resultType) : null;
+            const expectedResultId = normalizedResultType ? buildResultId(normalizedResultType) : null;
+            if (reviewContext === 'free_test' && (!resultId || resultId !== expectedResultId)) {
+                container.replaceChildren();
+                const warning = document.createElement('p');
+                warning.className = 'form-msg error';
+                warning.textContent = '결과 정보가 일치하지 않아 후기를 시작할 수 없습니다.';
+                container.append(warning);
+                return;
+            }
+
             if (!currentSession) {
                 renderAuthNotice(container, returnUrl);
                 return;
@@ -480,29 +481,22 @@
 
             async function saveReviewReward() {
                 if (reviewContext !== 'free_test') {
-                    // result_id가 없는 챌린지 보상도 DB 유니크 인덱스와 원자적 upsert를 쓴다.
-                    const { error } = await supabase.from('user_rewards').upsert({
-                        user_id: currentSession.user.id,
-                        reward_context: reviewContext,
-                        result_id: null,
-                        reward_type: 'review',
-                        unlocked: true,
-                    }, { onConflict: 'user_id,reward_context,result_id,reward_type' });
+                    const { error } = await supabase.functions.invoke('claim-reward', {
+                        body: { context: reviewContext, rewardType: 'review' },
+                        headers: currentSession.access_token
+                            ? { Authorization: `Bearer ${currentSession.access_token}` }
+                            : undefined,
+                    });
                     if (error) throw error;
                     return;
                 }
 
                 // 무료 결과 보상: rid와 result_type이 서로 맞는지 확인한 뒤 저장한다.
-                const typeKey = normalizeTypeKey(resultType);
-                const expectedResultId = buildResultId(typeKey);
-                if (!resultId || resultId !== expectedResultId) {
-                    throw new Error('보상 식별자(rid)와 결과 유형이 일치하지 않습니다.');
-                }
                 await rewardService.saveReward(
                     currentSession.user.id,
                     expectedResultId,
                     'review',
-                    buildRiskScenes(typeKey, readGiveScores()),
+                    buildRiskScenes(normalizedResultType, readGiveScores()),
                 );
             }
 
@@ -544,6 +538,7 @@
                             rating,
                             content: content.slice(0, 500),
                             review_context: reviewContext,
+                            reward_result_id: expectedResultId,
                             is_public: true,
                         });
                         if (reviewErr) throw reviewErr;

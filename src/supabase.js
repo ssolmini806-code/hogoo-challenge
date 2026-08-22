@@ -36,6 +36,9 @@ const createFallbackSupabase = () => ({
     signOut: () => Promise.resolve({ error: null }),
   },
   from: () => createFallbackQuery(),
+  functions: {
+    invoke: () => Promise.resolve({ data: null, error: new Error('Supabase가 설정되지 않았습니다.') }),
+  },
 });
 
 export const supabase = supabaseUrl && supabaseAnonKey

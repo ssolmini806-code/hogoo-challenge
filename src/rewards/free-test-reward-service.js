@@ -6,6 +6,7 @@
 // supabase 클라이언트를 import하지 않고 주입받는다 (테스트에서 가짜 클라이언트 사용).
 
 import { REWARD_CONTEXT } from './reward-types.js';
+import { parseTypeKey } from './result-id.js';
 
 const SELECT_COLUMNS = 'id, result_id, reward_type, reward_context, unlocked, generated_content, created_at';
 
@@ -57,17 +58,17 @@ export function createRewardService(client) {
   async function saveReward(userId, resultId, rewardType, generatedContent) {
     if (!userId || !resultId) throw new Error('saveReward requires userId and resultId');
 
-    const payload = {
-      user_id: userId,
-      result_id: resultId,
-      reward_context: REWARD_CONTEXT,
-      reward_type: rewardType,
-      unlocked: true,
-      ...(generatedContent === undefined ? {} : { generated_content: generatedContent }),
-    };
+    const resultType = parseTypeKey(resultId);
+    if (!resultType) throw new Error('유효한 GIVE ID 결과가 필요합니다.');
 
-    const { error } = await client.from('user_rewards').upsert(payload, {
-      onConflict: 'user_id,reward_context,result_id,reward_type',
+    const { error } = await client.functions.invoke('claim-reward', {
+      body: {
+        context: REWARD_CONTEXT,
+        rewardType,
+        resultId,
+        resultType,
+        ...(generatedContent === undefined ? {} : { generatedContent }),
+      },
     });
     if (error) throw error;
     return 'saved';
