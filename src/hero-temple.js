@@ -76,6 +76,4 @@ async function mount() {
   resize();
 }
 
-const boot = () => { mount().catch(() => {}); };
-if ('requestIdleCallback' in window) requestIdleCallback(boot, { timeout: 2000 });
-else setTimeout(boot, 600);
+mount().catch(() => {});
