@@ -28,6 +28,7 @@ body:has(.challenge-world){--green:#3f3020;--surface:#eee6d2;--ink:#3f3020;--ink
 .challenge-world-days .day-btn{flex:0 0 auto!important;min-width:6.2rem;height:3.5rem!important;border:0!important;border-radius:0!important;background:transparent!important;color:#526159!important;outline:0!important;outline-offset:0!important;white-space:nowrap;}
 .challenge-world-days .day-btn:hover{transform:none!important;background:rgba(63,48,32,.06)!important;}
 .challenge-world-days .day-btn.is-active{background:#3f3020!important;color:#eee6d2!important;}
+.challenge-world .challenge-inline-notice{margin:.75rem 0 0;padding:.65rem .8rem;border-left:2px solid #9f3223;background:rgba(159,50,35,.08);color:#6d3528;font-size:.76rem;font-weight:700;line-height:1.5;}
 
 .challenge-world-main{max-width:1120px!important;padding:clamp(2.5rem,6vh,5rem) clamp(1.25rem,5vw,4rem) 8rem!important;}
 .challenge-world-day-head{max-width:48rem;margin-bottom:2rem!important;}
@@ -67,8 +68,9 @@ body:has(.challenge-world){--green:#3f3020;--surface:#eee6d2;--ink:#3f3020;--ink
 .challenge-world .challenge-reward{padding:1.5rem 0!important;background:transparent!important;color:#18211d!important;}
 .challenge-world .challenge-reward-inner{max-width:none!important;}
 .challenge-world .challenge-reward-intro{padding:0 0 1.5rem;border-bottom:1px solid rgba(63,48,32,.28);}
-.challenge-world .challenge-reward-intro p:first-child{font-family:'Hahmlet',serif;font-size:clamp(1.3rem,2.7vw,2.2rem)!important;font-weight:600!important;color:#3f3020!important;}
+.challenge-world .challenge-reward-intro p:first-child{font-family:'Give Brush',sans-serif;font-size:clamp(1.55rem,3.1vw,2.5rem)!important;font-weight:400!important;line-height:1.28!important;color:#3f3020!important;}
 .challenge-world .challenge-reward-intro p:last-child{max-width:36rem;color:#536159!important;}
+.challenge-world .challenge-reward-tabs{display:none;}
 .challenge-world .challenge-reward-list{display:grid;gap:0!important;counter-reset:reward-step;}
 .challenge-world .challenge-reward-step{position:relative;margin:0!important;padding:2rem 0 2rem clamp(3.4rem,7vw,5.5rem)!important;border:0!important;border-bottom:1px solid rgba(63,48,32,.25)!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;counter-increment:reward-step;}
 .challenge-world .challenge-reward-step::before{content:"0" counter(reward-step);position:absolute;left:0;top:2rem;font-family:'Hahmlet',serif;font-size:1.15rem;color:#9f3223;}
@@ -99,7 +101,7 @@ body:has(.challenge-world){--green:#3f3020;--surface:#eee6d2;--ink:#3f3020;--ink
 .challenge-world .challenge-share-preview>*{position:relative;z-index:1;}
 .challenge-world .challenge-share-preview>p{margin:0;color:#9f3223;font-size:.63rem;font-weight:900;letter-spacing:.12em;}
 .challenge-world .challenge-share-preview>strong{display:block;margin-top:1.2rem;font-family:'Give Hahmlet','Hahmlet',serif;font-size:clamp(1.55rem,3.8vw,2.25rem);font-weight:700;line-height:1.46;letter-spacing:-.035em;color:#3f3020;}
-.challenge-world .challenge-share-preview>strong em{color:#9f3223;font-style:normal;}
+.challenge-world .challenge-share-preview>strong em{display:inline-block;color:#9f3223;font-family:'Give Brush',sans-serif;font-size:1.16em;font-style:normal;font-weight:400;line-height:1.25;}
 .challenge-world .challenge-share-preview blockquote{max-width:85%;margin:1.2rem 0 0;font-family:'Give Hahmlet','Hahmlet',serif;font-size:.86rem;font-weight:700;line-height:1.75;color:#3f3020;}
 .challenge-world .challenge-share-preview dl{position:absolute;z-index:2;left:1.7rem;right:1.7rem;bottom:1.5rem;display:grid;grid-template-columns:repeat(3,1fr);margin:0;padding:1rem;background:rgba(47,36,25,.92);color:#f7eedb;}
 .challenge-world .challenge-share-preview dl div+div{border-left:1px solid rgba(247,238,219,.25);}
@@ -112,7 +114,7 @@ body:has(.challenge-world){--green:#3f3020;--surface:#eee6d2;--ink:#3f3020;--ink
 .challenge-world .challenge-memoir-cover{min-height:16rem;padding:1.8rem;background:#34291f url('/images/rewards/seven-day-keepsake-bg-v1.webp') center bottom/cover no-repeat;background-blend-mode:multiply;color:#f7eedb;}
 .challenge-world .challenge-memoir-cover span{color:#d98b70;font-size:.62rem;font-weight:900;letter-spacing:.14em;}
 .challenge-world .challenge-memoir-cover p{margin:1rem 0 .4rem!important;color:#d5c6b2!important;font-size:.76rem!important;font-weight:700;}
-.challenge-world .challenge-memoir-cover strong{display:block;font-family:'Give Hahmlet','Hahmlet',serif;font-size:clamp(1.4rem,3.4vw,2rem);font-weight:700;line-height:1.55;letter-spacing:-.025em;}
+.challenge-world .challenge-memoir-cover strong{display:block;font-family:'Give Brush',sans-serif;font-size:clamp(1.65rem,3.8vw,2.3rem);font-weight:400;line-height:1.42;letter-spacing:-.015em;}
 .challenge-world .challenge-memoir-cover dl{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin:9rem 0 0;padding:1rem 0 0;border-top:1px solid rgba(247,238,219,.35);}
 .challenge-world .challenge-memoir-cover dt,.challenge-world .challenge-memoir-cover dd{margin:0;}
 .challenge-world .challenge-memoir-cover dt{font-size:1.05rem;font-weight:900;}
@@ -152,22 +154,15 @@ body:has(.challenge-world){--green:#3f3020;--surface:#eee6d2;--ink:#3f3020;--ink
 .challenge-world .challenge-fit-card{position:relative;overflow:hidden;padding:1.5rem!important;border:1px solid rgba(63,48,32,.3)!important;border-left:1px solid rgba(63,48,32,.3)!important;background:linear-gradient(145deg,rgba(247,238,219,.96),rgba(220,203,171,.72))!important;box-shadow:0 1rem 2.4rem rgba(63,48,32,.1);}
 .challenge-world .challenge-fit-card::after{content:"30";position:absolute;right:-.15rem;top:-1.8rem;color:rgba(159,50,35,.09);font-family:'Hahmlet',serif;font-size:10rem;font-weight:800;line-height:1;pointer-events:none;}
 .challenge-world .challenge-fit-kicker{position:relative;z-index:1;color:#9f3223;font-size:.62rem;font-weight:900;letter-spacing:.14em;}
-.challenge-world .challenge-fit-title{position:relative;z-index:1;max-width:78%;margin-top:.75rem!important;font-family:'Give Hahmlet','Hahmlet',serif;font-size:clamp(1.15rem,2.8vw,1.55rem)!important;font-weight:700!important;line-height:1.52;color:#3f3020!important;}
+.challenge-world .challenge-fit-title{position:relative;z-index:1;max-width:82%;margin-top:.75rem!important;font-family:'Give Brush',sans-serif;font-size:clamp(1.45rem,3.2vw,1.9rem)!important;font-weight:400!important;line-height:1.34;color:#3f3020!important;}
 .challenge-world .challenge-fit-dimensions{position:relative;z-index:1;display:grid;gap:.9rem;margin-top:1.2rem;padding:1rem 0;border-top:1px solid rgba(63,48,32,.18);border-bottom:1px solid rgba(63,48,32,.18);}
 .challenge-world .challenge-fit-dimensions>div>p{display:flex;justify-content:space-between;gap:1rem;margin:0;color:#3f3020;font-size:.72rem;}
 .challenge-world .challenge-fit-dimensions>div>p span{color:#9f3223;font-weight:900;}
 .challenge-world .challenge-fit-dimensions [role="meter"]{height:6px;margin:.38rem 0;background:rgba(63,48,32,.12);overflow:hidden;}
 .challenge-world .challenge-fit-dimensions [role="meter"]>span{display:block;height:100%;background:linear-gradient(90deg,#9f3223,#c85f43);}
 .challenge-world .challenge-fit-dimensions [role="meter"].is-unknown{background:repeating-linear-gradient(90deg,rgba(63,48,32,.12) 0 6px,transparent 6px 10px);}
-.challenge-world .challenge-fit-dimensions small{display:block;color:#78644f;font-size:.63rem;line-height:1.45;}
-.challenge-world .challenge-fit-caveat{position:relative;z-index:1;margin:.75rem 0 0;color:#897762;font-size:.61rem;line-height:1.5;text-align:center;}
-
-.challenge-world .login-modal-backdrop{background:rgba(23,19,14,.72)!important;backdrop-filter:blur(8px);}
-.challenge-world .login-modal-sheet{border:1px solid rgba(63,48,32,.28)!important;border-radius:0!important;background:#eee6d2 url('/images/results/give-result-path-v2.webp') 70% center/cover no-repeat!important;box-shadow:0 2rem 6rem rgba(23,19,14,.26);}
-.challenge-world .login-modal-sheet::before{content:"";position:absolute;inset:0;z-index:-1;background:rgba(238,230,210,.88);}
-.challenge-world .login-modal-sheet h2{font-family:'Hahmlet',serif!important;font-weight:600!important;color:#3f3020!important;}
-.challenge-world .login-modal-sheet input{border:0!important;border-bottom:1px solid rgba(63,48,32,.35)!important;border-radius:0!important;background:rgba(238,230,210,.55)!important;}
-.challenge-world .login-modal-sheet button[type="submit"]{border-radius:0!important;background:#3f3020!important;}
+.challenge-world .challenge-fit-dimensions small{display:block;color:#685640;font-size:.7rem;line-height:1.5;}
+.challenge-world .challenge-fit-caveat{position:relative;z-index:1;margin:.75rem 0 0;color:#685640;font-size:.7rem;line-height:1.55;text-align:center;}
 
 @media(max-width:719px){
   body:has(.challenge-world){background-position:68% top;background-size:auto 100vh;}
@@ -182,6 +177,13 @@ body:has(.challenge-world){--green:#3f3020;--surface:#eee6d2;--ink:#3f3020;--ink
   .challenge-world-days{margin:0 -1.25rem;padding-left:1.25rem;}
   .challenge-world-days .day-btn{min-width:5.3rem;height:3.2rem!important;}
   .challenge-world-main{padding:2.8rem 1.25rem 6rem!important;}
+  .challenge-world .challenge-reward-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.35rem;margin:1rem 0 .25rem;padding:.35rem;border:1px solid rgba(63,48,32,.22);background:rgba(247,238,219,.66);}
+  .challenge-world .challenge-reward-tabs button{min-height:50px;padding:.45rem .25rem;border:0;background:transparent;color:#6b5b48;font-family:inherit;font-size:.68rem;font-weight:800;line-height:1.25;cursor:pointer;}
+  .challenge-world .challenge-reward-tabs button span{display:block;margin-bottom:.18rem;color:#9f3223;font-family:'Hahmlet',serif;font-size:.62rem;}
+  .challenge-world .challenge-reward-tabs button[aria-selected="true"]{background:#3f3020;color:#f7eedb;}
+  .challenge-world .challenge-reward-tabs button[aria-selected="true"] span{color:#efb09c;}
+  .challenge-world .challenge-reward-list>.challenge-reward-step{display:none;}
+  .challenge-world .challenge-reward-list>.challenge-reward-step.is-active{display:block;}
   .challenge-world-day-head h2{font-size:clamp(2rem,9vw,2.7rem)!important;}
   .challenge-world-mascot{margin-bottom:1rem!important;}
   .challenge-world-scores{grid-template-columns:1fr!important;}

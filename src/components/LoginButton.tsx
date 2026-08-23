@@ -58,6 +58,8 @@ export default function LoginButton() {
   const [inviteEmail, setInviteEmail] = useState('');
   const [inviteSent, setInviteSent] = useState(false);
   const [inviteLoading, setInviteLoading] = useState(false);
+  const [inviteError, setInviteError] = useState('');
+  const [emailChangeError, setEmailChangeError] = useState('');
   const menuRef = useRef<HTMLDivElement | null>(null);
   const inviteDialogRef = useDialogFocusTrap(showInvite, () => setShowInvite(false));
   const emailChangeDialogRef = useDialogFocusTrap(showEmailChange, () => setShowEmailChange(false));
@@ -92,6 +94,7 @@ export default function LoginButton() {
 
   const handleInvite = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setInviteError('');
     setInviteLoading(true);
     try {
       const session = (await supabase.auth.getSession()).data.session;
@@ -102,7 +105,7 @@ export default function LoginButton() {
       if (error) throw error;
       setInviteSent(true);
     } catch (err: any) {
-      alert(err.message);
+      setInviteError('초대 메일을 보내지 못했어요. 주소를 확인하고 잠시 후 다시 시도해주세요.');
     } finally {
       setInviteLoading(false);
     }
@@ -110,13 +113,14 @@ export default function LoginButton() {
 
   const handleEmailChange = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setEmailChangeError('');
     setEmailChangeLoading(true);
     try {
       const { error } = await supabase.auth.updateUser({ email: newEmail });
       if (error) throw error;
       setEmailChangeSent(true);
     } catch (err: any) {
-      alert(err.message);
+      setEmailChangeError('이메일 변경을 요청하지 못했어요. 주소를 확인하고 다시 시도해주세요.');
     } finally {
       setEmailChangeLoading(false);
     }
@@ -175,7 +179,7 @@ export default function LoginButton() {
           >
             <button
               type="button"
-              onClick={() => { setMenuOpen(false); setShowInvite(true); setInviteSent(false); setInviteEmail(''); }}
+              onClick={() => { setMenuOpen(false); setShowInvite(true); setInviteSent(false); setInviteEmail(''); setInviteError(''); }}
               style={{
                 width: '100%',
                 background: 'transparent',
@@ -199,7 +203,7 @@ export default function LoginButton() {
             </button>
             <button
               type="button"
-              onClick={() => { setMenuOpen(false); setShowEmailChange(true); setEmailChangeSent(false); setNewEmail(''); }}
+              onClick={() => { setMenuOpen(false); setShowEmailChange(true); setEmailChangeSent(false); setNewEmail(''); setEmailChangeError(''); }}
               style={{
                 width: '100%',
                 background: 'transparent',
@@ -250,6 +254,7 @@ export default function LoginButton() {
 
         {showInvite && (
           <div
+            className="login-modal-backdrop"
             role="dialog"
             aria-modal="true"
             aria-labelledby="invite-dialog-title"
@@ -260,7 +265,7 @@ export default function LoginButton() {
               background: 'rgba(0,0,0,0.72)', padding: '16px',
             }}
           >
-            <div ref={inviteDialogRef} style={{
+            <div ref={inviteDialogRef} className="login-modal-sheet" style={{
               width: '100%', maxWidth: 360,
               background: 'var(--surface)', borderRadius: 20, padding: '32px 24px',
               border: '1px solid var(--line)',
@@ -290,12 +295,13 @@ export default function LoginButton() {
                     친구 이메일을 입력하면 챌린지 초대 링크를 보내드려요
                   </p>
                   <form onSubmit={handleInvite} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                    {inviteError ? <p className="login-modal-feedback is-error" role="alert">{inviteError}</p> : null}
                     <input
                       aria-label="초대할 친구 이메일 주소"
                       type="email"
                       placeholder="친구 이메일 주소"
                       value={inviteEmail}
-                      onChange={(e) => setInviteEmail(e.target.value)}
+                      onChange={(e) => { setInviteEmail(e.target.value); setInviteError(''); }}
                       required
                       style={{
                         padding: '13px 14px', borderRadius: 10, border: '1px solid var(--line)',
@@ -333,6 +339,7 @@ export default function LoginButton() {
 
         {showEmailChange && (
           <div
+            className="login-modal-backdrop"
             role="dialog"
             aria-modal="true"
             aria-labelledby="email-change-dialog-title"
@@ -343,7 +350,7 @@ export default function LoginButton() {
               background: 'rgba(0,0,0,0.72)', padding: '16px',
             }}
           >
-            <div ref={emailChangeDialogRef} style={{
+            <div ref={emailChangeDialogRef} className="login-modal-sheet" style={{
               width: '100%', maxWidth: 360,
               background: 'var(--surface)', borderRadius: 20, padding: '32px 24px',
               border: '1px solid var(--line)',
@@ -373,12 +380,13 @@ export default function LoginButton() {
                     새 이메일 주소를 입력하면 확인 링크를 보내드려요
                   </p>
                   <form onSubmit={handleEmailChange} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                    {emailChangeError ? <p className="login-modal-feedback is-error" role="alert">{emailChangeError}</p> : null}
                     <input
                       aria-label="변경할 새 이메일 주소"
                       type="email"
                       placeholder="새 이메일 주소"
                       value={newEmail}
-                      onChange={(e) => setNewEmail(e.target.value)}
+                      onChange={(e) => { setNewEmail(e.target.value); setEmailChangeError(''); }}
                       required
                       style={{
                         padding: '13px 14px', borderRadius: 10, border: '1px solid var(--line)',

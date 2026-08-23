@@ -817,6 +817,10 @@ test('GIVE ID A/B/A+B는 각각 저장·공유 가능한 이미지 카드다', a
     assert.ok(envelope.includes(target));
   }
   assert.ok(exporter.includes("navigator.canShare?.({ files: [file] })"));
+  assert.ok(exporter.includes('canvasWidth: SOCIAL_CARD_WIDTH'));
+  assert.ok(exporter.includes('canvasHeight: SOCIAL_CARD_HEIGHT'));
+  assert.ok(exporter.includes('const SOCIAL_CARD_WIDTH = 1080'));
+  assert.ok(exporter.includes('const SOCIAL_CARD_HEIGHT = 1350'));
   assert.ok(exporter.includes("trackReward('reward_export'"));
   assert.ok(exporter.includes("trackReward('reward_copy'"));
 });
@@ -862,4 +866,42 @@ test('결과 화면은 숨겨진 매칭 이미지를 지연하고 배경 이미�
   assert.ok(resultSequence.includes('img.dataset.src = matchType.character'));
   assert.ok(resultSequence.includes('function loadSlideImages(slide)'));
   assert.doesNotMatch(resultSequence, /img\.src = matchType\.character/);
+});
+
+test('보상 UI는 로그인·마이페이지·모바일 보상에서 같은 디자인 계약을 지킨다', async () => {
+  const { readFileSync } = await import('node:fs');
+  const loginModal = readFileSync(new URL('../src/components/LoginModal.tsx', import.meta.url), 'utf8');
+  const loginButton = readFileSync(new URL('../src/components/LoginButton.tsx', import.meta.url), 'utf8');
+  const app = readFileSync(new URL('../App.jsx', import.meta.url), 'utf8');
+  const challengeCss = readFileSync(new URL('../public/challenge-world.css', import.meta.url), 'utf8');
+  const resultCss = readFileSync(new URL('../public/result-world.css', import.meta.url), 'utf8');
+  const journey = readFileSync(new URL('../public/journey-continuity.js', import.meta.url), 'utf8');
+  const challengeReward = readFileSync(new URL('../components/reward/ChallengeRewardSection.tsx', import.meta.url), 'utf8');
+  const challengePage = readFileSync(new URL('../hogoo-test.html', import.meta.url), 'utf8');
+  const challengeDone = readFileSync(new URL('../public/challenge-done.js', import.meta.url), 'utf8');
+  const challengeDonePage = readFileSync(new URL('../public/challenge-done.html', import.meta.url), 'utf8');
+  const resultCardDownload = readFileSync(new URL('../components/result/ResultCardDownloadButton.tsx', import.meta.url), 'utf8');
+  const challengeImages = readFileSync(new URL('../src/rewards/challenge-reward-images.js', import.meta.url), 'utf8');
+
+  assert.ok(loginModal.includes('login-modal-feedback'));
+  assert.ok(loginModal.includes('createPortal('));
+  assert.equal((loginButton.match(/className="login-modal-backdrop"/g) || []).length, 2);
+  assert.equal((loginButton.match(/className="login-modal-sheet"/g) || []).length, 2);
+  assert.doesNotMatch(loginModal, /\balert\s*\(/);
+  assert.doesNotMatch(loginButton, /\balert\s*\(/);
+  assert.doesNotMatch(app, /\balert\s*\(/);
+  assert.doesNotMatch(challengeDone, /\balert\s*\(/);
+  assert.ok(challengeDonePage.includes('id="shareStatus"'));
+  assert.doesNotMatch(resultCardDownload, /\balert\s*\(/);
+  assert.ok(resultCardDownload.includes('canvasWidth: 1080'));
+  assert.ok(resultCardDownload.includes('canvasHeight: 1350'));
+  assert.doesNotMatch(challengeCss, /login-modal-sheet h2/);
+  assert.ok(journey.includes('selfless-otherish-test|mypage'));
+  assert.ok(resultCss.includes(':has(.sequence-reward.active) .result-atmosphere{opacity:0;}'));
+  assert.ok(challengeReward.includes('challenge-reward-tabs'));
+  assert.ok(challengeReward.includes("event.key === 'ArrowRight'"));
+  assert.ok(challengeReward.includes("event.key === 'ArrowLeft'"));
+  assert.equal((challengeReward.match(/tabIndex=\{activeRewardStep ===/g) || []).length, 3);
+  assert.ok(challengeImages.includes('context.measureText(title).width > 920'));
+  assert.equal((challengePage.match(/class="challenge-seo-disclosure"/g) || []).length, 3);
 });

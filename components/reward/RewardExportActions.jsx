@@ -3,6 +3,8 @@ import { toPng } from 'html-to-image';
 import { trackReward } from '../../src/rewards/reward-analytics';
 
 let brushFontCssPromise;
+const SOCIAL_CARD_WIDTH = 1080;
+const SOCIAL_CARD_HEIGHT = 1350;
 
 function blobToDataUrl(blob) {
   return new Promise((resolve, reject) => {
@@ -45,7 +47,12 @@ export default function RewardExportActions({ targetId, filename, shareText, cop
       const fontEmbedCSS = await getBrushFontCss();
       const dataUrl = await toPng(target, {
         cacheBust: true,
-        pixelRatio: Math.min(window.devicePixelRatio || 2, 3),
+        // DOM preview width and device DPR must not decide the quality of a keepsake.
+        // Always render the 4:5 card at the standard social-image resolution.
+        canvasWidth: SOCIAL_CARD_WIDTH,
+        canvasHeight: SOCIAL_CARD_HEIGHT,
+        pixelRatio: 1,
+        skipAutoScale: true,
         backgroundColor: '#f7eedb',
         // Embed only the self-hosted display face. This keeps the exported image
         // faithful without asking html-to-image to read cross-origin font CSS.

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
+import type { KeyboardEvent } from 'react';
 import {
   Award,
   BookOpenText,
@@ -21,6 +22,8 @@ import {
 
 const DEFAULT_SHARE_MESSAGE =
   '7일 호구 탈출 챌린지 완주! 🎉 7일 동안 해냈어. 나처럼 해봐!';
+const REWARD_STEPS = ['share', 'review', 'both'] as const;
+type RewardStep = (typeof REWARD_STEPS)[number];
 
 type ChallengeDiagnosisResult = {
   completionDays: number;
@@ -144,11 +147,27 @@ export default function ChallengeRewardSection({
   const [certificateStatus, setCertificateStatus] = useState('');
   const [memoirPage, setMemoirPage] = useState(0);
   const [memoirPdfStatus, setMemoirPdfStatus] = useState('');
+  const [activeRewardStep, setActiveRewardStep] = useState<RewardStep>('share');
   const fitHref = fitCard.ctaKind === 'paid'
     ? paidChallengeUrl
     : fitCard.ctaKind === 'practice'
       ? '/articles/setting-boundaries.html'
       : '/hogoo-test.html?day=1';
+
+  const handleRewardTabKeyDown = (event: KeyboardEvent<HTMLButtonElement>, current: RewardStep) => {
+    const currentIndex = REWARD_STEPS.indexOf(current);
+    let nextIndex = currentIndex;
+    if (event.key === 'ArrowRight') nextIndex = (currentIndex + 1) % REWARD_STEPS.length;
+    else if (event.key === 'ArrowLeft') nextIndex = (currentIndex - 1 + REWARD_STEPS.length) % REWARD_STEPS.length;
+    else if (event.key === 'Home') nextIndex = 0;
+    else if (event.key === 'End') nextIndex = REWARD_STEPS.length - 1;
+    else return;
+
+    event.preventDefault();
+    const next = REWARD_STEPS[nextIndex];
+    setActiveRewardStep(next);
+    window.requestAnimationFrame(() => document.getElementById(`challenge-reward-tab-${next}`)?.focus());
+  };
 
   useEffect(() => {
     const key = `challenge_reward_view:${safeCompletionDays}:${isShared ? 1 : 0}:${isReviewed ? 1 : 0}`;
@@ -190,14 +209,11 @@ export default function ChallengeRewardSection({
       const file = new File([blob], '나의-7일-경계연습.png', { type: 'image/png' });
       if (navigator.share && navigator.canShare?.({ files: [file] })) {
         await navigator.share({ files: [file], title: '나의 7일 경계 연습', text: shareMessage });
-        setShareStatus('완주 카드를 공유했어요. 인증서가 열렸습니다.');
         trackChallengeReward('challenge_reward_export', { asset: 'share_card', method: 'native_share' });
       } else {
         downloadRewardImage(blob, file.name);
-        setShareStatus('공유용 완주 카드를 저장했어요. 인증서가 열렸습니다.');
         trackChallengeReward('challenge_reward_export', { asset: 'share_card', method: 'download' });
       }
-      await onShareComplete();
     } catch (error) {
       if (error instanceof DOMException && error.name === 'AbortError') {
         setShareStatus('공유를 취소했어요. 카드는 언제든 다시 만들 수 있어요.');
@@ -205,6 +221,16 @@ export default function ChallengeRewardSection({
       }
       console.error('Share card creation failed:', error);
       setShareStatus('공유 카드를 만들지 못했어요. 잠시 후 다시 시도해주세요.');
+      return;
+    }
+
+    setShareStatus('완주 카드를 만들었어요. 인증서를 열고 있어요…');
+    try {
+      await onShareComplete();
+      setShareStatus('완주 카드가 저장됐고, 검증 가능한 인증서가 열렸습니다.');
+    } catch (error) {
+      console.error('Share reward unlock failed:', error);
+      setShareStatus('완주 카드는 저장했지만 인증서 해금 상태를 저장하지 못했어요. 잠시 후 다시 눌러주세요.');
     }
   };
 
@@ -269,8 +295,20 @@ export default function ChallengeRewardSection({
           </p>
         </div>
 
+        <div className="challenge-reward-tabs" role="tablist" aria-label="7일 완주 보상 선택">
+          <button id="challenge-reward-tab-share" type="button" role="tab" tabIndex={activeRewardStep === 'share' ? 0 : -1} aria-selected={activeRewardStep === 'share'} aria-controls="challenge-reward-share" onClick={() => setActiveRewardStep('share')} onKeyDown={(event) => handleRewardTabKeyDown(event, 'share')}>
+            <span>{isShared ? '✓' : 'A'}</span> 인증서
+          </button>
+          <button id="challenge-reward-tab-review" type="button" role="tab" tabIndex={activeRewardStep === 'review' ? 0 : -1} aria-selected={activeRewardStep === 'review'} aria-controls="challenge-reward-review" onClick={() => setActiveRewardStep('review')} onKeyDown={(event) => handleRewardTabKeyDown(event, 'review')}>
+            <span>{isReviewed ? '✓' : 'B'}</span> 회고록
+          </button>
+          <button id="challenge-reward-tab-both" type="button" role="tab" tabIndex={activeRewardStep === 'both' ? 0 : -1} aria-selected={activeRewardStep === 'both'} aria-controls="challenge-reward-both" onClick={() => setActiveRewardStep('both')} onKeyDown={(event) => handleRewardTabKeyDown(event, 'both')}>
+            <span>{bothCompleted ? '✓' : 'A+B'}</span> 30일 카드
+          </button>
+        </div>
+
         <div className="challenge-reward-list space-y-4">
-          <article className="challenge-reward-step rounded-lg border border-gray-200 p-4 shadow-sm">
+          <article id="challenge-reward-share" role="tabpanel" aria-labelledby="challenge-reward-tab-share" className={`challenge-reward-step rounded-lg border border-gray-200 p-4 shadow-sm${activeRewardStep === 'share' ? ' is-active' : ''}`}>
             <div className="challenge-reward-step-head flex items-start gap-3">
               <div className="challenge-reward-icon flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-emerald-700">
                 <Share2 className="h-5 w-5" aria-hidden="true" />
@@ -340,7 +378,7 @@ export default function ChallengeRewardSection({
             {certificateStatus ? <p className="challenge-reward-certificate-status" role="status">{certificateStatus}</p> : null}
           </article>
 
-          <article className="challenge-reward-step rounded-lg border border-gray-200 p-4 shadow-sm">
+          <article id="challenge-reward-review" role="tabpanel" aria-labelledby="challenge-reward-tab-review" className={`challenge-reward-step rounded-lg border border-gray-200 p-4 shadow-sm${activeRewardStep === 'review' ? ' is-active' : ''}`}>
             <div className="challenge-reward-step-head flex items-start gap-3">
               <div className="challenge-reward-icon flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-amber-50 text-amber-700">
                 <BookOpenText className="h-5 w-5" aria-hidden="true" />
@@ -417,7 +455,7 @@ export default function ChallengeRewardSection({
             ) : null}
           </article>
 
-          <article className="challenge-reward-step rounded-lg border border-gray-200 p-4 shadow-sm">
+          <article id="challenge-reward-both" role="tabpanel" aria-labelledby="challenge-reward-tab-both" className={`challenge-reward-step rounded-lg border border-gray-200 p-4 shadow-sm${activeRewardStep === 'both' ? ' is-active' : ''}`}>
             <div className="challenge-reward-step-head flex items-start gap-3">
               <div className="challenge-reward-icon flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-indigo-50 text-indigo-700">
                 <Gift className="h-5 w-5" aria-hidden="true" />

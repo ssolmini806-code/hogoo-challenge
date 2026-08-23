@@ -52,6 +52,7 @@ async function prepare(width, height) {
     await Promise.all([
       document.fonts.ready,
       document.fonts.load('700 92px "Give Hahmlet"'),
+      document.fonts.load('400 92px "Give Brush"'),
     ]);
   }
   const canvas = createCanvas(width, height);
@@ -123,7 +124,7 @@ export async function createChallengeCertificate({ certificate, completionDays, 
   drawMilestones(context, 790, 1200);
 
   context.fillStyle = INK;
-  context.font = '700 34px "Give Hahmlet", serif';
+  context.font = '400 46px "Give Brush", sans-serif';
   const anchor = memoir?.anchor || '나는 더 이상 자동으로 수락하지 않는다.';
   wrapText(context, `“${anchor}”`, 600, 900, 790, 52, 2);
 
@@ -171,10 +172,11 @@ export async function createChallengeShareCard({ memoir, completionDays }) {
   context.fillText('나는 7일 동안,', 112, 275);
   context.fillText('자동 수락 대신', 112, 375);
   context.fillStyle = VERMILION;
-  context.fillText('내 기준을 연습했다.', 112, 475);
+  context.font = '400 92px "Give Brush", sans-serif';
+  context.fillText('내 기준을 연습했다.', 112, 480);
 
   context.fillStyle = INK;
-  context.font = '700 31px "Give Hahmlet", serif';
+  context.font = '400 42px "Give Brush", sans-serif';
   wrapText(context, `“${memoir?.anchor || '나는 더 이상 자동으로 수락하지 않는다.'}”`, 112, 585, 820, 50, 2);
 
   const metrics = [
@@ -198,7 +200,7 @@ export async function createChallengeShareCard({ memoir, completionDays }) {
   roundRect(context, 64, 1110, 952, 176, 24);
   context.fill();
   context.fillStyle = PAPER;
-  context.font = '700 27px "Give Hahmlet", serif';
+  context.font = '400 38px "Give Brush", sans-serif';
   context.fillText('친절함을 버린 게 아니라, 지키는 법을 배웠다.', 112, 1180);
   context.font = '700 20px Pretendard, sans-serif';
   context.fillText('GIVE ECOSYSTEM  ·  hogoo-challenge.pages.dev', 112, 1232);
@@ -227,7 +229,13 @@ function drawMemoirFrame(context, page, title) {
   context.font = '800 22px Pretendard, sans-serif';
   context.fillText('MY SEVEN DAYS  ·  GIVE ECOSYSTEM', 118, 145);
   context.fillStyle = INK;
-  context.font = '700 52px "Give Hahmlet", serif';
+  // 뒤쪽 회고 페이지처럼 제목이 길어져도 오른쪽 인장 여백을 넘지 않게 한다.
+  let titleSize = 52;
+  context.font = `700 ${titleSize}px "Give Hahmlet", serif`;
+  while (context.measureText(title).width > 920 && titleSize > 38) {
+    titleSize -= 2;
+    context.font = `700 ${titleSize}px "Give Hahmlet", serif`;
+  }
   context.fillText(title, 118, 230);
   context.textAlign = 'right';
   context.font = '700 19px Pretendard, sans-serif';
@@ -341,9 +349,10 @@ export async function createChallengeMemoirPages(memoir) {
   cover.context.font = '700 68px "Give Hahmlet", serif';
   cover.context.fillText('친절함을 버리지 않고,', 118, 430);
   cover.context.fillStyle = VERMILION;
-  cover.context.fillText('나를 지킨 일곱 번의 선택', 118, 525);
+  cover.context.font = '400 84px "Give Brush", sans-serif';
+  cover.context.fillText('나를 지킨 일곱 번의 선택', 118, 530);
   cover.context.fillStyle = INK;
-  cover.context.font = '700 31px "Give Hahmlet", serif';
+  cover.context.font = '400 42px "Give Brush", sans-serif';
   wrapText(cover.context, `“${memoir.anchor}”`, 118, 680, 920, 48, 3);
   drawMetric(cover.context, 118, `${memoir.completedMissions}/21`, '완료 미션');
   drawMetric(cover.context, 430, String(memoir.noteCount), '행동 메모');
@@ -390,7 +399,7 @@ export async function createChallengeMemoirPages(memoir) {
   lastDays.context.font = '800 19px Pretendard, sans-serif';
   lastDays.context.fillText('NEXT SEVEN DAYS', 160, 1190);
   lastDays.context.fillStyle = INK;
-  lastDays.context.font = '700 31px "Give Hahmlet", serif';
+  lastDays.context.font = '400 42px "Give Brush", sans-serif';
   wrapText(lastDays.context, `“${memoir.anchor}”`, 160, 1260, 860, 46, 2);
   pages.push(lastDays.canvas);
 

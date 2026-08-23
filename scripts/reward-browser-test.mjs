@@ -6,6 +6,7 @@
 
 import { spawn } from 'node:child_process';
 import { chromium } from 'playwright';
+import sharp from 'sharp';
 
 const requestedPort = Number.parseInt(process.env.REWARD_TEST_PORT || '4174', 10);
 const PORT = Number.isInteger(requestedPort) && requestedPort > 0 ? requestedPort : 4174;
@@ -278,6 +279,9 @@ async function run() {
       fields.filter((field) => !(field.getAttribute('aria-label') || field.getAttribute('aria-labelledby')
         || (field.id && document.querySelector(`label[for="${CSS.escape(field.id)}"]`)) || field.closest('label'))).length);
     check('로그인 모달 입력은 스크린리더용 이름을 가진다', unnamedLoginFields === 0, `${unnamedLoginFields}개 누락`);
+    await page.evaluate(() => document.fonts?.ready);
+    await page.waitForTimeout(350);
+    await page.screenshot({ path: '/tmp/reward-login-modal-mobile.png', fullPage: false });
 
     // ── 4~7. 로그인 → 공유 의도 복구 → 확인 → A 해금 → 새로고침 유지 ──
     await page.keyboard.press('Escape');
@@ -344,6 +348,10 @@ async function run() {
     const boundaryDownload = await boundaryDownloadWait;
     await boundaryDownload.saveAs('/tmp/give-reward-boundary.png');
     check('A 경계 문장 카드 PNG 저장', boundaryDownload.suggestedFilename().endsWith('.png'));
+    const boundaryMetadata = await sharp('/tmp/give-reward-boundary.png').metadata();
+    check('A 경계 문장 카드는 1080×1350 소셜 규격이다',
+      boundaryMetadata.width === 1080 && boundaryMetadata.height === 1350,
+      `${boundaryMetadata.width}×${boundaryMetadata.height}`);
     await page.keyboard.press('Escape');
     await page.waitForSelector('.reward-panel', { state: 'detached' });
     check('Escape로 패널이 닫히고 보상 슬라이드로 돌아온다', await page.isVisible('#slideReward.active'));
@@ -428,6 +436,10 @@ async function run() {
     const scenesDownload = await scenesDownloadWait;
     await scenesDownload.saveAs('/tmp/give-reward-scenes.png');
     check('B 위험 장면 카드 PNG 저장', scenesDownload.suggestedFilename().endsWith('.png'));
+    const scenesMetadata = await sharp('/tmp/give-reward-scenes.png').metadata();
+    check('B 위험 장면 카드는 1080×1350 소셜 규격이다',
+      scenesMetadata.width === 1080 && scenesMetadata.height === 1350,
+      `${scenesMetadata.width}×${scenesMetadata.height}`);
     await page.keyboard.press('Escape');
     await page.waitForSelector('.reward-panel', { state: 'detached' });
 
@@ -450,6 +462,10 @@ async function run() {
     const manualDownload = await manualDownloadWait;
     await manualDownload.saveAs('/tmp/give-reward-manual.png');
     check('A+B 현재 설명서 장 PNG 저장', manualDownload.suggestedFilename().endsWith('.png'));
+    const manualMetadata = await sharp('/tmp/give-reward-manual.png').metadata();
+    check('A+B 설명서 카드는 1080×1350 소셜 규격이다',
+      manualMetadata.width === 1080 && manualMetadata.height === 1350,
+      `${manualMetadata.width}×${manualMetadata.height}`);
     await page.click('button:has-text("다음 장")');
     await page.click('button:has-text("다음 장")');
     const cta = await page.getAttribute('a:has-text("결제 없이 64문항")', 'href');
@@ -572,6 +588,7 @@ async function run() {
     {
       const ctx = await makeContext(browser, MOBILE);
       const p = await ctx.newPage();
+      await p.emulateMedia({ reducedMotion: 'reduce' });
       await installEventRecorder(p);
       await p.goto(`${BASE}/result-sequence.html?test=hogoo&type=mid#reward`, { waitUntil: 'networkidle' });
       await p.waitForTimeout(900);

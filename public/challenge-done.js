@@ -35,13 +35,20 @@
 
   document.getElementById('shareMoreBtn').addEventListener('click', function () {
     var plain = '7일 GIVE 챌린지를 완주했습니다\n거절 연습, 경계 긋기, 나를 지키는 7일.';
+    var status = document.getElementById('shareStatus');
+    status.textContent = '';
     if (navigator.share) {
       navigator.share({ title: 'GIVE 7일 챌린지 완주', text: plain, url: shareUrl('native_share') })
-        .catch(function () {});
+        .then(function () { status.textContent = '완주 기록을 공유했어요.'; })
+        .catch(function (error) {
+          if (!error || error.name !== 'AbortError') status.textContent = '공유하지 못했어요. 잠시 후 다시 시도해주세요.';
+        });
     } else if (navigator.clipboard) {
       navigator.clipboard.writeText(plain + '\n\n' + shareUrl('clipboard')).then(function () {
-        alert('문구가 복사됐어요. SNS에 붙여넣기 해주세요!');
-      });
+        status.textContent = '문구를 복사했어요. 원하는 SNS에 붙여넣어 주세요.';
+      }).catch(function () { status.textContent = '문구를 복사하지 못했어요. 잠시 후 다시 시도해주세요.'; });
+    } else {
+      status.textContent = '이 브라우저에서는 공유를 지원하지 않아요.';
     }
     if (typeof window.trackEvent === 'function') window.trackEvent('challenge_shared', { platform: 'other' });
   });

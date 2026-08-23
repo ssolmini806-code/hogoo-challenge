@@ -135,7 +135,9 @@
   function shouldShowBookmark() {
     if (sessionStorage.getItem(DISMISS_KEY) === "1") return false;
     var path = location.pathname;
-    return !/(give-prologue|give-test|result-sequence|hogoo-test|challenge-done|hogoo-check|refusal-test|relationship-risk|selfless-otherish-test)/.test(path);
+    // 마이페이지는 저장된 여정과 보상을 직접 관리하는 화면이다. 같은 여정을
+    // 다시 권하는 고정 배너가 핵심 보상 버튼을 가리지 않도록 제외한다.
+    return !/(give-prologue|give-test|result-sequence|hogoo-test|challenge-done|hogoo-check|refusal-test|relationship-risk|selfless-otherish-test|mypage)/.test(path);
   }
 
   function renderBookmark() {

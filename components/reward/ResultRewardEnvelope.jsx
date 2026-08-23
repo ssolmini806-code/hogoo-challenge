@@ -386,8 +386,8 @@ export default function ResultRewardEnvelope({
               <p>{riskScenes.scenes[scenePage].signal}</p>
             </div>
             <div className="reward-response-tones">
-              <p><span>부드럽게</span>“{riskScenes.scenes[scenePage].gentleResponse}”</p>
-              <p><span>단호하게</span>“{riskScenes.scenes[scenePage].firmResponse}”</p>
+              <p><span>부드럽게</span><q>{riskScenes.scenes[scenePage].gentleResponse}</q></p>
+              <p><span>단호하게</span><q>{riskScenes.scenes[scenePage].firmResponse}</q></p>
             </div>
             <small>GIVE ECOSYSTEM · 알아차리고 선택하는 장면 연습</small>
           </div>

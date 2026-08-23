@@ -1,5 +1,6 @@
 import { spawn } from 'node:child_process';
 import { chromium } from 'playwright';
+import sharp from 'sharp';
 
 const PORT = Number(process.env.CHALLENGE_REWARD_TEST_PORT || 4176);
 const BASE = `http://127.0.0.1:${PORT}`;
@@ -76,18 +77,24 @@ try {
     await shareDownload.saveAs(`/tmp/challenge-share-card-${name}.png`);
     await page.waitForFunction(() => document.body.textContent.includes('인증서가 열렸습니다'));
     check(`${name}: 4:5 공유 카드 PNG 생성`, shareDownload.suggestedFilename().includes('7일-경계연습'));
+    const shareMetadata = await sharp(`/tmp/challenge-share-card-${name}.png`).metadata();
+    check(`${name}: 공유 카드는 1080×1350 규격`, shareMetadata.width === 1080 && shareMetadata.height === 1350, `${shareMetadata.width}×${shareMetadata.height}`);
     check(`${name}: A 서버 발급 후 인증서 활성화`, await page.isEnabled('button:has-text("인증서 다운로드")'));
     const downloadWait = page.waitForEvent('download');
     await page.click('button:has-text("인증서 다운로드")');
     const download = await downloadWait;
     await download.saveAs(`/tmp/challenge-certificate-${name}.png`);
+    const certificateMetadata = await sharp(`/tmp/challenge-certificate-${name}.png`).metadata();
+    check(`${name}: 인증서는 1200×1600 규격`, certificateMetadata.width === 1200 && certificateMetadata.height === 1600, `${certificateMetadata.width}×${certificateMetadata.height}`);
     check(`${name}: 검증번호 인증서 PNG 다운로드`, (await page.textContent('.challenge-reward')).includes('검증번호가 담긴 완주 인증서'));
+    if (name === 'mobile') await page.getByRole('tab', { name: /회고록/ }).click();
     await page.click('button:has-text("후기 작성하기")');
     await page.waitForSelector('#formContent');
     await page.fill('#formContent', '7일 동안 기록한 경계 연습이 실제 생활에서 도움이 됐습니다.');
     await page.click('#formSubmit');
     await page.waitForURL(/hogoo-test\.html/, { timeout: 10_000 });
     await page.click('button:has-text("완료 보상")');
+    if (name === 'mobile') await page.getByRole('tab', { name: /회고록/ }).click();
     await page.waitForSelector('.challenge-memoir-pages');
     await page.click('.challenge-memoir-pager button:has-text("다음 장")');
     check(`${name}: B 변화 그래프가 실제 점수로 표시`, await page.isVisible('.challenge-memoir-chart svg'));
@@ -105,6 +112,7 @@ try {
     check(`${name}: 공유카드·인증서·회고록 저장 이벤트 기록`, ['share_card', 'certificate', 'memoir_pdf'].every((asset) => funnelEvents.some((event) => event.name === 'challenge_reward_export' && event.params.asset === asset)), JSON.stringify(funnelEvents));
     check(`${name}: 분석 이벤트에 개인정보·기록 원문 없음`, funnelEvents.every((event) => !['email', 'user_id', 'review_content', 'answers', 'scores', 'note'].some((key) => Object.hasOwn(event.params, key))));
     check(`${name}: A+B 4축 근거와 다음 행동 표시`, rewardText.includes('실행 지속성') && rewardText.includes('자기 관찰력') && rewardText.includes('경계 적용력') && rewardText.includes('반복 필요성') && rewardText.includes('30일 동안 매주 한 번'));
+    if (name === 'mobile') await page.getByRole('tab', { name: /30일 카드/ }).click();
     const paidHref = await page.getAttribute('a:has-text("내 기록을 이어 30일 시작하기")', 'href');
     check(`${name}: 30일 CTA가 실제 시작 URL에 연결`, /\/start\?.*product=challenge_30day/.test(paidHref || ''), paidHref || '');
     await page.locator('a:has-text("내 기록을 이어 30일 시작하기")').evaluate((link) => {
@@ -112,9 +120,10 @@ try {
       link.click();
     });
     check(`${name}: 30일 이동 클릭 이벤트 기록`, await page.evaluate(() => globalThis.__challengeEvents.some((event) => event.name === 'challenge_30day_handoff_click' && event.params.decision === 'expand')));
-    const layout = await page.evaluate(() => ({ overflow: document.documentElement.scrollWidth > innerWidth + 1, small: [...document.querySelectorAll('.challenge-reward button,.challenge-reward a')].filter((el) => el.offsetParent && el.getBoundingClientRect().height < 43.5).length }));
+    const layout = await page.evaluate(() => ({ overflow: document.documentElement.scrollWidth > innerWidth + 1, small: [...document.querySelectorAll('.challenge-reward button,.challenge-reward a')].filter((el) => el.offsetParent && el.getBoundingClientRect().height < 43.5).length, height: document.documentElement.scrollHeight }));
     check(`${name}: 가로 오버플로 없음`, !layout.overflow);
     check(`${name}: 터치 타깃 44px 이상`, layout.small === 0, String(layout.small));
+    if (name === 'mobile') check(`${name}: 보상·안내 페이지 길이가 과도하지 않다`, layout.height < 5000, `${layout.height}px`);
     check(`${name}: 콘솔 오류 없음`, errors.length === 0, errors.join(' | '));
     await page.screenshot({ path: `/tmp/challenge-reward-${name}-secured.png`, fullPage: true });
 
@@ -123,6 +132,7 @@ try {
 
     await page.goto(`${BASE}/mypage`, { waitUntil: 'networkidle' });
     await page.waitForSelector('.challenge-finisher-card');
+    check(`${name}: 마이페이지 보상 위에 이어가기 배너가 뜨지 않는다`, !(await page.isVisible('.journey-bookmark')));
     const archiveText = await page.textContent('.challenge-archive');
     check(`${name}: 마이페이지에 완주 인장 보관`, archiveText.includes('7일 경계 연습 완주자'));
     check(`${name}: A/B/A+B 획득 상태 보관`, archiveText.includes('완주 인장') && archiveText.includes('7일 회고록') && archiveText.includes('30일 적합도'));

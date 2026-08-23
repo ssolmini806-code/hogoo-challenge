@@ -82,11 +82,15 @@ export default function App() {
   const [reviewForm, setReviewForm] = useState({ displayName: "", rating: 5, content: "" });
   const [reviewStatus, setReviewStatus] = useState("");
   const [reviewError, setReviewError] = useState("");
+  const [challengeNotice, setChallengeNotice] = useState("");
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [showPasswordReset, setShowPasswordReset] = useState(false);
   const [newPassword, setNewPassword] = useState('');
   const [passwordResetLoading, setPasswordResetLoading] = useState(false);
+  const [passwordResetMessage, setPasswordResetMessage] = useState('');
+  const [passwordResetDone, setPasswordResetDone] = useState(false);
+  const passwordResetDialogRef = useRef(null);
   const [isShared, setIsShared] = useState(false);
   const [isReviewed, setIsReviewed] = useState(false);
   const [reviewConfirm, setReviewConfirm] = useState(false);
@@ -135,6 +139,36 @@ export default function App() {
 
     return () => subscription.unsubscribe();
   }, []);
+
+  useEffect(() => {
+    if (!showPasswordReset) return;
+    const previousFocus = document.activeElement;
+    const previousOverflow = document.body.style.overflow;
+    const focusableSelector = 'button:not([disabled]),input:not([disabled]),[tabindex]:not([tabindex="-1"])';
+    const getFocusable = () => Array.from(passwordResetDialogRef.current?.querySelectorAll(focusableSelector) || []);
+    document.body.style.overflow = 'hidden';
+    window.setTimeout(() => getFocusable()[0]?.focus(), 0);
+    const handleKey = (event) => {
+      if (event.key !== 'Tab') return;
+      const focusable = getFocusable();
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener('keydown', handleKey);
+    return () => {
+      document.removeEventListener('keydown', handleKey);
+      document.body.style.overflow = previousOverflow;
+      if (previousFocus instanceof HTMLElement) previousFocus.focus();
+    };
+  }, [showPasswordReset, passwordResetDone]);
 
   // Fetch data when session or currentDay changes
   useEffect(() => {
@@ -320,7 +354,7 @@ export default function App() {
       trackEvent('challenge_share_completed');
     } catch (err) {
       console.error('Failed to save share reward:', err);
-      alert('공유 보상 저장에 실패했습니다. 잠시 후 다시 시도해주세요.');
+      throw err;
     }
   };
 
@@ -604,7 +638,7 @@ export default function App() {
       // 획득한 보상은 후기 삭제와 별개로 보존한다. 브라우저에는 보상 UPDATE 권한이 없다.
     } catch (error) {
       console.error('Delete review failed:', error);
-      alert('삭제에 실패했습니다. 잠시 후 다시 시도해주세요.');
+      setReviewStatus('후기를 삭제하지 못했어요. 잠시 후 다시 시도해주세요.');
     }
   };
 
@@ -773,8 +807,9 @@ export default function App() {
                     if (unlocked) {
                       setCurrentDay(i);
                       setActiveTab("day");
+                      setChallengeNotice("");
                     }
-                    else alert('이전 날짜의 미션을 모두 완료해야 합니다!');
+                    else setChallengeNotice('이전 날짜의 미션 3개를 완료하면 이 날짜가 열려요.');
                   }}
                   style={{
                     flex: "1 1 64px", height: 44, border: "none", cursor: unlocked ? "pointer" : "not-allowed",
@@ -795,9 +830,10 @@ export default function App() {
               onClick={() => {
                 if (isChallengeCompleted) {
                   setActiveTab("reward");
+                  setChallengeNotice("");
                   return;
                 }
-                alert("7일을 모두 완료하면 열려요");
+                setChallengeNotice('7일의 미션을 모두 완료하면 보상 페이지가 열려요.');
               }}
               style={{
                 flex: "1 1 112px",
@@ -816,6 +852,7 @@ export default function App() {
               🎁 완료 보상
             </button>
           </div>
+          {challengeNotice ? <p className="challenge-inline-notice" role="status">{challengeNotice}</p> : null}
         </div>
       </div>
 
@@ -1126,8 +1163,10 @@ export default function App() {
           {currentDay < 6 && (
             <button
               onClick={() => {
-                if (allMissionsDone) setCurrentDay(d => d + 1);
-                else alert('오늘의 미션 3개를 모두 완료해야 다음 날로 넘어갈 수 있습니다!');
+                if (allMissionsDone) {
+                  setCurrentDay(d => d + 1);
+                  setChallengeNotice("");
+                } else setChallengeNotice('오늘의 미션 3개를 완료하면 다음 날로 넘어갈 수 있어요.');
               }}
               style={{
                 flex: 1, background: allMissionsDone ? { amber: "#9A6516", orange: "#9A6516", red: "#9A6516", green: "#114B3C", teal: "#00A885", purple: "#0A5F4D", blue: "#0D3B2F" }[day.color] : "#F3EFE7",
@@ -1366,36 +1405,51 @@ export default function App() {
 
       {showPasswordReset && (
         <div
+          className="login-modal-backdrop"
           role="dialog"
           aria-modal="true"
+          aria-labelledby="password-reset-title"
           style={{
             position: 'fixed', inset: 0, zIndex: 1000,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             background: 'rgba(0,0,0,0.72)', padding: '16px',
           }}
         >
-          <div style={{
+          <div ref={passwordResetDialogRef} className="login-modal-sheet" style={{
             width: '100%', maxWidth: 360,
             background: '#FFFFFF', borderRadius: 20, padding: '32px 24px',
             border: '1px solid #E7E1D5',
           }}>
-            <h2 style={{ color: '#1A1F1C', fontSize: 20, fontWeight: 800, marginBottom: 8 }}>새 비밀번호 설정</h2>
+            <h2 id="password-reset-title" style={{ color: '#1A1F1C', fontSize: 20, fontWeight: 800, marginBottom: 8 }}>새 비밀번호 설정</h2>
             <p style={{ color: '#5C635E', fontSize: 13, lineHeight: 1.5, marginBottom: 24 }}>
-              새로 사용할 비밀번호를 입력해주세요
+              {passwordResetDone ? '새 비밀번호가 안전하게 저장됐어요.' : '새로 사용할 비밀번호를 입력해주세요'}
             </p>
+            {passwordResetMessage ? (
+              <p className={`login-modal-feedback is-${passwordResetDone ? 'success' : 'error'}`} role={passwordResetDone ? 'status' : 'alert'}>
+                {passwordResetMessage}
+              </p>
+            ) : null}
+            {passwordResetDone ? (
+              <button
+                type="button"
+                onClick={() => { setShowPasswordReset(false); setPasswordResetDone(false); setPasswordResetMessage(''); }}
+                style={{ width: '100%', minHeight: 44, padding: 13, border: 0, background: '#2b2117', color: '#f7eedb', fontWeight: 800, cursor: 'pointer' }}
+              >로그인으로 돌아가기</button>
+            ) : (
             <form
               onSubmit={async (e) => {
                 e.preventDefault();
+                setPasswordResetMessage('');
                 setPasswordResetLoading(true);
                 try {
                   const { error } = await supabase.auth.updateUser({ password: newPassword });
                   if (error) throw error;
-                  alert('비밀번호가 변경됐어요! 다시 로그인해주세요.');
-                  setShowPasswordReset(false);
+                  setPasswordResetDone(true);
+                  setPasswordResetMessage('비밀번호를 변경했습니다. 새 비밀번호로 다시 로그인해주세요.');
                   setNewPassword('');
                   await supabase.auth.signOut();
                 } catch (err) {
-                  alert(err.message);
+                  setPasswordResetMessage('비밀번호를 변경하지 못했어요. 재설정 링크를 다시 열거나 잠시 후 시도해주세요.');
                 } finally {
                   setPasswordResetLoading(false);
                 }
@@ -1409,7 +1463,7 @@ export default function App() {
                 type="password"
                 placeholder="새 비밀번호 (6자 이상)"
                 value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
+                onChange={(e) => { setNewPassword(e.target.value); setPasswordResetMessage(''); }}
                 minLength={6}
                 required
                 style={{
@@ -1439,6 +1493,7 @@ export default function App() {
                 {passwordResetLoading ? '변경 중...' : '비밀번호 변경하기'}
               </button>
             </form>
+            )}
           </div>
         </div>
       )}
