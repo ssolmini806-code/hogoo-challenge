@@ -4,6 +4,7 @@
    ============================================================ */
 
 @font-face{font-family:'Give Hahmlet';src:url('/fonts/hahmlet-700.ttf') format('truetype');font-style:normal;font-weight:700;font-display:swap;}
+@font-face{font-family:'Give Brush';src:url('/fonts/jeongmeokbawi.woff') format('woff');font-style:normal;font-weight:400;font-display:swap;}
 
 :root{
   --bg:#FAF8F3;
@@ -28,6 +29,7 @@
   --r-pill:999px;
   --sans:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
   --serif:'Fraunces',Georgia,serif;
+  --brush:'Give Brush','Jeongmeokbawi',sans-serif;
 }
 
 *{box-sizing:border-box;margin:0;padding:0;word-break:keep-all;}
@@ -42,6 +44,100 @@ img{display:block;max-width:100%;height:auto;}
 .skip{position:absolute;left:-999px;top:8px;z-index:10000;background:var(--green);color:var(--surface);padding:10px 16px;border-radius:8px;font-weight:800;text-decoration:none;}
 .skip:focus{left:16px;}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+
+/* 공용 로그인 — 흰 앱 모달 대신 GIVE의 종이·먹·인장 세계를 이어간다. */
+.login-modal-backdrop{
+  background:rgba(23,19,14,.72)!important;
+  padding:clamp(14px,4vw,28px)!important;
+  backdrop-filter:blur(5px) saturate(.7);
+}
+.login-modal-sheet{
+  isolation:isolate;
+  width:min(100%,430px)!important;
+  max-width:430px!important;
+  overflow:hidden;
+  padding:clamp(34px,7vw,48px) clamp(24px,6vw,38px) clamp(28px,6vw,38px)!important;
+  border:1px solid rgba(63,48,32,.48)!important;
+  border-radius:2px!important;
+  background:
+    linear-gradient(rgba(250,248,243,.9),rgba(247,238,219,.94)),
+    url('/images/results/give-result-path-v2.webp') 68% center/cover!important;
+  box-shadow:0 24px 70px rgba(23,19,14,.38)!important;
+  color:#3f3020;
+}
+.login-modal-sheet::before{
+  content:'GIVE ECOSYSTEM  ·  MEMBER ARCHIVE';
+  display:block;
+  position:relative;
+  z-index:1;
+  margin:0 44px 16px 0;
+  color:#9f3223;
+  font-size:.58rem;
+  font-weight:900;
+  letter-spacing:.14em;
+}
+.login-modal-sheet::after{
+  content:'人';
+  position:absolute;
+  right:-.08em;
+  bottom:-.25em;
+  z-index:-1;
+  color:rgba(159,50,35,.065);
+  font-family:var(--brush);
+  font-size:10rem;
+  line-height:1;
+  pointer-events:none;
+}
+.login-modal-sheet>button[aria-label='닫기']{
+  top:14px!important;right:14px!important;
+  border:1px solid rgba(63,48,32,.3)!important;
+  border-radius:50%!important;
+  background:rgba(250,248,243,.55)!important;
+  color:#3f3020!important;
+}
+.login-modal-sheet h2{
+  position:relative;z-index:1;
+  max-width:9em;
+  margin:0 0 10px!important;
+  color:#3f3020!important;
+  font-family:var(--brush);
+  font-size:clamp(1.65rem,7vw,2.2rem)!important;
+  font-weight:400!important;
+  line-height:1.28!important;
+  letter-spacing:-.025em;
+  text-wrap:balance;
+}
+.login-modal-sheet h2+p{position:relative;z-index:1;margin-bottom:26px!important;color:#6f5c47!important;font-size:.9rem!important;line-height:1.68!important;}
+.login-modal-sheet form{position:relative;z-index:1;gap:10px!important;}
+.login-modal-sheet input{
+  min-height:52px;
+  padding:14px 15px!important;
+  border:1px solid rgba(63,48,32,.24)!important;
+  border-radius:0!important;
+  background:rgba(250,248,243,.72)!important;
+  color:#3f3020!important;
+  box-shadow:inset 0 -1px rgba(63,48,32,.06);
+}
+.login-modal-sheet input::placeholder{color:#8a7965;}
+.login-modal-sheet input:focus{border-color:#9f3223!important;box-shadow:0 0 0 2px rgba(159,50,35,.1);}
+.login-modal-sheet form button[type='submit']{
+  min-height:52px!important;
+  margin-top:4px;
+  border:1px solid #2b2117!important;
+  border-radius:0!important;
+  background:#2b2117!important;
+  color:#f7eedb!important;
+  letter-spacing:.04em;
+}
+.login-modal-sheet form button[type='submit']:hover:not(:disabled){background:#9f3223!important;border-color:#9f3223!important;}
+.login-modal-sheet>button:not([aria-label='닫기']){position:relative;z-index:1;color:#6f5c47!important;text-underline-offset:4px;}
+.login-modal-sheet>button:not([aria-label='닫기']):hover{color:#9f3223!important;}
+
+@media(max-width:480px){
+  .login-modal-backdrop{align-items:flex-end!important;padding:0!important;}
+  .login-modal-sheet{max-width:none!important;padding:34px 22px max(24px,env(safe-area-inset-bottom))!important;border-width:1px 0 0!important;}
+  .login-modal-sheet h2{max-width:10em;font-size:1.85rem!important;}
+}
 
 nav,.site-nav{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:18px 0;border-bottom:1px solid var(--line);}
 .logo,.brand{min-height:40px;display:inline-flex;align-items:center;white-space:nowrap;font-family:var(--serif);font-style:italic;font-weight:500;font-size:1.05rem;letter-spacing:.01em;color:var(--green);text-decoration:none;}

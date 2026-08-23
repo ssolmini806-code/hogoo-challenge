@@ -5,6 +5,7 @@
   --question-mint:#c85f43;
   --question-line:rgba(63,48,32,.2);
   --question-serif:'Hahmlet',Georgia,serif;
+  --question-brush:'Give Brush','Jeongmeokbawi',sans-serif;
   --question-sans:'Pretendard',system-ui,sans-serif;
 }
 
@@ -64,7 +65,7 @@
    첫 문항에서만 브라우저 기본 포커스 링이 사각형으로 보이므로 제거한다. */
 .give-test-page .q-text:focus,
 .give-test-page .q-text:focus-visible{outline:none;}
-.give-test-page .q-text{margin:0 0 clamp(1.7rem,4.2vh,2.8rem);max-width:15em;color:#3f3020;font-family:var(--question-serif);font-size:clamp(2rem,3.5vw,3.5rem);font-weight:700;line-height:1.15;letter-spacing:-.045em;text-wrap:balance;}
+.give-test-page .q-text{margin:0 0 clamp(1.7rem,4.2vh,2.8rem);max-width:15em;color:#3f3020;font-family:var(--question-brush);font-size:clamp(2.15rem,3.9vw,3.85rem);font-weight:400;line-height:1.28;letter-spacing:-.025em;text-wrap:balance;}
 .give-test-page .answers{width:100%;max-width:34rem;display:grid;gap:0;counter-reset:answer;}
 .give-test-page .answer-btn{
   counter-increment:answer;
@@ -109,7 +110,7 @@
   .give-test-page .reward{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .give-test-page .question-card{grid-column:1;display:grid;grid-template-columns:1fr;grid-template-rows:auto auto 1fr;align-items:start;column-gap:0;min-height:0;}
   .give-test-page .q-label{grid-column:1;margin-bottom:.55rem;font-size:.6rem;}
-  .give-test-page .q-text{grid-column:1;max-width:10.5em;margin-bottom:clamp(1.1rem,3vh,1.8rem);font-size:clamp(2rem,9.5vw,3.05rem);line-height:1.08;}
+  .give-test-page .q-text{grid-column:1;max-width:11em;margin-bottom:clamp(1.1rem,3vh,1.8rem);font-size:clamp(2.05rem,9.1vw,3rem);line-height:1.24;}
   .give-test-page .answers{grid-column:1;grid-row:3;align-self:end;}
   .give-test-page .answer-btn{min-height:3.65rem;padding:.8rem 2rem .8rem 2.25rem;font-size:.82rem;line-height:1.35;background:rgba(238,230,210,.44);}
   .give-test-page .answer-btn:hover,.give-test-page .answer-btn:focus-visible{padding-left:2.55rem;}
